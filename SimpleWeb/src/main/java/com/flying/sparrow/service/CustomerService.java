@@ -1,5 +1,7 @@
 package com.flying.sparrow.service;
 
+import com.flying.sparrow.annotation.Service;
+import com.flying.sparrow.annotation.Transaction;
 import com.flying.sparrow.helper.DatabaseHelper;
 import com.flying.sparrow.model.Customer;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import java.util.Map;
 /**
  * Created by wangjianchun on 2017/11/7.
  */
+@Service
 public class CustomerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
@@ -36,14 +39,17 @@ public class CustomerService {
         return DatabaseHelper.findEntity(Customer.class, fieldMap);
     }
 
+    @Transaction
     public boolean createCustomer(Map<String, Object> fieldMap){
         return DatabaseHelper.insertEntity(Customer.class, fieldMap);
     }
 
+    @Transaction
     public boolean updateCustomer(long id, Map<String, Object> fieldMap){
         return DatabaseHelper.updateEntity(Customer.class, id, fieldMap);
     }
 
+    @Transaction
     public boolean deleteCustomer(long id){
         return DatabaseHelper.deleteEntity(Customer.class, id);
     }

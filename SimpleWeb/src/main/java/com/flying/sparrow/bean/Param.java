@@ -1,6 +1,7 @@
 package com.flying.sparrow.bean;
 
 import com.flying.sparrow.util.CastUtil;
+import com.flying.sparrow.util.CollectionUtil;
 
 import java.util.Map;
 
@@ -26,5 +27,9 @@ public class Param {
      */
     public Map<String, Object> getParamMap() {
         return paramMap;
+    }
+
+    public boolean isEmpty(){
+        return CollectionUtil.isEmpty(paramMap);
     }
 }
