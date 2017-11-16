@@ -2,7 +2,9 @@ package com.flying.sparrow.service;
 
 import com.flying.sparrow.annotation.Service;
 import com.flying.sparrow.annotation.Transaction;
+import com.flying.sparrow.framework.bean.FileParam;
 import com.flying.sparrow.helper.DatabaseHelper;
+import com.flying.sparrow.helper.UploadHelper;
 import com.flying.sparrow.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +42,12 @@ public class CustomerService {
     }
 
     @Transaction
-    public boolean createCustomer(Map<String, Object> fieldMap){
-        return DatabaseHelper.insertEntity(Customer.class, fieldMap);
+    public boolean createCustomer(Map<String, Object> fieldMap, FileParam fileParam){
+        boolean result = DatabaseHelper.insertEntity(Customer.class, fieldMap);
+        if(result){
+            UploadHelper.uploadFile("/tmp/upload", fileParam);
+        }
+        return result;
     }
 
     @Transaction

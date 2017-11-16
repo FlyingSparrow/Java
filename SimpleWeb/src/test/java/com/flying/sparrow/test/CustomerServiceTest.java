@@ -47,7 +47,7 @@ public class CustomerServiceTest {
         fieldMap.put("name", "customer100");
         fieldMap.put("contact", "John");
         fieldMap.put("telephone", "13512345678");
-        boolean result = customerService.createCustomer(fieldMap);
+        boolean result = customerService.createCustomer(fieldMap, null);
         Assert.assertTrue(result);
     }
 

@@ -6,6 +6,7 @@ import com.flying.sparrow.annotation.Inject;
 import com.flying.sparrow.bean.Data;
 import com.flying.sparrow.bean.Param;
 import com.flying.sparrow.bean.View;
+import com.flying.sparrow.framework.bean.FileParam;
 import com.flying.sparrow.model.Customer;
 import com.flying.sparrow.service.CustomerService;
 
@@ -61,8 +62,9 @@ public class CustomerController {
      */
     @Action("post:/customer_create")
     public Data createSubmit(Param param){
-        Map<String, Object> fieldMap = param.getParamMap();
-        boolean result = customerService.createCustomer(fieldMap);
+        Map<String, Object> fieldMap = param.getFieldMap();
+        FileParam fileParam = param.getFile("photo");
+        boolean result = customerService.createCustomer(fieldMap, fileParam);
         return new Data(result);
     }
 
@@ -86,7 +88,7 @@ public class CustomerController {
     @Action("put:/customer_edit")
     public Data editSubmit(Param param){
         long id = param.getLong("id");
-        Map<String, Object> fieldMap = param.getParamMap();
+        Map<String, Object> fieldMap = param.getFieldMap();
         boolean result = customerService.updateCustomer(id, fieldMap);
         return new Data(result);
     }
