@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -55,7 +54,7 @@ public final class RequestHelper {
         return formParamList;
     }
 
-    private static List<FormParam> parseInputStream(HttpServletRequest request) {
+    private static List<FormParam> parseInputStream(HttpServletRequest request) throws IOException {
         List<FormParam> formParamList = new ArrayList<FormParam>();
         String body = CodecUtil.decodeURL(StreamUtil.getString(request.getInputStream()));
         if(StringUtils.isNotEmpty(body)){
