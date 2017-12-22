@@ -16,10 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by wangjianchun on 2017/11/7.
@@ -296,4 +293,11 @@ public final class DatabaseHelper {
         }
     }
 
+    public static String query(String sql, String username) {
+        return null;
+    }
+
+    public static Set<String> querySet(String sql, String username) {
+        return null;
+    }
 }
