@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.smart4j.chapter2.helper.DatabaseHelper;
 import org.smart4j.chapter2.model.Customer;
 
-import java.sql.Connection;
+import javax.xml.crypto.Data;
 import java.util.List;
 import java.util.Map;
 
@@ -23,32 +23,24 @@ public class CustomerService {
     }
 
     public Customer getCustomer(Long id){
-        //TODO
-        return null;
+        String sql = "select * from customer where id="+id;
+        return DatabaseHelper.queryEntity(Customer.class, sql, null);
     }
 
     public boolean createCustomer(Map<String, Object> fieldMap){
-        //TODO
-        return false;
+        return DatabaseHelper.insertEntity(Customer.class, fieldMap);
     }
 
     public boolean updateCustomer(Long id, Map<String, Object> fieldMap){
-        //TODO
-        return false;
+        return DatabaseHelper.updateEntity(Customer.class, id, fieldMap);
     }
 
     public boolean deleteCustomer(Long id){
-        //TODO
-        return false;
+        return DatabaseHelper.deleteEntity(Customer.class, id);
     }
 
     public List<Customer> getCustomerList() {
-        Connection conn = DatabaseHelper.getConnection();
-        try {
-            String sql = "select * from customer";
-            return DatabaseHelper.queryEntityList(Customer.class, conn, sql, null);
-        } finally{
-            DatabaseHelper.closeConnection(conn);
-        }
+        String sql = "select * from customer";
+        return DatabaseHelper.queryEntityList(Customer.class, sql, null);
     }
 }
