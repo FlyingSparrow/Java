@@ -13,7 +13,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class GreetingAspect {
 
-    @Around("execution(* org.smart4j.chapter4.aop.GreetingImpl.*(..))")
+    /*@Around("execution(* org.smart4j.chapter4.springaop.GreetingImpl.*(..))")
+    public Object around(ProceedingJoinPoint pjp) throws Throwable {
+        before();
+        Object result = pjp.proceed();
+        after();
+        return result;
+    }*/
+
+    @Around("@annotation(org.smart4j.chapter4.springaop.Tag)")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         before();
         Object result = pjp.proceed();
