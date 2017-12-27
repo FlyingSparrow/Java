@@ -17,6 +17,7 @@ public class Client {
 //        aopWithAdvisor();
 //        aopWithAroundAdviceAndAutoCreateProxy();
         aopWithAdvisorAndAutoCreateProxy();
+//        aopWithIntroductionAdvice2();
     }
 
     private static void aopWithAroundAdvice(){
@@ -62,5 +63,17 @@ public class Client {
         greetingImpl.goodMorning("Jack");
         System.out.println("------------------");
         greetingImpl.goodNight("Jack");
+    }
+
+    private static void aopWithIntroductionAdvice2(){
+        ApplicationContext context = new ClassPathXmlApplicationContext("aop/demo/spring.xml");
+        Greeting greeting = (Greeting) context.getBean("greetingImpl");
+        greeting.sayHello("Jack");
+
+        System.out.println("------------------");
+
+        //强制转型为 Apology 接口
+        Apology apology = (Apology) greeting;
+        apology.saySorry("Jack");
     }
 }

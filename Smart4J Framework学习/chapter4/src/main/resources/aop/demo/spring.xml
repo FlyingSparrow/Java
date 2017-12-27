@@ -80,4 +80,14 @@
     <!--Auto Create Proxy, Advisor end-->
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--Spring+AspectJ 切面配置 start-->
+    <bean id="greetingImpl" class="org.smart4j.chapter4.springaop.GreetingImpl"/>
+    <bean id="greetingAspect" class="org.smart4j.chapter4.springaop.GreetingAspect"/>
+    <aop:config>
+        <aop:aspect ref="greetingAspect">
+            <aop:around method="around" pointcut="execution(* org.smart4j.chapter4.springaop.GreetingImpl.*(..))"/>
+        </aop:aspect>
+    </aop:config>
+    <!--Spring+AspectJ 切面配置 end-->
 </beans>

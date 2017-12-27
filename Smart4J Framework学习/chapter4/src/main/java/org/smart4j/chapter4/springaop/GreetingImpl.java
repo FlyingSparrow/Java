@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
  * @author wangjianchun
  * @create 2017/12/26
  */
-@Component
+//@Component
 public class GreetingImpl implements Greeting {
 
-    @Tag
+//    @Tag
     @Override
     public void sayHello(String name) {
         System.out.println("Hello! " + name);
