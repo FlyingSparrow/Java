@@ -2,10 +2,10 @@ package org.smart4j.chapter3.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smart4j.chapter2.helper.DatabaseHelper;
-import org.smart4j.chapter2.model.Customer;
+import org.smart4j.chapter3.model.Customer;
+import org.smart4j.framework.annotation.Service;
+import org.smart4j.framework.helper.DatabaseHelper;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +13,7 @@ import java.util.Map;
  * 提供客户数据服务
  * Created by wangjianchun on 2017/12/22.
  */
+@Service
 public class CustomerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
