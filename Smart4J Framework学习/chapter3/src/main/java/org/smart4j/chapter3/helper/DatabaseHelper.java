@@ -1,4 +1,4 @@
-package org.smart4j.framework.helper;
+package org.smart4j.chapter3.helper;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.QueryRunner;
@@ -7,9 +7,8 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smart4j.framework.ConfigConstant;
-import org.smart4j.framework.util.CollectionUtil;
-import org.smart4j.framework.util.PropsUtil;
+import org.smart4j.chapter2.util.CollectionUtil;
+import org.smart4j.chapter2.util.PropsUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,15 +35,15 @@ public final class DatabaseHelper {
     private static final BasicDataSource DATA_SOURCE;
 
     static {
-        CONNECTION_HOLDER = new ThreadLocal<Connection>();
+        CONNECTION_HOLDER = new ThreadLocal<>();
 
         QUERY_RUNNER = new QueryRunner();
 
-        Properties conf = PropsUtil.loadProps(ConfigConstant.CONFIG_FILE);
-        String driver = conf.getProperty(ConfigConstant.JDBC_DRIVER);
-        String url = conf.getProperty(ConfigConstant.JDBC_URL);
-        String username = conf.getProperty(ConfigConstant.JDBC_USERNAME);
-        String password = conf.getProperty(ConfigConstant.JDBC_PASSWORD);
+        Properties conf = PropsUtil.loadProps("config.properties");
+        String driver = conf.getProperty("jdbc.driver");
+        String url = conf.getProperty("jdbc.url");
+        String username = conf.getProperty("jdbc.username");
+        String password = conf.getProperty("jdbc.password");
 
         DATA_SOURCE = new BasicDataSource();
         DATA_SOURCE.setDriverClassName(driver);
@@ -153,7 +152,7 @@ public final class DatabaseHelper {
         }
         sql += columns.substring(0, columns.lastIndexOf(", "))+" where id=?";
 
-        List<Object> paramList = new ArrayList<Object>();
+        List<Object> paramList = new ArrayList<>();
         paramList.addAll(fieldMap.values());
         paramList.add(id);
         Object[] params = paramList.toArray();
@@ -181,57 +180,6 @@ public final class DatabaseHelper {
         } catch (IOException e) {
             LOGGER.error("execute sql file failure", e);
             throw new RuntimeException(e);
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                LOGGER.error("close BufferedReader failure", e);
-            }
         }
     }
-
-    public static void beginTransaction(){
-        Connection conn = getConnection();
-        if(conn != null){
-            try {
-                conn.setAutoCommit(false);
-            } catch (SQLException e) {
-                LOGGER.error("begin transaction failure", e);
-                throw new RuntimeException(e);
-            } finally {
-                CONNECTION_HOLDER.set(conn);
-            }
-        }
-    }
-
-    public static void commitTransaction(){
-        Connection conn = getConnection();
-        if(conn != null){
-            try {
-                conn.commit();
-                conn.close();
-            } catch (SQLException e) {
-                LOGGER.error("commit transaction failure", e);
-                throw new RuntimeException(e);
-            } finally {
-                CONNECTION_HOLDER.remove();
-            }
-        }
-    }
-
-    public static void rollbackTransaction(){
-        Connection conn = getConnection();
-        if(conn != null){
-            try {
-                conn.rollback();
-            } catch (SQLException e) {
-                LOGGER.error("rollback transaction failure", e);
-                throw new RuntimeException(e);
-            } finally {
-                CONNECTION_HOLDER.remove();
-            }
-        }
-    }
-
-
 }
