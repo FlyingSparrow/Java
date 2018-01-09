@@ -9,6 +9,11 @@ import java.net.URLDecoder;
  */
 public final class StringUtil {
 
+    /**
+     * 字符串分隔符
+     */
+    public static final String SEPARATOR = String.valueOf((char)29);
+
     public static String decode(String str){
         String result = "";
         try {
