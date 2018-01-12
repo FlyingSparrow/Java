@@ -11,6 +11,7 @@ import org.smart4j.framework.ConfigConstant;
 import org.smart4j.framework.util.CollectionUtil;
 import org.smart4j.framework.util.PropsUtil;
 
+import javax.sql.DataSource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -233,5 +234,7 @@ public final class DatabaseHelper {
         }
     }
 
-
+    public static DataSource getDataSource() {
+        return DATA_SOURCE;
+    }
 }
