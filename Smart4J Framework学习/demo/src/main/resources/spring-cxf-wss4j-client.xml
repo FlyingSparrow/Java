@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://cxf.apache.org/jaxws
+        http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <context:component-scan base-package="demo.ws"/>
+
+    <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+        <constructor-arg>
+            <map>
+                <!-- 用户认证（明文密码） -->
+                <entry key="action" value="UsernameToken"/>
+                <entry key="user" value="client"/>
+
+                <!-- 密码是明文 -->
+<!--
+                <entry key="passwordType" value="PasswordText"/>
+-->
+
+                <!-- 密码是加密的 -->
+                <entry key="passwordType" value="PasswordDigest"/>
+                <entry key="passwordCallbackRef" value-ref="clientPasswordCallback"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <jaxws:client id="greetingService" serviceClass="demo.ws.soap_spring_cxf_wss4j.GreetingService"
+                  address="http://localhost:8080/ws/wss4j/soap/greeting">
+        <jaxws:outInterceptors>
+            <ref bean="wss4jOutInterceptor"/>
+        </jaxws:outInterceptors>
+    </jaxws:client>
+
+</beans>

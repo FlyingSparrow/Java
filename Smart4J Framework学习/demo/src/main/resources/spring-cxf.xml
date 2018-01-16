@@ -20,8 +20,8 @@
     实例-->
     <jaxws:endpoint id="helloService" implementor="#helloServiceImpl" address="/soap/hello"/>
 
-    <!--<bean id="helloServiceImpl" class="demo.ws.soap_cxf.HelloServiceImpl"/>
-    <simple:server id="helloService" serviceClass="demo.ws.soap_cxf.HelloService" address="/soap/hello">
+    <!--<bean id="helloServiceImpl" class="demo.ws.soap_GreetingServiceImplImpl"/>
+    <simple:server id="helloService" serviceClass="demo.ws.soap_GreetingServicevice" address="/soap/hello">
         <simple:serviceBean>
             <ref bean="helloServiceImpl"/>
         </simple:serviceBean>

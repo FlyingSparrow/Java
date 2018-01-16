@@ -1,0 +1,22 @@
+<!-- passwordType=PasswordText -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+        <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+                       xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                       soap:mustUnderstand="1">
+            <wsse:UsernameToken wsu:Id="UsernameToken-308a917d-b3a2-4eb4-a3da-0cf54ed990c1">
+                <wsse:Username>client</wsse:Username>
+                <wsse:Password
+                        Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">
+                    clientpass
+                </wsse:Password>
+            </wsse:UsernameToken>
+        </wsse:Security>
+    </SOAP-ENV:Header>
+    <soap:Body>
+        <ns2:greet xmlns:ns2="http://soap_spring_cxf_wss4j.ws.demo/">
+            <arg0>Jack</arg0>
+        </ns2:greet>
+    </soap:Body>
+</soap:Envelope>
+

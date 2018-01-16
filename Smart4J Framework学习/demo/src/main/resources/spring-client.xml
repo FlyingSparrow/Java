@@ -10,7 +10,7 @@
 
     <!--方法1：使用JaxWsProxyFactoryBean Start-->
     <!--<bean id="factoryBean" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
-        <property name="serviceClass" value="demo.ws.soap_cxf.HelloService"/>
+        <property name="serviceClass" value="demo.ws.soap_GreetingServicevice"/>
         <property name="address" value="http://localhost:8080/ws/soap/hello"/>
     </bean>
 
