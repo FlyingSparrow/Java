@@ -12,20 +12,32 @@
 
     <context:component-scan base-package="demo.ws"/>
 
-    <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+    <!--<bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
         <constructor-arg>
             <map>
-                <!-- 用户认证（明文密码） -->
+                &lt;!&ndash; 用户认证（明文密码） &ndash;&gt;
                 <entry key="action" value="UsernameToken"/>
                 <entry key="user" value="client"/>
 
-                <!-- 密码是明文 -->
-<!--
+                &lt;!&ndash; 密码是明文 &ndash;&gt;
+&lt;!&ndash;
                 <entry key="passwordType" value="PasswordText"/>
--->
+&ndash;&gt;
 
-                <!-- 密码是加密的 -->
+                &lt;!&ndash; 密码是加密的 &ndash;&gt;
                 <entry key="passwordType" value="PasswordDigest"/>
+                <entry key="passwordCallbackRef" value-ref="clientPasswordCallback"/>
+            </map>
+        </constructor-arg>
+    </bean>-->
+
+    <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+        <constructor-arg>
+            <map>
+                <!-- 签名（使用自己的私钥） -->
+                <entry key="action" value="Signature"/>
+                <entry key="signaturePropFile" value="client.properties"/>
+                <entry key="signatureUser" value="client"/>
                 <entry key="passwordCallbackRef" value-ref="clientPasswordCallback"/>
             </map>
         </constructor-arg>
