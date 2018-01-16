@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:jaxws="http://cxf.apache.org/jaxws"
-       xmlns:simple="http://cxf.apache.org/jaxws"
+       xmlns:simple="http://cxf.apache.org/simple"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://cxf.apache.org/jaxws
@@ -10,19 +10,20 @@
         http://cxf.apache.org/simple
         http://cxf.apache.org/schemas/simple.xsd">
 
-    <jaxws:server id="helloService" address="/soap/hello">
+    <!--<jaxws:server id="helloService" address="/soap/hello">
         <jaxws:serviceBean>
             <ref bean="helloServiceImpl"/>
         </jaxws:serviceBean>
-    </jaxws:server>
+    </jaxws:server>-->
 
-<!--
+    <!--注意：implementor="#helloServiceImpl"，这是 CXF 特有的简写形式，并非是Spring的规范，意思是通过 Spring 的 Bean ID 获取 Bean
+    实例-->
     <jaxws:endpoint id="helloService" implementor="#helloServiceImpl" address="/soap/hello"/>
--->
 
-    <!--<simple:server id="helloService" serviceClass="#helloService" address="/soap/hello">
+    <!--<bean id="helloServiceImpl" class="demo.ws.soap_cxf.HelloServiceImpl"/>
+    <simple:server id="helloService" serviceClass="demo.ws.soap_cxf.HelloService" address="/soap/hello">
         <simple:serviceBean>
-            <ref bean="#helloServiceImpl"/>
+            <ref bean="helloServiceImpl"/>
         </simple:serviceBean>
     </simple:server>-->
 </beans>

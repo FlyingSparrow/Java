@@ -1,5 +1,6 @@
 package demo.ws.soap_cxf;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 /**
@@ -9,5 +10,5 @@ import javax.jws.WebService;
 @WebService
 public interface HelloService {
 
-    String say(String name);
+    String say(@WebParam String name);
 }
