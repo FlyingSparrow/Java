@@ -28,12 +28,43 @@
         </constructor-arg>
     </bean>-->
 
+    <!-- 基于数字签名的身份认证 -->
+    <!--<bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                &lt;!&ndash; 验签（使用对方的公钥） &ndash;&gt;
+                <entry key="action" value="Signature"/>
+                <entry key="signaturePropFile" value="server.properties"/>
+            </map>
+        </constructor-arg>
+    </bean>-->
+
+    <!-- SOAP 消息的加密和解密 -->
     <bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
         <constructor-arg>
             <map>
+                <!-- 验签与解密 -->
+                <entry key="action" value="Signature Encrypt"/>
                 <!-- 验签（使用对方的公钥） -->
-                <entry key="action" value="Signature"/>
                 <entry key="signaturePropFile" value="server.properties"/>
+                <!-- 解密（使用自己的私钥） -->
+                <entry key="decryptionPropFile" value="server.properties"/>
+                <entry key="passwordCallbackRef" value-ref="serverPasswordCallback"/>
+            </map>
+        </constructor-arg>
+    </bean>
+    <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+        <constructor-arg>
+            <map>
+                <!-- 签名与加密 -->
+                <entry key="action" value="Signature Encrypt"/>
+                <!-- 签名（使用自己的私钥） -->
+                <entry key="signaturePropFile" value="server.properties"/>
+                <entry key="signatureUser" value="server"/>
+                <entry key="passwordCallbackRef" value-ref="serverPasswordCallback"/>
+                <!-- 加密（使用对方的公钥） -->
+                <entry key="encryptionPropFile" value="server.properties"/>
+                <entry key="encryptionUser" value="client"/>
             </map>
         </constructor-arg>
     </bean>
@@ -42,6 +73,9 @@
         <jaxws:inInterceptors>
             <ref bean="wss4jInInterceptor"/>
         </jaxws:inInterceptors>
+        <jaxws:outInterceptors>
+            <ref bean="wss4jOutInterceptor"/>
+        </jaxws:outInterceptors>
     </jaxws:endpoint>
 
     <cxf:bus>

@@ -31,13 +31,44 @@
         </constructor-arg>
     </bean>-->
 
-    <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+    <!-- 基于数字签名的身份认证 -->
+    <!--<bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
         <constructor-arg>
             <map>
-                <!-- 签名（使用自己的私钥） -->
+                &lt;!&ndash; 签名（使用自己的私钥） &ndash;&gt;
                 <entry key="action" value="Signature"/>
                 <entry key="signaturePropFile" value="client.properties"/>
                 <entry key="signatureUser" value="client"/>
+                <entry key="passwordCallbackRef" value-ref="clientPasswordCallback"/>
+            </map>
+        </constructor-arg>
+    </bean>-->
+
+    <!-- SOAP 消息的加密和解密 -->
+    <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+        <constructor-arg>
+            <map>
+                <!-- 签名与加密 -->
+                <entry key="action" value="Signature Encrypt"/>
+                <!-- 签名（使用自己的私钥） -->
+                <entry key="signaturePropFile" value="client.properties"/>
+                <entry key="signatureUser" value="client"/>
+                <entry key="passwordCallbackRef" value-ref="clientPasswordCallback"/>
+                <!-- 加密（使用对方的公钥） -->
+                <entry key="encryptionPropFile" value="client.properties"/>
+                <entry key="encryptionUser" value="server"/>
+            </map>
+        </constructor-arg>
+    </bean>
+    <bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                <!-- 验签与解密 -->
+                <entry key="action" value="Signature Encrypt"/>
+                <!-- 验签（使用对方的公钥） -->
+                <entry key="signaturePropFile" value="client.properties"/>
+                <!-- 解密（使用自己的私钥） -->
+                <entry key="decryptionPropFile" value="client.properties"/>
                 <entry key="passwordCallbackRef" value-ref="clientPasswordCallback"/>
             </map>
         </constructor-arg>
@@ -48,6 +79,9 @@
         <jaxws:outInterceptors>
             <ref bean="wss4jOutInterceptor"/>
         </jaxws:outInterceptors>
+        <jaxws:inInterceptors>
+            <ref bean="wss4jInInterceptor"/>
+        </jaxws:inInterceptors>
     </jaxws:client>
 
 </beans>
