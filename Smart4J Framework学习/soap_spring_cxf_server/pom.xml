@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>demo.ws</groupId>
-    <artifactId>soap_spring_cxf</artifactId>
+    <artifactId>soap_spring_cxf_server</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 

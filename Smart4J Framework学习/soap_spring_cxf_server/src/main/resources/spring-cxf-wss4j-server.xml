@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://cxf.apache.org/core
+        http://cxf.apache.org/schemas/core.xsd
+        http://cxf.apache.org/jaxws
+        http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <!--<bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                &lt;!&ndash; 用户认证（明文密码） &ndash;&gt;
+                <entry key="action" value="UsernameToken"/>
+
+                &lt;!&ndash; 密码是明文 &ndash;&gt;
+                &lt;!&ndash;
+                                <entry key="passwordType" value="PasswordText"/>
+                &ndash;&gt;
+
+                &lt;!&ndash; 密码是加密的 &ndash;&gt;
+                <entry key="passwordType" value="PasswordDigest"/>
+                <entry key="passwordCallbackRef" value-ref="serverPasswordCallback"/>
+            </map>
+        </constructor-arg>
+    </bean>-->
+
+    <!-- 基于数字签名的身份认证 -->
+    <!--<bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                &lt;!&ndash; 验签（使用对方的公钥） &ndash;&gt;
+                <entry key="action" value="Signature"/>
+                <entry key="signaturePropFile" value="server.properties"/>
+            </map>
+        </constructor-arg>
+    </bean>-->
+
+    <!-- SOAP 消息的加密和解密 -->
+    <bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                <!-- 验签与解密 -->
+                <entry key="action" value="Signature Encrypt"/>
+                <!-- 验签（使用对方的公钥） -->
+                <entry key="signaturePropFile" value="server.properties"/>
+                <!-- 解密（使用自己的私钥） -->
+                <entry key="decryptionPropFile" value="server.properties"/>
+                <entry key="passwordCallbackRef" value-ref="serverPasswordCallback"/>
+            </map>
+        </constructor-arg>
+    </bean>
+    <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+        <constructor-arg>
+            <map>
+                <!-- 签名与加密 -->
+                <entry key="action" value="Signature Encrypt"/>
+                <!-- 签名（使用自己的私钥） -->
+                <entry key="signaturePropFile" value="server.properties"/>
+                <entry key="signatureUser" value="server"/>
+                <entry key="passwordCallbackRef" value-ref="serverPasswordCallback"/>
+                <!-- 加密（使用对方的公钥） -->
+                <entry key="encryptionPropFile" value="server.properties"/>
+                <entry key="encryptionUser" value="client"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <jaxws:endpoint id="greetingService" implementor="#greetingServiceImpl" address="/wss4j/soap/greeting">
+        <jaxws:inInterceptors>
+            <ref bean="wss4jInInterceptor"/>
+        </jaxws:inInterceptors>
+        <jaxws:outInterceptors>
+            <ref bean="wss4jOutInterceptor"/>
+        </jaxws:outInterceptors>
+    </jaxws:endpoint>
+
+    <cxf:bus>
+        <cxf:features>
+            <cxf:logging/>
+        </cxf:features>
+    </cxf:bus>
+
+</beans>
