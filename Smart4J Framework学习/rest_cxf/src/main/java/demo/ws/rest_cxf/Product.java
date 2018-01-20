@@ -6,9 +6,18 @@ package demo.ws.rest_cxf;
  */
 public class Product {
 
+    private Integer id;
     private String code;
     private String name;
     private Double price;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;
