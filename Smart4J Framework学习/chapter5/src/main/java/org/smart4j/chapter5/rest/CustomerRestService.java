@@ -2,7 +2,6 @@ package org.smart4j.chapter5.rest;
 
 import org.smart4j.chapter5.model.Customer;
 import org.smart4j.chapter5.service.CustomerService;
-import org.smart4j.framework.annotation.Inject;
 import org.smart4j.framework.annotation.Service;
 import org.smart4j.plugin.rest.Rest;
 
@@ -20,8 +19,8 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class CustomerRestService {
 
-    @Inject
-    private CustomerService customerService;
+//    @Inject
+    private CustomerService customerService = new CustomerService();
 
     @GET
     @Path("/customer/{id}")

@@ -2,7 +2,6 @@ package org.smart4j.chapter5.soap;
 
 import org.smart4j.chapter5.model.Customer;
 import org.smart4j.chapter5.service.CustomerService;
-import org.smart4j.framework.annotation.Inject;
 import org.smart4j.framework.annotation.Service;
 import org.smart4j.plugin.soap.Soap;
 
@@ -15,8 +14,8 @@ import org.smart4j.plugin.soap.Soap;
 @Service
 public class CustomerSoapServiceImpl implements CustomerSoapService {
 
-    @Inject
-    private CustomerService customerService;
+//    @Inject
+    private CustomerService customerService = new CustomerService();
 
     @Override
     public Customer getCustomer(Long customerId) {
