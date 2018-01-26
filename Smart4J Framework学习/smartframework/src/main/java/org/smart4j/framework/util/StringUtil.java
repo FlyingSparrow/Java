@@ -1,5 +1,7 @@
 package org.smart4j.framework.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -23,5 +25,9 @@ public final class StringUtil {
         }
 
         return result;
+    }
+
+    public static boolean isNotEmpty(String str){
+        return StringUtils.isNotEmpty(str);
     }
 }
