@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * @author wangjianchun
@@ -29,5 +30,9 @@ public final class StringUtil {
 
     public static boolean isNotEmpty(String str){
         return StringUtils.isNotEmpty(str);
+    }
+
+    public static String[] splitString(String str, String separator){
+        return StringUtils.split(str, separator);
     }
 }
