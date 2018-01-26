@@ -13,7 +13,19 @@
         </jaxrs:serviceBeans>
         <jaxrs:providers>
             <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
+<!--
+            <bean class="org.apache.cxf.jaxrs.provider.jsonp.JsonpPreStreamInterceptor"/>
+-->
+            <bean class="org.apache.cxf.rs.security.cors.CrossOriginResourceSharingFilter">
+                <property name="allowOrigins" value="http://localhost"/>
+            </bean>
         </jaxrs:providers>
+        <jaxrs:inInterceptors>
+            <bean class="org.apache.cxf.jaxrs.provider.jsonp.JsonpInInterceptor"/>
+        </jaxrs:inInterceptors>
+        <jaxrs:outInterceptors>
+            <bean class="org.apache.cxf.jaxrs.provider.jsonp.JsonpPostStreamInterceptor"/>
+        </jaxrs:outInterceptors>
     </jaxrs:server>
 
 </beans>
