@@ -48,14 +48,14 @@ public class Main {
 
     private static void getPrices(){
         long start = System.nanoTime();
-        System.out.println(new Client().findPrices("myPhone27S"));
+        System.out.println(new Price().findPrices("myPhone27S"));
         long duration = ((System.nanoTime()-start)/1_000_000);
         System.out.println("Done in "+duration+" msecs");
     }
 
     private static void getPricesAsync(){
         long start = System.nanoTime();
-        System.out.println(new Client().findPricesAsync("myPhone27S"));
+        System.out.println(new Price().findPricesAsync("myPhone27S"));
         long duration = ((System.nanoTime()-start)/1_000_000);
         System.out.println("Done in "+duration+" msecs");
     }

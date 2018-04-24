@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toList;
  * @author wangjianchun
  * @create 2018/4/21
  */
-public class Client {
+public class Price {
 
     private static final List<Shop> shops = Arrays.asList(
             new Shop("BestPrice"),
@@ -38,19 +38,33 @@ public class Client {
                 }
             });
 
-    public List<String> findPrices(String product){
+/*    public List<String> findPrices(String product){
         //使用 CompletableFuture 以异步方式计算每种商品的价格
         List<CompletableFuture<String>> priceFutures = shops.stream()
                 .map(shop -> CompletableFuture.supplyAsync(() -> String.format("%s price is %.2f",
                         shop.getName(), shop.getPrice(product)), executor)).collect(toList());
         //等待所有异步操作结束
         return priceFutures.stream().map(CompletableFuture::join).collect(toList());
-        /*return shops.stream().map(shop -> String.format("%s price is %.2f",
-                shop.getName(), shop.getPrice(product))).collect(toList());*/
+        *//*return shops.stream().map(shop -> String.format("%s price is %.2f",
+                shop.getName(), shop.getPrice(product))).collect(toList());*//*
+    }*/
+
+    public List<String> findPrices(String product){
+        return shops.stream().map(shop -> shop.getPrice(product))
+                .map(Quote::parse)
+                .map(Discount::applyDiscount)
+                .collect(toList());
     }
 
     public List<String> findPricesAsync(String product){
-        return shops.parallelStream().map(shop -> String.format("%s price is %.2f",
-                shop.getName(), shop.getPrice(product))).collect(toList());
+        List<CompletableFuture<String>> priceFutures = shops.stream()
+                .map(shop -> CompletableFuture.supplyAsync(()->shop.getPrice(product), executor))
+                .map(future -> future.thenApply(Quote::parse))
+                .map(future -> future.thenCompose(quote ->
+                    CompletableFuture.supplyAsync(()->Discount.applyDiscount(quote), executor)))
+                .collect(toList());
+
+        return priceFutures.stream().map(CompletableFuture::join)
+                .collect(toList());
     }
 }
