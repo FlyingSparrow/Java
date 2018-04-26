@@ -3,10 +3,13 @@ package com.manning;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author wangjianchun
+ */
 @SpringBootApplication
-public class ReadinglistApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ReadinglistApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }
