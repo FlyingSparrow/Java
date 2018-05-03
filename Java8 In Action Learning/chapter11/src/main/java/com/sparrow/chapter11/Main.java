@@ -1,5 +1,6 @@
 package com.sparrow.chapter11;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
@@ -13,6 +14,7 @@ public class Main {
 //        calculateAppropriateThreadPoolSize();
         getPrices();
         getPricesAsync();
+        getPricesStream();
     }
 
     private static int calculateAppropriateThreadPoolSize(){
@@ -58,6 +60,17 @@ public class Main {
         System.out.println(new Price().findPricesAsync("myPhone27S"));
         long duration = ((System.nanoTime()-start)/1_000_000);
         System.out.println("Done in "+duration+" msecs");
+    }
+
+    private static void getPricesStream(){
+        long start = System.nanoTime();
+
+        CompletableFuture[] futures = new Price().findPricesStream("myPhone27S")
+                .map(f -> f.thenAccept(s -> System.out.println(
+                        s+" (done in "+((System.nanoTime()-start)/1_000_000)+" msecs)")))
+                .toArray(size -> new CompletableFuture[size]);
+        CompletableFuture.allOf(futures).join();
+        System.out.println("All shops have now responded in "+((System.nanoTime()-start)/1_000_000)+" msecs");
     }
 
     private static void doSomethingElse() {
