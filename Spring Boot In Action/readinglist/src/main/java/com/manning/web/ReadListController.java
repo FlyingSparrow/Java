@@ -1,5 +1,6 @@
 package com.manning.web;
 
+import com.manning.configuration.AmazonProperties;
 import com.manning.entity.Book;
 import com.manning.repository.ReadingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,13 @@ import java.util.List;
 public class ReadListController {
 
     private ReadingListRepository readingListRepository;
+    private AmazonProperties amazonProperties;
 
     @Autowired
-    public ReadListController(ReadingListRepository readingListRepository){
+    public ReadListController(ReadingListRepository readingListRepository,
+                              AmazonProperties amazonProperties){
         this.readingListRepository = readingListRepository;
+        this.amazonProperties = amazonProperties;
     }
 
     /**
@@ -37,6 +41,8 @@ public class ReadListController {
         List<Book> readingList = readingListRepository.findByReader(reader);
         if(readingList != null){
             model.addAttribute("books", readingList);
+            model.addAttribute("reader", reader);
+            model.addAttribute("amazonId", amazonProperties.getAssociateId());
         }
         return "readingList";
     }
