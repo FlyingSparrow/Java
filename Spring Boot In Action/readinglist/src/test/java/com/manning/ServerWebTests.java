@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author wangjianchun
+ * 说明：该单元测试运行报错，初步分析原因可能是 selenium 版本和 spring boot不兼容
  * @create 2018/4/27
  */
 @RunWith(SpringRunner.class)
@@ -33,7 +34,7 @@ public class ServerWebTests {
     public static void openBrowser(){
         File pathToFirefoxBinary = new File("D:\\program files (x86)\\Mozilla Firefox\\firefox.exe");
         FirefoxBinary firefoxBinary = new FirefoxBinary(pathToFirefoxBinary);
-        System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
         browser = new ChromeDriver();
         browser.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
     }

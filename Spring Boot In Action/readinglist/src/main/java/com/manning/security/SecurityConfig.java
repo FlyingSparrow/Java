@@ -1,12 +1,10 @@
 package com.manning.security;
 
-import org.springframework.context.annotation.Configuration;
-
 /**
  * @author wangjianchun
  * @create 2018/4/27
  */
-@Configuration
+//@Configuration
 //@EnableWebSecurity
 public class SecurityConfig /*extends WebSecurityConfigurerAdapter*/ {
 

@@ -4,6 +4,8 @@ import com.manning.configuration.AmazonProperties;
 import com.manning.entity.Book;
 import com.manning.repository.ReadingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.boot.actuate.metrics.GaugeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,12 +24,18 @@ public class ReadListController {
 
     private ReadingListRepository readingListRepository;
     private AmazonProperties amazonProperties;
+    private CounterService counterService;
+    private GaugeService gaugeService;
 
     @Autowired
     public ReadListController(ReadingListRepository readingListRepository,
-                              AmazonProperties amazonProperties){
+                              AmazonProperties amazonProperties,
+                              CounterService counterService,
+                              GaugeService gaugeService){
         this.readingListRepository = readingListRepository;
         this.amazonProperties = amazonProperties;
+        this.counterService = counterService;
+        this.gaugeService = gaugeService;
     }
 
     /**
@@ -57,6 +65,10 @@ public class ReadListController {
     public String addToReadingList(@PathVariable("reader") String reader, Book book){
         book.setReader(reader);
         readingListRepository.save(book);
+
+        counterService.increment("books.saved");
+        gaugeService.submit("books.last.saved", System.currentTimeMillis());
+
         return "redirect:/{reader}";
     }
 }
