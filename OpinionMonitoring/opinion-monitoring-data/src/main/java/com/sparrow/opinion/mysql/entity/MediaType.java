@@ -22,27 +22,27 @@ public class MediaType {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "media_name", unique = false, nullable = false)
+    @Column(name = "media_name", nullable = false)
     private String mediaName; // 媒体名称
 
-    @Column(name = "media_url", unique = false, nullable = false)
+    @Column(name = "media_url", nullable = false)
     private String mediaUrl; // 媒体地址
 
-    @Column(name = "media_type", unique = false, nullable = false)
+    @Column(name = "media_type", nullable = false)
     private String mediaType; // 媒体类型
 
-    @Column(name = "created_date", unique = false, nullable = false)
+    @Column(name = "created_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate; // 创建时间
 
-    @Column(name = "created_user", unique = false, nullable = false)
+    @Column(name = "created_user", nullable = false)
     private String createdUser; // 创建人
 
-    @Column(name = "modified_date", unique = false, nullable = false)
+    @Column(name = "modified_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifiedDate; // 更新时间
 
-    @Column(name = "modified_user", unique = false, nullable = false)
+    @Column(name = "modified_user", nullable = false)
     private String modifiedUser; // 更新人
 
     public MediaType() {

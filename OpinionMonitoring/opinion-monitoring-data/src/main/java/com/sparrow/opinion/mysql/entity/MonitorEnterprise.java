@@ -22,37 +22,37 @@ public class MonitorEnterprise extends BasePageRequest {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "enterprise_name", unique = false, nullable = false)
+    @Column(name = "enterprise_name", nullable = false)
     private String enterpriseName;    // 企业名称
 
-    @Column(name = "expire_date", unique = false, nullable = false)
+    @Column(name = "expire_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date expireDate;    //到期时间，默认值：创建时间+3个月
 
-    @Column(name = "c_status", unique = false, nullable = false)
+    @Column(name = "c_status", nullable = false)
     private String status;    //状态：监控中，已到期
 
-    @Column(name = "delete_flag", unique = false, nullable = false)
+    @Column(name = "delete_flag", nullable = false)
     private String deleteFlag; // 删除标记，已删除：是：未删除：否
 
-    @Column(name = "created_date", unique = false, nullable = false)
+    @Column(name = "created_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate; // 创建时间
 
-    @Column(name = "created_user", unique = false, nullable = false)
+    @Column(name = "created_user", nullable = false)
     private String createdUser; // 创建人
 
-    @Column(name = "modified_date", unique = false, nullable = false)
+    @Column(name = "modified_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifiedDate; // 更新时间
 
-    @Column(name = "modified_user", unique = false, nullable = false)
+    @Column(name = "modified_user", nullable = false)
     private String modifiedUser; // 更新人
 
-    @Column(name = "user_account", unique = false, nullable = false)
+    @Column(name = "user_account", nullable = false)
     private String userAccount;    //关联t_userbase表的user_account
 
-    @Column(name = "mongo_enterprise_id", unique = false, nullable = false)
+    @Column(name = "mongo_enterprise_id", nullable = false)
     private String mongoEnterpriseId;    //mongodb中的enterprise_info表的id
 
     @Transient

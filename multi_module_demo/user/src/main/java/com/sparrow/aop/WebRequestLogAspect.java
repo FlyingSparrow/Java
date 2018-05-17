@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Arrays;
 
 /**
+ * Web请求日志AOP拦截器类
+ * 说明：记录web请求的类名、方法名、请求参数，以及web请求的返回值
  * @author wangjianchun
  * @create 2018/4/13
  */
