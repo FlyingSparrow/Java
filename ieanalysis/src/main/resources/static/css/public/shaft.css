@@ -1,0 +1,208 @@
+@charset "utf-8";
+* {
+	box-sizing: border-box;
+}
+.event-time-line {
+	margin-top: 10px;
+	width:950px;
+	margin:0 auto;
+}
+
+.time-line {
+	position: relative;
+	width: 90%;
+	padding: 44px 0;
+	margin: 0 auto;
+}
+
+.time-line:before {
+	content: " ";
+	width: 5px;
+	height: 100%;
+	background-color: #3e4e79;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-left: -5px;
+}
+
+/*.time-line:after {
+	content: " ";
+	display: table;
+	clear: both;
+	position: absolute;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	left: 0;
+	bottom: 0;
+	margin-left: -3px;
+	background: #60a3ff;
+}*/
+
+.time-line .time-line-item {
+	position: relative;
+	margin: 45px 0;
+	/*&:nth-of-type(even){
+	 .time-line-content{
+	 float: right;
+	 &:before{
+	 left:-20px;
+	 }
+	 }
+	 }*/
+}
+
+.time-line .time-line-item .circle-box {
+	position: absolute;
+	top: 48px;
+	margin-top: -7px;
+	left: 0;
+	margin-left: -7px;
+	width: 16px;
+	height: 16px;
+	background-color: #3e4e79;
+	border-radius:50%;
+}
+
+.time-line .time-line-item .circle-box .circle {
+	height: 100%;
+	border: 4px solid #83f3e7;
+	border-radius: 50%;
+}
+
+.time-line .time-line-item .time-line-content {
+	position: relative;
+	float: right;
+	width: 97%;
+	padding:0 20px;
+	border-radius: 5px;
+	background-color:#43abff;
+}
+.time-line-content h5 a{color:#333;}
+
+
+.time-line .time-line-item .time-line-content:before {
+	content: '';
+	position: absolute;
+	left: -20px;
+	top: 13px;
+	margin-top: -20px;
+	display: block;
+	width: 50px;
+	height: 50px;
+	border-width: 0 1px 1px 0;
+	background-color: #43abff;
+	-webkit-transform: rotate(225deg) translate(-50%, 0);
+	transform: rotate(225deg) translate(-50%, 0);
+}
+
+.time-line .time-line-item .time-line-content .intro, .time-line .time-line-item .time-line-content .title {
+	max-width: 99%;
+	line-height: 2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin:0;
+}
+
+.time-line .time-line-item .time-line-content .title {
+	font-weight: 400;
+	font-size: 18px;
+	color: #333;
+	border-bottom: 2px solid #ffffff;
+}
+
+.time-line .time-line-item .time-line-content .intro {
+	color:#ffffff;
+	border-bottom: 1px solid rgba(96, 163, 255, 0.2);
+}
+
+.time-line .time-line-item:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.time-line .time-line-item:first-child {
+	margin-top: 0;
+}
+
+.time-line .time-line-item:last-child {
+	margin-bottom: 0;
+}
+.time-line .time-line-item:nth-child(even) .time-line-content{
+	padding-left:40px;background-color:#ffda6b;
+	}
+.time-line .time-line-item:nth-child(even) .time-line-content::before{background-color:#ffda6b;}
+.time-line .time-line-item .time-line-content .point{    
+	position:absolute;
+    top:50%;
+    width:15px;
+    height:15px;
+    border-radius:50%;
+    background-color:#ffffff;	
+    margin:0;
+    margin-top:-7px;
+    
+    }
+.time-line .time-line-item:nth-child(odd) .time-line-content .point{
+    right:0;
+   
+}
+.time-line .time-line-item:nth-child(even) .time-line-content .point{
+    left:0;
+}
+
+
+	.time-line:before {
+		top: 0;
+		left: 50%;
+		margin-left:-1px;
+	}
+	/*.time-line:after {
+		left: 50%;
+		bottom: 0;
+	}*/
+	.time-line .time-line-item > .circle-box {
+		top: 35px;
+		left: 50%;
+	}
+	.time-line .time-line-item:nth-child(odd) .time-line-content{
+	padding-right:40px;
+	box-shadow:0 4px 4px #cfcfcf;
+	}
+	.time-line .time-line-item > .time-line-content {
+	
+		width: 43.5%;
+		float: none;
+		z-index:999;
+		
+	}
+	.time-line .time-line-item > .time-line-content:before {
+		left: inherit;
+		right: -5px;
+		top: 13px;
+		 box-shadow:-4px 0  0 rgba(207,207,201,0.51);
+	}
+	.time-line .time-line-item:nth-of-type(even) .time-line-content {
+	    box-shadow:0 4px 4px #cfcfcf;
+		float: right;
+	}
+	.time-line .time-line-item:nth-of-type(even) .time-line-content:before {
+		left: -40px;
+		 box-shadow: 0 -4px 0 rgba(207,207,201,0.51);
+	}
+
+.text-center {
+	text-align: center;
+}
+#event_time_line > .box {
+	width: 60px;
+	height: 60px;
+	border-radius: 30px;
+	margin: 0 auto;
+	border: 3px solid #3e4e79;
+	text-align: center;
+	line-height: 55px;
+}
