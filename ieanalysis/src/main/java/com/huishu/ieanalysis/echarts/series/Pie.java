@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by yuwei on 2016/12/26
  */
-public class Pie<T> extends Serie<T> {
+public class Pie<T> extends BaseSeries<T> {
 
     private List<String> radius;
 

@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
  * @author wangjianchun
  */
 @Service
-public class PolicyIndexServiceImpl extends AbstractService implements
-        PolicyIndexService {
+public class PolicyIndexServiceImpl extends AbstractService implements PolicyIndexService {
 
     private static final Logger logger = LoggerFactory
             .getLogger(PolicyHotServiceImpl.class);

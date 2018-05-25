@@ -20,7 +20,7 @@ public interface PolicyBenefitService {
      * @param cond
      * @return
      */
-    JSONObject searchPolicyBenefItenterpriseInvestmentTopFive(ConditionDTO cond);
+    JSONObject searchPolicyBenefitEnterpriseInvestmentTopFive(ConditionDTO cond);
 
     /**
      * 政策效益---政策效益分析---投资地区top5

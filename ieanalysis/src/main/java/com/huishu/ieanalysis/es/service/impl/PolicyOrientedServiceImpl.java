@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
  * @author wangjianchun
  */
 @Service
-public class PolicyOrientedServiceImpl extends AbstractService implements
-        PolicyOrientedService {
+public class PolicyOrientedServiceImpl extends AbstractService implements PolicyOrientedService {
 
 	@Override
 	public JSONObject searchPolicyTextInfo(ConditionDTO cond) {

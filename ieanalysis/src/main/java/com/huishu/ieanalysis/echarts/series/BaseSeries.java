@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by yuwei on 2016/12/26
  */
-public abstract class Serie<T> {
+public abstract class BaseSeries<T> {
 
     private String type;
 
@@ -16,7 +16,7 @@ public abstract class Serie<T> {
 
     private List<T> data;
 
-    public Serie(String type) {
+    public BaseSeries(String type) {
         this.type = type;
     }
 
@@ -24,7 +24,7 @@ public abstract class Serie<T> {
         return stack;
     }
 
-    public Serie<T> setStack(String stack) {
+    public BaseSeries<T> setStack(String stack) {
         this.stack = stack;
         return this;
     }
@@ -37,12 +37,12 @@ public abstract class Serie<T> {
         return data;
     }
 
-    public Serie<T> setData(List<T> data) {
+    public BaseSeries<T> setData(List<T> data) {
         this.data = data;
         return this;
     }
 
-    public Serie<T> addData(T data) {
+    public BaseSeries<T> addData(T data) {
         if (this.data == null) {
             this.data = new ArrayList<>();
         }
@@ -54,7 +54,7 @@ public abstract class Serie<T> {
         return name;
     }
 
-    public Serie<T> setName(String name) {
+    public BaseSeries<T> setName(String name) {
         this.name = name;
         return this;
     }

@@ -28,8 +28,7 @@ import java.util.List;
  * @author wangjianchun
  */
 @Service
-public class PolicyHotTopicServiceImpl extends AbstractService implements
-        PolicyHotTopicService {
+public class PolicyHotTopicServiceImpl extends AbstractService implements PolicyHotTopicService {
 
     @Autowired
     private DgapDataRepository dgapDataRepository;
@@ -43,37 +42,40 @@ public class PolicyHotTopicServiceImpl extends AbstractService implements
         List<Order> orders = new ArrayList<Order>();
         orders.add(new Order(Direction.DESC, "time"));
         orders.add(new Order(Direction.DESC, "hitNum"));
-        Pageable page = new PageRequest(cond.getPageNumber() - 1,
-                cond.getPageSize(), new Sort(orders));
-        BoolQueryBuilder builders = getBuilders(cond);
-        Page<DgapData> search = dgapDataRepository.search(builders, page);
-        return search;
+        Pageable pageable = new PageRequest(cond.getPageNumber() - 1, cond.getPageSize(), new Sort(orders));
+        BoolQueryBuilder queryBuilder = getBuilders(cond);
+
+        logger.info(queryBuilder.toString());
+
+        return dgapDataRepository.search(queryBuilder, pageable);
     }
 
     @Override
     public List<String> searchProvince(ConditionDTO cond) {
-        BoolQueryBuilder builders = getBuilders(cond);
-        logger.info(builders.toString());
-        TermsBuilder agg = AggregationBuilders.terms("province")
-                .field("province").size(34);
+        List<String> result = new ArrayList<>(34);
 
-        NativeSearchQuery query = getSearchQueryBuilder().withQuery(builders)
-                .addAggregation(agg).build();
-        List<String> list = new ArrayList<String>();
+        BoolQueryBuilder queryBuilder = getBuilders(cond);
+
+        logger.info(queryBuilder.toString());
+
+        TermsBuilder agg = AggregationBuilders.terms("province").field("province").size(34);
+        NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(agg).build();
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("province");
             List<Bucket> buckets = terms.getBuckets();
-            if (buckets != null && buckets.size() > 0) {
-                for (Bucket bucket : buckets) {
-                    if (StringUtils.isNotEmpty(bucket.getKeyAsString())) {
-                        if (!list.contains(bucket.getKeyAsString().trim())) {
-                            list.add(bucket.getKeyAsString().trim());
-                        }
+            if (buckets == null || buckets.size() < 1) {
+                return null;
+            }
+            for (Bucket bucket : buckets) {
+                if (StringUtils.isNotEmpty(bucket.getKeyAsString())) {
+                    if (!result.contains(bucket.getKeyAsString().trim())) {
+                        result.add(bucket.getKeyAsString().trim());
                     }
                 }
             }
             return null;
         });
-        return list;
+
+        return result;
     }
 }

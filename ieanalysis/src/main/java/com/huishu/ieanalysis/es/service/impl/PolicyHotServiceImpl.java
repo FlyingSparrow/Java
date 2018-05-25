@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
  * @author wangjianchun
  */
 @Service
-public class PolicyHotServiceImpl extends AbstractService implements
-        PolicyHotService {
+public class PolicyHotServiceImpl extends AbstractService implements PolicyHotService {
 
 	@Override
 	public JSONObject searchPolicyHotAreaFocusMapAnalysis(

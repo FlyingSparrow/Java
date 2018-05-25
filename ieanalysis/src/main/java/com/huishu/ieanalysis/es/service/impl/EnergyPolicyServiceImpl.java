@@ -5,14 +5,14 @@ import com.huishu.ieanalysis.constants.SysConst;
 import com.huishu.ieanalysis.dto.ConditionDTO;
 import com.huishu.ieanalysis.echarts.series.Bar;
 import com.huishu.ieanalysis.echarts.series.Line;
-import com.huishu.ieanalysis.echarts.series.Serie;
+import com.huishu.ieanalysis.echarts.series.BaseSeries;
 import com.huishu.ieanalysis.echarts.vo.DataLongVo;
 import com.huishu.ieanalysis.echarts.vo.DataVo;
 import com.huishu.ieanalysis.echarts.vo.IndicatorVo;
 import com.huishu.ieanalysis.es.service.AbstractService;
 import com.huishu.ieanalysis.es.service.EnergyPolicyService;
 import com.huishu.ieanalysis.utils.NumberUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -160,7 +160,7 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         if (ArrayUtils.isEmpty(valueArray)) {
             return null;
         } else {
-            List<Serie<Object>> series = new ArrayList<Serie<Object>>();
+            List<BaseSeries<Object>> series = new ArrayList<BaseSeries<Object>>();
             series.add(new Bar<Object>().setData(Arrays.asList(valueArray)));
             result.put("name", nameList);
             result.put("series", series);
@@ -242,7 +242,7 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
     public JSONObject searchRegistrationsContrast(ConditionDTO cond) {
         JSONObject result = new JSONObject();
 
-        List<Serie<Integer>> series = new ArrayList<Serie<Integer>>();
+        List<BaseSeries<Integer>> series = new ArrayList<BaseSeries<Integer>>();
         List<Integer> monthAmountList = NumberUtils.generateIntegerData(12, 300000);
         series.add(new Bar<Integer>().setData(monthAmountList));
         result.put("series", series);
@@ -267,8 +267,8 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
                         (monthAmount - previousMonthAmount) * 100 / previousMonthAmount));
             }
         }
-        List<Serie<Object>> series = new ArrayList<Serie<Object>>();
-        series.add(new Line<Object>().setData(Arrays.asList(rateArray)));
+        List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
+        series.add(new Line<Double>().setData(Arrays.asList(rateArray)));
         result.put("name", SysConst.X_NAME_MONTH);
         result.put("series", series);
 
@@ -299,7 +299,7 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
             ConditionDTO cond) {
         JSONObject result = new JSONObject();
 
-        List<Serie<Double>> series = new ArrayList<Serie<Double>>();
+        List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         List<Double> amountList = NumberUtils.generateDoubleData(4, 1000000);
         series.add(new Bar<Double>().setData(amountList));
         result.put("series", series);

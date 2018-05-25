@@ -3,7 +3,7 @@ package com.huishu.ieanalysis.echarts.series;
 /**
  * Created by yuwei on 2016/12/26
  */
-public class Bar<T> extends Serie<T> {
+public class Bar<T> extends BaseSeries<T> {
 
     private String barGap;
 

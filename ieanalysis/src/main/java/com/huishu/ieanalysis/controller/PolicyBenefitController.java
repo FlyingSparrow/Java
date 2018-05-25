@@ -54,7 +54,7 @@ public class PolicyBenefitController extends BaseController {
     @RequestMapping(value = "/searchPolicyBenefItenterpriseInvestmentTopFive.json", method = RequestMethod.POST)
     public AjaxResult searchPolicyBenefItenterpriseInvestmentTopFive(ConditionDTO cond) {
         cond.setDataType(SysConst.DATATYPE_INVESTMENT);
-        JSONObject map = policyBenefitService.searchPolicyBenefItenterpriseInvestmentTopFive(cond);
+        JSONObject map = policyBenefitService.searchPolicyBenefitEnterpriseInvestmentTopFive(cond);
         return success(map);
     }
 
