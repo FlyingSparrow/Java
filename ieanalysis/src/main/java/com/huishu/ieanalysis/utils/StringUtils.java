@@ -1,5 +1,7 @@
 package com.huishu.ieanalysis.utils;
 
+import com.alibaba.fastjson.JSONArray;
+
 import java.util.UUID;
 
 /**
@@ -30,6 +32,25 @@ public class StringUtils {
 
     public static String getUUID() {
         return UUID.randomUUID().toString();
+    }
+
+    /**
+     * 根据给定正则表达式的匹配拆分此字符串
+     * @param string 要拆分的额字符串
+     * @param regex 正则表达式
+     * @return
+     */
+    public static JSONArray split(String string, String regex){
+        JSONArray result = new JSONArray();
+        if(org.apache.commons.lang3.StringUtils.isNotEmpty(string)){
+            String[] array = string.split(regex);
+            for(String item : array){
+                if(org.apache.commons.lang3.StringUtils.isNotEmpty(item)){
+                    result.add(item);
+                }
+            }
+        }
+        return result;
     }
 
 }
