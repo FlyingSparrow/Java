@@ -1,5 +1,6 @@
 package com.huishu.ieanalysis.utils;
 
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 /**
@@ -16,6 +17,7 @@ public class StringUtils {
 
     /**
      * 判断当前系统是否是windows系统
+     *
      * @return
      */
     public static boolean isWindows() {
@@ -29,6 +31,14 @@ public class StringUtils {
 
     public static String getUUID() {
         return UUID.randomUUID().toString();
+    }
+
+    public static Double formatDouble(Double num) {
+        if (num == null) {
+            return null;
+        }
+        DecimalFormat df = new DecimalFormat("#.00");
+        return Double.valueOf(df.format(num));
     }
 
 }
