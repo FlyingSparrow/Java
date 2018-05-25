@@ -255,15 +255,16 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
     public JSONObject searchRegistrationsRateContrast(ConditionDTO cond) {
         JSONObject result = new JSONObject();
 
-        List<Double> monthAmountList = NumberUtils.generateDoubleData(12, 300000);
-        Double[] rateArray = new Double[12];
-        for (int i = 0; i < 12; i++) {
+        int monthCount = 12;
+        List<Double> monthAmountList = NumberUtils.generateDoubleData(monthCount, 300000);
+        Double[] rateArray = new Double[monthCount];
+        for (int i = 0; i < monthCount; i++) {
             if (i == 0) {
                 rateArray[i] = 0D;
             } else {
                 Double monthAmount = monthAmountList.get(i);
                 Double previousMonthAmount = monthAmountList.get(i - 1);
-                rateArray[i] = NumberUtils.formatDouble(Math.abs(
+                rateArray[i] = Math.abs(NumberUtils.formatDouble(
                         (monthAmount - previousMonthAmount) * 100 / previousMonthAmount));
             }
         }
