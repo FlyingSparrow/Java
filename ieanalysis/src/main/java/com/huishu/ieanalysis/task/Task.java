@@ -65,11 +65,7 @@ public class Task {
     private void handleFile(String directory){
         if (StringUtils.isNotEmpty(directory)) {
             File file = new File(directory);
-            if (!file.exists()) {
-                file.setReadable(true, false);
-                file.setWritable(true, false);
-                file.mkdirs();
-            }
+            initFile(file);
             logger.error("目录[{}]开始任务...", directory);
             analysisFile(file);
             logger.error("目录[{}]结束任务...", directory);
@@ -112,42 +108,43 @@ public class Task {
     private void readAndDeleteFile(File tempFile, List<DgapData> list) {
         String fileContent = FileUtils.readFile(tempFile.getAbsolutePath());
         DgapData dgapData = JSONObject.parseObject(fileContent, DgapData.class);
-        if (dgapData != null) {
-            dgapData.setId(null);
-            if (dgapData.getDataType() <= 2) {
-                boolean existMark = false;
-                for (DgapData dgap : list) {
-                    if (isExists(dgapData, dgap)) {
-                        existMark = true;
-                        break;
-                    }
+        if (dgapData == null) {
+            logger.info("空文件" + tempFile.getAbsolutePath());
+            return;
+        }
+
+        dgapData.setId(null);
+        if (dgapData.getDataType() <= 2) {
+            boolean existMark = false;
+            for (DgapData dgap : list) {
+                if (isExists(dgapData, dgap)) {
+                    existMark = true;
+                    break;
                 }
-                if (!existMark) {
-                    if (isExistsInES(dgapData.getPolicyTitle(), dgapData.getPolicyUrl())) {
-                        tempFile.delete();
-                    } else {
-                        String content = dgapData.getContent();
-                        if (StringUtils.isNotEmpty(content)) {
-                            if(content.length() > 300){
-                                content = content.substring(0, 300);
-                            }
-                            dgapData.setContent(content);
-                        }
-                        list.add(dgapData);
-                        dgapDataRepository.save(dgapData);
-                        saveToKingbase(dgapData);
-                        copyAndDeleteFile(tempFile);
-                    }
-                } else {
+            }
+            if (!existMark) {
+                if (isExistsInES(dgapData.getPolicyTitle(), dgapData.getPolicyUrl())) {
                     tempFile.delete();
+                } else {
+                    String content = dgapData.getContent();
+                    if (StringUtils.isNotEmpty(content)) {
+                        if(content.length() > 300){
+                            content = content.substring(0, 300);
+                        }
+                        dgapData.setContent(content);
+                    }
+                    list.add(dgapData);
+                    dgapDataRepository.save(dgapData);
+                    saveToKingbase(dgapData);
+                    copyAndDeleteFile(tempFile);
                 }
             } else {
-                dgapDataRepository.save(dgapData);
-                saveToKingbase(dgapData);
-                copyAndDeleteFile(tempFile);
+                tempFile.delete();
             }
         } else {
-            logger.info("空文件" + tempFile.getAbsolutePath());
+            dgapDataRepository.save(dgapData);
+            saveToKingbase(dgapData);
+            copyAndDeleteFile(tempFile);
         }
     }
 
@@ -197,15 +194,19 @@ public class Task {
     private void copyAndDeleteFile(File tempFile) {
         String targetPath = customConfig.getTargetPath() + File.separator + DateUtils.getDateFilePath(new Date());
         File targetFile = new File(targetPath);
-        if (!targetFile.exists()) {
-            targetFile.setWritable(true, false);
-            targetFile.setReadable(true, false);
-            targetFile.mkdirs();
-        }
+        initFile(targetFile);
         String sourceFilePath = tempFile.getAbsolutePath();
         String targetFilePath = targetPath + File.separator + tempFile.getName();
         if (FileUtils.copeFile(sourceFilePath, targetFilePath)) {
             tempFile.delete();
+        }
+    }
+
+    private void initFile(File file){
+        if (!file.exists()) {
+            file.setWritable(true, false);
+            file.setReadable(true, false);
+            file.mkdirs();
         }
     }
 
