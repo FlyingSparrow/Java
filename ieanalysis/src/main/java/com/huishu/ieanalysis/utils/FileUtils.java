@@ -20,16 +20,12 @@ public class FileUtils {
         StringBuilder content = new StringBuilder();
         try {
             File file = new File(filePath);
-            if (!file.exists()) {
-                file.setWritable(true, false);
-                file.setReadable(true, false);
-                file.createNewFile();
-            }
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(file), SysConst.ENCODING_UTF_8));
-
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                content.append(line.trim());
+            if (file.exists()) {
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(file), SysConst.ENCODING_UTF_8));
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    content.append(line.trim());
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
