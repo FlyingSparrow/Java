@@ -24,7 +24,6 @@ public abstract class AbstractService {
     @Autowired
     protected ElasticsearchTemplate template;
 
-    @SuppressWarnings("deprecation")
     protected BoolQueryBuilder getBuilders(ConditionDTO cond) {
         BoolQueryBuilder bool = new BoolQueryBuilder();
         if (StringUtils.isNotEmpty(cond.getProvince())) {

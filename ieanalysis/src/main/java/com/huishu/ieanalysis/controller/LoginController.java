@@ -5,12 +5,11 @@ import com.huishu.ieanalysis.constants.SysConst;
 import com.huishu.ieanalysis.dto.ConditionDTO;
 import com.huishu.ieanalysis.es.entity.DgapData;
 import com.huishu.ieanalysis.es.service.PolicyHotTopicService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +27,12 @@ import java.util.Set;
 @RequestMapping
 public class LoginController extends BaseController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     private PolicyHotTopicService policyHotTopicService;
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String login(Map<String, Object> model) {
-        ConditionDTO cond = new ConditionDTO();
-        Page<DgapData> page = policyHotTopicService.searchPolicyHotTopicInfo(cond);
-        model.put("datas", page.getContent());
-        model.put("modelId", 0);
-        model.put("menuId", 0);
-        model.put("floatName", "热点双创政策");
-        return "energypolicy/investmentAnalysis";
+        return defaultRequest(model);
     }
 
     /**
@@ -52,8 +44,12 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月24日
      */
-    @RequestMapping("/energypolicy/investmentAnalysis.json")
+    @RequestMapping(value = "/energypolicy/investmentAnalysis.json", method = RequestMethod.GET)
     public String investmentAnalysis(Map<String, Object> model) {
+        return defaultRequest(model);
+    }
+
+    private String defaultRequest(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
         Page<DgapData> page = policyHotTopicService.searchPolicyHotTopicInfo(cond);
@@ -73,7 +69,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月24日
      */
-    @RequestMapping("/energypolicy/registerAmountAnalysis.json")
+    @RequestMapping(value = "/energypolicy/registerAmountAnalysis.json", method = RequestMethod.GET)
     public String registerAmountAnalysis(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
         ;
@@ -94,7 +90,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月24日
      */
-    @RequestMapping("/energypolicy/registerRateAnalysis.json")
+    @RequestMapping(value = "/energypolicy/registerRateAnalysis.json", method = RequestMethod.GET)
     public String registerRateAnalysis(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -115,7 +111,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月24日
      */
-    @RequestMapping("/policyindex/capitalIndexAnalysis.json")
+    @RequestMapping(value = "/policyindex/capitalIndexAnalysis.json", method = RequestMethod.GET)
     public String capitalIndexAnalysis(Map<String, Object> model) {
         model.put("modelId", 1);
         model.put("menuId", 0);
@@ -135,7 +131,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月24日
      */
-    @RequestMapping("/policyindex/talentIndexAnalysis.json")
+    @RequestMapping(value = "/policyindex/talentIndexAnalysis.json", method = RequestMethod.GET)
     public String talentIndexAnalysis(Map<String, Object> model) {
         model.put("modelId", 1);
         model.put("menuId", 1);
@@ -155,7 +151,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月24日
      */
-    @RequestMapping("/policyindex/healthDegreeAnalysis.json")
+    @RequestMapping(value = "/policyindex/healthDegreeAnalysis.json", method = RequestMethod.GET)
     public String healthDegreeAnalysis(Map<String, Object> model) {
         model.put("modelId", 1);
         model.put("menuId", 2);
@@ -171,7 +167,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月24日
      */
-    @RequestMapping("/policyindex/managementEnvironmentAnalysis.json")
+    @RequestMapping(value = "/policyindex/managementEnvironmentAnalysis.json", method = RequestMethod.GET)
     public String managementEnvironmentAnalysis(Map<String, Object> model) {
         model.put("modelId", 1);
         model.put("menuId", 3);
@@ -195,7 +191,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月24日
      */
-    @RequestMapping("/policyindex/livenessAnalysis.json")
+    @RequestMapping(value = "/policyindex/livenessAnalysis.json", method = RequestMethod.GET)
     public String livenessAnalysis(Map<String, Object> model) {
         model.put("modelId", 1);
         model.put("menuId", 4);
@@ -211,7 +207,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/policyText.json")
+    @RequestMapping(value = "/policyoriented/policyText.json", method = RequestMethod.GET)
     public String policyText(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -232,7 +228,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/policyImage.json")
+    @RequestMapping(value = "/policyoriented/policyImage.json", method = RequestMethod.GET)
     public String policyImage(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -253,7 +249,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/policyVideo.json")
+    @RequestMapping(value = "/policyoriented/policyVideo.json", method = RequestMethod.GET)
     public String policyVideo(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -274,7 +270,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/policyAffect.json")
+    @RequestMapping(value = "/policyoriented/policyAffect.json", method = RequestMethod.GET)
     public String policyAffect(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -295,7 +291,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/reportContent.json")
+    @RequestMapping(value = "/policyoriented/reportContent.json", method = RequestMethod.GET)
     public String reportContent(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -316,7 +312,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/articleTrend.json")
+    @RequestMapping(value = "/policyoriented/articleTrend.json", method = RequestMethod.GET)
     public String articleTrend(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -337,7 +333,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/mediaParticipationAnalysis.json")
+    @RequestMapping(value = "/policyoriented/mediaParticipationAnalysis.json", method = RequestMethod.GET)
     public String mediaParticipationAnalysis(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -358,7 +354,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/specialEventShaft.json")
+    @RequestMapping(value = "/policyoriented/specialEventShaft.json", method = RequestMethod.GET)
     public String specialEventShaft(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -379,7 +375,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/hotKeyword.json")
+    @RequestMapping(value = "/policyoriented/hotKeyword.json", method = RequestMethod.GET)
     public String hotKeyword(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
 
@@ -400,7 +396,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月27日
      */
-    @RequestMapping("/policyoriented/hotEvent.json")
+    @RequestMapping(value = "/policyoriented/hotEvent.json", method = RequestMethod.GET)
     public String hotEvent(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
         Page<DgapData> page = policyHotTopicService.searchPolicyHotTopicInfo(cond);
@@ -421,7 +417,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月29日
      */
-    @RequestMapping("/policyhot/areaHot.json")
+    @RequestMapping(value = "/policyhot/areaHot.json", method = RequestMethod.GET)
     public String areaHot(Map<String, Object> model) {
         model.put("modelId", 3);
         model.put("menuId", 0);
@@ -438,7 +434,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月29日
      */
-    @RequestMapping("/policyhot/focusChannel.json")
+    @RequestMapping(value = "/policyhot/focusChannel.json", method = RequestMethod.GET)
     public String focusChannel(Map<String, Object> model) {
         model.put("modelId", 3);
         model.put("menuId", 1);
@@ -460,7 +456,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月29日
      */
-    @RequestMapping("/policyhot/mediaParticipation.json")
+    @RequestMapping(value = "/policyhot/mediaParticipation.json", method = RequestMethod.GET)
     public String mediaParticipation(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
         cond.setVectorType("1");
@@ -486,7 +482,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月29日
      */
-    @RequestMapping("/policyhot/socialParticipation.json")
+    @RequestMapping(value = "/policyhot/socialParticipation.json", method = RequestMethod.GET)
     public String socialParticipation(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
         cond.setVectorType("2");
@@ -513,7 +509,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月29日
      */
-    @RequestMapping("/policyhot/industryParticipation.json")
+    @RequestMapping(value = "/policyhot/industryParticipation.json", method = RequestMethod.GET)
     public String industryParticipation(Map<String, Object> model) {
         ConditionDTO cond = new ConditionDTO();
         cond.setVectorType("3");
@@ -539,7 +535,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月29日
      */
-    @RequestMapping("/policybenefit/policyBenefit.json")
+    @RequestMapping(value = "/policybenefit/policyBenefit.json", method = RequestMethod.GET)
     public String policyBenefit(Map<String, Object> model) {
         model.put("modelId", 4);
         model.put("menuId", 0);
@@ -556,7 +552,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月29日
      */
-    @RequestMapping("/policybenefit/economicBenefit.json")
+    @RequestMapping(value = "/policybenefit/economicBenefit.json", method = RequestMethod.GET)
     public String economicBenefit(Map<String, Object> model) {
         model.put("modelId", 4);
         model.put("menuId", 1);
@@ -573,7 +569,7 @@ public class LoginController extends BaseController {
      * @author xiaobo
      * @date 2017年3月29日
      */
-    @RequestMapping("/policybenefit/publicBenefit.json")
+    @RequestMapping(value = "/policybenefit/publicBenefit.json", method = RequestMethod.GET)
     public String publicBenefit(Map<String, Object> model) {
         model.put("modelId", 4);
         model.put("menuId", 2);

@@ -18,8 +18,8 @@ public class KingBaseDgapServiceImpl implements KingBaseDgapService {
     private KingBaseDgapRepository kingBaseDgapRepository;
 
     @Override
-    public synchronized void saveList(List<KingBaseDgap> dgap) {
-        kingBaseDgapRepository.save(dgap);
+    public synchronized void saveList(List<KingBaseDgap> list) {
+        kingBaseDgapRepository.save(list);
     }
 
     @Override

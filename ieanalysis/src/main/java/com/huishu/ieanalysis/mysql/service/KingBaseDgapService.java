@@ -10,7 +10,15 @@ import java.util.List;
  */
 public interface KingBaseDgapService {
 
-    void saveList(List<KingBaseDgap> news);
+    /**
+     * 批量保存
+     * @param list
+     */
+    void saveList(List<KingBaseDgap> list);
 
+    /**
+     * 保存
+     * @param news
+     */
     void save(KingBaseDgap news);
 }

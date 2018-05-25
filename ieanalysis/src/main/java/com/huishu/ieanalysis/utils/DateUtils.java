@@ -181,4 +181,8 @@ public class DateUtils {
 		DateTime dateTime = new DateTime();
 		return dateTime.minusDays(1).millisOfDay().withMaximumValue().toDate();
 	}
+
+	public static int getCurrentYear(){
+		return new DateTime().getYear();
+	}
 }
