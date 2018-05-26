@@ -557,7 +557,7 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
 
             List<String> namesList = new ArrayList<String>();
             for (String name : nameList) {
-                namesList.add(SysConst.SOCIAL_CHANNEL[Integer.valueOf(name) - 1]);
+                namesList.add(SysConst.SOCIAL_CHANNEL[Integer.parseInt(name) - 1]);
             }
             result.put("name", namesList);
 
@@ -595,14 +595,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
             } else {
                 double rateCount = 0d;
                 if (positiveValue != null) {
-                    Double formattedPositiveValue = NumberUtils.formatDouble((double) (positiveValue * 10000 / count) / 100);
+                    Double formattedPositiveValue = NumberUtils.formatDouble((positiveValue * 10000D / count) / 100);
                     rateCount += formattedPositiveValue;
                     positiveRateList.add(formattedPositiveValue);
                 } else {
                     positiveRateList.add(0d);
                 }
                 if (neutralValue != null) {
-                    Double formattedNeutralValue = NumberUtils.formatDouble((double) (neutralValue * 10000 / count) / 100);
+                    Double formattedNeutralValue = NumberUtils.formatDouble((neutralValue * 10000D / count) / 100);
                     rateCount += formattedNeutralValue;
                     neutralRateList.add(formattedNeutralValue);
                 } else {

@@ -66,7 +66,8 @@ public class PolicyBenefitServiceImpl extends AbstractService implements PolicyB
             List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
             series.add(new Bar<Double>().setData(Arrays.asList(valueArray)));
             List<String> nameList = new ArrayList<String>();
-            for (int i = 1; i <= 12; i++) {
+            int monthCount = 12;
+            for (int i = 1; i <= monthCount; i++) {
                 nameList.add(i + "月");
             }
             result.put("name", nameList);

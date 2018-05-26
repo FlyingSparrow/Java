@@ -498,9 +498,6 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         } else {
             JSONObject result = new JSONObject();
 
-            List<Object[]> valList = new ArrayList<Object[]>();
-            valList.add(reportArray);
-            valList.add(focusArray);
             List<String> nameList = new ArrayList<String>();
             nameList.add("报道数");
             nameList.add("关注度");

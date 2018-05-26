@@ -52,10 +52,11 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         } else {
             Double[] amountOldArray = getPreviousYearAmountData(cond, monthAgg);
 
+            int monthCount = 12;
             Double max = 0D;
-            Double[] rateArray = new Double[12];
-            Double[] resultArray = new Double[12];
-            for (int i = 0; i < 12; i++) {
+            Double[] rateArray = new Double[monthCount];
+            Double[] resultArray = new Double[monthCount];
+            for (int i = 0; i < monthCount; i++) {
                 Double amount = amountArray[i];
                 Double previousYearAmount = amountOldArray[i];
                 if (previousYearAmount != null && previousYearAmount != 0

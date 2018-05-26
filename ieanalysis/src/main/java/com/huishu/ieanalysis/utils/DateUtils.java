@@ -130,10 +130,11 @@ public class DateUtils {
 		List<String> list = new ArrayList<String>();
 		DateTime dateTime = new DateTime(date);
 		int hour = dateTime.getHourOfDay() + 1;
-		for (int i = 1; i <= 24; i++) {
+		int maxHour = 24;
+		for (int i = 1; i <= maxHour; i++) {
 			int temp = hour + i;
-			if (temp > 24) {
-				temp = temp - 24;
+			if (temp > maxHour) {
+				temp = temp - maxHour;
 			}
 			list.add(temp + "H");
 		}
@@ -143,7 +144,8 @@ public class DateUtils {
 	public static List<Integer> getDayList(Date date) {
 		List<Integer> list = new ArrayList<Integer>();
 		DateTime dateTime;
-		for (int i = 9; i >= 0; i--) {
+		int days = 9;
+		for (int i = days; i >= 0; i--) {
 			dateTime = new DateTime(date);
 			list.add(dateTime.minusDays(i).getDayOfMonth());
 		}
@@ -153,7 +155,8 @@ public class DateUtils {
 	public static List<String> getLegendDayList(Date date) {
 		List<String> list = new ArrayList<String>();
 		DateTime dateTime;
-		for (int i = 6; i >= 0; i--) {
+		int days = 6;
+		for (int i = days; i >= 0; i--) {
 			dateTime = new DateTime(date);
 			dateTime = dateTime.minusDays(i);
 			list.add(dateTime.getMonthOfYear() + "月" + dateTime.getDayOfMonth() + "日");
@@ -164,7 +167,8 @@ public class DateUtils {
 	public static List<String> getWeekDayList(Date date) {
 		List<String> list = new ArrayList<String>();
 		DateTime dateTime;
-		for (int i = 7; i >= 1; i--) {
+		int days = 7;
+		for (int i = days; i >= 1; i--) {
 			dateTime = new DateTime(date);
 			dateTime = dateTime.minusDays(i);
 			list.add(getFormatDate(dateTime.toDate()));
