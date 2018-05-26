@@ -26,98 +26,163 @@ public class KingBaseDgap implements Serializable {
     @Column(name = "TIME")
     private String time;
 
+    /**
+     * 数据类型  1,政策; 2,招聘; 3,投资; 4,工商
+     */
     @Column(name = "DATA_TYPE")
-    private Long dataType;//数据类型  1,政策; 2,招聘; 3,投资; 4,工商
-
+    private Long dataType;
+    /**
+     * 省份
+     */
     @Column(name = "PROVINCE")
-    private String province;//省份
-
+    private String province;
+    /**
+     * 社会渠道(1,网络媒体,2,论坛,3,社交)
+     */
     @Column(name = "SOCIAL_CHANNEL")
-    private String socialChannel;//社会渠道(1,网络媒体,2,论坛,3,社交)
-
+    private String socialChannel;
+    /**
+     * 0,不是;1,是；
+     */
     @Column(name = "HOT_EVENT_MARK")
-    private Long hotEventMark;//0,不是;1,是；
-
+    private Long hotEventMark;
+    /**
+     * 0,负面;1,中性;2,正面
+     */
     @Column(name = "EMOTION_MARK")
-    private Long emotionMark;//0,负面;1,中性;2,正面
-
+    private Long emotionMark;
+    /**
+     * 点击量/阅读量
+     */
     @Column(name = "READ_NUM")
-    private Long readNum;//点击量/阅读量
-
+    private Long readNum;
+    /**
+     * 行业
+     */
     @Column(name = "INDUSTRY")
-    private String industry;//行业
+    private String industry;
 
     //投资数据
+    /**
+     * 公司名称
+     */
     @Column(name = "COMPANY_NAME")
-    private String companyName;//公司名称
-
+    private String companyName;
+    /**
+     * 融资金额
+     */
     @Column(name = "FINANCING_AMOUNT")
-    private Double financingAmount;//融资金额
-
+    private Double financingAmount;
+    /**
+     * 并购金额
+     */
     @Column(name = "MERGERS_AMOUNT")
-    private Double mergersAmount;//并购金额
-
+    private Double mergersAmount;
+    /**
+     * 退出金额
+     */
     @Column(name = "QUIT_AMOUNT")
-    private Double quitAmount;//退出金额
+    private Double quitAmount;
 
     //招聘
+    /**
+     * 岗位数
+     */
     @Column(name = "JOBS_NUMBER")
-    private Long jobsNumber;//岗位数
-
+    private Long jobsNumber;
+    /**
+     * 岗位名称
+     */
     @Column(name = "JOBS_NAME")
-    private String jobsName;//岗位名称
-
+    private String jobsName;
+    /**
+     * 岗位薪酬
+     */
     @Column(name = "JOBS_REMUNERATION")
-    private Long jobsRemuneration;//岗位薪酬
-
+    private Long jobsRemuneration;
+    /**
+     * 双高人才   0不是   1 是
+     */
     @Column(name = "JOBS_TALENT_MARK")
-    private Long jobsTalentMark;//双高人才   0不是   1 是
+    private Long jobsTalentMark;
 
     //经营环境
+    /**
+     * 发布类型   1中央,2地方,3诉讼, 4新闻,5综合 ; (固定)6论坛,7招聘 ,8微信,9投资,10工商,11视频 ,12其它,13,投资并购，14投资退出
+     */
     @Column(name = "PUBLISH_TYPE")
-    private Long publishType;//发布类型   1中央,2地方,3诉讼, 4新闻,5综合 ; (固定)6论坛,7招聘 ,8微信,9投资,10工商,11视频 ,12其它,13,投资并购，14投资退出
-
+    private Long publishType;
+    /**
+     * 发布部门
+     */
     @Column(name = "PUBLISH_DEPARTMENT")
-    private String publishDepartment;//发布部门
-
+    private String publishDepartment;
+    /**
+     * 报道量
+     */
     @Column(name = "REPORT_NUM")
-    private Long reportNum;//报道量
-
+    private Long reportNum;
+    /**
+     * 关注量
+     */
     @Column(name = "HIT_NUM")
-    private Long hitNum;//关注量
+    private Long hitNum;
 
     //政策导向
+    /**
+     * 政策标题
+     */
     @Column(name = "POLICY_TITLE")
-    private String policyTitle;//政策标题
-
+    private String policyTitle;
+    /**
+     * 发布机构
+     */
     @Column(name = "POLICY_RELEASE_MECHANISM")
-    private String policyReleaseMechanism;//发布机构
-
+    private String policyReleaseMechanism;
+    /**
+     * 发文字号
+     */
     @Column(name = "POLICY_POST_SHOP_NAME")
-    private String policyPostShopName;//发文字号
-
+    private String policyPostShopName;
+    /**
+     * 发布人
+     */
     @Column(name = "policy_publish_author")
-    private String policyPublishAuthor;//发布人
-
+    private String policyPublishAuthor;
+    /**
+     * 0 文章；1，image；2video
+     */
     @Column(name = "POLICY_INFO_TYPE")
-    private Long policyInfoType; //0 文章；1，image；2video
-
+    private Long policyInfoType;
+    /**
+     * imageurl
+     */
     @Column(name = "POLICY_IMAGE_URL")
-    private String policyImageUrl;//imageurl
+    private String policyImageUrl;
 
     //@Lob
+    /**
+     * url
+     */
     @Column(name = "POLICY_URL")
-    private String policyUrl;//url
-
+    private String policyUrl;
+    /**
+     * 网站
+     */
     @Column(name = "SITE")
-    private String site;//网站
+    private String site;
 
     //@Lob
+    /**
+     * 内容
+     */
     @Column(name = "CONTENT")
-    private String content;//网站
-
+    private String content;
+    /**
+     * 1,媒体;2,社交;
+     */
     @Column(name = "REPORT_TYPE")
-    private Long reportType;//1,媒体;2,社交;
+    private Long reportType;
 
     public String getId() {
         return id;

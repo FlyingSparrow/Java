@@ -10,6 +10,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author wangjianchun
  */
 public interface InvestmentDataSmtRepository extends JpaRepository<InvestmentDataSmt, String> {
-
+    /**
+     * 分页查询
+     *
+     * @param spec
+     * @param pageable
+     * @return
+     */
     Page<InvestmentDataSmt> findAll(Specification<InvestmentDataSmt> spec, Pageable pageable);
 }

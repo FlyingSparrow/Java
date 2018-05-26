@@ -9,8 +9,19 @@ import java.util.List;
  * @author wangjianchun
  */
 public interface WechatService {
-
+    /**
+     * 分页查询
+     *
+     * @param news
+     * @param pageable
+     * @return
+     */
     List<Wechat> findOneHundred(Wechat news, Pageable pageable);
 
+    /**
+     * 批量保存
+     *
+     * @param news
+     */
     void save(List<Wechat> news);
 }

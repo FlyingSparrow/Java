@@ -10,6 +10,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author wangjianchun
  */
 public interface MergerDataSmtRepository extends JpaRepository<MergerDataSmt, String> {
-
+    /**
+     * 分页查询
+     *
+     * @param spec
+     * @param pageable
+     * @return
+     */
     Page<MergerDataSmt> findAll(Specification<MergerDataSmt> spec, Pageable pageable);
 }

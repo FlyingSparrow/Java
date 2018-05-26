@@ -15,119 +15,193 @@ import java.io.Serializable;
 public class DgapData implements Serializable {
 
     private static final long serialVersionUID = 8754743269121672297L;
+    /**
+     * 记录的唯一id
+     */
+    private String id;
 
-    private String id;//记录的唯一id
+    /**
+     * 月份
+     */
+    private Long month;
 
+    /**
+     * 年份
+     */
+    private Long year;
 
-    private Long month;//月份
+    /**
+     * 小时
+     */
+    private Long hour;
 
+    /**
+     * 天
+     */
+    private Long day;
 
-    private Long year;//年份
+    /**
+     * 投资时间/发布时间	yyyy-mm-dd HH:mm:ss
+     */
+    private String time;
 
+    /**
+     * 数据类型	 数据类  1,政策; 2,招聘; 3,投资; 4,工商
+     */
+    private Long dataType;
 
-    private Long hour;//小时
+    /**
+     * 省份
+     */
+    private String province;
 
+    /**
+     * 地域
+     */
+    private String area;
 
-    private Long day;//天
+    /**
+     * 社会渠道(1,网络媒体,2,论坛,3,社交，4,外媒)
+     */
+    private String socialChannel;
+    /**
+     * 0,不是;1,是；
+     */
+    private Long hotEventMark;
 
+    /**
+     * 0,负面;1,中性;2,正面
+     */
+    private Long emotionMark;
 
-    private String time;//投资时间/发布时间	yyyy-mm-dd HH:mm:ss
+    /**
+     * 阅读量
+     */
+    private Long readNum;
 
-
-    private Long dataType;//数据类型	 数据类  1,政策; 2,招聘; 3,投资; 4,工商
-
-
-    private String province;//省份
-
-
-    private String area;//地域
-
-
-    private String socialChannel;//社会渠道(1,网络媒体,2,论坛,3,社交，4,外媒)
-
-    private Long hotEventMark;//0,不是;1,是；
-
-
-    private Long emotionMark;//0,负面;1,中性;2,正面
-
-
-    private Long readNum;// 阅读量
-
-
-    private String industry;//行业
+    /**
+     * 行业
+     */
+    private String industry;
 
     //投资数据
+    /**
+     * 公司全称
+     */
+    private String companyName;
 
-    private String companyName;//公司全称
+    /**
+     * 融资金额
+     */
+    private Double financingAmount;
 
+    /**
+     * 并购金额
+     */
+    private Double mergersAmount;
 
-    private Double financingAmount;//融资金额
-
-
-    private Double mergersAmount;//并购金额
-
-
-    private Double quitAmount;//退出金额
+    /**
+     * 退出金额
+     */
+    private Double quitAmount;
 
     //招聘
+    /**
+     * 岗位数
+     */
+    private Long jobsNumber;
 
-    private Long jobsNumber;//岗位数
+    /**
+     * 岗位名称
+     */
+    private String jobsName;
 
+    /**
+     * 岗位薪酬
+     */
+    private Long jobsRemuneration;
 
-    private String jobsName;//岗位名称
-
-
-    private Long jobsRemuneration;//岗位薪酬
-
-
-    private Long jobsTalentMark;//双高人才   0不是   1 是
+    /**
+     * 双高人才   0不是   1 是
+     */
+    private Long jobsTalentMark;
     //经营环境
+    /**
+     * 发布类型    1,中央，2,地方，3,知识产权保护诉讼
+     */
+    private Long publishType;
 
-    private Long publishType;//发布类型    1,中央，2,地方，3,知识产权保护诉讼
+    /**
+     * 发布部门
+     */
+    private String publishDepartment;
 
+    /**
+     * 报道量
+     */
+    private Long reportNum;
 
-    private String publishDepartment;//发布部门
-
-
-    private Long reportNum;//报道量
-
-
-    private Long hitNum;//点击量
+    /**
+     * 点击量
+     */
+    private Long hitNum;
 
     //政策导向
+    /**
+     * 政策标题
+     */
+    private String policyTitle;
 
-    private String policyTitle;//政策标题
+    /**
+     * 发布机构
+     */
+    private String policyReleaseMechanism;
 
+    /**
+     * 发文字号
+     */
+    private String policyPostShopName;
 
-    private String policyReleaseMechanism;//发布机构
+    /**
+     * 发布人
+     */
+    private String policyPublishAuthor;
 
+    /**
+     * 0 文章；1，image；2video
+     */
+    private Long policyInfoType;
 
-    private String policyPostShopName;//发文字号
+    /**
+     * imageurl
+     */
+    private String policyImageUrl;
 
+    /**
+     * url
+     */
+    private String policyUrl;
 
-    private String policyPublishAuthor;//发布人
+    /**
+     * 网站
+     */
+    private String site;
 
-
-    private Long policyInfoType; //0 文章；1，image；2video
-
-
-    private String policyImageUrl;//imageurl
-
-
-    private String policyUrl;//url
-
-
-    private String site;//网站
-
-
-    private String content;//内容
+    /**
+     * 内容
+     */
+    private String content;
 
     //具体报道分析
+    /**
+     * 1,认证用户;2, 普通用户
+     */
+    private Long socialType;
 
-    private Long socialType;// 1,认证用户;2, 普通用户
-
-
-    private Long reportType;//1,媒体;2,社交;
+    /**
+     * 1,媒体;2,社交;
+     */
+    private Long reportType;
 
     public String getId() {
         return id;

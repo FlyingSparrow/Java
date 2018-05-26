@@ -10,6 +10,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author wangjianchun
  */
 public interface QuitDataTzRepository extends JpaRepository<QuitDataTz, String> {
-
+    /**
+     * 分页查询
+     *
+     * @param spec
+     * @param pageable
+     * @return
+     */
     Page<QuitDataTz> findAll(Specification<QuitDataTz> spec, Pageable pageable);
 }

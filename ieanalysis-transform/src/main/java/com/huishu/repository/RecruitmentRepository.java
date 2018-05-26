@@ -10,6 +10,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author wangjianchun
  */
 public interface RecruitmentRepository extends JpaRepository<Recruitment, String> {
-
+    /**
+     * 分页查询
+     *
+     * @param spec
+     * @param pageable
+     * @return
+     */
     Page<Recruitment> findAll(Specification<Recruitment> spec, Pageable pageable);
 }

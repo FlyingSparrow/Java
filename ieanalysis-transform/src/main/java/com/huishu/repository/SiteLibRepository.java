@@ -9,6 +9,11 @@ import java.util.List;
  * @author wangjianchun
  */
 public interface SiteLibRepository extends JpaRepository<SiteLib, Long> {
-
+    /**
+     * 根据名称进行查询
+     *
+     * @param name
+     * @return
+     */
     List<SiteLib> findByName(String name);
 }
