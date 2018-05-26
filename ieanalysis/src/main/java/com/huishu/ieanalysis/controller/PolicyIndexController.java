@@ -45,7 +45,7 @@ public class PolicyIndexController extends BaseController {
     @RequestMapping(value = "/searchFinancingAmountAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchFinancingAmountAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         List<String> publish = new ArrayList<String>();
         publish.add("9");
         cond.setPublishType(publish);
@@ -65,7 +65,7 @@ public class PolicyIndexController extends BaseController {
     @RequestMapping(value = "/searchMergersAmountAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchMergersAmountAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         List<String> publish = new ArrayList<String>();
         publish.add("13");
         cond.setPublishType(publish);
@@ -85,7 +85,7 @@ public class PolicyIndexController extends BaseController {
     @RequestMapping(value = "/searchQuitAmountAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchQuitAmountAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         List<String> publish = new ArrayList<String>();
         publish.add("14");
         cond.setPublishType(publish);
@@ -106,7 +106,7 @@ public class PolicyIndexController extends BaseController {
     @RequestMapping(value = "/searchJobsNumberAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchJobsNumberAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_RECRUITMENT);
+        cond.setDataType(SysConst.DataType.RECRUITMENT.getCode());
         JSONObject map = policyIndexService.searchJobsNumberAnalysis(cond);
         return success(map);
     }
@@ -123,7 +123,7 @@ public class PolicyIndexController extends BaseController {
     @RequestMapping(value = "/searchAvgRemunerationAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchAvgRemunerationAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_RECRUITMENT);
+        cond.setDataType(SysConst.DataType.RECRUITMENT.getCode());
         JSONObject map = policyIndexService.searchAvgRemunerationAnalysis(cond);
         return success(map);
     }
@@ -155,7 +155,7 @@ public class PolicyIndexController extends BaseController {
     @RequestMapping(value = "/searchCombinationTalentRatioAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchCombinationTalentRatioAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_RECRUITMENT);
+        cond.setDataType(SysConst.DataType.RECRUITMENT.getCode());
         JSONObject map = policyIndexService.searchCombinationTalentRatioAnalysis(cond);
         return success(map);
     }
@@ -219,10 +219,10 @@ public class PolicyIndexController extends BaseController {
     public AjaxResult searchManagementEnvironmentAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
         List<String> list = new ArrayList<String>();
-        list.add(SysConst.PUBLISHTYPE_CENTER);
-        list.add(SysConst.PUBLISHTYPE_LOCAL);
+        list.add(SysConst.PublishType.CENTER.getCode());
+        list.add(SysConst.PublishType.LOCAL.getCode());
         cond.setPublishType(list);
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyIndexService.searchManagementEnvironmentAnalysis(cond);
         return success(map);
     }
@@ -238,10 +238,10 @@ public class PolicyIndexController extends BaseController {
      */
     @RequestMapping(value = "/searchCentralPolicyPublishAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchCentralPolicyPublishAnalysis(ConditionDTO cond) {
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         setDefaultCond(cond);
         List<String> list = new ArrayList<String>();
-        list.add(SysConst.PUBLISHTYPE_CENTER);
+        list.add(SysConst.PublishType.CENTER.getCode());
         cond.setPublishType(list);
         JSONObject map = policyIndexService.searchCentralPolicyPublishAnalysis(cond);
         return success(map);
@@ -258,10 +258,10 @@ public class PolicyIndexController extends BaseController {
      */
     @RequestMapping(value = "/searchLocalPolicyPublishAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchLocalPolicyPublishAnalysis(ConditionDTO cond) {
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         setDefaultCond(cond);
         List<String> list = new ArrayList<String>();
-        list.add(SysConst.PUBLISHTYPE_LOCAL);
+        list.add(SysConst.PublishType.LOCAL.getCode());
         cond.setPublishType(list);
         JSONObject map = policyIndexService.searchLocalPolicyPublishAnalysis(cond);
         return success(map);
@@ -294,10 +294,10 @@ public class PolicyIndexController extends BaseController {
     @RequestMapping(value = "/searchPolicyReportAndFocusAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchPolicyReportAndFocusAnalysis(ConditionDTO cond) {
         List<String> list = new ArrayList<String>();
-        list.add(SysConst.PUBLISHTYPE_CENTER);
-        list.add(SysConst.PUBLISHTYPE_LOCAL);
+        list.add(SysConst.PublishType.CENTER.getCode());
+        list.add(SysConst.PublishType.LOCAL.getCode());
         cond.setPublishType(list);
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         setDefaultCond(cond);
         JSONObject map = policyIndexService.searchPolicyReportAndFocusAnalysis(cond);
         return success(map);

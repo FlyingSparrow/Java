@@ -191,7 +191,7 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         series.add(new Bar<Double>().setData(amountList));
         result.put("series", series);
-        result.put("name", SysConst.X_NAME_QUARTER);
+        result.put("name", SysConst.getQuarterList());
 
         return result;
     }
@@ -252,7 +252,7 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         }
         series.add(new Line<Double>().setData(Arrays.asList(value)));
         result.put("series", series);
-        result.put("name", SysConst.X_NAME_MONTH);
+        result.put("name", SysConst.getMonthList());
 
         return result;
     }
@@ -270,7 +270,7 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         series.add(new Bar<Double>().setData(Arrays.asList(value)));
         result.put("series", series);
-        result.put("name", SysConst.X_NAME_QUARTER);
+        result.put("name", SysConst.getQuarterList());
 
         return result;
     }
@@ -288,7 +288,7 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         series.add(new Bar<Double>().setData(Arrays.asList(value)));
         result.put("series", series);
-        result.put("name", SysConst.X_NAME_QUARTER);
+        result.put("name", SysConst.getQuarterList());
 
         return result;
     }
@@ -530,7 +530,7 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         }
         List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         series.add(new Line<Double>().setData(Arrays.asList(rateArray)));
-        result.put("name", SysConst.X_NAME_MONTH);
+        result.put("name", SysConst.getMonthList());
         result.put("series", series);
 
         return result;
@@ -548,7 +548,7 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         }
         List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         series.add(new Line<Double>().setData(Arrays.asList(value)));
-        result.put("name", SysConst.X_NAME_MONTH);
+        result.put("name", SysConst.getMonthList());
         result.put("series", series);
 
         return result;

@@ -42,7 +42,7 @@ public class EnergyPolicyController extends BaseController {
     @RequestMapping(value = "/searchInvestmentAmountAndGrowthRate.json", method = RequestMethod.POST)
     public AjaxResult searchInvestmentAmountAndGrowthRate(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         JSONObject map = energyPolicyService.searchInvestmentAmountAndGrowthRate(cond);
         return success(map);
     }
@@ -58,7 +58,7 @@ public class EnergyPolicyController extends BaseController {
      */
     @RequestMapping(value = "/searchHotInvestmentIndustryTop.json", method = RequestMethod.POST)
     public AjaxResult searchHotInvestmentIndustryTop(ConditionDTO cond) {
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         JSONObject map = energyPolicyService.searchHotInvestmentIndustryTop(cond);
         return success(map);
     }
@@ -74,7 +74,7 @@ public class EnergyPolicyController extends BaseController {
      */
     @RequestMapping(value = "/searchInvestmentIndustryDistribute.json", method = RequestMethod.POST)
     public AjaxResult searchInvestmentIndustryDistribute(ConditionDTO cond) {
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         JSONObject map = energyPolicyService.searchInvestmentIndustryDistribute(cond);
         return success(map);
     }
@@ -153,7 +153,7 @@ public class EnergyPolicyController extends BaseController {
     @RequestMapping(value = "/searchNewEnterpriseRegistrationThanSamePeriod.json", method = RequestMethod.POST)
     public AjaxResult searchNewEnterpriseRegistrationThanSamePeriod(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_INDUSTRY);
+        cond.setDataType(SysConst.DataType.INDUSTRY.getCode());
         JSONObject map = energyPolicyService.searchNewEnterpriseRegistrationThanSamePeriod(cond);
         return success(map);
     }

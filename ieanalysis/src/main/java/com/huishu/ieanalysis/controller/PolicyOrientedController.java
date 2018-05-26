@@ -50,10 +50,10 @@ public class PolicyOrientedController extends BaseController {
 	@RequestMapping(value = "/searchPolicyTextInfo.json", method = RequestMethod.POST)
 	public AjaxResult searchPolicyTextInfo(ConditionDTO cond) {
 		List<String> list=new ArrayList<String>();
-		list.add(SysConst.PUBLISHTYPE_CENTER);
+		list.add(SysConst.PublishType.CENTER.getCode());
 		cond.setPublishType(list);
 		cond.setPolicyInfoType("1");
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		JSONObject map = policyOrientedService.searchPolicyTextInfo(cond);
 		return success(map);
 	}
@@ -69,7 +69,7 @@ public class PolicyOrientedController extends BaseController {
 	@RequestMapping(value = "/searchPolicyImageInfo.json", method = RequestMethod.POST)
 	public AjaxResult searchPolicyImageInfo(ConditionDTO cond) {
 		cond.setPolicyInfoType("2");
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		JSONObject map = policyOrientedService.searchPolicyImageInfo(cond);
 		return success(map);
 	}
@@ -85,7 +85,7 @@ public class PolicyOrientedController extends BaseController {
 	@RequestMapping(value = "/searchPolicyVideoInfo.json", method = RequestMethod.POST)
 	public AjaxResult searchPolicyVideoInfo(ConditionDTO cond) {
 		cond.setPolicyInfoType("3");
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		JSONObject map = policyOrientedService.searchPolicyVideoInfo(cond);
 		return success(map);
 	}
@@ -114,7 +114,7 @@ public class PolicyOrientedController extends BaseController {
 	 */
 	@RequestMapping(value = "/searchPolicyAffectIndustryTrent.json", method = RequestMethod.POST)
 	public AjaxResult searchPolicyAffectIndustryTrent(ConditionDTO cond) {
-		cond.setDataType(SysConst.DATATYPE_RECRUITMENT);
+		cond.setDataType(SysConst.DataType.RECRUITMENT.getCode());
 		JSONObject map = policyOrientedService.searchPolicyAffectIndustryTrent(cond);
 		return success(map);
 	}
@@ -130,7 +130,7 @@ public class PolicyOrientedController extends BaseController {
 	 */
 	@RequestMapping(value = "/searchPolicyMediaTranspondAmount.json", method = RequestMethod.POST)
 	public AjaxResult searchPolicyMediaTranspondAmount(ConditionDTO cond) {
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		//1,媒体;2,社交
 		cond.setReportType(1L);
 		JSONObject map = policyOrientedService.searchPolicyMediaTranspondAmount(cond);
@@ -147,7 +147,7 @@ public class PolicyOrientedController extends BaseController {
 	 */
 	@RequestMapping(value = "/searchPolicySocialTranspondAmount.json", method = RequestMethod.POST)
 	public AjaxResult searchPolicySocialTranspondAmount(ConditionDTO cond) {
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		setDefaultCond(cond);
 		//1,媒体;2,社交
 		cond.setReportType(2L);
@@ -166,7 +166,7 @@ public class PolicyOrientedController extends BaseController {
 	 */
 	@RequestMapping(value = "/searchPolicyUserCommentAmount.json", method = RequestMethod.POST)
 	public AjaxResult searchPolicyUserCommentAmount(ConditionDTO cond) {
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		setDefaultCond(cond);
 
 		JSONObject map = policyOrientedService.searchPolicyUserCommentAmount(cond);
@@ -184,7 +184,7 @@ public class PolicyOrientedController extends BaseController {
 	@RequestMapping(value = "/searchPolicyEmotionAnalysis.json", method = RequestMethod.POST)
 	public AjaxResult searchPolicyEmotionAnalysis(ConditionDTO cond) {
 		setDefaultCond(cond);
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		JSONObject map = policyOrientedService.searchPolicyEmotionAnalysis(cond);
 		return success(map);
 	}
@@ -329,7 +329,7 @@ public class PolicyOrientedController extends BaseController {
 	@RequestMapping(value = "/searchPolicyHotKeyWords.json", method = RequestMethod.POST)
 	public AjaxResult searchPolicyHotKeyWords(ConditionDTO cond) {
 		setDefaultCond(cond);
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		JSONObject map = policyOrientedService.searchPolicyHotKeyWords(cond);
 		return success(map);
 	}
@@ -360,7 +360,7 @@ public class PolicyOrientedController extends BaseController {
 	public AjaxResult searchPolicyHotEventDistrbute(ConditionDTO cond) {
 		setDefaultCond(cond);
 		cond.setHotEventMark(1L);
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		JSONObject map = policyOrientedService.searchPolicyHotEventPlaceDistrbute(cond);
 		return success(map);
 	}
@@ -377,7 +377,7 @@ public class PolicyOrientedController extends BaseController {
 	public AjaxResult searchPolicyHotEventAmountDistribute(ConditionDTO cond) {
 		setDefaultCond(cond);
 		cond.setHotEventMark(1L);
-		cond.setDataType(SysConst.DATATYPE_POLICY);
+		cond.setDataType(SysConst.DataType.POLICY.getCode());
 		JSONObject map = policyOrientedService.searchPolicyHotEventAmountDistrbute(cond);
 		return success(map);
 	}

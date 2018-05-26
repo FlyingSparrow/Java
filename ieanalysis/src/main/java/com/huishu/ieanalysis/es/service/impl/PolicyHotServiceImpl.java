@@ -49,7 +49,7 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
         List<Map> series = new ArrayList<>();
         List<DataVo> data = new ArrayList<DataVo>();
         long maxValue = template.query(query, res -> {
-            String commonProvince = SysConst.COMMON_PROCINCE_STR;
+            String commonProvince = SysConst.COMMON_PROVINCE_STR;
             Long max = 0L;
             Terms terms = res.getAggregations().get("province");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -491,7 +491,7 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
                     Sum sum = bucket.getAggregations().get("readNum");
                     double val = sum == null ? 0 : sum.getValue();
                     DataLongVo vo = new DataLongVo();
-                    vo.setName(SysConst.SOCIAL_CHANNEL[Integer.valueOf(bucket.getKeyAsString()) - 1]);
+                    vo.setName(SysConst.getSocialChannel(Integer.valueOf(bucket.getKeyAsString()) - 1));
                     vo.setValue(Math.round(val));
                     data.add(vo);
                 }
@@ -557,7 +557,7 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
 
             List<String> namesList = new ArrayList<String>();
             for (String name : nameList) {
-                namesList.add(SysConst.SOCIAL_CHANNEL[Integer.parseInt(name) - 1]);
+                namesList.add(SysConst.getSocialChannel(Integer.parseInt(name) - 1));
             }
             result.put("name", namesList);
 

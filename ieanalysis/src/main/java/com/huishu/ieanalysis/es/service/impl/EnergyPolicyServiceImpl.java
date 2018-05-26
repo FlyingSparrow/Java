@@ -247,7 +247,7 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         List<Integer> monthAmountList = NumberUtils.generateIntegerData(12, 300000);
         series.add(new Bar<Integer>().setData(monthAmountList));
         result.put("series", series);
-        result.put("name", SysConst.X_NAME_MONTH);
+        result.put("name", SysConst.getMonthList());
 
         return result;
     }
@@ -271,7 +271,7 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         }
         List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         series.add(new Line<Double>().setData(Arrays.asList(rateArray)));
-        result.put("name", SysConst.X_NAME_MONTH);
+        result.put("name", SysConst.getMonthList());
         result.put("series", series);
 
         return result;
@@ -286,11 +286,11 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         List<DataLongVo> dataList = new ArrayList<DataLongVo>();
         for (int i = 0; i < amountList.size(); i++) {
             DataLongVo vo = new DataLongVo();
-            vo.setName(SysConst.X_NAME_QUARTER[i]);
+            vo.setName(SysConst.getQuarter(i));
             vo.setValue(amountList.get(i));
             dataList.add(vo);
         }
-        result.put("legend", SysConst.X_NAME_QUARTER);
+        result.put("legend", SysConst.getQuarterList());
         result.put("piedata", dataList);
 
         return result;
@@ -305,7 +305,7 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         List<Double> amountList = NumberUtils.generateDoubleData(4, 1000000);
         series.add(new Bar<Double>().setData(amountList));
         result.put("series", series);
-        result.put("name", SysConst.X_NAME_QUARTER);
+        result.put("name", SysConst.getQuarterList());
 
         return result;
     }

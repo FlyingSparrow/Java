@@ -36,7 +36,7 @@ public class PolicyBenefitController extends BaseController {
      */
     @RequestMapping(value = "/searchPolicyBenefitEveryMonth.json", method = RequestMethod.POST)
     public AjaxResult searchPolicyBenefitEveryMonth(ConditionDTO cond) {
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         JSONObject map = policyBenefitService.searchPolicyBenefitEveryMonth(cond);
         return success(map);
     }
@@ -53,7 +53,7 @@ public class PolicyBenefitController extends BaseController {
      */
     @RequestMapping(value = "/searchPolicyBenefItenterpriseInvestmentTopFive.json", method = RequestMethod.POST)
     public AjaxResult searchPolicyBenefItenterpriseInvestmentTopFive(ConditionDTO cond) {
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         JSONObject map = policyBenefitService.searchPolicyBenefitEnterpriseInvestmentTopFive(cond);
         return success(map);
     }
@@ -70,7 +70,7 @@ public class PolicyBenefitController extends BaseController {
      */
     @RequestMapping(value = "/searchPolicyBenefIndustryArea.json", method = RequestMethod.POST)
     public AjaxResult searchPolicyBenefIndustryArea(ConditionDTO cond) {
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         JSONObject map = policyBenefitService.searchPolicyBenefIndustryArea(cond);
         return success(map);
     }
@@ -87,7 +87,7 @@ public class PolicyBenefitController extends BaseController {
      */
     @RequestMapping(value = "/searchPolicyBenefItenterpriseIndustryTopFive.json", method = RequestMethod.POST)
     public AjaxResult searchPolicyBenefItenterpriseIndustryTopFive(ConditionDTO cond) {
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         JSONObject map = policyBenefitService.searchPolicyBenefItenterpriseIndustryTopFive(cond);
         return success(map);
     }

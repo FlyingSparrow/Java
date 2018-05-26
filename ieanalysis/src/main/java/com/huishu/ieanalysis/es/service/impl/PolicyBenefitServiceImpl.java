@@ -241,7 +241,7 @@ public class PolicyBenefitServiceImpl extends AbstractService implements PolicyB
     public JSONObject searchPolicyBenefPublicServiceEfficiencyAnalysis(ConditionDTO cond) {
         JSONObject result = new JSONObject();
 
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         cond.setDataType(1);
         List<String> publishType = new ArrayList<String>();
         publishType.add("1");
@@ -311,7 +311,7 @@ public class PolicyBenefitServiceImpl extends AbstractService implements PolicyB
         ConditionDTO tempCond = new ConditionDTO();
         tempCond.setProvince(cond.getProvince());
         tempCond.setYear(cond.getYear());
-        tempCond.setDataType(SysConst.DATATYPE_POLICY);
+        tempCond.setDataType(SysConst.DataType.POLICY.getCode());
         BoolQueryBuilder queryBuilder = getBuilders(tempCond);
 
         logger.info(queryBuilder.toString());

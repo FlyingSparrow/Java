@@ -42,7 +42,7 @@ public class PolicyHotController extends BaseController {
     @RequestMapping(value = "/searchPolicyHotAreaFocusMapAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchPolicyHotAreaFocusMapAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotAreaFocusMapAnalysis(cond);
         return success(map);
     }
@@ -59,7 +59,7 @@ public class PolicyHotController extends BaseController {
     @RequestMapping(value = "/searchPolicyHotAreaFocusRankAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchPolicyHotAreaFocusRankAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotAreaFocusRankAnalysis(cond);
         return success(map);
     }
@@ -76,7 +76,7 @@ public class PolicyHotController extends BaseController {
     @RequestMapping(value = "/searchPolicyHotAreaFocusSocialSubjectAnalysis.json", method = RequestMethod.POST)
     public AjaxResult searchPolicyHotAreaFocusSocialSubjectAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotAreaFocusSocialSubjectAnalysis(cond);
         return success(map);
     }
@@ -96,7 +96,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         cond.setVectorType("1");
         cond.setReportType(1L);
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotChannelSiteAnalysis(cond);
         return success(map);
     }
@@ -115,7 +115,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         cond.setVectorType("1");
         cond.setReportType(1L);
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotChannelSocialSubjectAnalysis(cond);
         return success(map);
     }
@@ -134,7 +134,7 @@ public class PolicyHotController extends BaseController {
     public AjaxResult searchPolicyHotMediaChannelEmotionAnalysis(ConditionDTO cond) {
         setDefaultCond(cond);
         cond.setVectorType("1");
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotMediaChannelEmotionAnalysis(cond);
         return success(map);
     }
@@ -153,7 +153,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         //1,媒体;2, 社会 ;3,行业;
         cond.setVectorType("1");
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotMediaChannelRankAnalysis(cond);
         return success(map);
     }
@@ -172,7 +172,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         //1,媒体;2, 社会 ;3,行业;
         cond.setVectorType("1");
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotMediaChannelDistributeAnalysis(cond);
         return success(map);
     }
@@ -192,7 +192,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         //1,媒体;2, 社会 ;3,行业;
         cond.setVectorType("2");
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotSocialEmotionAnalysis(cond);
         return success(map);
     }
@@ -211,7 +211,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         //1,媒体;2, 社会 ;3,行业;
         cond.setVectorType("2");
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotSocialChannelAnalysis(cond);
         return success(map);
     }
@@ -230,7 +230,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         //1,媒体;2, 社会 ;3,行业;
         cond.setVectorType("2");
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotSocialChannelDistributeAnalysis(cond);
         return success(map);
     }
@@ -250,7 +250,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         //1,媒体;2, 社会 ;3,行业;
         cond.setVectorType("3");
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotIndustryEmotionAnalysis(cond);
         return success(map);
     }
@@ -270,7 +270,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         //1,媒体;2, 社会 ;3,行业;
         cond.setVectorType("3");
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotIndustryRankAnalysis(cond);
         return success(map);
     }
@@ -290,7 +290,7 @@ public class PolicyHotController extends BaseController {
         setDefaultCond(cond);
         //1,媒体;2, 社会 ;3,行业;
         cond.setVectorType("3");
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         JSONObject map = policyHotService.searchPolicyHotIndustryDistributeAnalysis(cond);
         return success(map);
     }

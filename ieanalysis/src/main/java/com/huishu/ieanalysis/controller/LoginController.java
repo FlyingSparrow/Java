@@ -116,7 +116,7 @@ public class LoginController extends BaseController {
         model.put("modelId", 1);
         model.put("menuId", 0);
         ConditionDTO cond = new ConditionDTO();
-        cond.setDataType(SysConst.DATATYPE_INVESTMENT);
+        cond.setDataType(SysConst.DataType.INVESTMENT.getCode());
         List<String> provinceList = policyHotTopicService.searchProvince(cond);
         model.put("provinceData", getSortProvince(provinceList));
         return "policyindex/capitalIndexAnalysis";
@@ -136,7 +136,7 @@ public class LoginController extends BaseController {
         model.put("modelId", 1);
         model.put("menuId", 1);
         ConditionDTO cond = new ConditionDTO();
-        cond.setDataType(SysConst.DATATYPE_RECRUITMENT);
+        cond.setDataType(SysConst.DataType.RECRUITMENT.getCode());
         List<String> provinceList = policyHotTopicService.searchProvince(cond);
         model.put("provinceData", getSortProvince(provinceList));
         return "policyindex/talentIndexAnalysis";
@@ -172,10 +172,10 @@ public class LoginController extends BaseController {
         model.put("modelId", 1);
         model.put("menuId", 3);
         ConditionDTO cond = new ConditionDTO();
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         List<String> list = new ArrayList<String>();
-        list.add(SysConst.PUBLISHTYPE_CENTER);
-        list.add(SysConst.PUBLISHTYPE_LOCAL);
+        list.add(SysConst.PublishType.CENTER.getCode());
+        list.add(SysConst.PublishType.LOCAL.getCode());
         cond.setPublishType(list);
         List<String> provinceList = policyHotTopicService.searchProvince(cond);
         model.put("provinceData", getSortProvince(provinceList));
@@ -439,7 +439,7 @@ public class LoginController extends BaseController {
         model.put("modelId", 3);
         model.put("menuId", 1);
         ConditionDTO cond = new ConditionDTO();
-        cond.setDataType(SysConst.DATATYPE_POLICY);
+        cond.setDataType(SysConst.DataType.POLICY.getCode());
         cond.setReportType(1L);
         List<String> provinceList = policyHotTopicService.searchProvince(cond);
         model.put("provinceData", getSortProvince(provinceList));
@@ -466,7 +466,7 @@ public class LoginController extends BaseController {
         model.put("menuId", 2);
         model.put("floatName", "媒体热点事件");
         ConditionDTO pcond = new ConditionDTO();
-        pcond.setDataType(SysConst.DATATYPE_POLICY);
+        pcond.setDataType(SysConst.DataType.POLICY.getCode());
         pcond.setVectorType("1");
         List<String> provinceList = policyHotTopicService.searchProvince(pcond);
         model.put("provinceData", getSortProvince(provinceList));
@@ -492,7 +492,7 @@ public class LoginController extends BaseController {
         model.put("menuId", 3);
         model.put("floatName", "社会热点事件");
         ConditionDTO pcond = new ConditionDTO();
-        pcond.setDataType(SysConst.DATATYPE_POLICY);
+        pcond.setDataType(SysConst.DataType.POLICY.getCode());
         pcond.setVectorType("2");
         List<String> provinceList = policyHotTopicService.searchProvince(pcond);
         model.put("provinceData", getSortProvince(provinceList));
@@ -519,7 +519,7 @@ public class LoginController extends BaseController {
         model.put("menuId", 4);
         model.put("floatName", "行业热点事件");
         ConditionDTO pcond = new ConditionDTO();
-        pcond.setDataType(SysConst.DATATYPE_POLICY);
+        pcond.setDataType(SysConst.DataType.POLICY.getCode());
         pcond.setVectorType("3");
         List<String> provinceList = policyHotTopicService.searchProvince(pcond);
         model.put("provinceData", getSortProvince(provinceList));
