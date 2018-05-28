@@ -8,6 +8,11 @@ public class SysConst {
     public static final String ENCODING_UTF_8 = "UTF-8";
 
     /**
+     * 默认的线程池数量
+     */
+    public static final int DEFAULT_CORE_POOL_SIZE = 10;
+
+    /**
      * 网站类型 1，媒体；2，社交
      */
     public static final int SITE_TYPE_MEDIA = 1;

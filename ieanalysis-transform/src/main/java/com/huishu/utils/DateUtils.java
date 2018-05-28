@@ -6,6 +6,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -189,4 +190,19 @@ public class DateUtils {
 	public static int getCurrentYear(){
 		return new DateTime().getYear();
 	}
+
+	public static Date getBeforeYesterdayNow(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.DATE, cal.get(Calendar.DATE) - 2);
+		return cal.getTime();
+	}
+
+	public static Date getBeforeYesterdayNow(Date date,int day) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.DATE, cal.get(Calendar.DATE) - day);
+		return cal.getTime();
+	}
+
 }
