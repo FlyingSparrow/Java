@@ -66,7 +66,7 @@ public class ForumTransformer implements Transformer {
             for (ForumLib list : lists) {
                 ForumLibBak bak = new ForumLibBak();
                 BeanUtils.copyProperties(list, bak);
-                bak.setFldrecddate(StringUtils.toTransformTime(bak.getFldrecddate()));
+                bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
                 bak.setBiaoShi("0");
                 long count = forumLibBakService.findExist(bak);
                 if (count == 0) {

@@ -71,7 +71,7 @@ public class QuitTransformer implements Transformer {
             for (QuitDataSmt list : lists) {
                 QuitDataBak bak = new QuitDataBak();
                 BeanUtils.copyProperties(list, bak);
-                bak.setTime(StringUtils.toTransformTime(list.getTime()));
+                bak.setTime(StringUtils.transformTime(list.getTime()));
                 bak.setBiaoShi("0");
                 bak.setSource("私募通");
                 long count = quitDataBakService.findExit(bak);
@@ -99,7 +99,7 @@ public class QuitTransformer implements Transformer {
                 bak.setIndustry(list.getIndustry());
                 bak.setInvestor(list.getInvestor());
                 bak.setRegion(list.getRegion());
-                bak.setTime(StringUtils.toTransformTime(list.getTime()));
+                bak.setTime(StringUtils.transformTime(list.getTime()));
                 bak.setReturnAmount(list.getReturnAmount());
                 bak.setCompanyName(list.getCompanyName());
                 bak.setReturnMultiple(list.getReturnMultiple());

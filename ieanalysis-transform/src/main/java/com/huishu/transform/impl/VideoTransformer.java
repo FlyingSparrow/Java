@@ -66,7 +66,7 @@ public class VideoTransformer implements Transformer {
             for (Video list : lists) {
                 VideoBak bak = new VideoBak();
                 BeanUtils.copyProperties(list, bak);
-                bak.setFabushijian(StringUtils.toTransformTime(bak.getFabushijian()));
+                bak.setFabushijian(StringUtils.transformTime(bak.getFabushijian()));
                 bak.setBiaoShi("0");
                 long count = videoBakService.findExist(bak);
                 if (count == 0) {

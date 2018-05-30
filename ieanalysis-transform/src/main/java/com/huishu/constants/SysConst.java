@@ -12,21 +12,6 @@ public class SysConst {
      */
     public static final int DEFAULT_CORE_POOL_SIZE = 10;
 
-    /**
-     * 网站类型 1，媒体；2，社交
-     */
-    public static final int SITE_TYPE_MEDIA = 1;
-    public static final int SITE_TYPE_SOCIAL = 2;
-    /**
-     * 互联网 金融 交通 教育 旅游
-     */
-    public static final String INDUSTRY_TYPE_INTERNET = "互联网";
-    public static final String INDUSTRY_TYPE_FINANCE = "金融";
-    public static final String INDUSTRY_TYPE_TRAFFIC = "交通";
-    public static final String INDUSTRY_TYPE_EDUCATION = "教育";
-    public static final String INDUSTRY_TYPE_TOURISM = "旅游";
-
-
     public static final String RECRIUTMENT = "recriutment";
     public static final String VIDEO = "video";
     public static final String FORUM = "forum";
@@ -38,25 +23,6 @@ public class SysConst {
     public static final String MERGER = "merger";
     public static final String INVESTMENT = "investment";
     public static final String INDUSTRY = "industry";
-
-
-    /**
-     * 政策类型  1中央,2地方,3诉讼, 4新闻,5综合 ; (固定)6论坛,7招聘 ,8微信,9投资,10工商,11视频 ,12其它,13,投资并购，14投资退出
-     */
-    public static final int PUBLISH_TYPE_CENTER = 1;
-    public static final int PUBLISH_TYPE_POLICY = 2;
-    public static final int PUBLISH_TYPE_SUSONG = 3;
-    public static final int PUBLISH_TYPE_NEWS = 4;
-    public static final int PUBLISH_TYPE_ZONGHE = 5;
-    public static final int PUBLISH_TYPE_FORUM = 6;
-    public static final int PUBLISH_TYPE_RECRIUTMENT = 7;
-    public static final int PUBLISH_TYPE_WECHAT = 8;
-    public static final int PUBLISH_TYPE_INVESTMENT = 9;
-    public static final int PUBLISH_TYPE_INDUSTRY = 10;
-    public static final int PUBLISH_TYPE_VIDEO = 11;
-    public static final int PUBLISH_TYPE_OTHER = 12;
-    public static final int PUBLISH_TYPE_MERGER = 13;
-    public static final int PUBLISH_TYPE_QUIT = 14;
 
     /**
      * ES 数据状态枚举类
@@ -248,6 +214,56 @@ public class SysConst {
 
         public String getDesc() {
             return desc;
+        }
+    }
+
+    /**
+     * 网站类型枚举类
+     */
+    public enum SiteType {
+
+        MEDIA(1L, "媒体"),
+        /**
+         * 社交类网站，例如：人人网 豆瓣 爱哈友
+         */
+        SOCIAL(2L, "社交");
+
+        private Long code;
+        private String type;
+
+        SiteType(Long code, String type) {
+            this.code = code;
+            this.type = type;
+        }
+
+        public Long getCode() {
+            return code;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+
+    /**
+     * 行业类型枚举类
+     */
+    public enum IndustryType {
+
+        INTERNET("互联网"),
+        FINANCE("金融"),
+        TRAFFIC("交通"),
+        EDUCATION("教育"),
+        TOURISM("旅游");
+
+        private String type;
+
+        IndustryType(String type) {
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
         }
     }
 

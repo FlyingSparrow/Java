@@ -66,8 +66,8 @@ public class ZongheTransformer implements Transformer {
             for (NewsLib list : lists) {
                 ZongheBak bak = new ZongheBak();
                 BeanUtils.copyProperties(list, bak);
-                bak.setFldrecddate(StringUtils.toTransformTime(bak.getFldrecddate()));
-                bak.setType(String.valueOf(SysConst.PUBLISH_TYPE_ZONGHE));
+                bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
+                bak.setType(String.valueOf(SysConst.PublishType.COMPREHENSIVE.getCode()));
                 bak.setBiaoShi("0");
                 long count = zongheBakService.findExist(bak);
                 if (count == 0) {

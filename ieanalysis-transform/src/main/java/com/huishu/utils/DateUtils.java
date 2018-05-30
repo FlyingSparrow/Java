@@ -6,7 +6,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -25,10 +24,20 @@ public class DateUtils {
 		return formatDate(date, FORMAT_FILE_PATH);
 	}
 
+	/**
+	 * 获取格式化后的日期
+	 * @param date
+	 * @return yyyy-MM-dd 格式的日期字符串
+	 */
 	public static String getFormatDate(Date date) {
 		return formatDate(date, FORMAT_DATE);
 	}
 
+	/**
+	 * 获取格式化后的日期
+	 * @param date
+	 * @return yyyy-MM-dd HH:mm:ss 格式的日期字符串
+	 */
 	public static String getFormatTime(Date date) {
 		return formatDate(date, FORMAT_TIME);
 	}
@@ -192,17 +201,37 @@ public class DateUtils {
 	}
 
 	public static Date getBeforeYesterdayNow(Date date) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.DATE, cal.get(Calendar.DATE) - 2);
-		return cal.getTime();
+		return plus(date, DateFields.DAY, -2);
 	}
 
 	public static Date getBeforeYesterdayNow(Date date,int day) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.DATE, cal.get(Calendar.DATE) - day);
-		return cal.getTime();
+		return plus(date, DateFields.DAY, -day);
+	}
+
+	/**
+	 * <p>
+	 * Description: 获取当前时间的日期对象
+	 * </p>
+	 *
+	 * @return
+	 * @author wjc
+	 * @date 2017年1月10日
+	 */
+	public static Date currentDate() {
+		DateTime now = new DateTime();
+		return now.toDate();
+	}
+
+	/**
+	 * 返回 date 对象表示的小时，如果date为null，返回0
+	 * @param date
+	 * @return
+	 */
+	public static int getHour(Date date){
+		if(date == null){
+			return 0;
+		}
+		return new DateTime(date).getHourOfDay();
 	}
 
 }

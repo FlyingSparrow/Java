@@ -67,7 +67,7 @@ public class RecruitmentTransformer implements Transformer {
             for (Recruitment list : lists) {
                 RecruitmentBak bak = new RecruitmentBak();
                 BeanUtils.copyProperties(list, bak);
-                bak.setFldrecddate(StringUtils.toTransformTime(bak.getFldrecddate()));
+                bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
                 bak.setBiaoShi("0");
                 long count = recruitmentBakService.findExist(bak);
                 if (count == 0) {

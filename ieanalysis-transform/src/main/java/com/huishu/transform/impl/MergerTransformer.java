@@ -73,7 +73,7 @@ public class MergerTransformer implements Transformer {
 
                 MergerDataBak bak = new MergerDataBak();
                 BeanUtils.copyProperties(list, bak);
-                bak.setEndTime(StringUtils.toTransformTime(list.getEndTime()));
+                bak.setEndTime(StringUtils.transformTime(list.getEndTime()));
                 bak.setBiaoShi("0");
                 bak.setSource("私募通");
                 long count = mergerDataBakService.findExit(bak);
@@ -101,7 +101,7 @@ public class MergerTransformer implements Transformer {
                 bak.setBeMergered(list.getBeMergered());
                 bak.setIndustry(list.getIndustry());
                 bak.setAcquirerInfo(list.getRegion());
-                bak.setEndTime(StringUtils.toTransformTime(list.getTime()));
+                bak.setEndTime(StringUtils.transformTime(list.getTime()));
                 bak.setMergerAmount(list.getMergerAmount());
                 bak.setStockEquity(list.getStockEquity());
                 bak.setProduct(list.getProduct());

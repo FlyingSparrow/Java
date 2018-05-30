@@ -66,8 +66,8 @@ public class NewsTransformer implements Transformer {
             for (NewsLib list : lists) {
                 NewsLibBak bak = new NewsLibBak();
                 BeanUtils.copyProperties(list, bak);
-                bak.setFldrecddate(StringUtils.toTransformTime(bak.getFldrecddate()));
-                bak.setType(String.valueOf(SysConst.PUBLISH_TYPE_NEWS));
+                bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
+                bak.setType(String.valueOf(SysConst.PublishType.NEWS.getCode()));
                 bak.setBiaoShi("0");
                 long count = newsLibBakService.findExist(bak);
                 if (count == 0) {

@@ -16,6 +16,31 @@ import java.util.regex.Pattern;
  */
 public class StringUtils {
 
+    /**
+     * script 标签的正则表达式
+     */
+    private static final Pattern SCRIPT_REGEX = Pattern.compile("<script[^>]*?>[\\s\\S]*?<\\/script>",
+            Pattern.CASE_INSENSITIVE);
+    /**
+     * style 标签的正则表达式
+     */
+    private static final Pattern STYLE_REGEX = Pattern.compile("<style[^>]*?>[\\s\\S]*?<\\/style>",
+            Pattern.CASE_INSENSITIVE);
+    /**
+     * HTML 标签的正则表达式
+     */
+    private static final Pattern HTML_REGEX = Pattern.compile("<[^>]+>", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * 制表符、换行符等其它字符的正则表达式
+     */
+    private static final Pattern SPACE_REGEX = Pattern.compile("\\s+|\t|\r|\n", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * 判断日期格式的正则表达式
+     */
+    private static final Pattern DATE_FORMAT_REGEX = Pattern.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}");
+
     private StringUtils() {
     }
 
@@ -46,10 +71,10 @@ public class StringUtils {
      */
     public static JSONArray split(String string, String regex) {
         JSONArray result = new JSONArray();
-        if (org.apache.commons.lang3.StringUtils.isNotEmpty(string)) {
+        if (isNotEmpty(string)) {
             String[] array = string.split(regex);
             for (String item : array) {
-                if (org.apache.commons.lang3.StringUtils.isNotEmpty(item)) {
+                if (isNotEmpty(item)) {
                     result.add(item);
                 }
             }
@@ -57,94 +82,140 @@ public class StringUtils {
         return result;
     }
 
-    public static synchronized String toTransformTime(String time) {
-        if (org.apache.commons.lang3.StringUtils.isNotEmpty(time)) {
-            if (time.indexOf("刚刚") >= 0 || time.indexOf("今天") >= 0) {
-                //23:45:09
-                time = DateUtils.getFormatDate(new Date());
-            } else if (time.indexOf("昨天") >= 0) {
-                time = DateUtils.getFormatDate(DateUtils.getYesterdayNow(new Date()));
-            } else if (time.indexOf("前天") >= 0) {
-                time = DateUtils.getFormatDate(DateUtils.getBeforeYesterdayNow(new Date()));
-            } else if (time.length() <= 4 && time.indexOf("天前") >= 0) {
-                String day = time.replaceAll("天前", "");
-                Integer valueOf = Integer.valueOf(day);
-                time = DateUtils.getFormatDate(DateUtils.getBeforeYesterdayNow(new Date(), valueOf));
-            } else if (time.length() <= 5 && time.indexOf("小时前") >= 0) {
-                String day = time.replaceAll("小时前", "");
-                Integer valueOf = Integer.valueOf(day);
-                int hours = new Date().getHours();
-                if (valueOf > hours) {
-                    time = DateUtils.getFormatDate(DateUtils.getYesterdayNow(new Date()));
-                } else {
-                    time = DateUtils.getFormatDate(new Date());
-                }
-            } else if (time.length() <= 8 && time.indexOf(":") >= 0) {
-                time = DateUtils.getFormatDate(new Date());
-            } else if (time.indexOf("/") >= 0) {
-                time = time.replaceAll("/", "-");
-            } else if (time.length() >= 24 && time.indexOf("-") >= 0) {
-                String header = time.substring(0, 20);
-                String headertime = "";
-                if (header.indexOf("-") >= 0) {
-                    int first = header.indexOf("-");
-                    int second = header.lastIndexOf("-");
-                    if (second > first) {
-                        int start = first - 4;
-                        int end = second + 3;
-                        if (start < 0) {
-                            start = 0;
-                        }
-                        if (end > header.length()) {
-                            end = header.length();
-                        }
-                        headertime = header.substring(start, end);
-                    }
-                }
-                String end = time.substring(time.length() - 20, time.length());
-                String endTime = "";
-                if (end.indexOf("-") >= 0) {
-                    int first = end.indexOf("-");
-                    int second = end.lastIndexOf("-");
-                    if (second > first) {
-                        int startindex = first - 4;
-                        int endindex = second + 3;
-                        if (startindex < 0) {
-                            startindex = 0;
-                        }
-                        if (endindex > end.length()) {
-                            endindex = end.length();
-                        }
-                        endTime = end.substring(startindex, endindex);
-                    }
-                }
-                if (isDate(headertime)) {
-                    time = headertime;
-                } else if (isDate(endTime)) {
-                    time = endTime;
-                }
-
-            } else if (time.indexOf("-") >= 0 && time.length() >= 20) {
-                time = time.substring(0, 19);
-            } else if (time.indexOf("-") == -1) {
-                time = "";
+    /**
+     * 统计wordArray中每个词在data中出现的次数，每个词在data中出现的话，出现次数加1
+     *
+     * @param wordArray
+     * @param data
+     * @return 返回出现次数合计
+     */
+    public static int countOccurrenceNumber(JSONArray wordArray, String data) {
+        int result = 0;
+        if (wordArray == null || isEmpty(data)) {
+            return result;
+        }
+        for (int i = 0, size = wordArray.size(); i < size; i++) {
+            String word = wordArray.getString(i);
+            if (data.indexOf(word) >= 0) {
+                result += 1;
             }
         }
-        return time;
+
+        return result;
     }
 
+    public static boolean isEmpty(String string) {
+        return org.apache.commons.lang3.StringUtils.isEmpty(string);
+    }
+
+    public static boolean isNotEmpty(String string) {
+        return org.apache.commons.lang3.StringUtils.isNotEmpty(string);
+    }
+
+    /**
+     * 转换时间
+     * @param time
+     * @return
+     */
+    public static String transformTime(String time) {
+        String result = time;
+
+        Date currentDate = DateUtils.currentDate();
+        if (isNotEmpty(result)) {
+            if (isToday(result)) {
+                result = DateUtils.getFormatDate(currentDate);
+            } else if (result.contains("昨天")) {
+                result = DateUtils.getFormatDate(DateUtils.getYesterdayNow(currentDate));
+            } else if (result.contains("前天")) {
+                result = DateUtils.getFormatDate(DateUtils.getBeforeYesterdayNow(currentDate));
+            } else if (result.length() <= 4 && result.indexOf("天前") >= 0) {
+                int days = Integer.parseInt(result.replaceAll("天前", ""));
+                result = DateUtils.getFormatDate(DateUtils.getBeforeYesterdayNow(currentDate, days));
+            } else if (result.length() <= 5 && result.indexOf("小时前") >= 0) {
+                int hours = Integer.parseInt(result.replaceAll("小时前", ""));
+                int hour = DateUtils.getHour(currentDate);
+                if (hours > hour) {
+                    result = DateUtils.getFormatDate(DateUtils.getYesterdayNow(currentDate));
+                } else {
+                    result = DateUtils.getFormatDate(currentDate);
+                }
+            } else if (result.length() <= 8 && result.indexOf(":") >= 0) {
+                result = DateUtils.getFormatDate(currentDate);
+            } else if (result.indexOf("/") >= 0) {
+                result = result.replaceAll("/", "-");
+            } else if (result.length() >= 24 && result.indexOf("-") >= 0) {
+                String headerTime = extractDate(result.substring(0, 20));
+                String endTime = extractDate(result.substring(result.length() - 20, result.length()));
+                if (isDate(headerTime)) {
+                    result = headerTime;
+                } else if (isDate(endTime)) {
+                    result = endTime;
+                }
+            } else if (result.indexOf("-") >= 0 && result.length() >= 20) {
+                result = result.substring(0, 19);
+            } else if (result.indexOf("-") == -1) {
+                result = "";
+            }
+        }
+
+        return result;
+    }
+
+    private static String extractDate(String date){
+        String result = "";
+
+        String hyphen = "-";
+        if (date.indexOf(hyphen) >= 0) {
+            int first = date.indexOf(hyphen);
+            int second = date.lastIndexOf(hyphen);
+            if (second > first) {
+                int starIndex = first - 4;
+                int endIndex = second + 3;
+                if (starIndex < 0) {
+                    starIndex = 0;
+                }
+                if (endIndex > date.length()) {
+                    endIndex = date.length();
+                }
+                result = date.substring(starIndex, endIndex);
+            }
+        }
+
+        return result;
+    }
+
+    private static boolean isToday(String result) {
+        return (result.contains("刚刚") || result.contains("今天"));
+    }
+
+    /**
+     * 判断 date 是否是yyyy-MM-dd格式的日期字符串
+     * @param date
+     * @return
+     */
     public static boolean isDate(String date) {
-        /**
-         * 判断日期格式和范围
-         */
-        String rexp = "^[0-9]{4}-[0-9]{2}-[0-9]{2}";
-        Pattern pat = Pattern.compile(rexp);
+        Matcher matcher = DATE_FORMAT_REGEX.matcher(date);
+        return matcher.matches();
+    }
 
-        Matcher mat = pat.matcher(date);
-
-        boolean dateType = mat.matches();
-
-        return dateType;
+    /**
+     * 移除html标记
+     * @param htmlStr
+     * @return
+     */
+    public static String removeHtmlTag(String htmlStr) {
+        String result = htmlStr;
+        if (isNotEmpty(result)) {
+            Matcher scriptMatcher = SCRIPT_REGEX.matcher(result);
+            result = scriptMatcher.replaceAll("");
+            Matcher styleMatcher = STYLE_REGEX.matcher(result);
+            result = styleMatcher.replaceAll("");
+            Matcher htmlMatcher = HTML_REGEX.matcher(result);
+            result = htmlMatcher.replaceAll("");
+            Matcher spaceMatcher = SPACE_REGEX.matcher(result);
+            result = spaceMatcher.replaceAll(" ");
+        }
+        return result;
     }
 
 }

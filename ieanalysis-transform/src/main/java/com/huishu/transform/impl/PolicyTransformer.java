@@ -66,8 +66,8 @@ public class PolicyTransformer implements Transformer {
             for (NewsLib list : lists) {
                 PolicyBak bak = new PolicyBak();
                 BeanUtils.copyProperties(list, bak);
-                bak.setFldrecddate(StringUtils.toTransformTime(bak.getFldrecddate()));
-                bak.setType(String.valueOf(SysConst.PUBLISH_TYPE_POLICY));
+                bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
+                bak.setType(String.valueOf(SysConst.PublishType.LOCAL.getCode()));
                 bak.setBiaoShi("0");
                 long count = policyBakService.findExist(bak);
                 if (count == 0) {

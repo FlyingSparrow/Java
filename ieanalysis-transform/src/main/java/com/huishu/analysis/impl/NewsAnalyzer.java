@@ -1,5 +1,6 @@
 package com.huishu.analysis.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.huishu.analysis.Analyzer;
 import com.huishu.config.AnalysisConfig;
@@ -25,10 +26,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 分析新闻数据
@@ -41,7 +43,7 @@ public class NewsAnalyzer implements Analyzer {
 
     private static Logger logger = LoggerFactory.getLogger(NewsAnalyzer.class);
 
-    private static List<DgapData> newsStaticList = new ArrayList<DgapData>();
+    private static final List<DgapData> newsStaticList = new ArrayList<DgapData>();
 
     @Autowired
     private NewsLibBakService newsLibService;
@@ -53,7 +55,6 @@ public class NewsAnalyzer implements Analyzer {
     private KingBaseDgapService kingBaseDgapService;
     @Autowired
     private AnalysisConfig analysisConfig;
-    private Map<String, String> indexMap;
 
     @Override
     public String getName() {
@@ -62,7 +63,6 @@ public class NewsAnalyzer implements Analyzer {
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        this.indexMap = indexMap;
         if (analysisConfig.isNewsMark()) {
             for (int i = 0; i < analysisConfig.getNewsThreadNum(); i++) {
                 final int pageNumber = i;
@@ -131,15 +131,16 @@ public class NewsAnalyzer implements Analyzer {
         logger.info("新闻分析,入库 {} 条", saveList.size());
         logger.info("新闻分析,分析 {} 条", readList.size());
 
-        toRecordNum();
+        recordNum(indexMap);
     }
 
     /**
      * 根据url判断是否存在重复数据
+     *
      * @param url
      * @return
      */
-    private boolean isNotExists(String url){
+    private boolean isNotExists(String url) {
         boolean flag = true;
         for (DgapData dgapData : newsStaticList) {
             if (StringUtils.isNotEmpty(dgapData.getPolicyUrl())
@@ -156,6 +157,7 @@ public class NewsAnalyzer implements Analyzer {
      * 对SiteLib对象填充地区信息
      * 分析城市
      * 根据内容分析城市 如果没有则查询网站配置城市
+     *
      * @param title
      * @param content
      * @param source
@@ -172,10 +174,8 @@ public class NewsAnalyzer implements Analyzer {
                 break;
             }
         }
-        //
+
         if (StringUtils.isEmpty(siteLib.getProvince())) {
-            //String str = "北京,上海,重庆,天津,河北,山西,辽宁,吉林,黑龙江,江苏,浙江,安徽,福建,江西,山东,河南,湖北,湖南,广东,海南,四川,贵州,云南,陕西,甘肃,青海,台湾,广西,宁夏,西藏,新疆,内蒙古,香港,澳门";
-            // String[] provinces = str.split(",");
             List<CityLib> cityList = cityLibService.findByTypeLessThan(3);
             for (CityLib city : cityList) {
                 if (StringUtils.isEmpty(city.getCity())) {
@@ -189,7 +189,7 @@ public class NewsAnalyzer implements Analyzer {
                 }
             }
         }
-        if(source != null){
+        if (source != null) {
             // 城市
             if (StringUtils.isEmpty(siteLib.getArea())) {
                 siteLib.setArea(source.getArea());
@@ -235,24 +235,35 @@ public class NewsAnalyzer implements Analyzer {
     }
 
     private DgapData fillDgapData(NewsLibBak newsLibBak, SiteLib siteLib) {
-        DgapData result = new DgapData();
-
-        result.setPublishType(SysConst.PublishType.NEWS.getCode());
-        // 分类
-        result.setDataType(SysConst.DataType.POLICY.getCode());
-        String singleData = newsLibBak.getFldrecddate();
-        result.setTime(newsLibBak.getFldrecddate());
-        // 时间
-        if (toSetTime(result, singleData)) {
-            return null;
-        }
-        // 站点
-        result.setSite(newsLibBak.getWebname());
-        // 省份
         if (StringUtils.isEmpty(siteLib.getProvince())
                 || StringUtils.isEmpty(siteLib.getIndustry())) {
             return null;
         }
+        if (StringUtils.isEmpty(newsLibBak.getFldcontent())
+                || StringUtils.isEmpty(newsLibBak.getFldtitle())) {
+            return null;
+        }
+        if (StringUtils.isEmpty(newsLibBak.getFldtitle())) {
+            return null;
+        }
+        if (StringUtils.isEmpty(newsLibBak.getFldUrlAddr())) {
+            return null;
+        }
+
+        DgapData result = new DgapData();
+        // 时间
+        if (fillDateInfoOfDgapData(result, newsLibBak.getFldrecddate())) {
+            return null;
+        }
+
+        result.setPublishType(SysConst.PublishType.NEWS.getCode());
+        // 分类
+        result.setDataType(SysConst.DataType.POLICY.getCode());
+        result.setTime(newsLibBak.getFldrecddate());
+
+        // 站点
+        result.setSite(newsLibBak.getWebname());
+        // 省份
         result.setProvince(siteLib.getProvince());
         result.setArea(siteLib.getArea());
         // 行业
@@ -260,12 +271,10 @@ public class NewsAnalyzer implements Analyzer {
         result.setSocialChannel(SysConst.SocialChannel.INTERNET_MEDIA.getCode());
 
         // 是否社交网站
-        result.setReportType((long) SysConst.SITE_TYPE_MEDIA);
+        result.setReportType(SysConst.SiteType.MEDIA.getCode());
         // 是否热点 评论 点击 转发 超过1000
         int count = Integer.valueOf(newsLibBak.getFldHits())
                 + Integer.valueOf(newsLibBak.getFldReply());
-
-
         //热点事件阈值
         int hotEventThreshold = 1000;
         if (count > hotEventThreshold) {
@@ -276,38 +285,29 @@ public class NewsAnalyzer implements Analyzer {
         // 内容 分析 文章 图片 视频
         // 关注量
         result.setHitNum(Long.valueOf(newsLibBak.getFldHits()));
-        if (StringUtils.isEmpty(newsLibBak.getFldcontent())
-                || StringUtils.isEmpty(newsLibBak.getFldtitle())) {
-            return null;
-        }
-        String articleCategory = searchEmotionNews(newsLibBak);
-        if (SysConst.Emotion.NEUTRAL.getEmotion().equals(articleCategory)) {
+
+        String emotion = searchEmotion(newsLibBak);
+        if (SysConst.Emotion.NEUTRAL.getEmotion().equals(emotion)) {
             result.setEmotionMark(SysConst.Emotion.NEUTRAL.getCode());
         }
-        if (SysConst.Emotion.NEGATIVE.getEmotion().equals(articleCategory)) {
+        if (SysConst.Emotion.NEGATIVE.getEmotion().equals(emotion)) {
             result.setEmotionMark(SysConst.Emotion.NEGATIVE.getCode());
         }
-        if (SysConst.Emotion.POSITIVE.getEmotion().equals(articleCategory)) {
+        if (SysConst.Emotion.POSITIVE.getEmotion().equals(emotion)) {
             result.setEmotionMark(SysConst.Emotion.POSITIVE.getCode());
         }
         searchContentNews(newsLibBak, result);
         // 标题
-        if (StringUtils.isEmpty(newsLibBak.getFldtitle())) {
-            return null;
-        }
         result.setPolicyTitle(newsLibBak.getFldtitle());
 
-        result.setContent(removeTag(newsLibBak.getFldcontent()));
+        result.setContent(com.huishu.utils.StringUtils.removeHtmlTag(newsLibBak.getFldcontent()));
         // url
-        if (StringUtils.isEmpty(newsLibBak.getFldUrlAddr())) {
-            return null;
-        }
         result.setPolicyUrl(newsLibBak.getFldUrlAddr());
         // 阅读量
         result.setReadNum(Long.valueOf(newsLibBak.getFldHits()));
         // 评论量
         result.setHitNum(Long.valueOf(newsLibBak.getFldReply()));
-        setDataType(result);
+        setReportType(result);
 
         return result;
     }
@@ -315,7 +315,7 @@ public class NewsAnalyzer implements Analyzer {
     private void addKingBaseData(List<KingBaseDgap> historyList, DgapData source) {
         KingBaseDgap target = new KingBaseDgap();
         BeanUtils.copyProperties(source, target);
-        target.setId(UUID.randomUUID().toString());
+        target.setId(com.huishu.utils.StringUtils.getUUID());
         historyList.add(target);
     }
 
@@ -334,6 +334,7 @@ public class NewsAnalyzer implements Analyzer {
 
     /**
      * 保存分析后的数据到人大金仓数据库
+     *
      * @param historyList
      */
     private void saveToKingbase(List<KingBaseDgap> historyList) {
@@ -343,172 +344,124 @@ public class NewsAnalyzer implements Analyzer {
         }
     }
 
-    private synchronized void toRecordNum() {
+    private synchronized void recordNum(Map<String, String> indexMap) {
         String filePath = System.getProperty("user.dir") + "analysis-data-temp.properties";
         FileUtils.createFileIfNotExists(new File(filePath));
         FileUtils.writeProperties(filePath, indexMap);
     }
 
-    // 分析行业
+    /**
+     * 分析行业
+     * 根据内容分析行业 如果没有则查询网站配置行业
+     *
+     * @param title
+     * @param content
+     * @return
+     */
     private String searchIndustry(String title, String content) {
-        // 根据内容分析行业 如果没有则查询网站配置行业
-        String tempIndustry = "";
-        int max = 0;
+        JSONObject jsonObject = new JSONObject();
+
         // 互联网
-        int internetCount = 0;
-        String internetKeyWords = analysisConfig.getInternetKeyWords();
-        String[] internetWords = internetKeyWords.split(",");
-        if (internetWords != null && internetWords.length > 0) {
-            for (String word : internetWords) {
-                if (StringUtils.isNotEmpty(word)) {
-                    if (StringUtils.isNotEmpty(title)
-                            && title.indexOf(word) >= 0) {
-                        internetCount += 1;
-                    }
-                    if (StringUtils.isNotEmpty(content)
-                            && content.indexOf(word) >= 0) {
-                        internetCount += 1;
-                    }
-                }
-            }
-        }
-        max = internetCount;
-        tempIndustry = SysConst.INDUSTRY_TYPE_INTERNET;
+        int internetCount = countIndustryKeywordsOccurrenceNumber(analysisConfig.getInternetKeyWords(), title, content);
+        jsonObject.put("count", internetCount);
+        jsonObject.put("industry", SysConst.IndustryType.INTERNET.getType());
+
         // 金融
-        int financeCount = 0;
-        String financeKeyWords = analysisConfig.getFinanceKeyWords();
-        String[] financeWords = financeKeyWords.split(",");
-        if (financeWords != null && financeWords.length > 0) {
-            for (String word : financeWords) {
-                if (StringUtils.isNotEmpty(word)) {
-                    if (StringUtils.isNotEmpty(title)
-                            && title.indexOf(word) >= 0) {
-                        financeCount += 1;
-                    }
-                    if (StringUtils.isNotEmpty(content)
-                            && content.indexOf(word) >= 0) {
-                        financeCount += 1;
-                    }
-                }
-            }
-        }
-        if (max < financeCount) {
-            max = financeCount;
-            tempIndustry = SysConst.INDUSTRY_TYPE_FINANCE;
-        }
+        int financeCount = countIndustryKeywordsOccurrenceNumber(analysisConfig.getFinanceKeyWords(), title, content);
+        filterIndustry(SysConst.IndustryType.FINANCE.getType(), financeCount, jsonObject);
+
         // 教育
-        int educationCount = 0;
-        String educationKeyWords = analysisConfig.getEducationKeyWords();
-        String[] educationWords = educationKeyWords.split(",");
-        if (educationWords != null && educationWords.length > 0) {
-            for (String word : educationWords) {
-                if (StringUtils.isNotEmpty(word)) {
-                    if (StringUtils.isNotEmpty(title)
-                            && title.indexOf(word) >= 0) {
-                        educationCount += 1;
-                    }
-                    if (StringUtils.isNotEmpty(content)
-                            && content.indexOf(word) >= 0) {
-                        educationCount += 1;
-                    }
-                }
-            }
-        }
-        if (max < educationCount) {
-            max = educationCount;
-            tempIndustry = SysConst.INDUSTRY_TYPE_EDUCATION;
-        }
+        int educationCount = countIndustryKeywordsOccurrenceNumber(analysisConfig.getEducationKeyWords(), title, content);
+        filterIndustry(SysConst.IndustryType.EDUCATION.getType(), educationCount, jsonObject);
+
         // 交通
-        int trafficCount = 0;
-        String trafficKeyWords = analysisConfig.getTrafficKeyWords();
-        String[] trafficWords = trafficKeyWords.split(",");
-        if (trafficWords != null && trafficWords.length > 0) {
-            for (String word : trafficWords) {
-                if (StringUtils.isNotEmpty(word)) {
-                    if (StringUtils.isNotEmpty(title)
-                            && title.indexOf(word) >= 0) {
-                        trafficCount += 1;
-                    }
-                    if (StringUtils.isNotEmpty(content)
-                            && content.indexOf(word) >= 0) {
-                        trafficCount += 1;
-                    }
-                }
-            }
-        }
-        if (max < trafficCount) {
-            max = trafficCount;
-            tempIndustry = SysConst.INDUSTRY_TYPE_TRAFFIC;
-        }
+        int trafficCount = countIndustryKeywordsOccurrenceNumber(analysisConfig.getTrafficKeyWords(), title, content);
+        filterIndustry(SysConst.IndustryType.TRAFFIC.getType(), trafficCount, jsonObject);
+
         // 旅游
-        int tourismCount = 0;
-        String tourismKeyWords = analysisConfig.getTourismKeyWords();
-        String[] tourismWords = tourismKeyWords.split(",");
-        if (tourismWords != null && tourismWords.length > 0) {
-            for (String word : tourismWords) {
-                if (StringUtils.isNotEmpty(word)) {
-                    if (StringUtils.isNotEmpty(title)
-                            && title.indexOf(word) >= 0) {
-                        tourismCount += 1;
-                    }
-                    if (StringUtils.isNotEmpty(content)
-                            && content.indexOf(word) >= 0) {
-                        tourismCount += 1;
-                    }
-                }
-            }
-        }
-        if (max < tourismCount) {
-            max = tourismCount;
-            tempIndustry = SysConst.INDUSTRY_TYPE_TOURISM;
-        }
-        return tempIndustry;
+        int tourismCount = countIndustryKeywordsOccurrenceNumber(analysisConfig.getTourismKeyWords(), title, content);
+        filterIndustry(SysConst.IndustryType.TOURISM.getType(), tourismCount, jsonObject);
+
+        return jsonObject.getString("industry");
     }
 
-    private boolean toSetTime(DgapData data, String singleData) {
+    /**
+     * 筛选行业
+     *
+     * @param industry                         行业
+     * @param industryKeywordsOccurrenceNumber 行业关键词的出现次数
+     * @param jsonObject                       行业关键词出现次数最高的行业的信息
+     * @return 行业关键词出现次数最高的行业
+     */
+    private void filterIndustry(String industry, int industryKeywordsOccurrenceNumber,
+                                JSONObject jsonObject) {
+        if (industryKeywordsOccurrenceNumber > jsonObject.getIntValue("count")) {
+            jsonObject.put("industry", industry);
+        }
+    }
+
+    /**
+     * 统计行业关键词在标题和内容中出现的次数
+     *
+     * @param industryKeyWords 行业关键词，例如互联网行业关键词、金融行业关键词、教育行业关键词、交通行业关键词、旅游行业关键词等等
+     * @param title            标题
+     * @param content          内容
+     * @return
+     */
+    private int countIndustryKeywordsOccurrenceNumber(String industryKeyWords, String title, String content) {
+        int count = 0;
+        JSONArray tourismKeyWordArray = com.huishu.utils.StringUtils.split(industryKeyWords, ",");
+        if (StringUtils.isNotEmpty(title)) {
+            count += com.huishu.utils.StringUtils.countOccurrenceNumber(tourismKeyWordArray, title);
+        }
+        if (StringUtils.isNotEmpty(content)) {
+            count += com.huishu.utils.StringUtils.countOccurrenceNumber(tourismKeyWordArray, content);
+        }
+
+        return count;
+    }
+
+    /**
+     * 使用 fldrecddate 对象填充 dgapData 对象的时间信息，包括年、月、日、小时
+     *
+     * @param dgapData
+     * @param fldrecddate
+     * @return
+     */
+    private boolean fillDateInfoOfDgapData(DgapData dgapData, String fldrecddate) {
         try {
-            if (StringUtils.isNotEmpty(singleData)) {
-                singleData = com.huishu.utils.StringUtils.toTransformTime(singleData);
-                data.setHour(0L);
-                int yearindex = singleData.indexOf("-");
-                int monthIndex = singleData.indexOf("-", yearindex + 1);
-                int sIndex = singleData.indexOf(" ", monthIndex + 1);
-                int hourIndex = singleData.indexOf(":");
-                if (yearindex > 0) {
-                    data.setYear(Long.valueOf(singleData
-                            .substring(0, yearindex).trim()));
-                    if (monthIndex > 0) {
-                        data.setMonth(Long.valueOf(singleData.substring(
-                                yearindex + 1, monthIndex).trim()));
-                        if (sIndex > 0) {
-                            data.setDay(Long.valueOf(singleData.substring(
-                                    monthIndex + 1, sIndex).trim()));
-                            if (hourIndex > 0) {
-                                data.setHour(Long.valueOf(singleData.substring(
-                                        sIndex + 1, hourIndex).trim()));
-                            }
-                        } else {
-                            data.setDay(Long.valueOf(singleData.substring(
-                                    monthIndex + 1, singleData.length()).trim()));
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return true;
-                }
-            } else {
+            if (StringUtils.isEmpty(fldrecddate)) {
                 return true;
             }
-            return false;
+            fldrecddate = com.huishu.utils.StringUtils.transformTime(fldrecddate);
+            dgapData.setHour(0L);
+            int yearIndex = fldrecddate.indexOf("-");
+            int monthIndex = fldrecddate.indexOf("-", yearIndex + 1);
+            int sIndex = fldrecddate.indexOf(" ", monthIndex + 1);
+            int hourIndex = fldrecddate.indexOf(":");
+            if (yearIndex <= 0) {
+                return true;
+            }
+            dgapData.setYear(Long.valueOf(fldrecddate.substring(0, yearIndex).trim()));
+            if (monthIndex <= 0) {
+                return true;
+            }
+            dgapData.setMonth(Long.valueOf(fldrecddate.substring(yearIndex + 1, monthIndex).trim()));
+            if (sIndex > 0) {
+                dgapData.setDay(Long.valueOf(fldrecddate.substring(monthIndex + 1, sIndex).trim()));
+                if (hourIndex > 0) {
+                    dgapData.setHour(Long.valueOf(fldrecddate.substring(sIndex + 1, hourIndex).trim()));
+                }
+            } else {
+                dgapData.setDay(Long.valueOf(fldrecddate.substring(monthIndex + 1, fldrecddate.length()).trim()));
+            }
         } catch (NumberFormatException e) {
-            e.printStackTrace();
-            logger.error("日期转换错误：" + singleData, e);
-            return false;
+            logger.error("日期[{}]转换错误：{}", fldrecddate, e);
         }
+        return false;
     }
 
-    private String searchEmotionNews(NewsLibBak single) {
+    private String searchEmotion(NewsLibBak single) {
 //		String articleCategory = SCArticleCategory.articleCategory(
 //				single.getFldtitle(), single.getFldcontent());
 //		return articleCategory;
@@ -516,163 +469,126 @@ public class NewsAnalyzer implements Analyzer {
     }
 
     // 分析内容类型
-    private void searchContentNews(NewsLibBak single, DgapData data) {
+    private void searchContentNews(NewsLibBak newsLibBak, DgapData dgapData) {
         // 内容 分析 文章 图片 视频
         // <img
         // src="http://i.ce.cn/ce/cysc/yq/dt/201703/10/W020170310339994179672.jpg">
-        if (StringUtils.isNotEmpty(single.getFldcontent())) {
-            // 类型 中央 地方 法院
-            if ("中华人民共和国中央人民政府".equals(single.getWebname())) {
-                data.setPublishType((long) SysConst.PUBLISH_TYPE_POLICY);
-                data.setHotEventMark(1l);
-                String fldcontent = single.getFldcontent();
-                if (StringUtils.isNotEmpty(single.getPdmc()) && ("国务院文件").equals(single.getPdmc())) {
-                    data.setPublishType((long) SysConst.PUBLISH_TYPE_CENTER);
-                    int start = fldcontent.indexOf("<b>发文字号：</b>");
-                    int end = fldcontent.indexOf("<b>发布日期：</b>");
-                    // 发文字号
-                    data.setPolicyPostShopName(fldcontent.substring(start + 12,
-                            end));
-                    data.setPolicyReleaseMechanism("国务院文件");
-                    data.setPolicyPublishAuthor("国务院");
-                } else {
-                    // 是否是部委发文件
-                    String centerDepartment = analysisConfig.getCenterDepartment();
-                    if (StringUtils.isNotEmpty(single.getPdmc()) && StringUtils.isNotEmpty(centerDepartment)) {
-                        String[] split = centerDepartment.split(",");
-                        for (String str : split) {
-                            if (str.equals(single.getPdmc())) {
-                                int first = fldcontent.indexOf("〔");
-                                if (first == -1) {
-                                    first = fldcontent.indexOf("[");
-                                }
-                                if (first >= 0) {
-                                    int end = fldcontent.indexOf("号", first);
-                                    int start = fldcontent.lastIndexOf(">",
-                                            first);
-                                    if (end >= 0) {
-                                        if (end - start <= 25) {
-                                            data.setPublishType((long) SysConst.PUBLISH_TYPE_CENTER);
-                                            data.setPolicyPostShopName(fldcontent
-                                                    .substring(start + 1,
-                                                            end + 1));
-                                            data.setPolicyReleaseMechanism("部委文件");
-                                            data.setPolicyPublishAuthor(single
-                                                    .getPdmc());
-                                        }
+        String content = newsLibBak.getFldcontent();
+        if (StringUtils.isNotEmpty(content)) {
+            return;
+        }
+
+        // 报道量 双创 创新 创业
+        if (content.indexOf("双创") >= 0 || content.indexOf("创新") >= 0 || content.indexOf("创业") >= 0) {
+            dgapData.setReportNum(1L);
+        }
+
+        String channelName = newsLibBak.getPdmc();
+        // 类型 中央 地方 法院
+        if ("中华人民共和国中央人民政府".equals(newsLibBak.getWebname())) {
+            dgapData.setPublishType(SysConst.PublishType.LOCAL.getCode());
+            dgapData.setHotEventMark(SysConst.HotEventMark.HOT_EVENT.getCode());
+            if ("国务院文件".equals(channelName)) {
+                dgapData.setPublishType(SysConst.PublishType.CENTER.getCode());
+
+                int start = content.indexOf("<b>发文字号：</b>");
+                int end = content.indexOf("<b>发布日期：</b>");
+                // 发文字号
+                dgapData.setPolicyPostShopName(content.substring(start + 12, end));
+                dgapData.setPolicyReleaseMechanism("国务院文件");
+                dgapData.setPolicyPublishAuthor("国务院");
+            } else {
+                // 是否是部委发文件
+                String centerDepartment = analysisConfig.getCenterDepartment();
+                if (StringUtils.isNotEmpty(channelName) && StringUtils.isNotEmpty(centerDepartment)) {
+                    JSONArray centerDepartmentArray = com.huishu.utils.StringUtils.split(centerDepartment, ",");
+                    for (int i = 0, size = centerDepartmentArray.size(); i < size; i++) {
+                        String centerDepartmentItem = centerDepartmentArray.getString(i);
+                        if (centerDepartmentItem.equals(channelName)) {
+                            int first = content.indexOf("〔");
+                            if (first == -1) {
+                                first = content.indexOf("[");
+                            }
+                            if (first >= 0) {
+                                int end = content.indexOf("号", first);
+                                int start = content.lastIndexOf(">", first);
+                                if (end >= 0) {
+                                    if (end - start <= 25) {
+                                        dgapData.setPublishType(SysConst.PublishType.CENTER.getCode());
+                                        dgapData.setPolicyPostShopName(content.substring(start + 1, end + 1));
+                                        dgapData.setPolicyReleaseMechanism("部委文件");
+                                        dgapData.setPolicyPublishAuthor(channelName);
                                     }
                                 }
                             }
                         }
                     }
                 }
-
-                toAnalysisPicture(single.getFldUrlAddr(), single.getFldtitle(), single.getFldcontent(), single.getPdmc(), data);
             }
 
-            // 报道量 双创 创新 创业
-            if (single.getFldcontent().indexOf("双创") >= 0
-                    || single.getFldcontent().indexOf("创新") >= 0
-                    || single.getFldcontent().indexOf("创业") >= 0) {
-                data.setReportNum(1L);
-            }
-
+            analysisPicture(newsLibBak.getFldUrlAddr(), content, channelName, dgapData);
         }
     }
 
-    private synchronized void toAnalysisPicture(String url, String title, String content, String pdmc, DgapData data) {
+    private void analysisPicture(String url, String content, String pdmc, DgapData data) {
+        if (content.indexOf("<img") < 0) {
+            return;
+        }
+
         // 图片
-        long infoType = 1l;
+        long infoType = 1L;
         data.setPolicyInfoType(infoType);
-        if (StringUtils.isNotEmpty(pdmc) && "双创动态".equals(pdmc.trim())) {
-            /*(title.indexOf("双创") >= 0 || title.indexOf("创新") >= 0 || title
-			.indexOf("创业") >= 0) &&*/
-            if (content.indexOf("<img") >= 0) {
-                String pictureSuffix = analysisConfig.getPictureSuffix();
-                if (StringUtils.isNotEmpty(pictureSuffix)) {
-                    String[] split = pictureSuffix.split(",");
-                    for (String suffix : split) {
-                        String tempSuffix = suffix.toLowerCase();
-                        int end = content.indexOf(tempSuffix);
-                        if (end == -1) {
-                            tempSuffix = suffix.toUpperCase();
-                            end = content.indexOf(tempSuffix);
-                        }
-                        if (end >= 0) {
-                            infoType = 2l;
-                            int start = content.lastIndexOf("src=", end);
-                            if (start >= 0) {
-                                String imageurl = content.substring(start + 5,
-                                        end + suffix.length());
-                                toSetImagUrl(data, infoType, imageurl, url);
-                            }
-                            break;
-                        }
+        if ("双创动态".equals(pdmc.trim())) {
+            JSONArray pictureSuffixArray = com.huishu.utils.StringUtils.split(analysisConfig.getPictureSuffix(), ",");
+            for (int i = 0, size = pictureSuffixArray.size(); i < size; i++) {
+                String pictureSuffixItem = pictureSuffixArray.getString(i);
+                String tempSuffix = pictureSuffixItem.toLowerCase();
+                int end = content.indexOf(tempSuffix);
+                if (end == -1) {
+                    tempSuffix = pictureSuffixItem.toUpperCase();
+                    end = content.indexOf(tempSuffix);
+                }
+                if (end >= 0) {
+                    infoType = 2L;
+                    int start = content.lastIndexOf("src=", end);
+                    if (start >= 0) {
+                        String imageUrl = content.substring(start + 5, end + pictureSuffixItem.length());
+                        setImageUrl(data, infoType, imageUrl, url);
                     }
+                    break;
                 }
             }
-
         }
     }
 
-    private void toSetImagUrl(DgapData data, long infoType, String imageurl, String url) {
-        if (imageurl.startsWith("http") && imageurl.length() <= 150) {
+    private void setImageUrl(DgapData dgapData, long infoType, String imageUrl, String url) {
+        if (imageUrl.startsWith("http") && imageUrl.length() <= 150) {
             boolean imageFlag = true;
-            String invalidImageurl = analysisConfig.getInvalidImageurl();
-            if (StringUtils.isNotEmpty(invalidImageurl)) {
-                String[] split2 = invalidImageurl.split(",");
-                for (int x = 0; x < split2.length; x++) {
-                    if (split2[x].indexOf(imageurl) >= 0) {
-                        imageFlag = false;
-                        break;
-                    }
+            String invalidImageUrl = analysisConfig.getInvalidImageurl();
+            JSONArray invalidImageUrlArray = com.huishu.utils.StringUtils.split(invalidImageUrl, ",");
+            for (int i = 0, size = invalidImageUrlArray.size(); i < size; i++) {
+                String invalidImageUrlItem = invalidImageUrlArray.getString(i);
+                if (invalidImageUrlItem.indexOf(imageUrl) >= 0) {
+                    imageFlag = false;
+                    break;
                 }
             }
             if (imageFlag) {
-                data.setPolicyInfoType(infoType);
-                data.setPolicyImageUrl(imageurl);
+                dgapData.setPolicyInfoType(infoType);
+                dgapData.setPolicyImageUrl(imageUrl);
             }
         } else {
-            data.setPolicyInfoType(infoType);
-            data.setPolicyImageUrl(url.substring(0, url.lastIndexOf("/") + 1) + imageurl);
+            dgapData.setPolicyInfoType(infoType);
+            dgapData.setPolicyImageUrl(url.substring(0, url.lastIndexOf("/") + 1) + imageUrl);
         }
     }
 
-    public static String removeTag(String htmlStr) {
-        if (StringUtils.isNotEmpty(htmlStr)) {
-            String regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>"; // script
-            String regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>"; // style
-            String regEx_html = "<[^>]+>"; // HTML tag
-            String regEx_space = "\\s+|\t|\r|\n";// other characters
-
-            Pattern p_script = Pattern.compile(regEx_script,
-                    Pattern.CASE_INSENSITIVE);
-            Matcher m_script = p_script.matcher(htmlStr);
-            htmlStr = m_script.replaceAll("");
-            Pattern p_style = Pattern
-                    .compile(regEx_style, Pattern.CASE_INSENSITIVE);
-            Matcher m_style = p_style.matcher(htmlStr);
-            htmlStr = m_style.replaceAll("");
-            Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
-            Matcher m_html = p_html.matcher(htmlStr);
-            htmlStr = m_html.replaceAll("");
-            Pattern p_space = Pattern
-                    .compile(regEx_space, Pattern.CASE_INSENSITIVE);
-            Matcher m_space = p_space.matcher(htmlStr);
-            htmlStr = m_space.replaceAll(" ");
-        }
-        return htmlStr;
-    }
-
-    private void setDataType(DgapData dgap) {
-        // 人人网 豆瓣 爱哈友 社交类
-        if (StringUtils.isNotEmpty(analysisConfig.getSocialSite())) {
-            String[] split = analysisConfig.getSocialSite().split(",");
-            for (String site : split) {
-                if (dgap.getSite().equals(site)) {
-                    dgap.setReportType(2L);
-                    break;
-                }
+    private void setReportType(DgapData dgapData) {
+        JSONArray socialSiteArray = com.huishu.utils.StringUtils.split(analysisConfig.getSocialSite(), ",");
+        for (int i = 0, size = socialSiteArray.size(); i < size; i++) {
+            if (dgapData.getSite().equals(socialSiteArray.getString(i))) {
+                dgapData.setReportType(SysConst.SiteType.SOCIAL.getCode());
+                break;
             }
         }
     }

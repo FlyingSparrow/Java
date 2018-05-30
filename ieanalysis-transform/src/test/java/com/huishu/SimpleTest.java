@@ -1,9 +1,12 @@
 package com.huishu;
 
+import com.huishu.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +38,48 @@ public class SimpleTest {
                 break;
             }
         }
+    }
+
+    @Test
+    public void testDate(){
+        String str = "9小时前";
+        String str2 = "16小时前";
+        String aaResult = aa(str);
+        String aaResult2 = aa2(str);
+        Assert.assertEquals(aaResult, aaResult2);
+
+        String aaResult3 = aa(str2);
+        String aaResult4 = aa2(str2);
+        Assert.assertEquals(aaResult3, aaResult4);
+    }
+
+    private String aa(String str){
+        Date currentDate = DateUtils.currentDate();
+        String day = str.replaceAll("小时前", "");
+        Integer valueOf = Integer.valueOf(day);
+        int hours = currentDate.getHours();
+        String result;
+        if (valueOf > hours) {
+            result = DateUtils.getFormatDate(DateUtils.getYesterdayNow(currentDate));
+        } else {
+            result = DateUtils.getFormatDate(currentDate);
+        }
+
+        return result;
+    }
+
+    private String aa2(String str){
+        Date currentDate = DateUtils.currentDate();
+        int hours = Integer.parseInt(str.replaceAll("小时前", ""));
+        int hour = DateUtils.getHour(currentDate);
+        String result;
+        if (hours > hour) {
+            result = DateUtils.getFormatDate(DateUtils.getYesterdayNow(currentDate));
+        } else {
+            result = DateUtils.getFormatDate(currentDate);
+        }
+
+        return result;
     }
 
 }

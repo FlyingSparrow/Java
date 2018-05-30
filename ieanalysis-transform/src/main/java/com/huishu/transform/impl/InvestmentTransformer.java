@@ -101,7 +101,7 @@ public class InvestmentTransformer implements Transformer {
                 bak.setInvestor(list.getInvestor());
                 bak.setIndustry(list.getIndustry());
                 bak.setCompanyName(list.getCompanyName());
-                bak.setTime(StringUtils.toTransformTime(list.getTime()));
+                bak.setTime(StringUtils.transformTime(list.getTime()));
                 bak.setRegion(list.getRegion());
                 bak.setAmount(list.getAmount());
                 bak.setEquity(list.getEquity());
