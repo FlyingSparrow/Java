@@ -3,6 +3,8 @@ package com.huishu.analysis.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.huishu.analysis.Analyzer;
+import com.huishu.analysis.vo.NewsVO;
+import com.huishu.analysis.vo.ValidationVO;
 import com.huishu.config.AnalysisConfig;
 import com.huishu.constants.SysConst;
 import com.huishu.entity.CityLib;
@@ -227,7 +229,7 @@ public class DefaultAnalyzer implements Analyzer {
      *
      * @param historyList
      */
-    protected void saveToKingbase(List<KingBaseDgap> historyList) {
+    protected void saveToKingBase(List<KingBaseDgap> historyList) {
         kingBaseDgapService.save(historyList);
         if (analysisConfig.isKingSaveMark()) {
             kingBaseDgapService.saveKing(historyList);
@@ -274,7 +276,6 @@ public class DefaultAnalyzer implements Analyzer {
      *
      * @param dgapData
      * @param fldrecddate
-     * @return
      */
     protected void fillDateInfoOfDgapData(DgapData dgapData, String fldrecddate) {
         try {
@@ -299,7 +300,7 @@ public class DefaultAnalyzer implements Analyzer {
         }
     }
 
-    private void analysisPicture(String url, String content, String pdmc, DgapData data) {
+    protected void analysisPicture(String url, String content, String pdmc, DgapData data) {
         if (content.indexOf("<img") < 0) {
             return;
         }
@@ -417,6 +418,106 @@ public class DefaultAnalyzer implements Analyzer {
                 }
             }
         }
+    }
+
+    protected boolean isNotExists(List<DgapData> dgapDataList, String url) {
+        boolean flag = true;
+        for (DgapData item : dgapDataList) {
+            if (StringUtils.isNotEmpty(item.getPolicyUrl()) && item.getPolicyUrl().equals(url)) {
+                flag = false;
+                break;
+            }
+        }
+
+        return flag;
+    }
+
+    protected boolean validate(ValidationVO validationVO){
+        if (StringUtils.isEmpty(validationVO.getProvince())
+                || StringUtils.isEmpty(validationVO.getIndustry())) {
+            return false;
+        }
+
+        String publishDate = validationVO.getFldrecddate();
+        if (StringUtils.isEmpty(validationVO.getFldcontent())
+                || StringUtils.isEmpty(validationVO.getFldtitle())
+                || StringUtils.isEmpty(validationVO.getFldUrlAddr())
+                || StringUtils.isEmpty(publishDate)) {
+            return false;
+        }
+
+        int yearIndex = publishDate.indexOf("-");
+        if (yearIndex <= 0) {
+            return false;
+        }
+        int monthIndex = publishDate.indexOf("-", yearIndex + 1);
+        if (monthIndex <= 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected DgapData fillDgapData(NewsVO newsVO) {
+        DgapData result = new DgapData();
+
+        result.setPublishType(SysConst.PublishType.LOCAL.getCode());
+        // 分类
+        result.setDataType(SysConst.DataType.POLICY.getCode());
+        String singleData = newsVO.getFldrecddate();
+        result.setTime(newsVO.getFldrecddate());
+        // 时间
+        fillDateInfoOfDgapData(result, singleData);
+        // 站点
+        result.setSite(newsVO.getWebname());
+        // 省份
+        result.setProvince(newsVO.getProvince());
+        result.setArea(newsVO.getArea());
+        // 行业
+        result.setIndustry(newsVO.getIndustry());
+        // 社会渠道(1,网络媒体,2,论坛,3,社交，4,外媒)
+        result.setSocialChannel(SysConst.SocialChannel.INTERNET_MEDIA.getCode());
+
+        // 是否社交网站
+        result.setReportType(SysConst.SiteType.MEDIA.getCode());
+        // 是否热点 评论 点击 转发 超过1000
+        int count = Integer.parseInt(newsVO.getFldHits()) + Integer.parseInt(newsVO.getFldReply());
+        if (count > SysConst.HOT_EVENT_THRESHOLD) {
+            result.setHotEventMark(SysConst.HotEventMark.HOT_EVENT.getCode());
+        } else {
+            result.setHotEventMark(SysConst.HotEventMark.NOT_HOT_EVENT.getCode());
+        }
+
+        // 内容 分析 文章 图片 视频
+        // 关注量
+        result.setHitNum(Long.valueOf(newsVO.getFldHits()));
+
+        String emotion = searchEmotion(newsVO.getFldtitle(), newsVO.getFldcontent());
+        if (SysConst.Emotion.NEUTRAL.getEmotion().equals(emotion)) {
+            result.setEmotionMark(SysConst.Emotion.NEUTRAL.getCode());
+        }
+        if (SysConst.Emotion.NEGATIVE.getEmotion().equals(emotion)) {
+            result.setEmotionMark(SysConst.Emotion.NEGATIVE.getCode());
+        }
+        if (SysConst.Emotion.POSITIVE.getEmotion().equals(emotion)) {
+            result.setEmotionMark(SysConst.Emotion.POSITIVE.getCode());
+        }
+
+        fillPolicyInfo(newsVO.getFldcontent(), newsVO.getWebname(), newsVO.getPdmc(),
+                newsVO.getFldUrlAddr(), result);
+        // 标题
+        result.setPolicyTitle(newsVO.getFldtitle());
+
+        result.setContent(com.huishu.utils.StringUtils.removeHtmlTag(newsVO.getFldcontent()));
+        // url
+        result.setPolicyUrl(newsVO.getFldUrlAddr());
+        // 阅读量
+        result.setReadNum(Long.valueOf(newsVO.getFldHits()));
+        // 评论量
+        result.setHitNum(Long.valueOf(newsVO.getFldReply()));
+        setReportType(result);
+
+        return result;
     }
 
 }
