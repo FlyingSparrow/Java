@@ -1,9 +1,6 @@
 package com.huishu.analysis.vo;
 
-import com.huishu.entity.NewsLibBak;
-import com.huishu.entity.PolicyBak;
-import com.huishu.entity.SiteLib;
-import com.huishu.entity.ZongheBak;
+import com.huishu.entity.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -60,6 +57,12 @@ public class ValidationVO {
     public static ValidationVO create(ZongheBak news, SiteLib siteLib){
         return new ValidationVO(siteLib.getProvince(), siteLib.getIndustry(),
                 news.getFldrecddate(), news.getFldcontent(), news.getFldtitle(), news.getFldUrlAddr());
+    }
+
+    public static ValidationVO create(ForumLibBak forumLibBak, SiteLib siteLib){
+        return new ValidationVO(siteLib.getProvince(), siteLib.getIndustry(),
+                forumLibBak.getFldrecddate(), forumLibBak.getFldcontent(),
+                forumLibBak.getFldtitle(), forumLibBak.getFldUrlAddr());
     }
 
     public String getProvince() {

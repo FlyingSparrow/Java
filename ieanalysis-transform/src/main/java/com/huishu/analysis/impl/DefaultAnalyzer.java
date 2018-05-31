@@ -433,13 +433,10 @@ public class DefaultAnalyzer implements Analyzer {
     }
 
     protected boolean validate(ValidationVO validationVO){
-        if (StringUtils.isEmpty(validationVO.getProvince())
-                || StringUtils.isEmpty(validationVO.getIndustry())) {
-            return false;
-        }
-
         String publishDate = validationVO.getFldrecddate();
-        if (StringUtils.isEmpty(validationVO.getFldcontent())
+        if (StringUtils.isEmpty(validationVO.getProvince())
+                || StringUtils.isEmpty(validationVO.getIndustry())
+                || StringUtils.isEmpty(validationVO.getFldcontent())
                 || StringUtils.isEmpty(validationVO.getFldtitle())
                 || StringUtils.isEmpty(validationVO.getFldUrlAddr())
                 || StringUtils.isEmpty(publishDate)) {

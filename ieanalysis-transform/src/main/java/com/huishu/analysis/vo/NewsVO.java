@@ -1,9 +1,6 @@
 package com.huishu.analysis.vo;
 
-import com.huishu.entity.NewsLibBak;
-import com.huishu.entity.PolicyBak;
-import com.huishu.entity.SiteLib;
-import com.huishu.entity.ZongheBak;
+import com.huishu.entity.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.BeanUtils;
 
@@ -70,6 +67,14 @@ public class NewsVO {
     }
 
     public static NewsVO create(ZongheBak source, SiteLib siteLib){
+        NewsVO target = new NewsVO();
+        BeanUtils.copyProperties(source, target);
+        fillSiteLibInfo(siteLib, target);
+
+        return target;
+    }
+
+    public static NewsVO create(ForumLibBak source, SiteLib siteLib){
         NewsVO target = new NewsVO();
         BeanUtils.copyProperties(source, target);
         fillSiteLibInfo(siteLib, target);

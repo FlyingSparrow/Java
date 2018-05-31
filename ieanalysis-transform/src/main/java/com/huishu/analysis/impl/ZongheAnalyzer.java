@@ -44,6 +44,7 @@ public class ZongheAnalyzer extends DefaultAnalyzer {
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
+        STATIC_LIST.clear();
         if (analysisConfig.isZongheMark()) {
             for (int i = 0; i < analysisConfig.getZongheThreadNum(); i++) {
                 final int pageNumber = i;
