@@ -43,37 +43,33 @@ public class MergerTransformer implements Transformer {
     public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
         if (transformConfig.isMergerMark()) {
             // 转换并购数据
-            for (int x = 0; x < transformConfig.getMergerThreadNum(); x++) {
-                final int tempNum = x;
+            for (int i = 0; i < transformConfig.getMergerThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "投资并购数据转换开始");
+                    logger.info("{}:{} 投资并购数据转换开始", currentThread.getName(), currentThread.getId());
                     try {
-                        transformMergerSmt(transformConfig, tempNum);
-                        transformMergerTz(transformConfig, tempNum);
+                        transformMergerSmt(transformConfig, pageNumber);
+                        transformMergerTz(transformConfig, pageNumber);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         logger.error("投资并购数据转换", e);
                     }
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "投资并购数据转换结束");
+                    logger.info("{}:{} 投资并购数据转换结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    private void transformMergerSmt(TransformConfig transformConfig, int tempNum) {
+    private void transformMergerSmt(TransformConfig transformConfig, int pageNumber) {
         MergerDataSmt news = new MergerDataSmt();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<MergerDataSmt> lists = mergerDataSmtService.findOneHundred(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<MergerDataSmt> list = mergerDataSmtService.findOneHundred(news, pageable);
         List<MergerDataBak> bakList = new ArrayList<MergerDataBak>();
-        if (lists != null && lists.size() > 0) {
-            for (MergerDataSmt list : lists) {
-
+        if (list != null && list.size() > 0) {
+            for (MergerDataSmt item : list) {
                 MergerDataBak bak = new MergerDataBak();
-                BeanUtils.copyProperties(list, bak);
-                bak.setEndTime(StringUtils.transformTime(list.getEndTime()));
+                BeanUtils.copyProperties(item, bak);
+                bak.setEndTime(StringUtils.transformTime(item.getEndTime()));
                 bak.setBiaoShi("0");
                 bak.setSource("私募通");
                 long count = mergerDataBakService.findExit(bak);
@@ -82,31 +78,31 @@ public class MergerTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             mergerDataBakService.save(bakList);
         }
-        mergerDataSmtService.delete(lists);
+        mergerDataSmtService.delete(list);
     }
 
-    private void transformMergerTz(TransformConfig transformConfig, int tempNum) {
+    private void transformMergerTz(TransformConfig transformConfig, int pageNumber) {
         MergerDataTz news = new MergerDataTz();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<MergerDataTz> lists = mergerDataTzService.findOneHundred(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<MergerDataTz> list = mergerDataTzService.findOneHundred(news, pageable);
         List<MergerDataBak> bakList = new ArrayList<MergerDataBak>();
-        if (lists != null && lists.size() > 0) {
-            for (MergerDataTz list : lists) {
+        if (list != null && list.size() > 0) {
+            for (MergerDataTz item : list) {
                 MergerDataBak bak = new MergerDataBak();
-                bak.setFldUrlAddr(list.getFldUrlAddr());
-                bak.setAcquirer(list.getAcquirer());
-                bak.setBeMergered(list.getBeMergered());
-                bak.setIndustry(list.getIndustry());
-                bak.setAcquirerInfo(list.getRegion());
-                bak.setEndTime(StringUtils.transformTime(list.getTime()));
-                bak.setMergerAmount(list.getMergerAmount());
-                bak.setStockEquity(list.getStockEquity());
-                bak.setProduct(list.getProduct());
-                bak.setBusinessValuation(list.getGuzhi());
-                bak.setMergerEvent(list.getMergerEvent());
+                bak.setFldUrlAddr(item.getFldUrlAddr());
+                bak.setAcquirer(item.getAcquirer());
+                bak.setBeMergered(item.getBeMergered());
+                bak.setIndustry(item.getIndustry());
+                bak.setAcquirerInfo(item.getRegion());
+                bak.setEndTime(StringUtils.transformTime(item.getTime()));
+                bak.setMergerAmount(item.getMergerAmount());
+                bak.setStockEquity(item.getStockEquity());
+                bak.setProduct(item.getProduct());
+                bak.setBusinessValuation(item.getGuzhi());
+                bak.setMergerEvent(item.getMergerEvent());
                 bak.setSource("投中网");
                 bak.setBiaoShi("0");
                 long count = mergerDataBakService.findExit(bak);
@@ -115,10 +111,10 @@ public class MergerTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             mergerDataBakService.save(bakList);
         }
-        mergerDataTzService.delete(lists);
+        mergerDataTzService.delete(list);
 
     }
 

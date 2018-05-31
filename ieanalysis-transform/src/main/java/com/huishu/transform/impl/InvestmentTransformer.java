@@ -43,36 +43,33 @@ public class InvestmentTransformer implements Transformer {
     public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
         if (transformConfig.isInvestmentMark()) {
             // 转换投资数据
-            for (int x = 0; x < transformConfig.getInvestmentThreadNum(); x++) {
-                final int tempNum = x;
+            for (int i = 0; i < transformConfig.getInvestmentThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "投资数据转换开始");
+                    logger.info("{}:{} 投资数据转换开始", currentThread.getName(), currentThread.getId());
                     try {
-                        transformInverstmentSmt(tempNum);
-                        transformInverstmentTz(transformConfig, tempNum);
+                        transformInverstmentSmt(transformConfig, pageNumber);
+                        transformInverstmentTz(transformConfig, pageNumber);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         logger.error("投资数据转换", e);
                     }
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "投资数据转换结束");
+                    logger.info("{}:{} 投资数据转换结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    private void transformInverstmentSmt(int tempNum) {
+    private void transformInverstmentSmt(TransformConfig transformConfig, int pageNumber) {
         InvestmentDataSmt news = new InvestmentDataSmt();
-        Pageable pageable = new PageRequest(tempNum, 100);
-        List<InvestmentDataSmt> lists = investmentDataSmtService.findOneHundred(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<InvestmentDataSmt> list = investmentDataSmtService.findOneHundred(news, pageable);
         List<InvestmentDataBak> bakList = new ArrayList<InvestmentDataBak>();
-        if (lists != null && lists.size() > 0) {
-            for (InvestmentDataSmt list : lists) {
+        if (list != null && list.size() > 0) {
+            for (InvestmentDataSmt item : list) {
                 InvestmentDataBak bak = new InvestmentDataBak();
-                BeanUtils.copyProperties(list, bak);
-                bak.setTime(list.getTime());
+                BeanUtils.copyProperties(item, bak);
+                bak.setTime(item.getTime());
                 bak.setBiaoShi("0");
                 bak.setSource("私募通");
                 long count = investmentDataBakService.findExit(bak);
@@ -81,33 +78,32 @@ public class InvestmentTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             investmentDataBakService.save(bakList);
         }
-        investmentDataSmtService.delete(lists);
+        investmentDataSmtService.delete(list);
 
     }
 
     private void transformInverstmentTz(TransformConfig transformConfig, int tempNum) {
         InvestmentDataTz news = new InvestmentDataTz();
         Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<InvestmentDataTz> lists = investmentDataTzService.findOneHundred(
-                news, pageable);
+        List<InvestmentDataTz> list = investmentDataTzService.findOneHundred(news, pageable);
         List<InvestmentDataBak> bakList = new ArrayList<InvestmentDataBak>();
-        if (lists != null && lists.size() > 0) {
-            for (InvestmentDataTz list : lists) {
+        if (list != null && list.size() > 0) {
+            for (InvestmentDataTz item : list) {
                 InvestmentDataBak bak = new InvestmentDataBak();
-                bak.setFldUrlAddr(list.getFldUrlAddr());
-                bak.setInvestor(list.getInvestor());
-                bak.setIndustry(list.getIndustry());
-                bak.setCompanyName(list.getCompanyName());
-                bak.setTime(StringUtils.transformTime(list.getTime()));
-                bak.setRegion(list.getRegion());
-                bak.setAmount(list.getAmount());
-                bak.setEquity(list.getEquity());
-                bak.setProduct(list.getProduct());
-                bak.setAppraisement(list.getAppraisement());
-                bak.setInvestmentEvent(list.getInvestmentEvent());
+                bak.setFldUrlAddr(item.getFldUrlAddr());
+                bak.setInvestor(item.getInvestor());
+                bak.setIndustry(item.getIndustry());
+                bak.setCompanyName(item.getCompanyName());
+                bak.setTime(StringUtils.transformTime(item.getTime()));
+                bak.setRegion(item.getRegion());
+                bak.setAmount(item.getAmount());
+                bak.setEquity(item.getEquity());
+                bak.setProduct(item.getProduct());
+                bak.setAppraisement(item.getAppraisement());
+                bak.setInvestmentEvent(item.getInvestmentEvent());
                 bak.setSource("投中网");
                 bak.setBiaoShi("0");
                 long count = investmentDataBakService.findExit(bak);
@@ -116,10 +112,10 @@ public class InvestmentTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             investmentDataBakService.save(bakList);
         }
-        investmentDataTzService.delete(lists);
+        investmentDataTzService.delete(list);
     }
 
 }

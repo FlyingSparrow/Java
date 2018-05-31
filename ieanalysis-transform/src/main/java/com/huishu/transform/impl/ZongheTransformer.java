@@ -38,34 +38,31 @@ public class ZongheTransformer implements Transformer {
     @Override
     public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
         if (transformConfig.isZongheMark()) {
-            for (int x = 0; x < transformConfig.getZongheThreadNum(); x++) {
-                final int tempNum = x;
+            for (int i = 0; i < transformConfig.getZongheThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "综合数据转换开始");
+                    logger.info("{}:{} 综合数据转换开始", currentThread.getName(), currentThread.getId());
                     try {
-                        transformZonghe(transformConfig, tempNum);
+                        transformZonghe(transformConfig, pageNumber);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         logger.error("综合数据转换异常", e);
                     }
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "综合数据转换结束");
+                    logger.info("{}:{} 综合数据转换结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    private void transformZonghe(TransformConfig transformConfig, int tempNum) {
+    private void transformZonghe(TransformConfig transformConfig, int pageNumber) {
         NewsLib news = new NewsLib();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<NewsLib> lists = newsLibService.findOneHundredZonghe(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<NewsLib> list = newsLibService.findOneHundredZonghe(news, pageable);
         List<ZongheBak> bakList = new ArrayList<ZongheBak>();
-        if (lists != null && lists.size() > 0) {
-            for (NewsLib list : lists) {
+        if (list != null && list.size() > 0) {
+            for (NewsLib item : list) {
                 ZongheBak bak = new ZongheBak();
-                BeanUtils.copyProperties(list, bak);
+                BeanUtils.copyProperties(item, bak);
                 bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
                 bak.setType(String.valueOf(SysConst.PublishType.COMPREHENSIVE.getCode()));
                 bak.setBiaoShi("0");
@@ -75,10 +72,10 @@ public class ZongheTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             zongheBakService.save(bakList);
         }
-        newsLibService.deleteZonghe(lists);
+        newsLibService.deleteZonghe(list);
     }
 
 }

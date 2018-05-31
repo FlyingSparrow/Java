@@ -42,29 +42,26 @@ public class QuitTransformer implements Transformer {
     public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
         if (transformConfig.isQuitMark()) {
             // 转换招聘数据
-            for (int x = 0; x < transformConfig.getQuitThreadNum(); x++) {
-                final int tempNum = x;
+            for (int i = 0; i < transformConfig.getQuitThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "投资退出数据转换开始");
+                    logger.info("{}:{} 投资退出数据转换开始", currentThread.getName(), currentThread.getId());
                     try {
-                        transformQuitSmt(transformConfig, tempNum);
-                        transformQuitTz(transformConfig, tempNum);
+                        transformQuitSmt(transformConfig, pageNumber);
+                        transformQuitTz(transformConfig, pageNumber);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         logger.error("投资退出数据转换", e);
                     }
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "投资退出数据转换结束");
+                    logger.info("{}:{} 投资退出数据转换结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    private void transformQuitSmt(TransformConfig transformConfig, int tempNum) {
+    private void transformQuitSmt(TransformConfig transformConfig, int pageNumber) {
         QuitDataSmt news = new QuitDataSmt();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
         List<QuitDataSmt> lists = quitDataSmtService.findOneHundred(news, pageable);
         List<QuitDataBak> bakList = new ArrayList<QuitDataBak>();
         if (lists != null && lists.size() > 0) {
@@ -80,33 +77,32 @@ public class QuitTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             quitDataBakService.save(bakList);
         }
         quitDataSmtService.delete(lists);
     }
 
-    private void transformQuitTz(TransformConfig transformConfig, int tempNum) {
+    private void transformQuitTz(TransformConfig transformConfig, int pageNumber) {
         QuitDataTz news = new QuitDataTz();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<QuitDataTz> lists = quitDataTzService.findOneHundred(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<QuitDataTz> list = quitDataTzService.findOneHundred(news, pageable);
         List<QuitDataBak> bakList = new ArrayList<QuitDataBak>();
-        if (lists != null && lists.size() > 0) {
-            for (QuitDataTz list : lists) {
-
+        if (list != null && list.size() > 0) {
+            for (QuitDataTz item : list) {
                 QuitDataBak bak = new QuitDataBak();
-                bak.setFldUrlAddr(list.getFldUrlAddr());
-                bak.setIndustry(list.getIndustry());
-                bak.setInvestor(list.getInvestor());
-                bak.setRegion(list.getRegion());
-                bak.setTime(StringUtils.transformTime(list.getTime()));
-                bak.setReturnAmount(list.getReturnAmount());
-                bak.setCompanyName(list.getCompanyName());
-                bak.setReturnMultiple(list.getReturnMultiple());
-                bak.setQuitWay(list.getQuitWay());
-                bak.setQuitEvent(list.getQuitEvent());
-                bak.setProduct(list.getProduct());
-                bak.setZongtouzie(list.getZongtouzie());
+                bak.setFldUrlAddr(item.getFldUrlAddr());
+                bak.setIndustry(item.getIndustry());
+                bak.setInvestor(item.getInvestor());
+                bak.setRegion(item.getRegion());
+                bak.setTime(StringUtils.transformTime(item.getTime()));
+                bak.setReturnAmount(item.getReturnAmount());
+                bak.setCompanyName(item.getCompanyName());
+                bak.setReturnMultiple(item.getReturnMultiple());
+                bak.setQuitWay(item.getQuitWay());
+                bak.setQuitEvent(item.getQuitEvent());
+                bak.setProduct(item.getProduct());
+                bak.setZongtouzie(item.getZongtouzie());
                 bak.setSource("投中网");
                 bak.setBiaoShi("0");
                 long count = quitDataBakService.findExit(bak);
@@ -115,10 +111,10 @@ public class QuitTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             quitDataBakService.save(bakList);
         }
-        quitDataTzService.delete(lists);
+        quitDataTzService.delete(list);
     }
 
 }

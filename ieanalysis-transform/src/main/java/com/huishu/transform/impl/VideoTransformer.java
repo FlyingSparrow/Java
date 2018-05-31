@@ -38,34 +38,31 @@ public class VideoTransformer implements Transformer {
     @Override
     public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
         if (transformConfig.isVideoMark()) {
-            for (int x = 0; x < transformConfig.getVideoThreadNum(); x++) {
-                final int tempNum = x;
+            for (int i = 0; i < transformConfig.getVideoThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "视频数据转换开始");
+                    logger.info("{}:{} 视频数据转换开始", currentThread.getName(), currentThread.getId());
                     try {
-                        transformVideo(transformConfig, tempNum);
+                        transformVideo(transformConfig, pageNumber);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         logger.error("视频数据转换异常", e);
                     }
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "视频数据转换结束");
+                    logger.info("{}:{} 视频数据转换结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    private void transformVideo(TransformConfig transformConfig, int tempNum) {
+    private void transformVideo(TransformConfig transformConfig, int pageNumber) {
         Video news = new Video();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<Video> lists = videoService.findOneHundred(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<Video> list = videoService.findOneHundred(news, pageable);
         List<VideoBak> bakList = new ArrayList<VideoBak>();
-        if (lists != null && lists.size() > 0) {
-            for (Video list : lists) {
+        if (list != null && list.size() > 0) {
+            for (Video item : list) {
                 VideoBak bak = new VideoBak();
-                BeanUtils.copyProperties(list, bak);
+                BeanUtils.copyProperties(item, bak);
                 bak.setFabushijian(StringUtils.transformTime(bak.getFabushijian()));
                 bak.setBiaoShi("0");
                 long count = videoBakService.findExist(bak);
@@ -74,10 +71,10 @@ public class VideoTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             videoBakService.save(bakList);
         }
-        videoService.delete(lists);
+        videoService.delete(list);
     }
 
 }

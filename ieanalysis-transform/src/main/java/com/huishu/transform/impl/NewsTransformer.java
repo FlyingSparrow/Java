@@ -38,34 +38,31 @@ public class NewsTransformer implements Transformer {
     @Override
     public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
         if (transformConfig.isNewsMark()) {
-            for (int x = 0; x < transformConfig.getNewsThreadNum(); x++) {
-                final int tempNum = x;
+            for (int i = 0; i < transformConfig.getNewsThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "新闻数据转换开始");
+                    logger.info("{}:{} 新闻数据转换开始", currentThread.getName(), currentThread.getId());
                     try {
-                        transformNews(transformConfig, tempNum);
+                        transformNews(transformConfig, pageNumber);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         logger.error("新闻数据转换异常", e);
                     }
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "新闻数据转换结束");
+                    logger.info("{}:{} 新闻数据转换结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    private void transformNews(TransformConfig transformConfig, int tempNum) {
+    private void transformNews(TransformConfig transformConfig, int pageNumber) {
         NewsLib news = new NewsLib();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<NewsLib> lists = newsLibService.findOneHundred(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<NewsLib> list = newsLibService.findOneHundred(news, pageable);
         List<NewsLibBak> bakList = new ArrayList<NewsLibBak>();
-        if (lists != null && lists.size() > 0) {
-            for (NewsLib list : lists) {
+        if (list != null && list.size() > 0) {
+            for (NewsLib item : list) {
                 NewsLibBak bak = new NewsLibBak();
-                BeanUtils.copyProperties(list, bak);
+                BeanUtils.copyProperties(item, bak);
                 bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
                 bak.setType(String.valueOf(SysConst.PublishType.NEWS.getCode()));
                 bak.setBiaoShi("0");
@@ -75,9 +72,9 @@ public class NewsTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             newsLibBakService.save(bakList);
         }
-        newsLibService.delete(lists);
+        newsLibService.delete(list);
     }
 }

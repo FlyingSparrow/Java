@@ -38,34 +38,31 @@ public class PolicyTransformer implements Transformer {
     @Override
     public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
         if (transformConfig.isPolicyMark()) {
-            for (int x = 0; x < transformConfig.getPolicyThreadNum(); x++) {
-                final int tempNum = x;
+            for (int i = 0; i < transformConfig.getPolicyThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "政策数据转换开始");
+                    logger.info("{}:{} 政策数据转换开始", currentThread.getName(), currentThread.getId());
                     try {
-                        transformPolicy(transformConfig, tempNum);
+                        transformPolicy(transformConfig, pageNumber);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         logger.error("政策数据转换异常", e);
                     }
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "政策数据转换结束");
+                    logger.info("{}:{} 政策数据转换结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    private void transformPolicy(TransformConfig transformConfig, int tempNum) {
+    private void transformPolicy(TransformConfig transformConfig, int pageNumber) {
         NewsLib news = new NewsLib();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<NewsLib> lists = newsLibService.findOneHundredPolicy(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<NewsLib> list = newsLibService.findOneHundredPolicy(news, pageable);
         List<PolicyBak> bakList = new ArrayList<PolicyBak>();
-        if (lists != null && lists.size() > 0) {
-            for (NewsLib list : lists) {
+        if (list != null && list.size() > 0) {
+            for (NewsLib item : list) {
                 PolicyBak bak = new PolicyBak();
-                BeanUtils.copyProperties(list, bak);
+                BeanUtils.copyProperties(item, bak);
                 bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
                 bak.setType(String.valueOf(SysConst.PublishType.LOCAL.getCode()));
                 bak.setBiaoShi("0");
@@ -75,10 +72,10 @@ public class PolicyTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             policyBakService.save(bakList);
         }
-        newsLibService.deletePolicy(lists);
+        newsLibService.deletePolicy(list);
     }
 
 }

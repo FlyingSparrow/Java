@@ -38,34 +38,31 @@ public class ForumTransformer implements Transformer {
     @Override
     public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
         if (transformConfig.isForumMark()) {
-            for (int x = 0; x < transformConfig.getForumThreadNum(); x++) {
-                final int tempNum = x;
+            for (int i = 0; i < transformConfig.getForumThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "论坛数据转换开始");
+                    logger.info("{}:{} 论坛数据转换开始", currentThread.getName(), currentThread.getId());
                     try {
-                        transformForum(transformConfig, tempNum);
+                        transformForum(transformConfig, pageNumber);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         logger.error("论坛数据转换异常", e);
                     }
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "论坛数据转换结束");
+                    logger.info("{}:{} 论坛数据转换结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    private void transformForum(TransformConfig transformConfig, int tempNum) {
+    private void transformForum(TransformConfig transformConfig, int pageNumber) {
         ForumLib news = new ForumLib();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<ForumLib> lists = forumLibService.findOneHundred(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<ForumLib> list = forumLibService.findOneHundred(news, pageable);
         List<ForumLibBak> bakList = new ArrayList<ForumLibBak>();
-        if (lists != null && lists.size() > 0) {
-            for (ForumLib list : lists) {
+        if (list != null && list.size() > 0) {
+            for (ForumLib item : list) {
                 ForumLibBak bak = new ForumLibBak();
-                BeanUtils.copyProperties(list, bak);
+                BeanUtils.copyProperties(item, bak);
                 bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
                 bak.setBiaoShi("0");
                 long count = forumLibBakService.findExist(bak);
@@ -74,10 +71,10 @@ public class ForumTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             forumLibBakService.save(bakList);
         }
-        forumLibService.delete(lists);
+        forumLibService.delete(list);
     }
 
 }

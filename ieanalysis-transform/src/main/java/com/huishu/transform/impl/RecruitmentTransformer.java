@@ -39,34 +39,31 @@ public class RecruitmentTransformer implements Transformer {
     public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
         if (transformConfig.isRecruitmentMark()) {
             // 转换招聘数据
-            for (int x = 0; x < transformConfig.getRecruitmentThreadNum(); x++) {
-                final int tempNum = x;
+            for (int i = 0; i < transformConfig.getRecruitmentThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "招聘数据转换开始");
+                    logger.info("{}:{} 招聘数据转换开始", currentThread.getName(), currentThread.getId());
                     try {
-                        transformRecruitment(transformConfig, tempNum);
+                        transformRecruitment(transformConfig, pageNumber);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         logger.error("招聘转换异常", e);
                     }
-                    logger.info(currentThread.getName() + ":"
-                            + currentThread.getId() + "招聘数据转换结束");
+                    logger.info("{}:{} 招聘数据转换结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    private void transformRecruitment(TransformConfig transformConfig, int tempNum) {
+    private void transformRecruitment(TransformConfig transformConfig, int pageNumber) {
         Recruitment news = new Recruitment();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<Recruitment> lists = recruitmentService.findOneHundred(news, pageable);
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<Recruitment> list = recruitmentService.findOneHundred(news, pageable);
         List<RecruitmentBak> bakList = new ArrayList<RecruitmentBak>();
-        if (lists != null && lists.size() > 0) {
-            for (Recruitment list : lists) {
+        if (list != null && list.size() > 0) {
+            for (Recruitment item : list) {
                 RecruitmentBak bak = new RecruitmentBak();
-                BeanUtils.copyProperties(list, bak);
+                BeanUtils.copyProperties(item, bak);
                 bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
                 bak.setBiaoShi("0");
                 long count = recruitmentBakService.findExist(bak);
@@ -75,10 +72,10 @@ public class RecruitmentTransformer implements Transformer {
                 }
             }
         }
-        if (bakList != null && bakList.size() > 0) {
+        if (bakList.size() > 0) {
             recruitmentBakService.save(bakList);
         }
-        recruitmentService.delete(lists);
+        recruitmentService.delete(list);
     }
 
 }
