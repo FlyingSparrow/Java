@@ -3,9 +3,9 @@ package com.huishu.analysis.impl;
 import com.huishu.config.AnalysisConfig;
 import com.huishu.constants.SysConst;
 import com.huishu.entity.KingBaseDgap;
-import com.huishu.entity.NewsLibBak;
+import com.huishu.entity.PolicyBak;
 import com.huishu.entity.SiteLib;
-import com.huishu.service.NewsLibBakService;
+import com.huishu.service.PolicyBakService;
 import com.huishu.service.SiteLibService;
 import com.huishu.vo.DgapData;
 import org.apache.commons.lang3.StringUtils;
@@ -20,41 +20,40 @@ import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * 分析新闻数据
+ * 分析政策数据
  *
  * @author wangjianchun
  * @create 2018/5/26
  */
-@Component("newsAnalyzer")
-public class NewsAnalyzer extends DefaultAnalyzer {
+@Component("policyAnalyzer")
+public class PolicyAnalyzer extends DefaultAnalyzer {
 
-    private static final List<DgapData> newsStaticList = new ArrayList<DgapData>();
+    private static List<DgapData> policyStaticList = new ArrayList<DgapData>();
 
     @Autowired
-    private NewsLibBakService newsLibService;
+    private PolicyBakService policyBakService;
     @Autowired
     private SiteLibService siteLibService;
 
     @Override
     public String getName() {
-        return SysConst.NEWS;
+        return SysConst.POLICY;
     }
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        newsStaticList.clear();
-        if (analysisConfig.isNewsMark()) {
-            for (int i = 0; i < analysisConfig.getNewsThreadNum(); i++) {
+        if (analysisConfig.isPolicyMark()) {
+            for (int i = 0; i < analysisConfig.getPolicyThreadNum(); i++) {
                 final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{}新闻数据分析开始", currentThread.getName(), currentThread.getId());
+                    logger.info("{}:{}政策数据分析开始", currentThread.getName(), currentThread.getId());
                     try {
                         analysisData(analysisConfig, indexMap, pageNumber);
                     } catch (Exception e) {
-                        logger.error("新闻数据分析异常", e);
+                        logger.error("政策数据分析异常", e);
                     }
-                    logger.info("{}:{}新闻数据分析结束", currentThread.getName(), currentThread.getId());
+                    logger.info("{}:{}政策数据分析结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
@@ -68,27 +67,27 @@ public class NewsAnalyzer extends DefaultAnalyzer {
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
         // 1、获取数据 是否重复数据
-        NewsLibBak news = new NewsLibBak();
-        news.setId(Long.valueOf(indexMap.get(SysConst.NEWS)));
+        PolicyBak news = new PolicyBak();
+        news.setId(Long.valueOf(indexMap.get(SysConst.POLICY)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<NewsLibBak> newsList = newsLibService.findOneHundred(news, pageable);
+        List<PolicyBak> newsList = policyBakService.findOneHundred(news, pageable);
 
-        logger.info("新闻分析,读取 {} 条", newsList.size());
+        logger.info("政策分析,读取 {} 条", newsList.size());
 
         if (newsList.size() <= 0) {
             return;
         }
 
         String newId = newsList.get(newsList.size() - 1).getId() + "";
-        String oldId = indexMap.get(SysConst.NEWS);
+        String oldId = indexMap.get(SysConst.POLICY);
         if (Long.valueOf(newId) > Long.valueOf(oldId)) {
-            indexMap.put(SysConst.NEWS, newId);
+            indexMap.put(SysConst.POLICY, newId);
         }
 
         List<DgapData> saveList = new ArrayList<DgapData>();
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
-        List<NewsLibBak> readList = new ArrayList<NewsLibBak>();
-        for (NewsLibBak item : newsList) {
+        List<PolicyBak> readList = new ArrayList<PolicyBak>();
+        for (PolicyBak item : newsList) {
             if (isNotExists(item.getFldUrlAddr())) {
                 // 分析
                 SiteLib site = siteLibService.findByName(item.getWebname());
@@ -100,7 +99,7 @@ public class NewsAnalyzer extends DefaultAnalyzer {
                         addKingBaseData(historyList, dgapData);
                         dgapData.setId(String.valueOf(item.getId()));
                         saveList.add(dgapData);
-                        newsStaticList.add(dgapData);
+                        policyStaticList.add(dgapData);
                     }
                 }
                 if (SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode().equals(item.getBiaoShi())) {
@@ -112,28 +111,22 @@ public class NewsAnalyzer extends DefaultAnalyzer {
 
 
         if (saveList.size() > 0) {
-            saveToFile(saveList, SysConst.NEWS, analysisConfig.getSourceMorePath());
+            saveToFile(saveList, SysConst.POLICY, analysisConfig.getSourceMorePath());
             saveToKingbase(historyList);
         }
         if (readList.size() > 0) {
-            newsLibService.save(readList);
+            policyBakService.save(readList);
         }
 
-        logger.info("新闻分析,入库 {} 条", saveList.size());
-        logger.info("新闻分析,分析 {} 条", readList.size());
+        logger.info("政策分析,入库 {} 条", saveList.size());
+        logger.info("政策分析,分析 {} 条", readList.size());
 
         recordNum(indexMap);
     }
 
-    /**
-     * 根据url判断是否存在重复数据
-     *
-     * @param url
-     * @return
-     */
     private boolean isNotExists(String url) {
         boolean flag = true;
-        for (DgapData item : newsStaticList) {
+        for (DgapData item : policyStaticList) {
             if (StringUtils.isNotEmpty(item.getPolicyUrl())
                     && item.getPolicyUrl().equals(url)) {
                 flag = false;
@@ -144,44 +137,46 @@ public class NewsAnalyzer extends DefaultAnalyzer {
         return flag;
     }
 
-    private DgapData fillDgapData(NewsLibBak newsLibBak, SiteLib siteLib) {
-        if (!validate(newsLibBak, siteLib)) {
+    private DgapData fillDgapData(PolicyBak policyBak, SiteLib siteLib) {
+        if (!validate(policyBak, siteLib)) {
             return null;
         }
 
         DgapData result = new DgapData();
-        // 时间
-        fillDateInfoOfDgapData(result, newsLibBak.getFldrecddate());
 
-        result.setPublishType(SysConst.PublishType.NEWS.getCode());
+        result.setPublishType(SysConst.PublishType.LOCAL.getCode());
         // 分类
         result.setDataType(SysConst.DataType.POLICY.getCode());
-        result.setTime(newsLibBak.getFldrecddate());
-
+        String singleData = policyBak.getFldrecddate();
+        result.setTime(policyBak.getFldrecddate());
+        // 时间
+        fillDateInfoOfDgapData(result, singleData);
         // 站点
-        result.setSite(newsLibBak.getWebname());
+        result.setSite(policyBak.getWebname());
         // 省份
         result.setProvince(siteLib.getProvince());
         result.setArea(siteLib.getArea());
         // 行业
         result.setIndustry(siteLib.getIndustry());
+        // 社会渠道(1,网络媒体,2,论坛,3,社交，4,外媒)
         result.setSocialChannel(SysConst.SocialChannel.INTERNET_MEDIA.getCode());
 
         // 是否社交网站
         result.setReportType(SysConst.SiteType.MEDIA.getCode());
         // 是否热点 评论 点击 转发 超过1000
-        int count = Integer.valueOf(newsLibBak.getFldHits())
-                + Integer.valueOf(newsLibBak.getFldReply());
+        int count = Integer.valueOf(policyBak.getFldHits())
+                + Integer.valueOf(policyBak.getFldReply());
         if (count > SysConst.HOT_EVENT_THRESHOLD) {
             result.setHotEventMark(SysConst.HotEventMark.HOT_EVENT.getCode());
         } else {
             result.setHotEventMark(SysConst.HotEventMark.NOT_HOT_EVENT.getCode());
         }
+
         // 内容 分析 文章 图片 视频
         // 关注量
-        result.setHitNum(Long.valueOf(newsLibBak.getFldHits()));
+        result.setHitNum(Long.valueOf(policyBak.getFldHits()));
 
-        String emotion = searchEmotion(newsLibBak.getFldtitle(), newsLibBak.getFldcontent());
+        String emotion = searchEmotion(policyBak.getFldtitle(), policyBak.getFldcontent());
         if (SysConst.Emotion.NEUTRAL.getEmotion().equals(emotion)) {
             result.setEmotionMark(SysConst.Emotion.NEUTRAL.getCode());
         }
@@ -191,33 +186,34 @@ public class NewsAnalyzer extends DefaultAnalyzer {
         if (SysConst.Emotion.POSITIVE.getEmotion().equals(emotion)) {
             result.setEmotionMark(SysConst.Emotion.POSITIVE.getCode());
         }
-        fillPolicyInfo(newsLibBak.getFldcontent(), newsLibBak.getWebname(), newsLibBak.getPdmc(),
-                newsLibBak.getFldUrlAddr(), result);
-        // 标题
-        result.setPolicyTitle(newsLibBak.getFldtitle());
 
-        result.setContent(com.huishu.utils.StringUtils.removeHtmlTag(newsLibBak.getFldcontent()));
+        fillPolicyInfo(policyBak.getFldcontent(), policyBak.getWebname(), policyBak.getPdmc(),
+                policyBak.getFldUrlAddr(), result);
+        // 标题
+        result.setPolicyTitle(policyBak.getFldtitle());
+
+        result.setContent(com.huishu.utils.StringUtils.removeHtmlTag(policyBak.getFldcontent()));
         // url
-        result.setPolicyUrl(newsLibBak.getFldUrlAddr());
+        result.setPolicyUrl(policyBak.getFldUrlAddr());
         // 阅读量
-        result.setReadNum(Long.valueOf(newsLibBak.getFldHits()));
+        result.setReadNum(Long.valueOf(policyBak.getFldHits()));
         // 评论量
-        result.setHitNum(Long.valueOf(newsLibBak.getFldReply()));
+        result.setHitNum(Long.valueOf(policyBak.getFldReply()));
         setReportType(result);
 
         return result;
     }
 
-    private boolean validate(NewsLibBak newsLibBak, SiteLib siteLib){
+    private boolean validate(PolicyBak policyBak, SiteLib siteLib){
         if (StringUtils.isEmpty(siteLib.getProvince())
                 || StringUtils.isEmpty(siteLib.getIndustry())) {
             return false;
         }
 
-        String fldrecddate = newsLibBak.getFldrecddate();
-        if (StringUtils.isEmpty(newsLibBak.getFldcontent())
-                || StringUtils.isEmpty(newsLibBak.getFldtitle())
-                || StringUtils.isEmpty(newsLibBak.getFldUrlAddr())
+        String fldrecddate = policyBak.getFldrecddate();
+        if (StringUtils.isEmpty(policyBak.getFldcontent())
+                || StringUtils.isEmpty(policyBak.getFldtitle())
+                || StringUtils.isEmpty(policyBak.getFldUrlAddr())
                 || StringUtils.isEmpty(fldrecddate)) {
             return false;
         }

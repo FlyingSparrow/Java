@@ -25,6 +25,11 @@ public class SysConst {
     public static final String INDUSTRY = "industry";
 
     /**
+     * 热点事件阈值
+     */
+    public static final int HOT_EVENT_THRESHOLD = 1000;
+
+    /**
      * ES 数据状态枚举类
      */
     public enum ESDataStatus {

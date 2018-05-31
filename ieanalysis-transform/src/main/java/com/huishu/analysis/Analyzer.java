@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Created by wangjianchun on 2017/11/21.
+ * @author wangjianchun
  */
 public interface Analyzer {
 
     String getName();
 
-    void analysis(AnalysisConfig config, ThreadPoolExecutor executor, Map<String, String> indexMap);
+    void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap);
 
 }
