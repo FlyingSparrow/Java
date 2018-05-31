@@ -7,10 +7,7 @@ import com.huishu.entity.MergerDataTz;
 import com.huishu.service.MergerDataBakService;
 import com.huishu.service.MergerDataSmtService;
 import com.huishu.service.MergerDataTzService;
-import com.huishu.transform.Transformer;
 import com.huishu.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 投资并购数据转换器
@@ -28,9 +24,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @create 2018/5/26
  */
 @Component("mergerTransformer")
-public class MergerTransformer implements Transformer {
-
-    private static Logger logger = LoggerFactory.getLogger(MergerTransformer.class);
+public class MergerTransformer extends AbstractTransformer{
 
     @Autowired
     private MergerDataTzService mergerDataTzService;
@@ -38,29 +32,16 @@ public class MergerTransformer implements Transformer {
     private MergerDataSmtService mergerDataSmtService;
     @Autowired
     private MergerDataBakService mergerDataBakService;
+    @Autowired
+    private TransformConfig transformConfig;
 
     @Override
-    public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
-        if (transformConfig.isMergerMark()) {
-            // 转换并购数据
-            for (int i = 0; i < transformConfig.getMergerThreadNum(); i++) {
-                final int pageNumber = i;
-                executor.execute(() -> {
-                    Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{} 投资并购数据转换开始", currentThread.getName(), currentThread.getId());
-                    try {
-                        transformMergerSmt(transformConfig, pageNumber);
-                        transformMergerTz(transformConfig, pageNumber);
-                    } catch (Exception e) {
-                        logger.error("投资并购数据转换", e);
-                    }
-                    logger.info("{}:{} 投资并购数据转换结束", currentThread.getName(), currentThread.getId());
-                });
-            }
-        }
+    protected void transformData(int pageNumber) {
+        transformMergerSmt(pageNumber);
+        transformMergerTz(pageNumber);
     }
 
-    private void transformMergerSmt(TransformConfig transformConfig, int pageNumber) {
+    private void transformMergerSmt(int pageNumber) {
         MergerDataSmt news = new MergerDataSmt();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
         List<MergerDataSmt> list = mergerDataSmtService.findOneHundred(news, pageable);
@@ -84,7 +65,7 @@ public class MergerTransformer implements Transformer {
         mergerDataSmtService.delete(list);
     }
 
-    private void transformMergerTz(TransformConfig transformConfig, int pageNumber) {
+    private void transformMergerTz(int pageNumber) {
         MergerDataTz news = new MergerDataTz();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
         List<MergerDataTz> list = mergerDataTzService.findOneHundred(news, pageable);
@@ -115,7 +96,20 @@ public class MergerTransformer implements Transformer {
             mergerDataBakService.save(bakList);
         }
         mergerDataTzService.delete(list);
-
     }
 
+    @Override
+    public boolean getMark() {
+        return transformConfig.isMergerMark();
+    }
+
+    @Override
+    public int getThreadNum() {
+        return transformConfig.getMergerThreadNum();
+    }
+
+    @Override
+    public String getName() {
+        return "投资并购";
+    }
 }

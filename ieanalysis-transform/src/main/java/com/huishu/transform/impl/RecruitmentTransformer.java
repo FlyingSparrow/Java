@@ -5,10 +5,7 @@ import com.huishu.entity.Recruitment;
 import com.huishu.entity.RecruitmentBak;
 import com.huishu.service.RecruitmentBakService;
 import com.huishu.service.RecruitmentService;
-import com.huishu.transform.Transformer;
 import com.huishu.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 招聘数据转换器
@@ -26,36 +22,17 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @create 2018/5/26
  */
 @Component("recruitmentTransformer")
-public class RecruitmentTransformer implements Transformer {
-
-    private static Logger logger = LoggerFactory.getLogger(RecruitmentTransformer.class);
+public class RecruitmentTransformer extends AbstractTransformer {
 
     @Autowired
     private RecruitmentService recruitmentService;
     @Autowired
     private RecruitmentBakService recruitmentBakService;
+    @Autowired
+    private TransformConfig transformConfig;
 
     @Override
-    public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
-        if (transformConfig.isRecruitmentMark()) {
-            // 转换招聘数据
-            for (int i = 0; i < transformConfig.getRecruitmentThreadNum(); i++) {
-                final int pageNumber = i;
-                executor.execute(() -> {
-                    Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{} 招聘数据转换开始", currentThread.getName(), currentThread.getId());
-                    try {
-                        transformRecruitment(transformConfig, pageNumber);
-                    } catch (Exception e) {
-                        logger.error("招聘转换异常", e);
-                    }
-                    logger.info("{}:{} 招聘数据转换结束", currentThread.getName(), currentThread.getId());
-                });
-            }
-        }
-    }
-
-    private void transformRecruitment(TransformConfig transformConfig, int pageNumber) {
+    protected void transformData(int pageNumber) {
         Recruitment news = new Recruitment();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
         List<Recruitment> list = recruitmentService.findOneHundred(news, pageable);
@@ -78,4 +55,18 @@ public class RecruitmentTransformer implements Transformer {
         recruitmentService.delete(list);
     }
 
+    @Override
+    public boolean getMark() {
+        return transformConfig.isRecruitmentMark();
+    }
+
+    @Override
+    public int getThreadNum() {
+        return transformConfig.getRecruitmentThreadNum();
+    }
+
+    @Override
+    public String getName() {
+        return "招聘";
+    }
 }

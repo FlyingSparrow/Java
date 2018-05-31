@@ -7,10 +7,7 @@ import com.huishu.entity.QuitDataTz;
 import com.huishu.service.QuitDataBakService;
 import com.huishu.service.QuitDataSmtService;
 import com.huishu.service.QuitDataTzService;
-import com.huishu.transform.Transformer;
 import com.huishu.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 投资退出数据转换器
@@ -27,9 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @create 2018/5/26
  */
 @Component("quitTransformer")
-public class QuitTransformer implements Transformer {
-
-    private static Logger logger = LoggerFactory.getLogger(QuitTransformer.class);
+public class QuitTransformer extends AbstractTransformer {
 
     @Autowired
     private QuitDataTzService quitDataTzService;
@@ -37,29 +31,16 @@ public class QuitTransformer implements Transformer {
     private QuitDataSmtService quitDataSmtService;
     @Autowired
     private QuitDataBakService quitDataBakService;
+    @Autowired
+    private TransformConfig transformConfig;
 
     @Override
-    public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
-        if (transformConfig.isQuitMark()) {
-            // 转换招聘数据
-            for (int i = 0; i < transformConfig.getQuitThreadNum(); i++) {
-                final int pageNumber = i;
-                executor.execute(() -> {
-                    Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{} 投资退出数据转换开始", currentThread.getName(), currentThread.getId());
-                    try {
-                        transformQuitSmt(transformConfig, pageNumber);
-                        transformQuitTz(transformConfig, pageNumber);
-                    } catch (Exception e) {
-                        logger.error("投资退出数据转换", e);
-                    }
-                    logger.info("{}:{} 投资退出数据转换结束", currentThread.getName(), currentThread.getId());
-                });
-            }
-        }
+    protected void transformData(int pageNumber) {
+        transformQuitSmt(pageNumber);
+        transformQuitTz(pageNumber);
     }
 
-    private void transformQuitSmt(TransformConfig transformConfig, int pageNumber) {
+    private void transformQuitSmt(int pageNumber) {
         QuitDataSmt news = new QuitDataSmt();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
         List<QuitDataSmt> lists = quitDataSmtService.findOneHundred(news, pageable);
@@ -83,7 +64,7 @@ public class QuitTransformer implements Transformer {
         quitDataSmtService.delete(lists);
     }
 
-    private void transformQuitTz(TransformConfig transformConfig, int pageNumber) {
+    private void transformQuitTz(int pageNumber) {
         QuitDataTz news = new QuitDataTz();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
         List<QuitDataTz> list = quitDataTzService.findOneHundred(news, pageable);
@@ -117,4 +98,18 @@ public class QuitTransformer implements Transformer {
         quitDataTzService.delete(list);
     }
 
+    @Override
+    public boolean getMark() {
+        return transformConfig.isQuitMark();
+    }
+
+    @Override
+    public int getThreadNum() {
+        return transformConfig.getQuitThreadNum();
+    }
+
+    @Override
+    public String getName() {
+        return "投资退出";
+    }
 }

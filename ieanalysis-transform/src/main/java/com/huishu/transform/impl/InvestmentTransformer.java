@@ -7,10 +7,7 @@ import com.huishu.entity.InvestmentDataTz;
 import com.huishu.service.InvestmentDataBakService;
 import com.huishu.service.InvestmentDataSmtService;
 import com.huishu.service.InvestmentDataTzService;
-import com.huishu.transform.Transformer;
 import com.huishu.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 投资数据转换器
@@ -28,9 +24,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @create 2018/5/26
  */
 @Component("investmentTransformer")
-public class InvestmentTransformer implements Transformer {
-
-    private static Logger logger = LoggerFactory.getLogger(InvestmentTransformer.class);
+public class InvestmentTransformer extends AbstractTransformer {
 
     @Autowired
     private InvestmentDataTzService investmentDataTzService;
@@ -38,29 +32,16 @@ public class InvestmentTransformer implements Transformer {
     private InvestmentDataSmtService investmentDataSmtService;
     @Autowired
     private InvestmentDataBakService investmentDataBakService;
+    @Autowired
+    private TransformConfig transformConfig;
 
     @Override
-    public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
-        if (transformConfig.isInvestmentMark()) {
-            // 转换投资数据
-            for (int i = 0; i < transformConfig.getInvestmentThreadNum(); i++) {
-                final int pageNumber = i;
-                executor.execute(() -> {
-                    Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{} 投资数据转换开始", currentThread.getName(), currentThread.getId());
-                    try {
-                        transformInverstmentSmt(transformConfig, pageNumber);
-                        transformInverstmentTz(transformConfig, pageNumber);
-                    } catch (Exception e) {
-                        logger.error("投资数据转换", e);
-                    }
-                    logger.info("{}:{} 投资数据转换结束", currentThread.getName(), currentThread.getId());
-                });
-            }
-        }
+    protected void transformData(int pageNumber) {
+        transformInverstmentSmt(pageNumber);
+        transformInverstmentTz(pageNumber);
     }
 
-    private void transformInverstmentSmt(TransformConfig transformConfig, int pageNumber) {
+    private void transformInverstmentSmt(int pageNumber) {
         InvestmentDataSmt news = new InvestmentDataSmt();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
         List<InvestmentDataSmt> list = investmentDataSmtService.findOneHundred(news, pageable);
@@ -85,7 +66,7 @@ public class InvestmentTransformer implements Transformer {
 
     }
 
-    private void transformInverstmentTz(TransformConfig transformConfig, int tempNum) {
+    private void transformInverstmentTz(int tempNum) {
         InvestmentDataTz news = new InvestmentDataTz();
         Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
         List<InvestmentDataTz> list = investmentDataTzService.findOneHundred(news, pageable);
@@ -118,4 +99,18 @@ public class InvestmentTransformer implements Transformer {
         investmentDataTzService.delete(list);
     }
 
+    @Override
+    public boolean getMark() {
+        return transformConfig.isInvestmentMark();
+    }
+
+    @Override
+    public int getThreadNum() {
+        return transformConfig.getInvestmentThreadNum();
+    }
+
+    @Override
+    public String getName() {
+        return "投资";
+    }
 }

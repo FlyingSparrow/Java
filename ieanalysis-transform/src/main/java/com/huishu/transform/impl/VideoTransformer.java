@@ -5,10 +5,7 @@ import com.huishu.entity.Video;
 import com.huishu.entity.VideoBak;
 import com.huishu.service.VideoBakService;
 import com.huishu.service.VideoService;
-import com.huishu.transform.Transformer;
 import com.huishu.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 视频转换器
@@ -26,35 +22,17 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @create 2018/5/26
  */
 @Component("videoTransformer")
-public class VideoTransformer implements Transformer {
-
-    private static Logger logger = LoggerFactory.getLogger(VideoTransformer.class);
+public class VideoTransformer extends AbstractTransformer  {
 
     @Autowired
     private VideoService videoService;
     @Autowired
     private VideoBakService videoBakService;
+    @Autowired
+    private TransformConfig transformConfig;
 
     @Override
-    public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
-        if (transformConfig.isVideoMark()) {
-            for (int i = 0; i < transformConfig.getVideoThreadNum(); i++) {
-                final int pageNumber = i;
-                executor.execute(() -> {
-                    Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{} 视频数据转换开始", currentThread.getName(), currentThread.getId());
-                    try {
-                        transformVideo(transformConfig, pageNumber);
-                    } catch (Exception e) {
-                        logger.error("视频数据转换异常", e);
-                    }
-                    logger.info("{}:{} 视频数据转换结束", currentThread.getName(), currentThread.getId());
-                });
-            }
-        }
-    }
-
-    private void transformVideo(TransformConfig transformConfig, int pageNumber) {
+    protected void transformData(int pageNumber) {
         Video news = new Video();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
         List<Video> list = videoService.findOneHundred(news, pageable);
@@ -77,4 +55,18 @@ public class VideoTransformer implements Transformer {
         videoService.delete(list);
     }
 
+    @Override
+    public boolean getMark() {
+        return transformConfig.isVideoMark();
+    }
+
+    @Override
+    public int getThreadNum() {
+        return transformConfig.getVideoThreadNum();
+    }
+
+    @Override
+    public String getName() {
+        return "视频";
+    }
 }

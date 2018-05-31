@@ -5,10 +5,7 @@ import com.huishu.entity.ForumLib;
 import com.huishu.entity.ForumLibBak;
 import com.huishu.service.ForumLibBakService;
 import com.huishu.service.ForumLibService;
-import com.huishu.transform.Transformer;
 import com.huishu.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 论坛数据转换器
@@ -26,35 +22,17 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @create 2018/5/26
  */
 @Component("forumTransformer")
-public class ForumTransformer implements Transformer {
-
-    private static Logger logger = LoggerFactory.getLogger(ForumTransformer.class);
+public class ForumTransformer extends AbstractTransformer {
 
     @Autowired
     private ForumLibService forumLibService;
     @Autowired
     private ForumLibBakService forumLibBakService;
+    @Autowired
+    private TransformConfig transformConfig;
 
     @Override
-    public void transform(TransformConfig transformConfig, ThreadPoolExecutor executor) {
-        if (transformConfig.isForumMark()) {
-            for (int i = 0; i < transformConfig.getForumThreadNum(); i++) {
-                final int pageNumber = i;
-                executor.execute(() -> {
-                    Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{} 论坛数据转换开始", currentThread.getName(), currentThread.getId());
-                    try {
-                        transformForum(transformConfig, pageNumber);
-                    } catch (Exception e) {
-                        logger.error("论坛数据转换异常", e);
-                    }
-                    logger.info("{}:{} 论坛数据转换结束", currentThread.getName(), currentThread.getId());
-                });
-            }
-        }
-    }
-
-    private void transformForum(TransformConfig transformConfig, int pageNumber) {
+    protected void transformData(int pageNumber) {
         ForumLib news = new ForumLib();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
         List<ForumLib> list = forumLibService.findOneHundred(news, pageable);
@@ -77,4 +55,18 @@ public class ForumTransformer implements Transformer {
         forumLibService.delete(list);
     }
 
+    @Override
+    public boolean getMark() {
+        return transformConfig.isForumMark();
+    }
+
+    @Override
+    public int getThreadNum() {
+        return transformConfig.getForumThreadNum();
+    }
+
+    @Override
+    public String getName() {
+        return "论坛";
+    }
 }
