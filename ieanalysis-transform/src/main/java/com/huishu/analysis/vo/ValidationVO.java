@@ -30,7 +30,7 @@ public class ValidationVO {
      */
     private String fldtitle;
     /**
-     * 文章url
+     * url
      */
     private String fldUrlAddr;
 
@@ -41,6 +41,10 @@ public class ValidationVO {
         this.fldrecddate = fldrecddate;
         this.fldcontent = fldcontent;
         this.fldtitle = fldtitle;
+        this.fldUrlAddr = fldUrlAddr;
+    }
+
+    private ValidationVO(String fldUrlAddr){
         this.fldUrlAddr = fldUrlAddr;
     }
 
@@ -63,6 +67,10 @@ public class ValidationVO {
         return new ValidationVO(siteLib.getProvince(), siteLib.getIndustry(),
                 forumLibBak.getFldrecddate(), forumLibBak.getFldcontent(),
                 forumLibBak.getFldtitle(), forumLibBak.getFldUrlAddr());
+    }
+
+    public static ValidationVO create(VideoBak videoBak){
+        return new ValidationVO(videoBak.getUrl());
     }
 
     public String getProvince() {

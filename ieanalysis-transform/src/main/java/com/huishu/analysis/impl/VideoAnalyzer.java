@@ -4,11 +4,11 @@ import com.huishu.analysis.vo.NewsVO;
 import com.huishu.analysis.vo.ValidationVO;
 import com.huishu.config.AnalysisConfig;
 import com.huishu.constants.SysConst;
-import com.huishu.entity.ForumLibBak;
 import com.huishu.entity.KingBaseDgap;
 import com.huishu.entity.SiteLib;
-import com.huishu.service.ForumLibBakService;
+import com.huishu.entity.VideoBak;
 import com.huishu.service.SiteLibService;
+import com.huishu.service.VideoBakService;
 import com.huishu.vo.DgapData;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,81 +23,76 @@ import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * 分析论坛数据
+ * 分析视频数据
  *
  * @author wangjianchun
  * @create 2018/5/26
  */
-@Component("forumAnalyzer")
-public class ForumAnalyzer extends DefaultAnalyzer {
+@Component("videoAnalyzer")
+public class VideoAnalyzer extends DefaultAnalyzer {
 
     private static final List<DgapData> STATIC_LIST = new ArrayList<DgapData>();
 
     @Autowired
-    private ForumLibBakService forumLibService;
+    private VideoBakService videoService;
     @Autowired
     private SiteLibService siteLibService;
 
     @Override
     public String getName() {
-        return SysConst.FORUM;
+        return SysConst.VIDEO;
     }
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
         STATIC_LIST.clear();
-        if (analysisConfig.isForumMark()) {
-            for (int i = 0; i < analysisConfig.getForumThreadNum(); i++) {
+        if (analysisConfig.isVideoMark()) {
+            for (int i = 0; i < analysisConfig.getVideoThreadNum(); i++) {
                 final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{}论坛数据分析开始", currentThread.getName(), currentThread.getId());
+                    logger.info("{}:{}视频数据分析开始", currentThread.getName(), currentThread.getId());
                     try {
-                        analysisData(analysisConfig, indexMap, pageNumber);
+                        analysisVideo(analysisConfig, indexMap, pageNumber);
                     } catch (Exception e) {
-                        logger.error("论坛数据分析异常", e);
+                        logger.error("视频数据分析异常", e);
                     }
-                    logger.info("{}:{}论坛数据分析结束", currentThread.getName(), currentThread.getId());
+                    logger.info("{}:{}视频数据分析结束", currentThread.getName(), currentThread.getId());
                 });
             }
         }
     }
 
-    /**
-     * 分析数据
-     * @param analysisConfig
-     * @param indexMap
-     * @param pageNumber
-     */
-    private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        ForumLibBak forum = new ForumLibBak();
-        forum.setId(Long.valueOf(indexMap.get(SysConst.FORUM)));
+    private void analysisVideo(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
+        VideoBak VideoBak = new VideoBak();
+        VideoBak.setId(Long.valueOf(indexMap.get(SysConst.VIDEO)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<ForumLibBak> lists = forumLibService.findOneHundred(forum, pageable);
+        List<com.huishu.entity.VideoBak> lists = videoService.findOneHundred(VideoBak, pageable);
 
-        logger.info("论坛分析,读取 {} 条", lists.size());
+        logger.info("视频分析,读取 {} 条", lists.size());
 
         if (lists.size() <= 0) {
             return;
         }
 
         String newId = lists.get(lists.size() - 1).getId() + "";
-        String oldId = indexMap.get(SysConst.FORUM);
+        String oldId = indexMap.get(SysConst.VIDEO);
         Map<String, String> newIndexMap = new HashMap<>(indexMap);
         if (Long.valueOf(newId) > Long.valueOf(oldId)) {
-            newIndexMap.put(SysConst.FORUM, newId);
+            newIndexMap.put(SysConst.VIDEO, newId);
         }
 
+
         List<DgapData> saveList = new ArrayList<DgapData>();
-        List<ForumLibBak> readList = new ArrayList<ForumLibBak>();
+        List<com.huishu.entity.VideoBak> readList = new ArrayList<com.huishu.entity.VideoBak>();
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
-        for (ForumLibBak item : lists) {
+        for (VideoBak item : lists) {
             if (isNotExists(STATIC_LIST, item.getFldUrlAddr())) {
                 // 分析
                 SiteLib site = siteLibService.findByName(item.getWebname());
-                SiteLib newSite = fillAreaInfoForSiteLib(item.getFldtitle(), item.getFldcontent(), site);
+                SiteLib newSite = fillAreaInfoForSiteLib(item.getName(), item.getWebname(), site);
                 if (newSite != null) {
-                    ValidationVO validationVO = ValidationVO.create(item, newSite);
+                    ValidationVO validationVO = ValidationVO.create(item);
                     if (validate(validationVO)) {
                         NewsVO newsVO = NewsVO.create(item, newSite);
                         DgapData dgapData = fillDgapData(newsVO);
@@ -116,15 +111,15 @@ public class ForumAnalyzer extends DefaultAnalyzer {
         }
 
         if (saveList.size() > 0) {
-            saveToFile(saveList, SysConst.FORUM, analysisConfig.getSourceMorePath());
+            saveToFile(saveList, SysConst.VIDEO, analysisConfig.getSourceLessPath());
             saveToKingBase(historyList);
         }
         if (readList.size() > 0) {
-            forumLibService.save(readList);
+            videoService.save(readList);
         }
 
-        logger.info("论坛分析,入库 {} 条", saveList.size());
-        logger.info("论坛分析,分析 {} 条", readList.size());
+        logger.info("视频分析,入库 {} 条", saveList.size());
+        logger.info("视频分析,分析 {} 条", readList.size());
 
         recordNum(newIndexMap);
     }
@@ -132,10 +127,7 @@ public class ForumAnalyzer extends DefaultAnalyzer {
     @Override
     protected boolean validate(ValidationVO validationVO) {
         String publishDate = validationVO.getFldrecddate();
-        if (StringUtils.isEmpty(validationVO.getProvince())
-                || StringUtils.isEmpty(validationVO.getIndustry())
-                || StringUtils.isEmpty(validationVO.getFldcontent())
-                || StringUtils.isEmpty(validationVO.getFldtitle())
+        if (StringUtils.isEmpty(validationVO.getFldUrlAddr())
                 || StringUtils.isEmpty(publishDate)) {
             return false;
         }
@@ -155,8 +147,25 @@ public class ForumAnalyzer extends DefaultAnalyzer {
     @Override
     protected DgapData fillDgapData(NewsVO newsVO) {
         DgapData result = super.fillDgapData(newsVO);
-        result.setPublishType(SysConst.PublishType.FORUM.getCode());
-        result.setSocialChannel(SysConst.SocialChannel.FORUM.getCode());
+        result.setPublishType(SysConst.PublishType.VIDEO.getCode());
+        result.setPolicyInfoType(3L);
+        result.setTime(newsVO.getFabushijian());
+        result.setHotEventMark(SysConst.HotEventMark.NOT_HOT_EVENT.getCode());
+        result.setHitNum(0L);
+        if (StringUtils.isNotEmpty(newsVO.getBofangshu())) {
+            long count = Long.valueOf(newsVO.getBofangshu());
+            if (count > SysConst.HOT_EVENT_THRESHOLD) {
+                result.setHotEventMark(SysConst.HotEventMark.HOT_EVENT.getCode());
+                result.setHitNum(count);
+            }
+        }
+        if ("中华人民共和国中央人民政府".equals(newsVO.getWebname())) {
+            result.setHotEventMark(SysConst.HotEventMark.HOT_EVENT.getCode());
+            result.setPublishType(SysConst.PublishType.CENTER.getCode());
+        }
+        // 阅读量
+        result.setReadNum(0L);
+        result.setPolicyImageUrl(newsVO.getUrl());
 
         return result;
     }

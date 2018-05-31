@@ -461,10 +461,9 @@ public class DefaultAnalyzer implements Analyzer {
         result.setPublishType(SysConst.PublishType.LOCAL.getCode());
         // 分类
         result.setDataType(SysConst.DataType.POLICY.getCode());
-        String singleData = newsVO.getFldrecddate();
         result.setTime(newsVO.getFldrecddate());
         // 时间
-        fillDateInfoOfDgapData(result, singleData);
+        fillDateInfoOfDgapData(result, newsVO.getFldrecddate());
         // 站点
         result.setSite(newsVO.getWebname());
         // 省份

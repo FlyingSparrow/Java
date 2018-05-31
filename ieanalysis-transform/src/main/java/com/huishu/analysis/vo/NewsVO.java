@@ -50,6 +50,12 @@ public class NewsVO {
 
     private String province;
 
+    private String bofangshu;
+
+    private String fabushijian;
+
+    private String url;
+
     public static NewsVO create(NewsLibBak source, SiteLib siteLib){
         NewsVO target = new NewsVO();
         BeanUtils.copyProperties(source, target);
@@ -75,6 +81,14 @@ public class NewsVO {
     }
 
     public static NewsVO create(ForumLibBak source, SiteLib siteLib){
+        NewsVO target = new NewsVO();
+        BeanUtils.copyProperties(source, target);
+        fillSiteLibInfo(siteLib, target);
+
+        return target;
+    }
+
+    public static NewsVO create(VideoBak source, SiteLib siteLib){
         NewsVO target = new NewsVO();
         BeanUtils.copyProperties(source, target);
         fillSiteLibInfo(siteLib, target);
@@ -246,6 +260,30 @@ public class NewsVO {
 
     public void setProvince(String province) {
         this.province = province;
+    }
+
+    public String getBofangshu() {
+        return bofangshu;
+    }
+
+    public void setBofangshu(String bofangshu) {
+        this.bofangshu = bofangshu;
+    }
+
+    public String getFabushijian() {
+        return fabushijian;
+    }
+
+    public void setFabushijian(String fabushijian) {
+        this.fabushijian = fabushijian;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
