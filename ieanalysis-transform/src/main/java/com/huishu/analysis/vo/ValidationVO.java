@@ -1,6 +1,7 @@
 package com.huishu.analysis.vo;
 
 import com.huishu.entity.*;
+import com.huishu.utils.DateUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -48,6 +49,14 @@ public class ValidationVO {
         this.fldUrlAddr = fldUrlAddr;
     }
 
+    public ValidationVO(String province, String industry, String publishDate, String content, String title) {
+        this.province = province;
+        this.industry = industry;
+        this.fldrecddate = publishDate;
+        this.fldcontent = content;
+        this.fldtitle = title;
+    }
+
     public static ValidationVO create(NewsLibBak news, SiteLib siteLib){
         return new ValidationVO(siteLib.getProvince(), siteLib.getIndustry(),
                 news.getFldrecddate(), news.getFldcontent(), news.getFldtitle(), news.getFldUrlAddr());
@@ -71,6 +80,13 @@ public class ValidationVO {
 
     public static ValidationVO create(VideoBak videoBak){
         return new ValidationVO(videoBak.getUrl());
+    }
+
+    public static ValidationVO create(Wechat wechat, SiteLib siteLib){
+        String publishDate = DateUtils.getFormatTime(wechat.getPostTime());
+
+        return new ValidationVO(siteLib.getProvince(), siteLib.getIndustry(),
+                publishDate, wechat.getContent(), wechat.getTitle());
     }
 
     public String getProvince() {

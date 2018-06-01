@@ -4,6 +4,8 @@ import com.huishu.entity.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Date;
+
 /**
  * @author wangjianchun
  * @create 2018/5/31
@@ -56,6 +58,26 @@ public class NewsVO {
 
     private String url;
 
+    private String title;
+
+    private String content;
+
+    private Date postTime;
+
+    private String author;
+
+    private String urls;
+
+    /**
+     * 观看数
+     */
+    private String viewNum;
+
+    /**
+     * 点赞数
+     */
+    private String likeNum;
+
     public static NewsVO create(NewsLibBak source, SiteLib siteLib){
         NewsVO target = new NewsVO();
         BeanUtils.copyProperties(source, target);
@@ -89,6 +111,14 @@ public class NewsVO {
     }
 
     public static NewsVO create(VideoBak source, SiteLib siteLib){
+        NewsVO target = new NewsVO();
+        BeanUtils.copyProperties(source, target);
+        fillSiteLibInfo(siteLib, target);
+
+        return target;
+    }
+
+    public static NewsVO create(Wechat source, SiteLib siteLib){
         NewsVO target = new NewsVO();
         BeanUtils.copyProperties(source, target);
         fillSiteLibInfo(siteLib, target);
@@ -284,6 +314,62 @@ public class NewsVO {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(Date postTime) {
+        this.postTime = postTime;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getUrls() {
+        return urls;
+    }
+
+    public void setUrls(String urls) {
+        this.urls = urls;
+    }
+
+    public String getViewNum() {
+        return viewNum;
+    }
+
+    public void setViewNum(String viewNum) {
+        this.viewNum = viewNum;
+    }
+
+    public String getLikeNum() {
+        return likeNum;
+    }
+
+    public void setLikeNum(String likeNum) {
+        this.likeNum = likeNum;
     }
 
     @Override
