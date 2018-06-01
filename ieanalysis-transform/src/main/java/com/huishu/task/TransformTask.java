@@ -1,7 +1,6 @@
 package com.huishu.task;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.huishu.config.TransformConfig;
 import com.huishu.constants.SysConst;
 import com.huishu.transform.Transformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,6 @@ public class TransformTask {
 
     private static ThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(SysConst.DEFAULT_CORE_POOL_SIZE,
             new ThreadFactoryBuilder().setNameFormat("transform-pool-%d").build());
-
-    @Autowired
-    private TransformConfig transformConfig;
 
     @Autowired
     @Qualifier("newsTransformer")
@@ -74,15 +70,15 @@ public class TransformTask {
      */
     @Scheduled(fixedDelay = 1000 * 15)
     public void warn() {
-        newsTransformer.transform(transformConfig, executor);
-        policyTransformer.transform(transformConfig, executor);
-        zongheTransformer.transform(transformConfig, executor);
-        forumTransformer.transform(transformConfig, executor);
-        videoTransformer.transform(transformConfig, executor);
-        recruitmentTransformer.transform(transformConfig, executor);
-        investmentTransformer.transform(transformConfig, executor);
-        mergerTransformer.transform(transformConfig, executor);
-        quitTransformer.transform(transformConfig, executor);
+        newsTransformer.transform(executor);
+        policyTransformer.transform(executor);
+        zongheTransformer.transform(executor);
+        forumTransformer.transform(executor);
+        videoTransformer.transform(executor);
+        recruitmentTransformer.transform(executor);
+        investmentTransformer.transform(executor);
+        mergerTransformer.transform(executor);
+        quitTransformer.transform(executor);
     }
 
 }
