@@ -70,6 +70,7 @@ public class TransformTask {
      */
     @Scheduled(fixedDelay = 1000 * 15)
     public void warn() {
+
         newsTransformer.transform(executor);
         policyTransformer.transform(executor);
         zongheTransformer.transform(executor);
