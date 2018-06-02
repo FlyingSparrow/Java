@@ -67,7 +67,7 @@ public class VideoAnalyzer extends DefaultAnalyzer {
         VideoBak VideoBak = new VideoBak();
         VideoBak.setId(Long.valueOf(indexMap.get(SysConst.VIDEO)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<com.huishu.entity.VideoBak> lists = videoService.findOneHundred(VideoBak, pageable);
+        List<VideoBak> lists = videoService.findOneHundred(VideoBak, pageable);
 
         logger.info("视频分析,读取 {} 条", lists.size());
 

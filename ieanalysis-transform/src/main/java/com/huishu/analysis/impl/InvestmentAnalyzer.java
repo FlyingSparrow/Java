@@ -3,7 +3,6 @@ package com.huishu.analysis.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.huishu.analysis.vo.NewsVO;
 import com.huishu.config.AnalysisConfig;
 import com.huishu.config.UnitsConfig;
 import com.huishu.constants.SysConst;
@@ -11,7 +10,6 @@ import com.huishu.entity.CityLib;
 import com.huishu.entity.InvestmentDataBak;
 import com.huishu.entity.KingBaseDgap;
 import com.huishu.service.InvestmentDataBakService;
-import com.huishu.utils.FileUtils;
 import com.huishu.vo.DgapData;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +122,7 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
 
     private DgapData fillDgapData(InvestmentDataBak investmentDataBak) {
         // 金额
-        Double amount = transformAmount(investmentDataBak.getAmount());
+        Double amount = com.huishu.utils.StringUtils.transformAmount(unitsConfig, investmentDataBak.getAmount());
         if (amount == null) {
             return null;
         }
@@ -228,7 +226,7 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
     }
 
     private void fillAreaInfo(DgapData dgapData, String region) {
-        String city = getCity(region);
+        String city = com.huishu.utils.StringUtils.getCity(region);
         List<CityLib> cityList = cityLibService.findByCity(city);
         if (cityList != null && cityList.size() > 0) {
             dgapData.setArea(city);
@@ -248,7 +246,7 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
             return null;
         }
 
-        String city = getCity(region);
+        String city = com.huishu.utils.StringUtils.getCity(region);
         if (StringUtils.isEmpty(city)) {
             return null;
         }
@@ -257,97 +255,6 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
         if (cityList != null && cityList.size() > 0) {
             result = cityList.get(0).getProvince();
         }
-
-        return result;
-    }
-
-    private Double transformAmount(String amount) {
-        String types = unitsConfig.getTypes();
-        if (StringUtils.isEmpty(types)) {
-            return null;
-        }
-
-        String unitReplace = amount.toUpperCase();
-        Integer index = null;
-        String replacement = "";
-        String[] units = types.split(",");
-        for (int i = 0; i < units.length; i++) {
-            if (unitReplace.contains(units[i])) {
-                index = i;
-                break;
-            }
-        }
-
-        Double ratio = 1D;
-        Properties properties = FileUtils.getProperties("units.properties");
-        if (index != null) {
-            unitReplace = unitReplace.replaceAll(units[index].toUpperCase(), replacement);
-            ratio = Double.valueOf(properties.getProperty(units[index].toUpperCase() + unitsConfig.getSuffix()));
-        }
-        // 标准单位转换
-        if (unitReplace.contains("M")) {
-            unitReplace = unitReplace.replaceAll("M", replacement).replaceAll(" ", replacement);
-            ratio = ratio * 1000000;
-        }
-        // 中文单位转换 #美元USD
-        String chinaUnits = unitsConfig.getChinaUnits();
-        if (StringUtils.isNotEmpty(chinaUnits)) {
-            String[] chinaSplit = chinaUnits.split(",");
-            Integer chinaIndex = null;
-            for (int i = 0; i < chinaSplit.length; i++) {
-                if (unitReplace.contains(chinaSplit[i])) {
-                    chinaIndex = i;
-                    break;
-                }
-            }
-            unitReplace = unitReplace.replace("(估)", replacement);
-            if (chinaIndex != null) {
-                unitReplace = unitReplace.replace(chinaSplit[chinaIndex], replacement);
-                ratio = Double.valueOf(properties.getProperty(units[chinaIndex].toUpperCase() + unitsConfig.getSuffix()));
-            }
-            if (unitReplace.contains("万")) {
-                unitReplace = unitReplace.replace("万", replacement);
-                ratio = ratio * 10000;
-            }
-            if (unitReplace.contains("亿")) {
-                unitReplace = unitReplace.replace("亿", replacement);
-                ratio = ratio * 100000000;
-            }
-            unitReplace = unitReplace.replace("元", replacement);
-        }
-        unitReplace = unitReplace.replace("N/A", replacement);
-
-        try {
-            return Double.valueOf(unitReplace.trim()) * ratio;
-        } catch (NumberFormatException e) {
-            logger.error("金额转换异常: {}", amount, e);
-        }
-
-        return null;
-    }
-
-    public static String getCity(String str) {
-        if (StringUtils.isEmpty(str)) {
-            return null;
-        }
-
-        String result = str;
-        String replacement = "";
-        result = result.replaceAll("特别行政区", replacement)
-                .replaceAll("回族", replacement)
-                .replaceAll("维吾尔", replacement)
-                .replaceAll("壮族", replacement)
-                .replaceAll("自治区", replacement)
-                .replaceAll("省", replacement)
-                .replaceAll("市", replacement);
-
-        return result;
-    }
-
-    @Override
-    protected DgapData fillDgapData(NewsVO newsVO) {
-        DgapData result = super.fillDgapData(newsVO);
-        result.setPublishType(SysConst.PublishType.INVESTMENT.getCode());
 
         return result;
     }

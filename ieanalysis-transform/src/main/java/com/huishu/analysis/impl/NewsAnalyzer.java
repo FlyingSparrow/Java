@@ -126,7 +126,7 @@ public class NewsAnalyzer extends DefaultAnalyzer {
         logger.info("新闻分析,入库 {} 条", saveList.size());
         logger.info("新闻分析,分析 {} 条", readList.size());
 
-        recordNum(indexMap);
+        recordNum(newIndexMap);
     }
 
     @Override

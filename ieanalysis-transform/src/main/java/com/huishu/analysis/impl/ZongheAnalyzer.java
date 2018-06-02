@@ -121,7 +121,7 @@ public class ZongheAnalyzer extends DefaultAnalyzer {
             logger.info("综合分析,入库 {} 条", saveList.size());
             logger.info("综合分析,分析 {} 条", readList.size());
 
-            recordNum(indexMap);
+            recordNum(newIndexMap);
         }
     }
 

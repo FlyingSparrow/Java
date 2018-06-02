@@ -1,8 +1,12 @@
 package com.huishu.utils;
 
 import com.alibaba.fastjson.JSONArray;
+import com.huishu.config.UnitsConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +19,8 @@ import java.util.regex.Pattern;
  * @date 2017年4月22日
  */
 public class StringUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(StringUtils.class);
 
     /**
      * script 标签的正则表达式
@@ -216,6 +222,89 @@ public class StringUtils {
             result = spaceMatcher.replaceAll(" ");
         }
         return result;
+    }
+
+    public static String getCity(String str) {
+        if (isEmpty(str)) {
+            return null;
+        }
+
+        String result = str;
+        String replacement = "";
+        result = result.replaceAll("特别行政区", replacement)
+                .replaceAll("回族", replacement)
+                .replaceAll("维吾尔", replacement)
+                .replaceAll("壮族", replacement)
+                .replaceAll("自治区", replacement)
+                .replaceAll("省", replacement)
+                .replaceAll("市", replacement);
+
+        return result;
+    }
+
+    public static Double transformAmount(UnitsConfig unitsConfig, String amount) {
+        String types = unitsConfig.getTypes();
+        if (isEmpty(types)) {
+            return null;
+        }
+
+        String unitReplace = amount.toUpperCase();
+        Integer index = null;
+        String replacement = "";
+        String[] units = types.split(",");
+        for (int i = 0; i < units.length; i++) {
+            if (unitReplace.contains(units[i])) {
+                index = i;
+                break;
+            }
+        }
+
+        Double ratio = 1D;
+        Properties properties = FileUtils.getProperties("units.properties");
+        if (index != null) {
+            unitReplace = unitReplace.replaceAll(units[index].toUpperCase(), replacement);
+            ratio = Double.valueOf(properties.getProperty(units[index].toUpperCase() + unitsConfig.getSuffix()));
+        }
+        // 标准单位转换
+        if (unitReplace.contains("M")) {
+            unitReplace = unitReplace.replaceAll("M", replacement).replaceAll(" ", replacement);
+            ratio = ratio * 1000000;
+        }
+        // 中文单位转换 #美元USD
+        String chinaUnits = unitsConfig.getChinaUnits();
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(chinaUnits)) {
+            String[] chinaSplit = chinaUnits.split(",");
+            Integer chinaIndex = null;
+            for (int i = 0; i < chinaSplit.length; i++) {
+                if (unitReplace.contains(chinaSplit[i])) {
+                    chinaIndex = i;
+                    break;
+                }
+            }
+            unitReplace = unitReplace.replace("(估)", replacement);
+            if (chinaIndex != null) {
+                unitReplace = unitReplace.replace(chinaSplit[chinaIndex], replacement);
+                ratio = Double.valueOf(properties.getProperty(units[chinaIndex].toUpperCase() + unitsConfig.getSuffix()));
+            }
+            if (unitReplace.contains("万")) {
+                unitReplace = unitReplace.replace("万", replacement);
+                ratio = ratio * 10000;
+            }
+            if (unitReplace.contains("亿")) {
+                unitReplace = unitReplace.replace("亿", replacement);
+                ratio = ratio * 100000000;
+            }
+            unitReplace = unitReplace.replace("元", replacement);
+        }
+        unitReplace = unitReplace.replace("N/A", replacement);
+
+        try {
+            return Double.valueOf(unitReplace.trim()) * ratio;
+        } catch (NumberFormatException e) {
+            logger.error("金额转换异常: {}", amount, e);
+        }
+
+        return null;
     }
 
 }
