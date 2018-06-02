@@ -2,7 +2,7 @@ package com.huishu;
 
 import com.huishu.constants.SysConst;
 import com.huishu.utils.DateUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.huishu.utils.StringUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,16 +45,49 @@ public class SimpleTest {
     public void testDate(){
         String str = "9小时前";
         String str2 = "16小时前";
-        String aaResult = aa(str);
-        String aaResult2 = aa2(str);
+        String aaResult = parseDate(str);
+        String aaResult2 = parseDate2(str);
         Assert.assertEquals(aaResult, aaResult2);
 
-        String aaResult3 = aa(str2);
-        String aaResult4 = aa2(str2);
+        String aaResult3 = parseDate(str2);
+        String aaResult4 = parseDate2(str2);
         Assert.assertEquals(aaResult3, aaResult4);
     }
 
-    private String aa(String str){
+    @Test
+    public void testStringIsNumber() {
+        String str1 = "1122.2.2";
+        String str2 = "111";
+        String str3 = "111.2";
+        String str4 = "111s";
+        String str5 = "111.s";
+        String str6 = "1s11";
+        String str7 = "- -";
+        String str8 = "-313465";
+        String str9 = "+2424234";
+
+        System.out.println(str1 + ":" + StringUtils.isNumber(str1));
+        System.out.println(str2 + ":" + StringUtils.isNumber(str2));
+        System.out.println(str3 + ":" + StringUtils.isNumber(str3));
+        System.out.println(str4 + ":" + StringUtils.isNumber(str4));
+        System.out.println(str5 + ":" + StringUtils.isNumber(str5));
+        System.out.println(str6 + ":" + StringUtils.isNumber(str6));
+        System.out.println(str7 + ":" + StringUtils.isNumber(str7));
+        System.out.println(str7 + ":" + StringUtils.isNumber(str8));
+        System.out.println(str7 + ":" + StringUtils.isNumber(str9));
+
+        Assert.assertFalse(StringUtils.isNumber(str1));
+        Assert.assertTrue(StringUtils.isNumber(str2));
+        Assert.assertTrue(StringUtils.isNumber(str3));
+        Assert.assertFalse(StringUtils.isNumber(str4));
+        Assert.assertFalse(StringUtils.isNumber(str5));
+        Assert.assertFalse(StringUtils.isNumber(str6));
+        Assert.assertFalse(StringUtils.isNumber(str7));
+        Assert.assertTrue(StringUtils.isNumber(str8));
+        Assert.assertTrue(StringUtils.isNumber(str9));
+    }
+
+    private String parseDate(String str){
         Date currentDate = DateUtils.currentDate();
         String day = str.replaceAll("小时前", "");
         Integer valueOf = Integer.valueOf(day);
@@ -69,7 +102,7 @@ public class SimpleTest {
         return result;
     }
 
-    private String aa2(String str){
+    private String parseDate2(String str){
         Date currentDate = DateUtils.currentDate();
         int hours = Integer.parseInt(str.replaceAll("小时前", ""));
         int hour = DateUtils.getHour(currentDate);

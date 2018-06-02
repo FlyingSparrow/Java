@@ -47,6 +47,11 @@ public class StringUtils {
      */
     private static final Pattern DATE_FORMAT_REGEX = Pattern.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}");
 
+    /**
+     * 判断数字的正则表达式
+     */
+    private static final String NUMBER_REGEX = "^[-+]?(([0-9]+)([.]([0-9]+))?|([.]([0-9]+))?)$";
+
     private StringUtils() {
     }
 
@@ -299,12 +304,23 @@ public class StringUtils {
         unitReplace = unitReplace.replace("N/A", replacement);
 
         try {
-            return Double.valueOf(unitReplace.trim()) * ratio;
+            if(isNumber(unitReplace.trim())){
+                return Double.valueOf(unitReplace.trim()) * ratio;
+            }
         } catch (NumberFormatException e) {
             logger.error("金额转换异常: {}", amount, e);
         }
 
         return null;
+    }
+
+    /**
+     * 判断字符串是否数字
+     * @param str
+     * @return
+     */
+    public static boolean isNumber(String str) {
+        return str.matches(NUMBER_REGEX);
     }
 
 }
