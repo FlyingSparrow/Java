@@ -275,28 +275,28 @@ public class DefaultAnalyzer implements Analyzer {
      * 使用 fldrecddate 对象填充 dgapData 对象的时间信息，包括年、月、日、小时
      *
      * @param dgapData
-     * @param fldrecddate
+     * @param time
      */
-    protected void fillDateInfoOfDgapData(DgapData dgapData, String fldrecddate) {
+    protected void fillDateInfoOfDgapData(DgapData dgapData, String time) {
         try {
-            fldrecddate = com.huishu.utils.StringUtils.transformTime(fldrecddate);
+            String tempTime = com.huishu.utils.StringUtils.transformTime(time);
             dgapData.setHour(0L);
-            int yearIndex = fldrecddate.indexOf("-");
-            int monthIndex = fldrecddate.indexOf("-", yearIndex + 1);
-            int sIndex = fldrecddate.indexOf(" ", monthIndex + 1);
-            int hourIndex = fldrecddate.indexOf(":");
-            dgapData.setYear(Long.valueOf(fldrecddate.substring(0, yearIndex).trim()));
-            dgapData.setMonth(Long.valueOf(fldrecddate.substring(yearIndex + 1, monthIndex).trim()));
+            int yearIndex = tempTime.indexOf("-");
+            dgapData.setYear(Long.valueOf(tempTime.substring(0, yearIndex).trim()));
+            int monthIndex = tempTime.indexOf("-", yearIndex + 1);
+            dgapData.setMonth(Long.valueOf(tempTime.substring(yearIndex + 1, monthIndex).trim()));
+            int sIndex = tempTime.indexOf(" ", monthIndex + 1);
+            int hourIndex = tempTime.indexOf(":");
             if (sIndex > 0) {
-                dgapData.setDay(Long.valueOf(fldrecddate.substring(monthIndex + 1, sIndex).trim()));
+                dgapData.setDay(Long.valueOf(tempTime.substring(monthIndex + 1, sIndex).trim()));
                 if (hourIndex > 0) {
-                    dgapData.setHour(Long.valueOf(fldrecddate.substring(sIndex + 1, hourIndex).trim()));
+                    dgapData.setHour(Long.valueOf(tempTime.substring(sIndex + 1, hourIndex).trim()));
                 }
             } else {
-                dgapData.setDay(Long.valueOf(fldrecddate.substring(monthIndex + 1, fldrecddate.length()).trim()));
+                dgapData.setDay(Long.valueOf(tempTime.substring(monthIndex + 1, tempTime.length()).trim()));
             }
         } catch (NumberFormatException e) {
-            logger.error("日期[{}]转换错误：{}", fldrecddate, e);
+            logger.error("日期[{}]转换错误：{}", time, e);
         }
     }
 

@@ -201,30 +201,6 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
         return true;
     }
 
-    @Override
-    protected void fillDateInfoOfDgapData(DgapData dgapData, String time) {
-        try {
-            String tempTime = com.huishu.utils.StringUtils.transformTime(time);
-            dgapData.setHour(0L);
-            int yearIndex = tempTime.indexOf("-");
-            dgapData.setYear(Long.valueOf(tempTime.substring(0, yearIndex).trim()));
-            int monthIndex = tempTime.indexOf("-", yearIndex + 1);
-            int sIndex = tempTime.indexOf(" ", monthIndex + 1);
-            int hourIndex = tempTime.indexOf(":");
-            dgapData.setMonth(Long.valueOf(tempTime.substring(yearIndex + 1, monthIndex).trim()));
-            if (sIndex > 0) {
-                dgapData.setDay(Long.valueOf(tempTime.substring(monthIndex + 1, sIndex).trim()));
-                if (hourIndex > 0) {
-                    dgapData.setHour(Long.valueOf(tempTime.substring(sIndex + 1, hourIndex).trim()));
-                }
-            } else {
-                dgapData.setDay(Long.valueOf(tempTime.substring(monthIndex + 1, tempTime.length()).trim()));
-            }
-        } catch (NumberFormatException e) {
-            logger.error("日期转换错误：{}", time, e);
-        }
-    }
-
     private void fillAreaInfo(DgapData dgapData, String region) {
         String city = com.huishu.utils.StringUtils.getCity(region);
         List<CityLib> cityList = cityLibService.findByCity(city);

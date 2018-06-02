@@ -14,10 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -28,8 +25,6 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Component("quitAnalyzer")
 public class QuitAnalyzer extends DefaultAnalyzer {
-
-    private static final List<DgapData> STATIC_LIST = new ArrayList<DgapData>();
 
     @Autowired
     private QuitDataBakService quitDataService;
@@ -43,7 +38,6 @@ public class QuitAnalyzer extends DefaultAnalyzer {
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        STATIC_LIST.clear();
         if (analysisConfig.isQuitMark()) {
             // 分析招聘数据
             for (int i = 0; i < analysisConfig.getQuitThreadNum(); i++) {
@@ -64,160 +58,138 @@ public class QuitAnalyzer extends DefaultAnalyzer {
 
     /**
      * 分析数据
+     *
      * @param analysisConfig
      * @param indexMap
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        QuitDataBak quitDataBak = new QuitDataBak();
-        quitDataBak.setId(Long.valueOf(indexMap.get(SysConst.QUIT)));
-        Pageable pageable = new PageRequest(pageNumber,  analysisConfig.getTransformNum());
-        List<QuitDataBak> lists = quitDataService.findOneHundred(quitDataBak, pageable);
+        QuitDataBak entity = new QuitDataBak();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.QUIT)));
+        Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
+        List<QuitDataBak> list = quitDataService.findOneHundred(entity, pageable);
 
-        logger.info("退出分析,读取" + lists.size() + "条");
+        logger.info("退出分析,读取 {} 条", list.size());
 
-        if (lists != null && lists.size() > 0) {
-            String newId = lists.get(lists.size() - 1).getId() + "";
-            String oldId = indexMap.get(SysConst.QUIT);
-            Map<String, String> newIndexMap = new HashMap<>(indexMap);
-            if (Long.valueOf(newId)>Long.valueOf(oldId)) {
-                newIndexMap.put(SysConst.QUIT, newId);
-            }
-            List<DgapData> saveList = new ArrayList<DgapData>();
-            List<QuitDataBak> readList = new ArrayList<QuitDataBak>();
-            List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
-            for (QuitDataBak item : lists) {
-                // 分析
-                DgapData dgapData = setDgapDataQuit(item);
-                if (dgapData != null) {
-                    item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
-                    addKingBaseData(historyList, dgapData);
-                    dgapData.setId(String.valueOf(item.getId()));
-                    saveList.add(dgapData);
-                }
-                if (SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode().equals(item.getBiaoShi())) {
-                    item.setBiaoShi(SysConst.ESDataStatus.EXCEPTION.getCode());
-                }
-                readList.add(item);
-            }
-
-            if (saveList.size() > 0) {
-                saveToFile(saveList, SysConst.QUIT, analysisConfig.getSourceLessPath());
-                saveToKingBase(historyList);
-            }
-            if (readList.size() > 0) {
-                quitDataService.save(readList);
-            }
-
-            logger.info("退出分析,入库 {} 条", saveList.size());
-            logger.info("退出分析,分析 {} 条", readList.size());
-
-            recordNum(newIndexMap);
+        if (list.size() <= 0) {
+            return;
         }
+
+        String newId = list.get(list.size() - 1).getId() + "";
+        String oldId = indexMap.get(SysConst.QUIT);
+        Map<String, String> newIndexMap = new HashMap<>(indexMap);
+        if (Long.parseLong(newId) > Long.parseLong(oldId)) {
+            newIndexMap.put(SysConst.QUIT, newId);
+        }
+
+
+        List<DgapData> saveList = new ArrayList<DgapData>();
+        List<QuitDataBak> readList = new ArrayList<QuitDataBak>();
+        List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
+        for (QuitDataBak item : list) {
+            // 分析
+            DgapData dgapData = fillDgapData(item);
+            if (dgapData != null) {
+                item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
+                addKingBaseData(historyList, dgapData);
+                dgapData.setId(String.valueOf(item.getId()));
+                saveList.add(dgapData);
+            }
+            if (SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode().equals(item.getBiaoShi())) {
+                item.setBiaoShi(SysConst.ESDataStatus.EXCEPTION.getCode());
+            }
+            readList.add(item);
+        }
+
+        if (saveList.size() > 0) {
+            saveToFile(saveList, SysConst.QUIT, analysisConfig.getSourceLessPath());
+            saveToKingBase(historyList);
+        }
+        if (readList.size() > 0) {
+            quitDataService.save(readList);
+        }
+
+        logger.info("退出分析,入库 {} 条", saveList.size());
+        logger.info("退出分析,分析 {} 条", readList.size());
+
+        recordNum(newIndexMap);
     }
 
-    private DgapData setDgapDataQuit(QuitDataBak single) {
-        DgapData result = new DgapData();
+    private boolean validate(QuitDataBak quitDataBak){
+        String time = quitDataBak.getTime();
+        if (StringUtils.isEmpty(quitDataBak.getIndustry())
+                || StringUtils.isEmpty(time)) {
+            return false;
+        }
 
-        result.setDataType(SysConst.DataType.INVESTMENT.getCode());
+        logger.info("time: {}", time);
 
-        // 时间
-        String singleData = single.getTime();
-        if (toSetTime(result, singleData)) {
-            return null;
+        String tempTime = com.huishu.utils.StringUtils.transformTime(time);
+        int yearIndex = tempTime.indexOf("-");
+        if (yearIndex <= 0) {
+            return false;
         }
-        // 行业
-        String industry = single.getIndustry();
-        if (StringUtils.isNotEmpty(industry)) {
-            result.setIndustry(industry.trim());
-        }
-        if (StringUtils.isEmpty(result.getIndustry())) {
-            return null;
-        }
-        // 省份
-        String region = single.getRegion();
-        toSetDataProvince(result, region);
-        if (StringUtils.isEmpty(result.getProvince())) {
-            return null;
-        }
-        result.setPublishType(SysConst.PublishType.QUIT.getCode());
 
+        int monthIndex = tempTime.indexOf("-", yearIndex + 1);
+        if (monthIndex <= 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private DgapData fillDgapData(QuitDataBak quitDataBak) {
         // 金额
-        Double amount = com.huishu.utils.StringUtils.transformAmount(unitsConfig, single.getReturnAmount());
+        Double amount = com.huishu.utils.StringUtils.transformAmount(unitsConfig, quitDataBak.getReturnAmount());
         if (amount == null) {
             return null;
         }
-        result.setCompanyName(single.getInvestor());
+
+
+        DgapData result = new DgapData();
+
+        // 省份
+        fillAreaAndProvinceInfo(result, quitDataBak.getRegion());
+        if (StringUtils.isEmpty(result.getProvince())) {
+            return null;
+        }
+        // 时间
+        fillDateInfoOfDgapData(result, quitDataBak.getTime());
+        result.setDataType(SysConst.DataType.INVESTMENT.getCode());
+        // 行业
+        result.setIndustry(quitDataBak.getIndustry().trim());
+        result.setPublishType(SysConst.PublishType.QUIT.getCode());
+        result.setCompanyName(quitDataBak.getInvestor());
         result.setQuitAmount(amount);
-        result.setFinancingAmount(0d);
-        result.setMergersAmount(0d);
-        result.setPolicyUrl(single.getFldUrlAddr());
+        result.setFinancingAmount(0D);
+        result.setMergersAmount(0D);
+        result.setPolicyUrl(quitDataBak.getFldUrlAddr());
 
         return result;
     }
 
-    private boolean toSetTime(DgapData data, String singleData) {
-        try {
-            if (StringUtils.isNotEmpty(singleData)) {
-                singleData = com.huishu.utils.StringUtils.transformTime(singleData);
-                data.setHour(0L);
-                int yearindex = singleData.indexOf("-");
-                int monthIndex = singleData.indexOf("-", yearindex + 1);
-                int sIndex = singleData.indexOf(" ", monthIndex + 1);
-                int hourIndex = singleData.indexOf(":");
-                if (yearindex > 0) {
-                    data.setYear(Long.valueOf(singleData
-                            .substring(0, yearindex).trim()));
-                    if (monthIndex > 0) {
-                        data.setMonth(Long.valueOf(singleData.substring(
-                                yearindex + 1, monthIndex).trim()));
-                        if (sIndex > 0) {
-                            data.setDay(Long.valueOf(singleData.substring(
-                                    monthIndex + 1, sIndex).trim()));
-                            if (hourIndex > 0) {
-                                data.setHour(Long.valueOf(singleData.substring(
-                                        sIndex + 1, hourIndex).trim()));
-                            }
-                        } else {
-                            data.setDay(Long.valueOf(singleData.substring(
-                                    monthIndex + 1, singleData.length()).trim()));
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return true;
-                }
-            } else {
-                return true;
-            }
-            return false;
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            logger.error("日期转换错误：" + singleData, e);
-            return false;
+    private void fillAreaAndProvinceInfo(DgapData dgapData, String region) {
+        if (StringUtils.isEmpty(region)) {
+            return;
         }
-    }
 
-    private void toSetDataProvince(DgapData data, String region) {
-        if (StringUtils.isNotEmpty(region)) {
-            String str = "北京,上海,重庆,天津,河北,山西,辽宁,吉林,黑龙江,江苏,浙江,安徽,福建,江西,山东,河南,湖北,湖南,广东,海南,四川,贵州,云南,陕西,甘肃,青海,台湾,广西,宁夏,西藏,新疆,内蒙古,香港,澳门";
-            String[] provinces = str.split(",");
-            for (String province : provinces) {
-                if (region.indexOf(province) >= 0) {
-                    data.setProvince(province);
-                    break;
-                }
+        Set<String> provinceSet = SysConst.getProvinceSet();
+        for (String province : provinceSet) {
+            if (region.contains(province)) {
+                dgapData.setProvince(province);
+                break;
             }
-            if (StringUtils.isEmpty(data.getProvince())) {
-                String tempcity = com.huishu.utils.StringUtils.getCity(region);
-                if (StringUtils.isNotEmpty(tempcity)) {
-                    List<CityLib> city = cityLibService.findByCity(tempcity);
-                    if (city != null && city.size() > 0) {
-                        data.setProvince(city.get(0).getProvince());
-                        data.setArea(tempcity);
-                    }
-                }
+        }
+        if (StringUtils.isNotEmpty(dgapData.getProvince())) {
+            return;
+        }
+
+        String city = com.huishu.utils.StringUtils.getCity(region);
+        if (StringUtils.isNotEmpty(city)) {
+            List<CityLib> cityList = cityLibService.findByCity(city);
+            if (cityList != null && cityList.size() > 0) {
+                dgapData.setProvince(cityList.get(0).getProvince());
+                dgapData.setArea(city);
             }
         }
     }

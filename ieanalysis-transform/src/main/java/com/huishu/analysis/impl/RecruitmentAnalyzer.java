@@ -153,30 +153,31 @@ public class RecruitmentAnalyzer extends DefaultAnalyzer {
             return false;
         }
 
+        int monthIndex = publishDate.indexOf("-", yearIndex + 1);
+        if (monthIndex <= 0) {
+            return false;
+        }
+
         return true;
     }
 
     @Override
-    protected void fillDateInfoOfDgapData(DgapData dgapData, String fldrecddate) {
-        dgapData.setTime(fldrecddate);
+    protected void fillDateInfoOfDgapData(DgapData dgapData, String tempTime) {
+        dgapData.setTime(tempTime);
         dgapData.setHour(0L);
-        int yearIndex = fldrecddate.indexOf("-");
-        int monthIndex = fldrecddate.indexOf("-", yearIndex + 1);
-        dgapData.setYear(Long.valueOf(fldrecddate.substring(0, yearIndex).trim()));
-        if (monthIndex <= 0) {
-            return;
-        }
-
-        int sIndex = fldrecddate.indexOf(" ", monthIndex + 1);
-        int hourIndex = fldrecddate.indexOf(":");
-        dgapData.setMonth(Long.valueOf(fldrecddate.substring(yearIndex + 1, monthIndex).trim()));
+        int yearIndex = tempTime.indexOf("-");
+        dgapData.setYear(Long.valueOf(tempTime.substring(0, yearIndex).trim()));
+        int monthIndex = tempTime.indexOf("-", yearIndex + 1);
+        dgapData.setMonth(Long.valueOf(tempTime.substring(yearIndex + 1, monthIndex).trim()));
+        int sIndex = tempTime.indexOf(" ", monthIndex + 1);
+        int hourIndex = tempTime.indexOf(":");
         if (sIndex > 0) {
-            dgapData.setDay(Long.valueOf(fldrecddate.substring(monthIndex + 1, sIndex).trim()));
+            dgapData.setDay(Long.valueOf(tempTime.substring(monthIndex + 1, sIndex).trim()));
             if (hourIndex > 0) {
-                dgapData.setHour(Long.valueOf(fldrecddate.substring(sIndex + 1, hourIndex).trim()));
+                dgapData.setHour(Long.valueOf(tempTime.substring(sIndex + 1, hourIndex).trim()));
             }
         } else {
-            dgapData.setDay(Long.valueOf(fldrecddate.substring(monthIndex + 1, fldrecddate.length()).trim()));
+            dgapData.setDay(Long.valueOf(tempTime.substring(monthIndex + 1, tempTime.length()).trim()));
         }
     }
 

@@ -14,10 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -90,12 +87,14 @@ public class MergerAnalyzer extends DefaultAnalyzer {
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
         for (MergerDataBak item : list) {
             // 分析
-            DgapData dgapData = setDgapDataMerger(item);
-            if (dgapData != null) {
-                item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
-                addKingBaseData(historyList, dgapData);
-                dgapData.setId(String.valueOf(item.getId()));
-                saveList.add(dgapData);
+            if(validate(item)){
+                DgapData dgapData = fillDgapData(item);
+                if (dgapData != null) {
+                    item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
+                    addKingBaseData(historyList, dgapData);
+                    dgapData.setId(String.valueOf(item.getId()));
+                    saveList.add(dgapData);
+                }
             }
             if (SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode().equals(item.getBiaoShi())) {
                 item.setBiaoShi(SysConst.ESDataStatus.EXCEPTION.getCode());
@@ -117,108 +116,84 @@ public class MergerAnalyzer extends DefaultAnalyzer {
         recordNum(newIndexMap);
     }
 
-    private DgapData setDgapDataMerger(MergerDataBak single) {
-        DgapData result = new DgapData();
-        result.setDataType(SysConst.DataType.INVESTMENT.getCode());
+    private boolean validate(MergerDataBak mergerDataBak){
+        String time = mergerDataBak.getEndTime();
+        if (StringUtils.isEmpty(mergerDataBak.getIndustry())
+                || StringUtils.isEmpty(time)) {
+            return false;
+        }
 
-        // 时间
-        String singleData = single.getEndTime();
-        if (toSetTime(result, singleData)) {
-            return null;
-        }
-        // 行业
-        String industry = single.getIndustry();
-        if (StringUtils.isNotEmpty(industry)) {
-            result.setIndustry(industry.trim());
-        }
-        if (StringUtils.isEmpty(result.getIndustry())) {
-            return null;
-        }
-        // 省份
-        String region = single.getAcquirerInfo();
-        toSetDataProvince(result, region);
-        if (StringUtils.isEmpty(result.getProvince())) {
-            return null;
-        }
-        result.setPublishType(SysConst.PublishType.MERGER.getCode());
+        logger.info("time: {}", time);
 
-        // 金额
-        Double amount = com.huishu.utils.StringUtils.transformAmount(unitsConfig, single.getMergerAmount());
+        String tempTime = com.huishu.utils.StringUtils.transformTime(time);
+        int yearIndex = tempTime.indexOf("-");
+        if (yearIndex <= 0) {
+            return false;
+        }
+
+        int monthIndex = tempTime.indexOf("-", yearIndex + 1);
+        if (monthIndex <= 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private DgapData fillDgapData(MergerDataBak mergerDataBak) {
+        Double amount = com.huishu.utils.StringUtils.transformAmount(unitsConfig, mergerDataBak.getMergerAmount());
         if (amount == null) {
             return null;
         }
-        result.setCompanyName(single.getAcquirer());
+
+        DgapData result = new DgapData();
+
+        // 省份
+        fillAreaAndProvinceInfo(result, mergerDataBak.getAcquirerInfo());
+        if (StringUtils.isEmpty(result.getProvince())) {
+            return null;
+        }
+        // 时间
+        fillDateInfoOfDgapData(result, mergerDataBak.getEndTime());
+        result.setDataType(SysConst.DataType.INVESTMENT.getCode());
+        // 行业
+        result.setIndustry(mergerDataBak.getIndustry().trim());
+        result.setPublishType(SysConst.PublishType.MERGER.getCode());
+        // 金额
         result.setMergersAmount(amount);
-        result.setQuitAmount(0d);
-        result.setFinancingAmount(0d);
-        result.setPolicyUrl(single.getFldUrlAddr());
+        result.setCompanyName(mergerDataBak.getAcquirer());
+        result.setQuitAmount(0D);
+        result.setFinancingAmount(0D);
+        result.setPolicyUrl(mergerDataBak.getFldUrlAddr());
 
         return result;
     }
 
-    private boolean toSetTime(DgapData data, String singleData) {
-        try {
-            if (StringUtils.isNotEmpty(singleData)) {
-                singleData = com.huishu.utils.StringUtils.transformTime(singleData);
-                data.setHour(0L);
-                int yearindex = singleData.indexOf("-");
-                int monthIndex = singleData.indexOf("-", yearindex + 1);
-                int sIndex = singleData.indexOf(" ", monthIndex + 1);
-                int hourIndex = singleData.indexOf(":");
-                if (yearindex > 0) {
-                    data.setYear(Long.valueOf(singleData
-                            .substring(0, yearindex).trim()));
-                    if (monthIndex > 0) {
-                        data.setMonth(Long.valueOf(singleData.substring(
-                                yearindex + 1, monthIndex).trim()));
-                        if (sIndex > 0) {
-                            data.setDay(Long.valueOf(singleData.substring(
-                                    monthIndex + 1, sIndex).trim()));
-                            if (hourIndex > 0) {
-                                data.setHour(Long.valueOf(singleData.substring(
-                                        sIndex + 1, hourIndex).trim()));
-                            }
-                        } else {
-                            data.setDay(Long.valueOf(singleData.substring(
-                                    monthIndex + 1, singleData.length()).trim()));
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return true;
-                }
-            } else {
-                return true;
-            }
-            return false;
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            logger.error("日期转换错误：" + singleData, e);
-            return false;
+    private void fillAreaAndProvinceInfo(DgapData dgapData, String region) {
+        if (StringUtils.isEmpty(region)) {
+            return;
         }
-    }
 
-    private void toSetDataProvince(DgapData data, String region) {
-        if (StringUtils.isNotEmpty(region)) {
-            String str = "北京,上海,重庆,天津,河北,山西,辽宁,吉林,黑龙江,江苏,浙江,安徽,福建,江西,山东,河南,湖北,湖南,广东,海南,四川,贵州,云南,陕西,甘肃,青海,台湾,广西,宁夏,西藏,新疆,内蒙古,香港,澳门";
-            String[] provinces = str.split(",");
-            for (String province : provinces) {
-                if (region.indexOf(province) >= 0) {
-                    data.setProvince(province);
-                    break;
-                }
+        Set<String> provinceSet = SysConst.getProvinceSet();
+        for (String province : provinceSet) {
+            if (region.contains(province)) {
+                dgapData.setProvince(province);
+                break;
             }
-            if (StringUtils.isEmpty(data.getProvince())) {
-                String tempcity = com.huishu.utils.StringUtils.getCity(region);
-                if (StringUtils.isNotEmpty(tempcity)) {
-                    List<CityLib> city = cityLibService.findByCity(tempcity);
-                    if (city != null && city.size() > 0) {
-                        data.setProvince(city.get(0).getProvince());
-                        data.setArea(tempcity);
-                    }
-                }
-            }
+        }
+
+        if (StringUtils.isNotEmpty(dgapData.getProvince())) {
+            return;
+        }
+
+        String city = com.huishu.utils.StringUtils.getCity(region);
+        if (StringUtils.isEmpty(city)) {
+            return;
+        }
+
+        List<CityLib> cityList = cityLibService.findByCity(city);
+        if (cityList != null && cityList.size() > 0) {
+            dgapData.setProvince(cityList.get(0).getProvince());
+            dgapData.setArea(city);
         }
     }
 
