@@ -1,5 +1,10 @@
 package com.huishu.constants;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author wangjianchun
  */
@@ -8,6 +13,10 @@ public class SysConst {
     public static final String ENCODING_UTF_8 = "UTF-8";
 
     public static final String COMMA = ",";
+
+    private static final String COMMON_PROVINCE_STR = "北京,上海,重庆,天津,河北,山西,辽宁,吉林,黑龙江,江苏,浙江,安徽,福建,江西,山东,河南,湖北,湖南,广东,海南,四川,贵州,云南,陕西,甘肃,青海,台湾,广西,宁夏,西藏,新疆,内蒙古,香港,澳门";
+    private static final Set<String> COMMON_PROVINCE_SET = new HashSet<>(
+            Arrays.asList(COMMON_PROVINCE_STR.split(COMMA)));
 
     /**
      * 默认的线程池数量
@@ -297,6 +306,10 @@ public class SysConst {
         public String getDesc() {
             return desc;
         }
+    }
+
+    public static Set<String> getProvinceSet(){
+        return Collections.unmodifiableSet(COMMON_PROVINCE_SET);
     }
 
 }

@@ -114,7 +114,7 @@ public class DefaultAnalyzer implements Analyzer {
     }
 
     private boolean fillAreaAndProvinceInfo(String data, SiteLib siteLib, String area) {
-        if (StringUtils.isNotEmpty(data) && data.indexOf(area) >= 0) {
+        if (StringUtils.isNotEmpty(data) && data.contains(area)) {
             siteLib.setArea(area);
             List<CityLib> cityList = cityLibService.findByCity(area);
             if (cityList != null && cityList.size() > 0) {
@@ -126,7 +126,7 @@ public class DefaultAnalyzer implements Analyzer {
     }
 
     private boolean fillProvinceAndCityInfo(String data, SiteLib siteLib, CityLib city) {
-        if (StringUtils.isNotEmpty(data) && data.indexOf(city.getCity()) >= 0) {
+        if (StringUtils.isNotEmpty(data) && data.contains(city.getCity())) {
             siteLib.setProvince(city.getProvince());
             if (StringUtils.isEmpty(siteLib.getArea())) {
                 siteLib.setArea(city.getCity());

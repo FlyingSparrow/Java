@@ -153,12 +153,13 @@ public class FileUtils {
     /**
      * 如果文件不存在，那么创建文件并设置文件的读写权限；否则直接返回
      * 如果file为null，那么直接返回false
+     *
      * @param file
      * @return
      */
-    public static boolean createFileIfNotExists(File file){
+    public static boolean createFileIfNotExists(File file) {
         try {
-            if(file == null){
+            if (file == null) {
                 return false;
             }
             if (!file.exists()) {
@@ -171,6 +172,36 @@ public class FileUtils {
             logger.error("创建文件失败", e);
             return false;
         }
+    }
+
+    /**
+     * 从 classpath 路径下按行读取指定文件
+     *
+     * @param fileName
+     * @return Properties 对象
+     */
+    public static Properties getProperties(String fileName) {
+        Properties result = null;
+
+        BufferedReader br = null;
+        try {
+            InputStream inputStream = FileUtils.class.getResource("/" + fileName).openStream();
+            br = new BufferedReader(new InputStreamReader(inputStream, SysConst.ENCODING_UTF_8));
+            result = new Properties();
+            result.load(br);
+        } catch (Exception e) {
+            logger.error("读取文件失败", e);
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
     }
 
 }
