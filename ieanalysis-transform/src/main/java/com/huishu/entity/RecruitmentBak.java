@@ -36,9 +36,14 @@ public class RecruitmentBak implements Serializable {
     @Column(name = "publish_time")
     private String fldrecddate;
 
+    /**
+     * 岗位数量
+     */
     @Column(name = "gwNum")
     private String gwNum;
-
+    /**
+     * 岗位工资
+     */
     @Column(name = "gwGZ")
     private String gwGZ;
 

@@ -34,6 +34,14 @@ public class ValidationVO {
      * url
      */
     private String fldUrlAddr;
+    /**
+     * 岗位工资
+     */
+    private String gwGZ;
+    /**
+     * 地址
+     */
+    private String addr;
 
     private ValidationVO(String province, String industry, String fldrecddate,
                          String fldcontent, String fldtitle, String fldUrlAddr){
@@ -55,6 +63,12 @@ public class ValidationVO {
         this.fldrecddate = publishDate;
         this.fldcontent = content;
         this.fldtitle = title;
+    }
+
+    public ValidationVO(String gwGZ, String addr, String publishDate) {
+        this.gwGZ = gwGZ;
+        this.addr = addr;
+        this.fldrecddate = publishDate;
     }
 
     public static ValidationVO create(NewsLibBak news, SiteLib siteLib){
@@ -89,6 +103,10 @@ public class ValidationVO {
                 publishDate, wechat.getContent(), wechat.getTitle());
     }
 
+    public static ValidationVO create(RecruitmentBak recruitmentBak){
+        return new ValidationVO(recruitmentBak.getGwGZ(), recruitmentBak.getAddr(), recruitmentBak.getFldrecddate());
+    }
+
     public String getProvince() {
         return province;
     }
@@ -111,6 +129,14 @@ public class ValidationVO {
 
     public String getFldUrlAddr() {
         return fldUrlAddr;
+    }
+
+    public String getGwGZ() {
+        return gwGZ;
+    }
+
+    public String getAddr() {
+        return addr;
     }
 
     @Override

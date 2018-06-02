@@ -78,7 +78,7 @@ public class VideoAnalyzer extends DefaultAnalyzer {
         String newId = lists.get(lists.size() - 1).getId() + "";
         String oldId = indexMap.get(SysConst.VIDEO);
         Map<String, String> newIndexMap = new HashMap<>(indexMap);
-        if (Long.valueOf(newId) > Long.valueOf(oldId)) {
+        if (Long.parseLong(newId) > Long.parseLong(oldId)) {
             newIndexMap.put(SysConst.VIDEO, newId);
         }
 
@@ -153,7 +153,7 @@ public class VideoAnalyzer extends DefaultAnalyzer {
         result.setHotEventMark(SysConst.HotEventMark.NOT_HOT_EVENT.getCode());
         result.setHitNum(0L);
         if (StringUtils.isNotEmpty(newsVO.getBofangshu())) {
-            long count = Long.valueOf(newsVO.getBofangshu());
+            long count = Long.parseLong(newsVO.getBofangshu());
             if (count > SysConst.HOT_EVENT_THRESHOLD) {
                 result.setHotEventMark(SysConst.HotEventMark.HOT_EVENT.getCode());
                 result.setHitNum(count);

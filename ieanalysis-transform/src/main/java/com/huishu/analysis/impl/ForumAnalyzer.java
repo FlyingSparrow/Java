@@ -84,7 +84,7 @@ public class ForumAnalyzer extends DefaultAnalyzer {
         String newId = lists.get(lists.size() - 1).getId() + "";
         String oldId = indexMap.get(SysConst.FORUM);
         Map<String, String> newIndexMap = new HashMap<>(indexMap);
-        if (Long.valueOf(newId) > Long.valueOf(oldId)) {
+        if (Long.parseLong(newId) > Long.parseLong(oldId)) {
             newIndexMap.put(SysConst.FORUM, newId);
         }
 

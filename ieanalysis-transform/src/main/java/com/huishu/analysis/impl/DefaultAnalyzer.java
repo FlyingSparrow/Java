@@ -67,7 +67,7 @@ public class DefaultAnalyzer implements Analyzer {
      */
     protected SiteLib fillAreaInfoForSiteLib(String title, String content, SiteLib source) {
         SiteLib siteLib = new SiteLib();
-        String[] areaArray = analysisConfig.getCommonArea().split(",");
+        String[] areaArray = analysisConfig.getCommonArea().split(SysConst.COMMA);
         for (String area : areaArray) {
             if (fillAreaAndProvinceInfo(title, siteLib, area)) {
                 break;
@@ -181,7 +181,7 @@ public class DefaultAnalyzer implements Analyzer {
      */
     private int countIndustryKeywordsOccurrenceNumber(String industryKeyWords, String title, String content) {
         int count = 0;
-        JSONArray tourismKeyWordArray = com.huishu.utils.StringUtils.split(industryKeyWords, ",");
+        JSONArray tourismKeyWordArray = com.huishu.utils.StringUtils.split(industryKeyWords, SysConst.COMMA);
         if (StringUtils.isNotEmpty(title)) {
             count += com.huishu.utils.StringUtils.countOccurrenceNumber(tourismKeyWordArray, title);
         }
@@ -200,7 +200,7 @@ public class DefaultAnalyzer implements Analyzer {
      * @param jsonObject                       行业关键词出现次数最高的行业的信息
      * @return 行业关键词出现次数最高的行业
      */
-    private void filterIndustry(String industry, int industryKeywordsOccurrenceNumber,
+    protected void filterIndustry(String industry, int industryKeywordsOccurrenceNumber,
                                 JSONObject jsonObject) {
         if (industryKeywordsOccurrenceNumber > jsonObject.getIntValue("count")) {
             jsonObject.put("industry", industry);
@@ -208,7 +208,7 @@ public class DefaultAnalyzer implements Analyzer {
     }
 
     protected void setReportType(DgapData dgapData) {
-        JSONArray socialSiteArray = com.huishu.utils.StringUtils.split(analysisConfig.getSocialSite(), ",");
+        JSONArray socialSiteArray = com.huishu.utils.StringUtils.split(analysisConfig.getSocialSite(), SysConst.COMMA);
         for (int i = 0, size = socialSiteArray.size(); i < size; i++) {
             if (dgapData.getSite().equals(socialSiteArray.getString(i))) {
                 dgapData.setReportType(SysConst.SiteType.SOCIAL.getCode());
@@ -247,7 +247,7 @@ public class DefaultAnalyzer implements Analyzer {
         if (imageUrl.startsWith("http") && imageUrl.length() <= 150) {
             boolean imageFlag = true;
             String invalidImageUrl = analysisConfig.getInvalidImageurl();
-            JSONArray invalidImageUrlArray = com.huishu.utils.StringUtils.split(invalidImageUrl, ",");
+            JSONArray invalidImageUrlArray = com.huishu.utils.StringUtils.split(invalidImageUrl, SysConst.COMMA);
             for (int i = 0, size = invalidImageUrlArray.size(); i < size; i++) {
                 String invalidImageUrlItem = invalidImageUrlArray.getString(i);
                 if (invalidImageUrlItem.indexOf(imageUrl) >= 0) {
@@ -312,7 +312,7 @@ public class DefaultAnalyzer implements Analyzer {
             return;
         }
 
-        JSONArray pictureSuffixArray = com.huishu.utils.StringUtils.split(analysisConfig.getPictureSuffix(), ",");
+        JSONArray pictureSuffixArray = com.huishu.utils.StringUtils.split(analysisConfig.getPictureSuffix(), SysConst.COMMA);
         for (int i = 0, size = pictureSuffixArray.size(); i < size; i++) {
             String pictureSuffixItem = pictureSuffixArray.getString(i);
             String tempSuffix = pictureSuffixItem.toLowerCase();
@@ -392,7 +392,7 @@ public class DefaultAnalyzer implements Analyzer {
                     return;
                 }
 
-                JSONArray centerDepartmentArray = com.huishu.utils.StringUtils.split(centerDepartment, ",");
+                JSONArray centerDepartmentArray = com.huishu.utils.StringUtils.split(centerDepartment, SysConst.COMMA);
                 for (int i = 0, size = centerDepartmentArray.size(); i < size; i++) {
                     String centerDepartmentItem = centerDepartmentArray.getString(i);
                     if (!centerDepartmentItem.equals(channelName)) {

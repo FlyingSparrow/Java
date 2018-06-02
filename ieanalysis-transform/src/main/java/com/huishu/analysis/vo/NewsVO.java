@@ -78,6 +78,19 @@ public class NewsVO {
      */
     private String likeNum;
 
+    /**
+     * 岗位数量
+     */
+    private String gwNum;
+    /**
+     * 岗位工资
+     */
+    private String gwGZ;
+
+    private String xueli;
+
+    private String addr;
+
     public static NewsVO create(NewsLibBak source, SiteLib siteLib){
         NewsVO target = new NewsVO();
         BeanUtils.copyProperties(source, target);
@@ -122,6 +135,13 @@ public class NewsVO {
         NewsVO target = new NewsVO();
         BeanUtils.copyProperties(source, target);
         fillSiteLibInfo(siteLib, target);
+
+        return target;
+    }
+
+    public static NewsVO create(RecruitmentBak source){
+        NewsVO target = new NewsVO();
+        BeanUtils.copyProperties(source, target);
 
         return target;
     }
@@ -370,6 +390,38 @@ public class NewsVO {
 
     public void setLikeNum(String likeNum) {
         this.likeNum = likeNum;
+    }
+
+    public String getGwNum() {
+        return gwNum;
+    }
+
+    public void setGwNum(String gwNum) {
+        this.gwNum = gwNum;
+    }
+
+    public String getGwGZ() {
+        return gwGZ;
+    }
+
+    public void setGwGZ(String gwGZ) {
+        this.gwGZ = gwGZ;
+    }
+
+    public String getXueli() {
+        return xueli;
+    }
+
+    public void setXueli(String xueli) {
+        this.xueli = xueli;
+    }
+
+    public String getAddr() {
+        return addr;
+    }
+
+    public void setAddr(String addr) {
+        this.addr = addr;
     }
 
     @Override

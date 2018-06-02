@@ -7,6 +7,8 @@ public class SysConst {
 
     public static final String ENCODING_UTF_8 = "UTF-8";
 
+    public static final String COMMA = ",";
+
     /**
      * 默认的线程池数量
      */
@@ -269,6 +271,31 @@ public class SysConst {
 
         public String getType() {
             return type;
+        }
+    }
+
+    /**
+     * 双高人才标记枚举类
+     */
+    public enum JobsTalentMark {
+
+        NOT_DOUBLE_HIGH_TALENT(0L, "非双高人才"),
+        DOUBLE_HIGH_TALENT(1L, "双高人才");
+
+        private Long code;
+        private String desc;
+
+        JobsTalentMark(Long code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+
+        public Long getCode() {
+            return code;
+        }
+
+        public String getDesc() {
+            return desc;
         }
     }
 

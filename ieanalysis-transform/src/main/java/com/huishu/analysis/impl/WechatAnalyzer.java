@@ -48,8 +48,8 @@ public class WechatAnalyzer extends DefaultAnalyzer {
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
         STATIC_LIST.clear();
         if (analysisConfig.isWechatMark()) {
-            for (int x = 0; x < analysisConfig.getWechatThreadNum(); x++) {
-                final int pageNumber = x;
+            for (int i = 0; i < analysisConfig.getWechatThreadNum(); i++) {
+                final int pageNumber = i;
                 executor.execute(() -> {
                     Thread currentThread = Thread.currentThread();
                     logger.info("{}:{}微信分析开始", currentThread.getName(), currentThread.getId());
@@ -86,7 +86,7 @@ public class WechatAnalyzer extends DefaultAnalyzer {
         String newId = list.get(list.size() - 1).getId() + "";
         String oldId = indexMap.get(SysConst.WECHAT);
         Map<String, String> newIndexMap = new HashMap<>(indexMap);
-        if (Long.valueOf(newId) > Long.valueOf(oldId)) {
+        if (Long.parseLong(newId) > Long.parseLong(oldId)) {
             newIndexMap.put(SysConst.WECHAT, newId);
         }
 

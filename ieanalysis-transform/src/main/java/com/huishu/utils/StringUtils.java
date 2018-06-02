@@ -96,7 +96,7 @@ public class StringUtils {
         }
         for (int i = 0, size = wordArray.size(); i < size; i++) {
             String word = wordArray.getString(i);
-            if (data.indexOf(word) >= 0) {
+            if (data.contains(word)) {
                 result += 1;
             }
         }
