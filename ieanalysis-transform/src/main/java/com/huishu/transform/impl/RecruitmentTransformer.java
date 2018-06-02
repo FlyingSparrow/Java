@@ -33,20 +33,22 @@ public class RecruitmentTransformer extends AbstractTransformer {
 
     @Override
     protected void transformData(int pageNumber) {
-        Recruitment news = new Recruitment();
+        Recruitment entity = new Recruitment();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<Recruitment> list = recruitmentService.findOneHundred(news, pageable);
+        List<Recruitment> list = recruitmentService.findOneHundred(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<RecruitmentBak> bakList = new ArrayList<RecruitmentBak>();
-        if (list != null && list.size() > 0) {
-            for (Recruitment item : list) {
-                RecruitmentBak bak = new RecruitmentBak();
-                BeanUtils.copyProperties(item, bak);
-                bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
-                bak.setBiaoShi("0");
-                long count = recruitmentBakService.findExist(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (Recruitment item : list) {
+            RecruitmentBak bak = new RecruitmentBak();
+            BeanUtils.copyProperties(item, bak);
+            bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
+            bak.setBiaoShi("0");
+            long count = recruitmentBakService.findExist(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {

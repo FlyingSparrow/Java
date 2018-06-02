@@ -41,27 +41,29 @@ public class QuitTransformer extends AbstractTransformer {
     }
 
     private void transformQuitSmt(int pageNumber) {
-        QuitDataSmt news = new QuitDataSmt();
+        QuitDataSmt entity = new QuitDataSmt();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<QuitDataSmt> lists = quitDataSmtService.findOneHundred(news, pageable);
+        List<QuitDataSmt> list = quitDataSmtService.findOneHundred(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<QuitDataBak> bakList = new ArrayList<QuitDataBak>();
-        if (lists != null && lists.size() > 0) {
-            for (QuitDataSmt list : lists) {
-                QuitDataBak bak = new QuitDataBak();
-                BeanUtils.copyProperties(list, bak);
-                bak.setTime(StringUtils.transformTime(list.getTime()));
-                bak.setBiaoShi("0");
-                bak.setSource("私募通");
-                long count = quitDataBakService.findExit(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (QuitDataSmt item : list) {
+            QuitDataBak bak = new QuitDataBak();
+            BeanUtils.copyProperties(item, bak);
+            bak.setTime(StringUtils.transformTime(item.getTime()));
+            bak.setBiaoShi("0");
+            bak.setSource("私募通");
+            long count = quitDataBakService.findExit(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {
             quitDataBakService.save(bakList);
         }
-        quitDataSmtService.delete(lists);
+        quitDataSmtService.delete(list);
     }
 
     private void transformQuitTz(int pageNumber) {

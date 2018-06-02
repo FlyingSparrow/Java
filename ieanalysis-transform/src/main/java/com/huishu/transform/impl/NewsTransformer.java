@@ -33,21 +33,23 @@ public class NewsTransformer extends AbstractTransformer {
 
     @Override
     protected void transformData(int pageNumber) {
-        NewsLib news = new NewsLib();
+        NewsLib entity = new NewsLib();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<NewsLib> list = newsLibService.findOneHundred(news, pageable);
+        List<NewsLib> list = newsLibService.findOneHundred(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<NewsLibBak> bakList = new ArrayList<NewsLibBak>();
-        if (list != null && list.size() > 0) {
-            for (NewsLib item : list) {
-                NewsLibBak bak = new NewsLibBak();
-                BeanUtils.copyProperties(item, bak);
-                bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
-                bak.setType(String.valueOf(SysConst.PublishType.NEWS.getCode()));
-                bak.setBiaoShi("0");
-                long count = newsLibBakService.findExist(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (NewsLib item : list) {
+            NewsLibBak bak = new NewsLibBak();
+            BeanUtils.copyProperties(item, bak);
+            bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
+            bak.setType(String.valueOf(SysConst.PublishType.NEWS.getCode()));
+            bak.setBiaoShi("0");
+            long count = newsLibBakService.findExist(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {

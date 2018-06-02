@@ -37,26 +37,28 @@ public class InvestmentTransformer extends AbstractTransformer {
 
     @Override
     protected void transformData(int pageNumber) {
-        transformInverstmentSmt(pageNumber);
-        transformInverstmentTz(pageNumber);
+        transformInvestmentSmt(pageNumber);
+        transformInvestmentTz(pageNumber);
     }
 
-    private void transformInverstmentSmt(int pageNumber) {
-        InvestmentDataSmt news = new InvestmentDataSmt();
+    private void transformInvestmentSmt(int pageNumber) {
+        InvestmentDataSmt entity = new InvestmentDataSmt();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<InvestmentDataSmt> list = investmentDataSmtService.findOneHundred(news, pageable);
+        List<InvestmentDataSmt> list = investmentDataSmtService.findOneHundred(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<InvestmentDataBak> bakList = new ArrayList<InvestmentDataBak>();
-        if (list != null && list.size() > 0) {
-            for (InvestmentDataSmt item : list) {
-                InvestmentDataBak bak = new InvestmentDataBak();
-                BeanUtils.copyProperties(item, bak);
-                bak.setTime(item.getTime());
-                bak.setBiaoShi("0");
-                bak.setSource("私募通");
-                long count = investmentDataBakService.findExit(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (InvestmentDataSmt item : list) {
+            InvestmentDataBak bak = new InvestmentDataBak();
+            BeanUtils.copyProperties(item, bak);
+            bak.setTime(item.getTime());
+            bak.setBiaoShi("0");
+            bak.setSource("私募通");
+            long count = investmentDataBakService.findExit(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {
@@ -66,7 +68,7 @@ public class InvestmentTransformer extends AbstractTransformer {
 
     }
 
-    private void transformInverstmentTz(int tempNum) {
+    private void transformInvestmentTz(int tempNum) {
         InvestmentDataTz news = new InvestmentDataTz();
         Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
         List<InvestmentDataTz> list = investmentDataTzService.findOneHundred(news, pageable);

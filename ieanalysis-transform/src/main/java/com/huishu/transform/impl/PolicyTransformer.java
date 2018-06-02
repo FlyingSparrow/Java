@@ -33,21 +33,23 @@ public class PolicyTransformer extends AbstractTransformer {
 
     @Override
     protected void transformData(int pageNumber) {
-        NewsLib news = new NewsLib();
+        NewsLib entity = new NewsLib();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<NewsLib> list = newsLibService.findOneHundredPolicy(news, pageable);
+        List<NewsLib> list = newsLibService.findOneHundredPolicy(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<PolicyBak> bakList = new ArrayList<PolicyBak>();
-        if (list != null && list.size() > 0) {
-            for (NewsLib item : list) {
-                PolicyBak bak = new PolicyBak();
-                BeanUtils.copyProperties(item, bak);
-                bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
-                bak.setType(String.valueOf(SysConst.PublishType.LOCAL.getCode()));
-                bak.setBiaoShi("0");
-                long count = policyBakService.findExist(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (NewsLib item : list) {
+            PolicyBak bak = new PolicyBak();
+            BeanUtils.copyProperties(item, bak);
+            bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
+            bak.setType(String.valueOf(SysConst.PublishType.LOCAL.getCode()));
+            bak.setBiaoShi("0");
+            long count = policyBakService.findExist(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {

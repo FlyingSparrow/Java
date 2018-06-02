@@ -42,21 +42,23 @@ public class MergerTransformer extends AbstractTransformer{
     }
 
     private void transformMergerSmt(int pageNumber) {
-        MergerDataSmt news = new MergerDataSmt();
+        MergerDataSmt entity = new MergerDataSmt();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<MergerDataSmt> list = mergerDataSmtService.findOneHundred(news, pageable);
+        List<MergerDataSmt> list = mergerDataSmtService.findOneHundred(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<MergerDataBak> bakList = new ArrayList<MergerDataBak>();
-        if (list != null && list.size() > 0) {
-            for (MergerDataSmt item : list) {
-                MergerDataBak bak = new MergerDataBak();
-                BeanUtils.copyProperties(item, bak);
-                bak.setEndTime(StringUtils.transformTime(item.getEndTime()));
-                bak.setBiaoShi("0");
-                bak.setSource("私募通");
-                long count = mergerDataBakService.findExit(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (MergerDataSmt item : list) {
+            MergerDataBak bak = new MergerDataBak();
+            BeanUtils.copyProperties(item, bak);
+            bak.setEndTime(StringUtils.transformTime(item.getEndTime()));
+            bak.setBiaoShi("0");
+            bak.setSource("私募通");
+            long count = mergerDataBakService.findExit(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {

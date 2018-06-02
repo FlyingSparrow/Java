@@ -33,21 +33,23 @@ public class ZongheTransformer extends AbstractTransformer {
 
     @Override
     protected void transformData(int pageNumber) {
-        NewsLib news = new NewsLib();
+        NewsLib entity = new NewsLib();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<NewsLib> list = newsLibService.findOneHundredZonghe(news, pageable);
+        List<NewsLib> list = newsLibService.findOneHundredZonghe(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<ZongheBak> bakList = new ArrayList<ZongheBak>();
-        if (list != null && list.size() > 0) {
-            for (NewsLib item : list) {
-                ZongheBak bak = new ZongheBak();
-                BeanUtils.copyProperties(item, bak);
-                bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
-                bak.setType(String.valueOf(SysConst.PublishType.COMPREHENSIVE.getCode()));
-                bak.setBiaoShi("0");
-                long count = zongheBakService.findExist(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (NewsLib item : list) {
+            ZongheBak bak = new ZongheBak();
+            BeanUtils.copyProperties(item, bak);
+            bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
+            bak.setType(String.valueOf(SysConst.PublishType.COMPREHENSIVE.getCode()));
+            bak.setBiaoShi("0");
+            long count = zongheBakService.findExist(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {

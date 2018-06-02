@@ -33,20 +33,22 @@ public class VideoTransformer extends AbstractTransformer  {
 
     @Override
     protected void transformData(int pageNumber) {
-        Video news = new Video();
+        Video entity = new Video();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<Video> list = videoService.findOneHundred(news, pageable);
+        List<Video> list = videoService.findOneHundred(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<VideoBak> bakList = new ArrayList<VideoBak>();
-        if (list != null && list.size() > 0) {
-            for (Video item : list) {
-                VideoBak bak = new VideoBak();
-                BeanUtils.copyProperties(item, bak);
-                bak.setFabushijian(StringUtils.transformTime(bak.getFabushijian()));
-                bak.setBiaoShi("0");
-                long count = videoBakService.findExist(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (Video item : list) {
+            VideoBak bak = new VideoBak();
+            BeanUtils.copyProperties(item, bak);
+            bak.setFabushijian(StringUtils.transformTime(bak.getFabushijian()));
+            bak.setBiaoShi("0");
+            long count = videoBakService.findExist(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {
