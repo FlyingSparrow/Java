@@ -21,7 +21,7 @@ public class SysInit {
 
     private static final Logger logger = LoggerFactory.getLogger(SysInit.class);
 
-    private static final Map<String, String> indexMap = new HashMap<String, String>(16);
+    private static final Map<String, String> INDEX_MAP = new HashMap<String, String>(16);
 
     static {
         try {
@@ -31,32 +31,32 @@ public class SysInit {
                 FileUtils.createFileIfNotExists(file);
 
                 String defaultValue = "0";
-                indexMap.put(SysConst.WECHAT, defaultValue);
-                indexMap.put(SysConst.VIDEO, defaultValue);
-                indexMap.put(SysConst.NEWS, defaultValue);
-                indexMap.put(SysConst.POLICY, defaultValue);
-                indexMap.put(SysConst.ZONGHE, defaultValue);
-                indexMap.put(SysConst.FORUM, defaultValue);
-                indexMap.put(SysConst.RECRIUTMENT, defaultValue);
-                indexMap.put(SysConst.INVESTMENT, defaultValue);
-                indexMap.put(SysConst.MERGER, defaultValue);
-                indexMap.put(SysConst.QUIT, defaultValue);
-                indexMap.put(SysConst.INDUSTRY, defaultValue);
-                FileUtils.writeProperties(filePath, indexMap);
+                INDEX_MAP.put(SysConst.WECHAT, defaultValue);
+                INDEX_MAP.put(SysConst.VIDEO, defaultValue);
+                INDEX_MAP.put(SysConst.NEWS, defaultValue);
+                INDEX_MAP.put(SysConst.POLICY, defaultValue);
+                INDEX_MAP.put(SysConst.ZONGHE, defaultValue);
+                INDEX_MAP.put(SysConst.FORUM, defaultValue);
+                INDEX_MAP.put(SysConst.RECRIUTMENT, defaultValue);
+                INDEX_MAP.put(SysConst.INVESTMENT, defaultValue);
+                INDEX_MAP.put(SysConst.MERGER, defaultValue);
+                INDEX_MAP.put(SysConst.QUIT, defaultValue);
+                INDEX_MAP.put(SysConst.INDUSTRY, defaultValue);
+                FileUtils.writeProperties(filePath, INDEX_MAP);
             } else {
                 Properties properties = FileUtils.getPropertiesByFilePath(filePath);
 
-                indexMap.put(SysConst.WECHAT, properties.getProperty(SysConst.WECHAT));
-                indexMap.put(SysConst.RECRIUTMENT, properties.getProperty(SysConst.RECRIUTMENT));
-                indexMap.put(SysConst.VIDEO, properties.getProperty(SysConst.VIDEO));
-                indexMap.put(SysConst.NEWS, properties.getProperty(SysConst.NEWS));
-                indexMap.put(SysConst.FORUM, properties.getProperty(SysConst.FORUM));
-                indexMap.put(SysConst.POLICY, properties.getProperty(SysConst.POLICY));
-                indexMap.put(SysConst.ZONGHE, properties.getProperty(SysConst.ZONGHE));
-                indexMap.put(SysConst.INVESTMENT, properties.getProperty(SysConst.INVESTMENT));
-                indexMap.put(SysConst.MERGER, properties.getProperty(SysConst.MERGER));
-                indexMap.put(SysConst.QUIT, properties.getProperty(SysConst.QUIT));
-                indexMap.put(SysConst.INDUSTRY, properties.getProperty(SysConst.INDUSTRY));
+                INDEX_MAP.put(SysConst.WECHAT, properties.getProperty(SysConst.WECHAT));
+                INDEX_MAP.put(SysConst.RECRIUTMENT, properties.getProperty(SysConst.RECRIUTMENT));
+                INDEX_MAP.put(SysConst.VIDEO, properties.getProperty(SysConst.VIDEO));
+                INDEX_MAP.put(SysConst.NEWS, properties.getProperty(SysConst.NEWS));
+                INDEX_MAP.put(SysConst.FORUM, properties.getProperty(SysConst.FORUM));
+                INDEX_MAP.put(SysConst.POLICY, properties.getProperty(SysConst.POLICY));
+                INDEX_MAP.put(SysConst.ZONGHE, properties.getProperty(SysConst.ZONGHE));
+                INDEX_MAP.put(SysConst.INVESTMENT, properties.getProperty(SysConst.INVESTMENT));
+                INDEX_MAP.put(SysConst.MERGER, properties.getProperty(SysConst.MERGER));
+                INDEX_MAP.put(SysConst.QUIT, properties.getProperty(SysConst.QUIT));
+                INDEX_MAP.put(SysConst.INDUSTRY, properties.getProperty(SysConst.INDUSTRY));
             }
         } catch (Exception e) {
             logger.error("配置信息加载出错", e);
@@ -64,7 +64,7 @@ public class SysInit {
     }
 
     public static Map<String, String> getIndexMap() {
-        return Collections.unmodifiableMap(indexMap);
+        return Collections.unmodifiableMap(INDEX_MAP);
     }
 
 }

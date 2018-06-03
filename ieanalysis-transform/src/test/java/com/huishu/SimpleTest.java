@@ -23,17 +23,17 @@ public class SimpleTest {
         String content = "从去年开始，经常传出来北京二手房交易中出现的个别住宅拆分炒卖现象。知事打探到，针对于此，市住建委会同市规划国土委叫停了已取得不动产所有权的住宅房产拆分测绘成果审核和不动产权利拆分登记，坚决遏制炒房行为。";
         for (String area : areas) {
             if (StringUtils.isNotEmpty(title) && title.indexOf(area) >= 0) {
-                List<String> city = Lists.newArrayList();
-                city.add(area);
-                if (city != null && city.size() > 0) {
+                List<String> cityList = Lists.newArrayList();
+                cityList.add(area);
+                if (cityList.size() > 0) {
 //                    siteLib.setProvince(city.get(0).getProvince());
                     System.out.println("==");
                 }
                 break;
             }
             if (StringUtils.isNotEmpty(content) && content.indexOf(area) >= 0) {
-                List<String> city = Lists.newArrayList();
-                if (city != null && city.size() > 0) {
+                List<String> cityList = Lists.newArrayList();
+                if (cityList.size() > 0) {
                     System.out.println("====");
                 }
                 break;
