@@ -624,6 +624,7 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
 
         List<String> legendList = new ArrayList<String>();
         List<Map> series = new ArrayList<Map>();
+        List<DataLongVo> data = new ArrayList<DataLongVo>();
         long maxValue = template.query(query, res -> {
             long max = 0;
             Terms terms = res.getAggregations().get("site");
@@ -643,7 +644,6 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
                     continue;
                 }
                 String commonProvince = SysConst.COMMON_PROVINCE_STR;
-                List<DataLongVo> data = new ArrayList<DataLongVo>();
                 for (Terms.Bucket provinceBucket : provinceBuckets) {
                     if (StringUtils.isNotEmpty(bucket.getKeyAsString())) {
                         DataLongVo vo = new DataLongVo();
@@ -674,6 +674,7 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
             result.put("series", series);
             result.put("legend", legendList);
             result.put("max", maxValue);
+            result.put("data", data);
 
             return result;
         }
