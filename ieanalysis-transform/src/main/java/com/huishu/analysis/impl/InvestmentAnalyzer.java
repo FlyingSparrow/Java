@@ -211,12 +211,14 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
         }
 
         String city = com.huishu.utils.StringUtils.getCity(region);
-        if (StringUtils.isNotEmpty(city)) {
-            List<CityLib> cityList = cityLibService.findByCity(city);
-            if (cityList != null && cityList.size() > 0) {
-                dgapData.setProvince(cityList.get(0).getProvince());
-                dgapData.setArea(city);
-            }
+        if (StringUtils.isEmpty(city)) {
+            return;
+        }
+
+        List<CityLib> cityList = cityLibService.findByCity(city);
+        if (cityList != null && cityList.size() > 0) {
+            dgapData.setProvince(cityList.get(0).getProvince());
+            dgapData.setArea(city);
         }
     }
 

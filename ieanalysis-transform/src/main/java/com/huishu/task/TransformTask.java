@@ -66,7 +66,7 @@ public class TransformTask {
     private Transformer quitTransformer;
 
     /**
-     * 间隔15秒钟执行一次
+     * 间隔 15 秒钟执行一次
      */
     @Scheduled(fixedDelay = 1000 * 15)
     public void warn() {

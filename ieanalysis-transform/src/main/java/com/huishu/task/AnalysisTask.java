@@ -95,6 +95,9 @@ public class AnalysisTask {
 		indexMap.put(SysConst.INDUSTRY, tempConfig.getIndustryMark());
 	}
 
+	/**
+	 * 间隔 30 秒钟执行一次
+	 */
 	@Scheduled(fixedDelay = 1000 * 30)
 	public void warn() {
 		// 分析新闻
