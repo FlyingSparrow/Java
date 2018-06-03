@@ -131,10 +131,13 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
         Object[] result = new Object[monthCount];
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("month");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -164,12 +167,15 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
         SumBuilder jobsNumberAgg = AggregationBuilders.sum("jobsNumber").field("jobsNumber");
         monthAgg.subAggregation(jobsNumberAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("month");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -193,10 +199,13 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
     public JSONObject searchPolicyAffectIndustryTrent(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder industryAgg = AggregationBuilders.terms("industry").field("industry");
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(industryAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         List<DataLongVo> list = new ArrayList<DataLongVo>();
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("industry");
@@ -249,13 +258,16 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
         Double[] valueArray = new Double[monthCount];
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         // 搜狐、网易、新浪、腾讯、凤凰
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
         SumBuilder traAgg = AggregationBuilders.sum("readNum").field("readNum");
         monthAgg.subAggregation(traAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("month");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -282,13 +294,16 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
         Double[] valueArray = new Double[monthCount];
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         // 搜狐、网易、新浪、腾讯、凤凰
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
         SumBuilder traAgg = AggregationBuilders.sum("hitNum").field("hitNum");
         monthAgg.subAggregation(traAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("month");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -335,10 +350,13 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
     public JSONObject searchPolicyEmotionAnalysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder emotionMarkAgg = AggregationBuilders.terms("emotionMark").field("emotionMark").size(3);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(emotionMarkAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         List<DataLongVo> list = new ArrayList<DataLongVo>();
         String[] legendArray = {"负面", "中性", "正面"};
         template.query(query, res -> {
@@ -375,12 +393,15 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
     public JSONObject searchPolicyMediaCommentTotalRanking(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("site").field("site").size(SysConst.AGG_SITE_SIZE);
         SumBuilder readNumAgg = AggregationBuilders.sum("readNum").field("readNum");
         siteAgg.subAggregation(readNumAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         List<DataLongVo> list = new ArrayList<DataLongVo>();
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("site");
@@ -456,7 +477,7 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("site").field("site")
                 .size(SysConst.AGG_SITE_SIZE);
@@ -464,6 +485,9 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
         siteAgg.subAggregation(readNumAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder)
                 .addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("site");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -500,10 +524,12 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
     private List<DataLongVo> searchPolicyMediaArticleProportionResult(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("site").field("site");
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         return searchSiteAggregationData(query);
     }
@@ -535,7 +561,7 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("site").field("site");
         TermsBuilder dayAgg = AggregationBuilders.terms("day").field("day");
@@ -543,6 +569,9 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
         dayAgg.subAggregation(hitNumAgg);
         siteAgg.subAggregation(dayAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("site");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -584,12 +613,14 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
     public JSONObject searchPolicyMediaParMapAnaylysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("site").field("site").size(SysConst.AGG_SITE_SIZE);
         TermsBuilder provinceAgg = AggregationBuilders.terms("province").field("province").size(34);
         siteAgg.subAggregation(provinceAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<String> legendList = new ArrayList<String>();
         List<Map> series = new ArrayList<Map>();
@@ -652,12 +683,14 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
     public JSONObject searchPolicyMediaParAnaylysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("site").field("site").size(5);
         TermsBuilder emotionAgg = AggregationBuilders.terms("emotionMark").field("emotionMark");
         siteAgg.subAggregation(emotionAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<BaseSeries<Object>> series = new ArrayList<BaseSeries<Object>>();
         List<String> nameList = new ArrayList<String>();
@@ -763,12 +796,14 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
     public JSONObject searchPolicySocialParAnaylysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder publishTypeAgg = AggregationBuilders.terms("publishType").field("publishType");
         TermsBuilder emotionAgg = AggregationBuilders.terms("emotionMark").field("emotionMark");
         publishTypeAgg.subAggregation(emotionAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(publishTypeAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<BaseSeries<Object>> series = new ArrayList<BaseSeries<Object>>();
         List<String> nameList = new ArrayList<String>();
@@ -820,7 +855,7 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
         BoolQueryBuilder queryBuilder = getBuilders(cond);
         queryBuilder.must(QueryBuilders.termQuery("hotEventMark", 1));
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         Page<DgapData> page = dgapDataRepository.search(queryBuilder, pageable);
         result.put("page", page);
@@ -835,7 +870,7 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
         BoolQueryBuilder queryBuilder = getBuilders(cond);
         queryBuilder.must(QueryBuilders.termQuery("hotEventMark", 1));
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         Iterable<DgapData> search = dgapDataRepository.search(queryBuilder);
         Iterator<DgapData> iterator = search.iterator();
@@ -867,10 +902,13 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
     public JSONObject searchPolicyHotEventPlaceDistrbute(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder provinceAgg = AggregationBuilders.terms("province").field("province").size(34);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(provinceAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         List<DataLongVo> data = new ArrayList<DataLongVo>();
         List<Map> series = new ArrayList<Map>();
         long maxValue = template.query(query, res -> {
@@ -920,10 +958,12 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
     public JSONObject searchPolicyHotEventAmountDistrbute(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("site").field("site").size(SysConst.AGG_SITE_SIZE);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<DataLongVo> data = searchSiteAggregationData(query);
 
@@ -978,7 +1018,7 @@ public class PolicyOrientedServiceImpl extends AbstractService implements Policy
         BoolQueryBuilder queryBuilder = getBuilders(cond);
         queryBuilder.must(QueryBuilders.termQuery("hotEventMark", 1));
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         Iterable<DgapData> search = dgapDataRepository.search(queryBuilder);
         Iterator<DgapData> iterator = search.iterator();

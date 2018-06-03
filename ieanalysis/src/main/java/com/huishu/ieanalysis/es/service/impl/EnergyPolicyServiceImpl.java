@@ -83,7 +83,7 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
         template.query(query, res -> {
@@ -120,9 +120,12 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         cond.setYear(cond.getYear() - 1);
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("month");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -206,7 +209,7 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("industry").field("industry").size(100);
         SumBuilder financingAgg = AggregationBuilders.sum("financingAmount").field("financingAmount");
@@ -214,6 +217,9 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         SumBuilder quitAgg = AggregationBuilders.sum("quitAmount").field("quitAmount");
         monthAgg.subAggregation(financingAgg).subAggregation(mergersAgg).subAggregation(quitAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("industry");
             List<Terms.Bucket> buckets = terms.getBuckets();

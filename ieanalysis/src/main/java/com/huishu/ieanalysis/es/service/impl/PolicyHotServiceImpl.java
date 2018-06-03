@@ -39,12 +39,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder provinceAgg = AggregationBuilders.terms("province").field("province").size(34);
         SumBuilder focusAgg = AggregationBuilders.sum("hitNum").field("hitNum");
         provinceAgg.subAggregation(focusAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(provinceAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<Map> series = new ArrayList<>();
         List<DataVo> data = new ArrayList<DataVo>();
@@ -98,12 +100,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder provinceAgg = AggregationBuilders.terms("province").field("province").size(34);
         SumBuilder focusAgg = AggregationBuilders.sum("hitNum").field("hitNum");
         provinceAgg.subAggregation(focusAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(provinceAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<DataLongVo> data = new ArrayList<DataLongVo>();
         template.query(query, res -> {
@@ -142,12 +146,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
     public JSONObject searchPolicyHotAreaFocusSocialSubjectAnalysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder jobAgg = AggregationBuilders.terms("industry").field("industry");
         SumBuilder focusAgg = AggregationBuilders.sum("hitNum").field("hitNum");
         jobAgg.subAggregation(focusAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(jobAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<DataLongVo> data = new ArrayList<DataLongVo>();
         template.query(query, res -> {
@@ -186,10 +192,13 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("site").field("site");
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         List<DataLongVo> data = new ArrayList<DataLongVo>();
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("site");
@@ -222,10 +231,13 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
     public JSONObject searchPolicyHotChannelSocialSubjectAnalysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder jobAgg = AggregationBuilders.terms("industry").field("industry");
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(jobAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         List<DataLongVo> data = new ArrayList<DataLongVo>();
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("industry");
@@ -286,10 +298,12 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder emotionAgg = AggregationBuilders.terms("emotionMark").field("emotionMark");
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(emotionAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<DataLongVo> data = new ArrayList<DataLongVo>();
         // 0,负面;1,中性;2,正面
@@ -327,12 +341,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("site").field("site").size(SysConst.AGG_SITE_SIZE);
         SumBuilder traAgg = AggregationBuilders.sum("readNum").field("readNum");
         siteAgg.subAggregation(traAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<DataLongVo> data = new ArrayList<DataLongVo>();
         template.query(query, res -> {
@@ -377,12 +393,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
     public JSONObject searchPolicyHotMediaChannelDistributeAnalysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder emotionAgg = AggregationBuilders.terms("emotionMark").field("emotionMark");
         TermsBuilder industryAgg = AggregationBuilders.terms("site").field("site");
         industryAgg.subAggregation(emotionAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(industryAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<String> nameList = new ArrayList<String>();
         List<Long> positiveList = new ArrayList<Long>();
@@ -472,12 +490,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
     public JSONObject searchPolicyHotSocialChannelAnalysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("socialChannel").field("socialChannel");
         SumBuilder traAgg = AggregationBuilders.sum("readNum").field("readNum");
         siteAgg.subAggregation(traAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<DataLongVo> data = new ArrayList<DataLongVo>();
         template.query(query, res -> {
@@ -528,12 +548,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
     public JSONObject searchPolicyHotSocialChannelDistributeAnalysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder emotionAgg = AggregationBuilders.terms("emotionMark").field("emotionMark");
         TermsBuilder industryAgg = AggregationBuilders.terms("socialChannel").field("socialChannel");
         industryAgg.subAggregation(emotionAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(industryAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<String> nameList = new ArrayList<String>();
         List<Long> positiveList = new ArrayList<Long>();
@@ -628,12 +650,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
     public JSONObject searchPolicyHotIndustryRankAnalysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder siteAgg = AggregationBuilders.terms("industry").field("industry");
         SumBuilder traAgg = AggregationBuilders.sum("readNum").field("readNum");
         siteAgg.subAggregation(traAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(siteAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<DataLongVo> data = new ArrayList<DataLongVo>();
         template.query(query, res -> {
@@ -686,12 +710,14 @@ public class PolicyHotServiceImpl extends AbstractService implements PolicyHotSe
     public JSONObject searchPolicyHotIndustryDistributeAnalysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder emotionAgg = AggregationBuilders.terms("emotionMark").field("emotionMark");
         TermsBuilder industryAgg = AggregationBuilders.terms("industry").field("industry");
         industryAgg.subAggregation(emotionAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(industryAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         List<String> nameList = new ArrayList<String>();
         List<Long> positiveList = new ArrayList<Long>();

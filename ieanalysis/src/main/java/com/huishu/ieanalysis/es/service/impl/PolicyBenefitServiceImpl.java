@@ -45,6 +45,9 @@ public class PolicyBenefitServiceImpl extends AbstractService implements PolicyB
         SumBuilder financingAgg = AggregationBuilders.sum("financingAmount").field("financingAmount");
         monthAgg.subAggregation(financingAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("month");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -90,6 +93,9 @@ public class PolicyBenefitServiceImpl extends AbstractService implements PolicyB
         SumBuilder financingAgg = AggregationBuilders.sum("financingAmount").field("financingAmount");
         monthAgg.subAggregation(financingAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("companyName");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -149,6 +155,9 @@ public class PolicyBenefitServiceImpl extends AbstractService implements PolicyB
         SumBuilder financingAgg = AggregationBuilders.sum("financingAmount").field("financingAmount");
         proAgg.subAggregation(financingAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(proAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         List<DataVo> list = new ArrayList<DataVo>();
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("province");
@@ -193,6 +202,9 @@ public class PolicyBenefitServiceImpl extends AbstractService implements PolicyB
         SumBuilder financingAgg = AggregationBuilders.sum("financingAmount").field("financingAmount");
         indAgg.subAggregation(financingAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(indAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         List<DataVo> list = new ArrayList<DataVo>();
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("industry");
@@ -282,6 +294,9 @@ public class PolicyBenefitServiceImpl extends AbstractService implements PolicyB
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(12);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("month");
             List<Terms.Bucket> buckets = terms.getBuckets();
@@ -314,12 +329,15 @@ public class PolicyBenefitServiceImpl extends AbstractService implements PolicyB
         tempCond.setDataType(SysConst.DataType.POLICY.getCode());
         BoolQueryBuilder queryBuilder = getBuilders(tempCond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(12);
         SumBuilder hitNumAgg = AggregationBuilders.sum("hitNum").field("hitNum");
         monthAgg.subAggregation(hitNumAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("month");
             List<Terms.Bucket> buckets = terms.getBuckets();

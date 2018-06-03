@@ -45,7 +45,7 @@ public class PolicyHotTopicServiceImpl extends AbstractService implements Policy
         Pageable pageable = new PageRequest(cond.getPageNumber() - 1, cond.getPageSize(), new Sort(orders));
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         return dgapDataRepository.search(queryBuilder, pageable);
     }
@@ -56,10 +56,13 @@ public class PolicyHotTopicServiceImpl extends AbstractService implements Policy
 
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder agg = AggregationBuilders.terms("province").field("province").size(34);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(agg).build();
+
+        logger.info("query: {}", query.toString());
+
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("province");
             List<Bucket> buckets = terms.getBuckets();

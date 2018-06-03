@@ -67,7 +67,6 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
     @Override
     public JSONObject searchQuitAmountAnalysis(ConditionDTO cond) {
         return searchAmountAnalysis(cond, "quitAmount");
-
     }
 
     private Double[] searchCapitalIndexResult(ConditionDTO cond, String aggField) {
@@ -76,12 +75,14 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         cond.setMonth(null);
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(12);
         SumBuilder financingAgg = AggregationBuilders.sum(aggField).field(aggField);
         monthAgg.subAggregation(financingAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         template.query(query, res -> {
             Terms terms = res.getAggregations().get("month");
@@ -108,12 +109,14 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         cond.setMonth(null);
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(12);
         SumBuilder jobAgg = AggregationBuilders.sum("jobsNumber").field("jobsNumber");
         monthAgg.subAggregation(jobAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         Double[] amountArray = new Double[12];
         template.query(query, res -> {
@@ -141,12 +144,14 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         cond.setMonth(null);
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(12);
         AvgBuilder jobAgg = AggregationBuilders.avg("jobsRemuneration").field("jobsRemuneration");
         monthAgg.subAggregation(jobAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         Object[] amountArray = new Object[12];
         template.query(query, res -> {
@@ -201,12 +206,14 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         cond.setMonth(null);
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(12);
         TermsBuilder jobAgg = AggregationBuilders.terms("jobsTalentMark").field("jobsTalentMark");
         monthAgg.subAggregation(jobAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         Double[] amountArray = new Double[12];
         template.query(query, res -> {
@@ -297,13 +304,15 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
     public JSONObject searchManagementEnvironmentAnalysis(ConditionDTO cond) {
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder publishTypeAgg = AggregationBuilders.terms("publishType").field("publishType");
         SumBuilder reportNumAgg = AggregationBuilders.sum("reportNum").field("reportNum");
         SumBuilder hitNumAgg = AggregationBuilders.sum("hitNum").field("hitNum");
         publishTypeAgg.subAggregation(reportNumAgg).subAggregation(hitNumAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(publishTypeAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         Long[] amountArray = {0L, 0L, 0L, 0L, 0L};
         if (cond.getYear() == DateUtils.getCurrentYear()) {
@@ -374,12 +383,14 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         cond.setMonth(null);
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
         TermsBuilder publishTypeAgg = AggregationBuilders.terms("publishType").field("publishType");
         monthAgg.subAggregation(publishTypeAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         Object[] amountArray = new Object[monthCount];
         template.query(query, res -> {
@@ -412,12 +423,14 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         int monthCount = 12;
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
         TermsBuilder publishTypeAgg = AggregationBuilders.terms("publishType").field("publishType");
         monthAgg.subAggregation(publishTypeAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         Object[] amountArray = new Object[monthCount];
         template.query(query, res -> {
@@ -464,13 +477,15 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         cond.setMonth(null);
         BoolQueryBuilder queryBuilder = getBuilders(cond);
 
-        logger.info(queryBuilder.toString());
+        logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
         SumBuilder reportNumAgg = AggregationBuilders.sum("reportNum").field("reportNum");
         SumBuilder hitNumAgg = AggregationBuilders.sum("hitNum").field("hitNum");
         monthAgg.subAggregation(reportNumAgg).subAggregation(hitNumAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
 
         Object[] reportArray = new Object[monthCount];
         Object[] focusArray = new Object[monthCount];
