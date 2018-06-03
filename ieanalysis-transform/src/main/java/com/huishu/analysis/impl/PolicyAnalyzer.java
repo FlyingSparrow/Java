@@ -132,7 +132,6 @@ public class PolicyAnalyzer extends DefaultAnalyzer {
     @Override
     protected DgapData fillDgapData(NewsVO newsVO) {
         DgapData result = super.fillDgapData(newsVO);
-        result.setPublishType(SysConst.PublishType.LOCAL.getCode());
 
         return result;
     }
