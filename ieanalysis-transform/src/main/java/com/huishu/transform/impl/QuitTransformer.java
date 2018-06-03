@@ -37,7 +37,7 @@ public class QuitTransformer extends AbstractTransformer {
     @Override
     protected void transformData(int pageNumber) {
         transformQuitSmt(pageNumber);
-        transformQuitTz(pageNumber);
+//        transformQuitTz(pageNumber);
     }
 
     private void transformQuitSmt(int pageNumber) {
@@ -66,32 +66,41 @@ public class QuitTransformer extends AbstractTransformer {
         quitDataSmtService.delete(list);
     }
 
+    /**
+     * 说明：由于投中网页面改版，抓取不到数据，因此不再执行该方法
+     *
+     * @param pageNumber
+     * @author Wangjianchun
+     * @date 2018-6-3
+     */
     private void transformQuitTz(int pageNumber) {
-        QuitDataTz news = new QuitDataTz();
+        QuitDataTz entity = new QuitDataTz();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<QuitDataTz> list = quitDataTzService.findOneHundred(news, pageable);
+        List<QuitDataTz> list = quitDataTzService.findOneHundred(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<QuitDataBak> bakList = new ArrayList<QuitDataBak>();
-        if (list != null && list.size() > 0) {
-            for (QuitDataTz item : list) {
-                QuitDataBak bak = new QuitDataBak();
-                bak.setFldUrlAddr(item.getFldUrlAddr());
-                bak.setIndustry(item.getIndustry());
-                bak.setInvestor(item.getInvestor());
-                bak.setRegion(item.getRegion());
-                bak.setTime(StringUtils.transformTime(item.getTime()));
-                bak.setReturnAmount(item.getReturnAmount());
-                bak.setCompanyName(item.getCompanyName());
-                bak.setReturnMultiple(item.getReturnMultiple());
-                bak.setQuitWay(item.getQuitWay());
-                bak.setQuitEvent(item.getQuitEvent());
-                bak.setProduct(item.getProduct());
-                bak.setZongtouzie(item.getZongtouzie());
-                bak.setSource("投中网");
-                bak.setBiaoShi("0");
-                long count = quitDataBakService.findExit(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (QuitDataTz item : list) {
+            QuitDataBak bak = new QuitDataBak();
+            bak.setFldUrlAddr(item.getFldUrlAddr());
+            bak.setIndustry(item.getIndustry());
+            bak.setInvestor(item.getInvestor());
+            bak.setRegion(item.getRegion());
+            bak.setTime(StringUtils.transformTime(item.getTime()));
+            bak.setReturnAmount(item.getReturnAmount());
+            bak.setCompanyName(item.getCompanyName());
+            bak.setReturnMultiple(item.getReturnMultiple());
+            bak.setQuitWay(item.getQuitWay());
+            bak.setQuitEvent(item.getQuitEvent());
+            bak.setProduct(item.getProduct());
+            bak.setZongtouzie(item.getZongtouzie());
+            bak.setSource("投中网");
+            bak.setBiaoShi("0");
+            long count = quitDataBakService.findExit(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {

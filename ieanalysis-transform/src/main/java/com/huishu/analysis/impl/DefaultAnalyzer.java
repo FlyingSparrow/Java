@@ -266,7 +266,7 @@ public class DefaultAnalyzer implements Analyzer {
     }
 
     protected synchronized void recordNum(Map<String, String> indexMap) {
-        String filePath = System.getProperty("user.dir") + "analysis-data-temp.properties";
+        String filePath = System.getProperty("user.dir") + "/analysis-data-temp.properties";
         FileUtils.createFileIfNotExists(new File(filePath));
         FileUtils.writeProperties(filePath, indexMap);
     }

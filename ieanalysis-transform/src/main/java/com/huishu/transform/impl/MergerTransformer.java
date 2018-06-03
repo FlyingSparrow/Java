@@ -38,7 +38,7 @@ public class MergerTransformer extends AbstractTransformer{
     @Override
     protected void transformData(int pageNumber) {
         transformMergerSmt(pageNumber);
-        transformMergerTz(pageNumber);
+//        transformMergerTz(pageNumber);
     }
 
     private void transformMergerSmt(int pageNumber) {
@@ -67,31 +67,40 @@ public class MergerTransformer extends AbstractTransformer{
         mergerDataSmtService.delete(list);
     }
 
+    /**
+     * 说明：由于投中网页面改版，抓取不到数据，因此不再执行该方法
+     *
+     * @param pageNumber
+     * @author Wangjianchun
+     * @date 2018-6-3
+     */
     private void transformMergerTz(int pageNumber) {
-        MergerDataTz news = new MergerDataTz();
+        MergerDataTz entity = new MergerDataTz();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-        List<MergerDataTz> list = mergerDataTzService.findOneHundred(news, pageable);
+        List<MergerDataTz> list = mergerDataTzService.findOneHundred(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<MergerDataBak> bakList = new ArrayList<MergerDataBak>();
-        if (list != null && list.size() > 0) {
-            for (MergerDataTz item : list) {
-                MergerDataBak bak = new MergerDataBak();
-                bak.setFldUrlAddr(item.getFldUrlAddr());
-                bak.setAcquirer(item.getAcquirer());
-                bak.setBeMergered(item.getBeMergered());
-                bak.setIndustry(item.getIndustry());
-                bak.setAcquirerInfo(item.getRegion());
-                bak.setEndTime(StringUtils.transformTime(item.getTime()));
-                bak.setMergerAmount(item.getMergerAmount());
-                bak.setStockEquity(item.getStockEquity());
-                bak.setProduct(item.getProduct());
-                bak.setBusinessValuation(item.getGuzhi());
-                bak.setMergerEvent(item.getMergerEvent());
-                bak.setSource("投中网");
-                bak.setBiaoShi("0");
-                long count = mergerDataBakService.findExit(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (MergerDataTz item : list) {
+            MergerDataBak bak = new MergerDataBak();
+            bak.setFldUrlAddr(item.getFldUrlAddr());
+            bak.setAcquirer(item.getAcquirer());
+            bak.setBeMergered(item.getBeMergered());
+            bak.setIndustry(item.getIndustry());
+            bak.setAcquirerInfo(item.getRegion());
+            bak.setEndTime(StringUtils.transformTime(item.getTime()));
+            bak.setMergerAmount(item.getMergerAmount());
+            bak.setStockEquity(item.getStockEquity());
+            bak.setProduct(item.getProduct());
+            bak.setBusinessValuation(item.getGuzhi());
+            bak.setMergerEvent(item.getMergerEvent());
+            bak.setSource("投中网");
+            bak.setBiaoShi("0");
+            long count = mergerDataBakService.findExit(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {

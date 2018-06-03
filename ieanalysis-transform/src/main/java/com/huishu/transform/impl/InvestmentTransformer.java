@@ -38,7 +38,7 @@ public class InvestmentTransformer extends AbstractTransformer {
     @Override
     protected void transformData(int pageNumber) {
         transformInvestmentSmt(pageNumber);
-        transformInvestmentTz(pageNumber);
+//        transformInvestmentTz(pageNumber);
     }
 
     private void transformInvestmentSmt(int pageNumber) {
@@ -68,31 +68,40 @@ public class InvestmentTransformer extends AbstractTransformer {
 
     }
 
-    private void transformInvestmentTz(int tempNum) {
-        InvestmentDataTz news = new InvestmentDataTz();
-        Pageable pageable = new PageRequest(tempNum, transformConfig.getTransformNum());
-        List<InvestmentDataTz> list = investmentDataTzService.findOneHundred(news, pageable);
+    /**
+     * 说明：由于投中网页面改版，抓取不到数据，因此不再执行该方法
+     *
+     * @param pageNumber
+     * @author Wangjianchun
+     * @date 2018-6-3
+     */
+    private void transformInvestmentTz(int pageNumber) {
+        InvestmentDataTz entity = new InvestmentDataTz();
+        Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+        List<InvestmentDataTz> list = investmentDataTzService.findOneHundred(entity, pageable);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
         List<InvestmentDataBak> bakList = new ArrayList<InvestmentDataBak>();
-        if (list != null && list.size() > 0) {
-            for (InvestmentDataTz item : list) {
-                InvestmentDataBak bak = new InvestmentDataBak();
-                bak.setFldUrlAddr(item.getFldUrlAddr());
-                bak.setInvestor(item.getInvestor());
-                bak.setIndustry(item.getIndustry());
-                bak.setCompanyName(item.getCompanyName());
-                bak.setTime(StringUtils.transformTime(item.getTime()));
-                bak.setRegion(item.getRegion());
-                bak.setAmount(item.getAmount());
-                bak.setEquity(item.getEquity());
-                bak.setProduct(item.getProduct());
-                bak.setAppraisement(item.getAppraisement());
-                bak.setInvestmentEvent(item.getInvestmentEvent());
-                bak.setSource("投中网");
-                bak.setBiaoShi("0");
-                long count = investmentDataBakService.findExit(bak);
-                if (count == 0) {
-                    bakList.add(bak);
-                }
+        for (InvestmentDataTz item : list) {
+            InvestmentDataBak bak = new InvestmentDataBak();
+            bak.setFldUrlAddr(item.getFldUrlAddr());
+            bak.setInvestor(item.getInvestor());
+            bak.setIndustry(item.getIndustry());
+            bak.setCompanyName(item.getCompanyName());
+            bak.setTime(StringUtils.transformTime(item.getTime()));
+            bak.setRegion(item.getRegion());
+            bak.setAmount(item.getAmount());
+            bak.setEquity(item.getEquity());
+            bak.setProduct(item.getProduct());
+            bak.setAppraisement(item.getAppraisement());
+            bak.setInvestmentEvent(item.getInvestmentEvent());
+            bak.setSource("投中网");
+            bak.setBiaoShi("0");
+            long count = investmentDataBakService.findExit(bak);
+            if (count == 0) {
+                bakList.add(bak);
             }
         }
         if (bakList.size() > 0) {

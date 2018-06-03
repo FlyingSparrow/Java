@@ -157,15 +157,23 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
         String result = investor;
 
         try {
-            if (StringUtils.isNotEmpty(investor)) {
-                JSONArray parseArray = JSON.parseArray(investor);
-                if (parseArray.size() == 1) {
-                    JSONObject jsonObject = (JSONObject) parseArray.get(0);
-                    return jsonObject.getString("shortCnName");
-                }
+            if (StringUtils.isEmpty(investor)) {
+                return result;
+            }
+
+            //判断 investor 不是JSON数组
+            if(!investor.trim().startsWith("[")){
+                logger.info("investor: {}", investor);
+                return result;
+            }
+
+            JSONArray parseArray = JSON.parseArray(investor);
+            if (parseArray.size() == 1) {
+                JSONObject jsonObject = (JSONObject) parseArray.get(0);
+                return jsonObject.getString("shortCnName");
             }
         } catch (Exception e) {
-            logger.error("解析公司名称出错", e);
+            logger.error("解析公司名称出错，investor： {}", investor, e);
         }
         return result;
     }

@@ -189,4 +189,32 @@ public class FileUtils {
         return result;
     }
 
+    /**
+     * 从 classpath 路径下按行读取指定文件
+     *
+     * @param filePath
+     * @return Properties 对象
+     */
+    public static Properties getPropertiesByFilePath(String filePath) {
+        Properties result = new Properties();
+
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), SysConst.ENCODING_UTF_8));
+            result.load(br);
+        } catch (Exception e) {
+            logger.error("读取文件失败", e);
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (Exception e) {
+                logger.error("关闭流资源失败", e);
+            }
+        }
+
+        return result;
+    }
+
 }

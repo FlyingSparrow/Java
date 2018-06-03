@@ -3,14 +3,13 @@ package com.huishu.task;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.huishu.analysis.Analyzer;
 import com.huishu.config.AnalysisConfig;
-import com.huishu.config.TempConfig;
 import com.huishu.constants.SysConst;
+import com.huishu.init.SysInit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -33,12 +32,10 @@ public class AnalysisTask {
 	private static ThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(SysConst.DEFAULT_CORE_POOL_SIZE,
 			new ThreadFactoryBuilder().setNameFormat("analysis-pool-%d").build());
 
-	private Map<String, String> indexMap;
+	private Map<String, String> indexMap = SysInit.getIndexMap();
 
 	@Autowired
 	private AnalysisConfig analysisConfig;
-	@Autowired
-	private TempConfig tempConfig;
 
 	@Autowired
 	@Qualifier("newsAnalyzer")
@@ -79,21 +76,6 @@ public class AnalysisTask {
 	@Autowired
 	@Qualifier("quitAnalyzer")
 	private Analyzer quitAnalyzer;
-
-	private AnalysisTask() {
-		indexMap = new HashMap<String, String>();
-		indexMap.put(SysConst.WECHAT, tempConfig.getWechatMark());
-		indexMap.put(SysConst.RECRIUTMENT, tempConfig.getRecruitmentMark());
-		indexMap.put(SysConst.VIDEO, tempConfig.getVideoMark());
-		indexMap.put(SysConst.NEWS, tempConfig.getNewsMark());
-		indexMap.put(SysConst.FORUM, tempConfig.getForumMark());
-		indexMap.put(SysConst.POLICY, tempConfig.getPolicyMark());
-		indexMap.put(SysConst.ZONGHE, tempConfig.getZongheMark());
-		indexMap.put(SysConst.INVESTMENT, tempConfig.getInvestmentMark());
-		indexMap.put(SysConst.MERGER, tempConfig.getMergerMark());
-		indexMap.put(SysConst.QUIT, tempConfig.getQuitMark());
-		indexMap.put(SysConst.INDUSTRY, tempConfig.getIndustryMark());
-	}
 
 	/**
 	 * 间隔 30 秒钟执行一次
