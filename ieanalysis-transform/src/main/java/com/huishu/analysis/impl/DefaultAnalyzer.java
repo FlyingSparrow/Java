@@ -240,6 +240,10 @@ public class DefaultAnalyzer implements Analyzer {
         KingBaseDgap target = new KingBaseDgap();
         BeanUtils.copyProperties(source, target);
         target.setId(com.huishu.utils.StringUtils.getUUID());
+        String content = target.getContent();
+        if(StringUtils.isNotEmpty(content) && content.length() > 1024){
+            target.setContent(content.substring(0, 1000)+"...");
+        }
         historyList.add(target);
     }
 
@@ -477,7 +481,17 @@ public class DefaultAnalyzer implements Analyzer {
         // 是否社交网站
         result.setReportType(SysConst.SiteType.MEDIA.getCode());
         // 是否热点 评论 点击 转发 超过1000
-        int count = Integer.parseInt(newsVO.getFldHits()) + Integer.parseInt(newsVO.getFldReply());
+
+
+        String hitNum = newsVO.getFldHits();
+        if(StringUtils.isEmpty(hitNum)){
+            hitNum = "0";
+        }
+        String replyNum = newsVO.getFldReply();
+        if(StringUtils.isEmpty(replyNum)){
+            replyNum = "0";
+        }
+        int count = Integer.parseInt(hitNum)+Integer.parseInt(replyNum);
         if (count > SysConst.HOT_EVENT_THRESHOLD) {
             result.setHotEventMark(SysConst.HotEventMark.HOT_EVENT.getCode());
         } else {
@@ -486,7 +500,7 @@ public class DefaultAnalyzer implements Analyzer {
 
         // 内容 分析 文章 图片 视频
         // 关注量
-        result.setHitNum(Long.valueOf(newsVO.getFldHits()));
+        result.setHitNum(Long.valueOf(hitNum));
 
         String emotion = searchEmotion(newsVO.getFldtitle(), newsVO.getFldcontent());
         if (SysConst.Emotion.NEUTRAL.getEmotion().equals(emotion)) {
@@ -508,9 +522,9 @@ public class DefaultAnalyzer implements Analyzer {
         // url
         result.setPolicyUrl(newsVO.getFldUrlAddr());
         // 阅读量
-        result.setReadNum(Long.valueOf(newsVO.getFldHits()));
+        result.setReadNum(Long.valueOf(hitNum));
         // 评论量
-        result.setHitNum(Long.valueOf(newsVO.getFldReply()));
+        result.setHitNum(Long.valueOf(replyNum));
         setReportType(result);
 
         return result;
