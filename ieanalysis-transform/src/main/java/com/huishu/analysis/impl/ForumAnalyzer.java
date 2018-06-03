@@ -70,18 +70,18 @@ public class ForumAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        ForumLibBak forum = new ForumLibBak();
-        forum.setId(Long.valueOf(indexMap.get(SysConst.FORUM)));
+        ForumLibBak entity = new ForumLibBak();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.FORUM)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<ForumLibBak> lists = forumLibService.findOneHundred(forum, pageable);
+        List<ForumLibBak> list = forumLibService.findOneHundred(entity, pageable);
 
-        logger.info("论坛分析,读取 {} 条", lists.size());
+        logger.info("论坛分析,读取 {} 条", list.size());
 
-        if (lists.size() <= 0) {
+        if (list.size() <= 0) {
             return;
         }
 
-        String newId = lists.get(lists.size() - 1).getId() + "";
+        String newId = list.get(list.size() - 1).getId() + "";
         String oldId = indexMap.get(SysConst.FORUM);
         Map<String, String> newIndexMap = new HashMap<>(indexMap);
         if (Long.parseLong(newId) > Long.parseLong(oldId)) {
@@ -91,7 +91,7 @@ public class ForumAnalyzer extends DefaultAnalyzer {
         List<DgapData> saveList = new ArrayList<DgapData>();
         List<ForumLibBak> readList = new ArrayList<ForumLibBak>();
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
-        for (ForumLibBak item : lists) {
+        for (ForumLibBak item : list) {
             if (isNotExists(STATIC_LIST, item.getFldUrlAddr())) {
                 // 分析
                 SiteLib site = siteLibService.findByName(item.getWebname());
@@ -140,11 +140,12 @@ public class ForumAnalyzer extends DefaultAnalyzer {
             return false;
         }
 
-        int yearIndex = publishDate.indexOf("-");
+        String tempTime = com.huishu.utils.StringUtils.transformTime(publishDate);
+        int yearIndex = tempTime.indexOf("-");
         if (yearIndex <= 0) {
             return false;
         }
-        int monthIndex = publishDate.indexOf("-", yearIndex + 1);
+        int monthIndex = tempTime.indexOf("-", yearIndex + 1);
         if (monthIndex <= 0) {
             return false;
         }

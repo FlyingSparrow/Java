@@ -67,10 +67,10 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        InvestmentDataBak investmentDataBak = new InvestmentDataBak();
-        investmentDataBak.setId(Long.valueOf(indexMap.get(SysConst.INVESTMENT)));
+        InvestmentDataBak entity = new InvestmentDataBak();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.INVESTMENT)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<InvestmentDataBak> list = investmentDataService.findOneHundred(investmentDataBak, pageable);
+        List<InvestmentDataBak> list = investmentDataService.findOneHundred(entity, pageable);
 
         logger.info("投资分析,读取 {} 条", list.size());
 
@@ -129,23 +129,24 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
 
         DgapData result = new DgapData();
 
-        result.setDataType(SysConst.DataType.INVESTMENT.getCode());
-
+        // 省份
+        fillAreaAndProvinceInfo(result, investmentDataBak.getRegion());
+        if (StringUtils.isEmpty(result.getProvince())) {
+            return null;
+        }
+        String companyName = getCompanyName(investmentDataBak.getInvestor());
+        if(StringUtils.isEmpty(companyName)){
+            return null;
+        }
         // 时间
         fillDateInfoOfDgapData(result, investmentDataBak.getTime());
+        result.setDataType(SysConst.DataType.INVESTMENT.getCode());
         // 行业
         result.setIndustry(investmentDataBak.getIndustry().trim());
-
-        // 省份
-        String province = getProvince(investmentDataBak.getRegion());
-        result.setProvince(province);
-        fillAreaInfo(result, investmentDataBak.getRegion());
-
         result.setPublishType(SysConst.PublishType.INVESTMENT.getCode());
         result.setFinancingAmount(amount);
         result.setQuitAmount(0d);
         result.setMergersAmount(0d);
-        String companyName = getCompanyName(investmentDataBak.getInvestor());
         result.setCompanyName(companyName);
         result.setPolicyUrl(investmentDataBak.getFldUrlAddr());
 
@@ -179,60 +180,44 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
             return false;
         }
 
-        int yearIndex = time.indexOf("-");
+        String tempTime = com.huishu.utils.StringUtils.transformTime(time);
+        int yearIndex = tempTime.indexOf("-");
         if (yearIndex <= 0) {
             return false;
         }
 
-        int monthIndex = time.indexOf("-", yearIndex + 1);
+        int monthIndex = tempTime.indexOf("-", yearIndex + 1);
         if (monthIndex <= 0) {
-            return false;
-        }
-
-        if (StringUtils.isEmpty(getProvince(region))) {
-            return false;
-        }
-
-        String companyName = getCompanyName(investmentDataBak.getInvestor());
-        if (StringUtils.isEmpty(companyName)) {
             return false;
         }
 
         return true;
     }
 
-    private void fillAreaInfo(DgapData dgapData, String region) {
-        String city = com.huishu.utils.StringUtils.getCity(region);
-        List<CityLib> cityList = cityLibService.findByCity(city);
-        if (cityList != null && cityList.size() > 0) {
-            dgapData.setArea(city);
+    private void fillAreaAndProvinceInfo(DgapData dgapData, String region) {
+        if (StringUtils.isEmpty(region)) {
+            return;
         }
-    }
 
-    private String getProvince(String region) {
-        String result = null;
         Set<String> provinceSet = SysConst.getProvinceSet();
         for (String province : provinceSet) {
             if (region.contains(province)) {
-                result = province;
+                dgapData.setProvince(province);
                 break;
             }
         }
-        if (StringUtils.isNotEmpty(result)) {
-            return null;
+        if (StringUtils.isNotEmpty(dgapData.getProvince())) {
+            return;
         }
 
         String city = com.huishu.utils.StringUtils.getCity(region);
-        if (StringUtils.isEmpty(city)) {
-            return null;
+        if (StringUtils.isNotEmpty(city)) {
+            List<CityLib> cityList = cityLibService.findByCity(city);
+            if (cityList != null && cityList.size() > 0) {
+                dgapData.setProvince(cityList.get(0).getProvince());
+                dgapData.setArea(city);
+            }
         }
-
-        List<CityLib> cityList = cityLibService.findByCity(city);
-        if (cityList != null && cityList.size() > 0) {
-            result = cityList.get(0).getProvince();
-        }
-
-        return result;
     }
 
 }

@@ -69,18 +69,18 @@ public class PolicyAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        PolicyBak news = new PolicyBak();
-        news.setId(Long.valueOf(indexMap.get(SysConst.POLICY)));
+        PolicyBak entity = new PolicyBak();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.POLICY)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<PolicyBak> newsList = policyBakService.findOneHundred(news, pageable);
+        List<PolicyBak> list = policyBakService.findOneHundred(entity, pageable);
 
-        logger.info("政策分析,读取 {} 条", newsList.size());
+        logger.info("政策分析,读取 {} 条", list.size());
 
-        if (newsList.size() <= 0) {
+        if (list.size() <= 0) {
             return;
         }
 
-        String newId = newsList.get(newsList.size() - 1).getId() + "";
+        String newId = list.get(list.size() - 1).getId() + "";
         String oldId = indexMap.get(SysConst.POLICY);
         Map<String, String> newIndexMap = new HashMap<>(indexMap);
         if (Long.parseLong(newId) > Long.parseLong(oldId)) {
@@ -90,7 +90,7 @@ public class PolicyAnalyzer extends DefaultAnalyzer {
         List<DgapData> saveList = new ArrayList<DgapData>();
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
         List<PolicyBak> readList = new ArrayList<PolicyBak>();
-        for (PolicyBak item : newsList) {
+        for (PolicyBak item : list) {
             if (isNotExists(STATIC_LIST, item.getFldUrlAddr())) {
                 // 分析
                 SiteLib site = siteLibService.findByName(item.getWebname());

@@ -88,12 +88,14 @@ public class QuitAnalyzer extends DefaultAnalyzer {
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
         for (QuitDataBak item : list) {
             // 分析
-            DgapData dgapData = fillDgapData(item);
-            if (dgapData != null) {
-                item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
-                addKingBaseData(historyList, dgapData);
-                dgapData.setId(String.valueOf(item.getId()));
-                saveList.add(dgapData);
+            if(validate(item)){
+                DgapData dgapData = fillDgapData(item);
+                if (dgapData != null) {
+                    item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
+                    addKingBaseData(historyList, dgapData);
+                    dgapData.setId(String.valueOf(item.getId()));
+                    saveList.add(dgapData);
+                }
             }
             if (SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode().equals(item.getBiaoShi())) {
                 item.setBiaoShi(SysConst.ESDataStatus.EXCEPTION.getCode());

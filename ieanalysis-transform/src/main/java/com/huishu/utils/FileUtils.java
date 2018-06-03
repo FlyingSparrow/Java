@@ -31,14 +31,11 @@ public class FileUtils {
                 }
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            logger.error("readFile---FileNotFound", e);
+            logger.error("ileNotFound", e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            logger.error("readFile----UnsupportedEncodingException", e);
+            logger.error("UnsupportedEncodingException", e);
         } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("readFile---IOException", e);
+            logger.error("IOException", e);
         } finally {
             try {
                 if (br != null) {
@@ -95,32 +92,28 @@ public class FileUtils {
             bw.write(content);
             bw.flush();
         } catch (FileNotFoundException e) {
-            logger.error("writeContentToFile---FileNotFound", e);
+            logger.error("FileNotFound", e);
         } catch (UnsupportedEncodingException e) {
-            logger.error("writeContentToFile----UnsupportedEncodingException", e);
+            logger.error("UnsupportedEncodingException", e);
         } catch (IOException e) {
-            logger.error("writeContentToFile---IOException", e);
+            logger.error("IOException", e);
         } finally {
             try {
                 if (bw != null) {
                     bw.close();
                 }
             } catch (IOException e) {
-                logger.error("writeContentToFile关闭失败", e);
+                logger.error("关闭流资源失败", e);
             }
         }
     }
 
     public static synchronized void writeProperties(String filePath, Map<String, String> map) {
-        Properties prop = new Properties();
-        InputStream fis = null;
         OutputStream fos = null;
         try {
-            fis = new FileInputStream(filePath);
-            // 从输入流中读取属性列表（键和元素对）
-            // 调用 Hashtable 的方法 put。使用 getProperty 方法提供并行性。
-            // 强制要求为属性的键和值使用字符串。返回值是 Hashtable 调用 put 的结果。
             fos = new FileOutputStream(filePath);
+
+            Properties prop = new Properties();
             if (map != null && map.size() > 0) {
                 for (Map.Entry<String, String> key : map.entrySet()) {
                     prop.setProperty(key.getKey(), key.getValue());
@@ -129,23 +122,15 @@ public class FileUtils {
             // 以适合使用 load 方法加载到 Properties 表中的格式，
             // 将此 Properties 表中的属性列表（键和元素对）写入输出流
             prop.store(fos, "Update value success");
-            logger.info("temp配置更新成功");
         } catch (IOException e) {
-            logger.error("temp配置更新失败");
+            logger.error("写入属性文件失败", e);
         } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    logger.error("temp配置输入关闭失败");
-                }
-            }
-            if (fos != null) {
-                try {
+            try {
+                if (fos != null) {
                     fos.close();
-                } catch (IOException e) {
-                    logger.error("temp配置输出关闭失败");
                 }
+            } catch (IOException e) {
+                logger.error("关闭流资源失败", e);
             }
         }
     }
@@ -170,8 +155,8 @@ public class FileUtils {
             return true;
         } catch (IOException e) {
             logger.error("创建文件失败", e);
-            return false;
         }
+        return false;
     }
 
     /**
@@ -197,7 +182,7 @@ public class FileUtils {
                     br.close();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("关闭流资源失败", e);
             }
         }
 

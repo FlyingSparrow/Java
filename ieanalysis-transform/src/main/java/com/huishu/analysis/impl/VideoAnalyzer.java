@@ -64,18 +64,18 @@ public class VideoAnalyzer extends DefaultAnalyzer {
     }
 
     private void analysisVideo(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        VideoBak VideoBak = new VideoBak();
-        VideoBak.setId(Long.valueOf(indexMap.get(SysConst.VIDEO)));
+        VideoBak entity = new VideoBak();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.VIDEO)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<VideoBak> lists = videoService.findOneHundred(VideoBak, pageable);
+        List<VideoBak> list = videoService.findOneHundred(entity, pageable);
 
-        logger.info("视频分析,读取 {} 条", lists.size());
+        logger.info("视频分析,读取 {} 条", list.size());
 
-        if (lists.size() <= 0) {
+        if (list.size() <= 0) {
             return;
         }
 
-        String newId = lists.get(lists.size() - 1).getId() + "";
+        String newId = list.get(list.size() - 1).getId() + "";
         String oldId = indexMap.get(SysConst.VIDEO);
         Map<String, String> newIndexMap = new HashMap<>(indexMap);
         if (Long.parseLong(newId) > Long.parseLong(oldId)) {
@@ -86,7 +86,7 @@ public class VideoAnalyzer extends DefaultAnalyzer {
         List<DgapData> saveList = new ArrayList<DgapData>();
         List<com.huishu.entity.VideoBak> readList = new ArrayList<com.huishu.entity.VideoBak>();
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
-        for (VideoBak item : lists) {
+        for (VideoBak item : list) {
             if (isNotExists(STATIC_LIST, item.getFldUrlAddr())) {
                 // 分析
                 SiteLib site = siteLibService.findByName(item.getWebname());
@@ -132,11 +132,12 @@ public class VideoAnalyzer extends DefaultAnalyzer {
             return false;
         }
 
-        int yearIndex = publishDate.indexOf("-");
+        String tempTime = com.huishu.utils.StringUtils.transformTime(publishDate);
+        int yearIndex = tempTime.indexOf("-");
         if (yearIndex <= 0) {
             return false;
         }
-        int monthIndex = publishDate.indexOf("-", yearIndex + 1);
+        int monthIndex = tempTime.indexOf("-", yearIndex + 1);
         if (monthIndex <= 0) {
             return false;
         }
@@ -147,6 +148,7 @@ public class VideoAnalyzer extends DefaultAnalyzer {
     @Override
     protected DgapData fillDgapData(NewsVO newsVO) {
         DgapData result = super.fillDgapData(newsVO);
+
         result.setPublishType(SysConst.PublishType.VIDEO.getCode());
         result.setPolicyInfoType(3L);
         result.setTime(newsVO.getFabushijian());

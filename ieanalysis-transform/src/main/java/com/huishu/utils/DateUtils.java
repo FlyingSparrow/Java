@@ -186,11 +186,19 @@ public class DateUtils {
 		return list;
 	}
 
+	/**
+	 * 获取昨天的开始时间，例如：2018-05-24 00:00:00
+	 * @return
+	 */
 	public static Date getYesterdayTimesMorning() {
 		DateTime dateTime = new DateTime();
 		return dateTime.minusDays(1).withTimeAtStartOfDay().toDate();
 	}
 
+	/**
+	 * 获取昨天的结束时间，例如：2018-05-24 23:59:59
+	 * @return
+	 */
 	public static Date getYesterdayTimesNight() {
 		DateTime dateTime = new DateTime();
 		return dateTime.minusDays(1).millisOfDay().withMaximumValue().toDate();

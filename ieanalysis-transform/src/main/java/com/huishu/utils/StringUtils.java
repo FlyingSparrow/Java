@@ -139,10 +139,10 @@ public class StringUtils {
                 result = DateUtils.getFormatDate(DateUtils.getYesterdayNow(currentDate));
             } else if (result.contains("前天")) {
                 result = DateUtils.getFormatDate(DateUtils.getBeforeYesterdayNow(currentDate));
-            } else if (result.length() <= 4 && result.indexOf("天前") >= 0) {
+            } else if (result.length() <= 4 && result.contains("天前")) {
                 int days = Integer.parseInt(result.replaceAll("天前", ""));
                 result = DateUtils.getFormatDate(DateUtils.getBeforeYesterdayNow(currentDate, days));
-            } else if (result.length() <= 5 && result.indexOf("小时前") >= 0) {
+            } else if (result.length() <= 5 && result.contains("小时前")) {
                 int hours = Integer.parseInt(result.replaceAll("小时前", ""));
                 int hour = DateUtils.getHour(currentDate);
                 if (hours > hour) {
@@ -150,11 +150,11 @@ public class StringUtils {
                 } else {
                     result = DateUtils.getFormatDate(currentDate);
                 }
-            } else if (result.length() <= 8 && result.indexOf(":") >= 0) {
+            } else if (result.length() <= 8 && result.contains(":")) {
                 result = DateUtils.getFormatDate(currentDate);
-            } else if (result.indexOf("/") >= 0) {
+            } else if (result.contains("/")) {
                 result = result.replaceAll("/", "-");
-            } else if (result.length() >= 24 && result.indexOf("-") >= 0) {
+            } else if (result.length() >= 24 && result.contains("-")) {
                 String headerTime = extractDate(result.substring(0, 20));
                 String endTime = extractDate(result.substring(result.length() - 20, result.length()));
                 if (isDate(headerTime)) {
@@ -162,9 +162,9 @@ public class StringUtils {
                 } else if (isDate(endTime)) {
                     result = endTime;
                 }
-            } else if (result.indexOf("-") >= 0 && result.length() >= 20) {
+            } else if (result.contains("-") && result.length() >= 20) {
                 result = result.substring(0, 19);
-            } else if (result.indexOf("-") == -1) {
+            } else if (!result.contains("-")) {
                 result = "";
             }
         }
@@ -176,7 +176,7 @@ public class StringUtils {
         String result = "";
 
         String hyphen = "-";
-        if (date.indexOf(hyphen) >= 0) {
+        if (date.contains(hyphen)) {
             int first = date.indexOf(hyphen);
             int second = date.lastIndexOf(hyphen);
             if (second > first) {
@@ -217,12 +217,13 @@ public class StringUtils {
     public static String removeHtmlTag(String htmlStr) {
         String result = htmlStr;
         if (isNotEmpty(result)) {
+            String replacement = "";
             Matcher scriptMatcher = SCRIPT_REGEX.matcher(result);
-            result = scriptMatcher.replaceAll("");
+            result = scriptMatcher.replaceAll(replacement);
             Matcher styleMatcher = STYLE_REGEX.matcher(result);
-            result = styleMatcher.replaceAll("");
+            result = styleMatcher.replaceAll(replacement);
             Matcher htmlMatcher = HTML_REGEX.matcher(result);
-            result = htmlMatcher.replaceAll("");
+            result = htmlMatcher.replaceAll(replacement);
             Matcher spaceMatcher = SPACE_REGEX.matcher(result);
             result = spaceMatcher.replaceAll(" ");
         }
@@ -304,6 +305,8 @@ public class StringUtils {
         unitReplace = unitReplace.replace("N/A", replacement);
 
         try {
+            logger.info("unitReplace.trim(): {}", unitReplace.trim());
+
             if(isNumber(unitReplace.trim())){
                 return Double.valueOf(unitReplace.trim()) * ratio;
             }

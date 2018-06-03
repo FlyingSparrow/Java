@@ -36,6 +36,7 @@ public class RecruitmentAnalyzer extends DefaultAnalyzer {
 
     @Autowired
     private RecruitmentBakService recruitmentService;
+
     @Override
     public String getName() {
         return SysConst.RECRIUTMENT;
@@ -65,19 +66,17 @@ public class RecruitmentAnalyzer extends DefaultAnalyzer {
 
     /**
      * 分析数据
+     * 招聘业务逻辑：工资高于 10000 学历是研究生 以上为双高人才
      *
      * @param analysisConfig
      * @param indexMap
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        // 招聘业务逻辑
-        // 工资高于 10000 学历是研究生 以上为双高人才
-        // 1、获取数据 是否重复数据
-        RecruitmentBak recruitmentBak = new RecruitmentBak();
-        recruitmentBak.setId(Long.valueOf(indexMap.get(SysConst.RECRIUTMENT)));
+        RecruitmentBak entity = new RecruitmentBak();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.RECRIUTMENT)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<RecruitmentBak> list = recruitmentService.findOneHundred(recruitmentBak, pageable);
+        List<RecruitmentBak> list = recruitmentService.findOneHundred(entity, pageable);
 
         logger.info("招聘分析,读取 {} 条", list.size());
 
@@ -93,13 +92,13 @@ public class RecruitmentAnalyzer extends DefaultAnalyzer {
         }
 
         List<DgapData> saveList = new ArrayList<DgapData>();
-        List<com.huishu.entity.RecruitmentBak> readList = new ArrayList<RecruitmentBak>();
+        List<RecruitmentBak> readList = new ArrayList<RecruitmentBak>();
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
         for (RecruitmentBak item : list) {
             if (isNotExists(STATIC_LIST, item.getFldUrlAddr())) {
                 // 分析
                 ValidationVO validationVO = ValidationVO.create(item);
-                if(validate(validationVO)){
+                if (validate(validationVO)) {
                     NewsVO newsVO = NewsVO.create(item);
                     DgapData dgapData = fillDgapData(newsVO);
                     addKingBaseData(historyList, dgapData);
@@ -144,7 +143,7 @@ public class RecruitmentAnalyzer extends DefaultAnalyzer {
             return false;
         }
         Long remuneration = calculateRemuneration(jobSalary);
-        if(remuneration == null){
+        if (remuneration == null) {
             return false;
         }
 
@@ -183,10 +182,11 @@ public class RecruitmentAnalyzer extends DefaultAnalyzer {
 
     /**
      * 计算岗位薪酬
+     *
      * @param jobSalary 岗位工资
      * @return
      */
-    private Long calculateRemuneration(String jobSalary){
+    private Long calculateRemuneration(String jobSalary) {
         Long remuneration = null;
         try {
             int start = jobSalary.indexOf("-");
@@ -233,12 +233,12 @@ public class RecruitmentAnalyzer extends DefaultAnalyzer {
 
     /**
      * 是否双高人才
+     *
      * @param item
      * @param remuneration 岗位薪酬
-     *
      * @return
      */
-    private boolean isDoubleHighTalent(NewsVO item, Long remuneration){
+    private boolean isDoubleHighTalent(NewsVO item, Long remuneration) {
         if (StringUtils.isNotEmpty(item.getXueli()) && remuneration >= 10000
                 && analysisConfig.getRecruitmentEdu().indexOf(item.getXueli()) > 0) {
             return true;

@@ -69,60 +69,62 @@ public class ZongheAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        ZongheBak news = new ZongheBak();
-        news.setId(Long.valueOf(indexMap.get(SysConst.ZONGHE)));
+        ZongheBak entity = new ZongheBak();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.ZONGHE)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<ZongheBak> newsList = zongheBakService.findOneHundred(news, pageable);
+        List<ZongheBak> list = zongheBakService.findOneHundred(entity, pageable);
 
-        logger.info("综合分析,读取 {} 条", newsList.size());
+        logger.info("综合分析,读取 {} 条", list.size());
 
-        if (newsList.size() > 0) {
-            String newId = newsList.get(newsList.size() - 1).getId() + "";
-            String oldId = indexMap.get(SysConst.ZONGHE);
-            Map<String, String> newIndexMap = new HashMap<>(indexMap);
-            if (Long.parseLong(newId) > Long.parseLong(oldId)) {
-                newIndexMap.put(SysConst.NEWS, newId);
-            }
-
-            List<DgapData> saveList = new ArrayList<DgapData>();
-            List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
-            List<ZongheBak> readList = new ArrayList<ZongheBak>();
-            for (ZongheBak item : newsList) {
-                if (isNotExists(STATIC_LIST, item.getFldUrlAddr())) {
-                    // 分析
-                    SiteLib site = siteLibService.findByName(item.getWebname());
-                    SiteLib newSite = fillAreaInfoForSiteLib(item.getFldtitle(), item.getFldcontent(), site);
-                    if (newSite != null) {
-                        ValidationVO validationVO = ValidationVO.create(item, newSite);
-                        if (validate(validationVO)) {
-                            NewsVO newsVO = NewsVO.create(item, newSite);
-                            DgapData dgapData = fillDgapData(newsVO);
-                            item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
-                            addKingBaseData(historyList, dgapData);
-                            dgapData.setId(String.valueOf(item.getId()));
-                            saveList.add(dgapData);
-                            STATIC_LIST.add(dgapData);
-                        }
-                    }
-                    if (SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode().equals(item.getBiaoShi())) {
-                        item.setBiaoShi(SysConst.ESDataStatus.EXCEPTION.getCode());
-                    }
-                    readList.add(item);
-                }
-            }
-            if (saveList.size() > 0) {
-                saveToFile(saveList, SysConst.ZONGHE, analysisConfig.getSourceMorePath());
-                saveToKingBase(historyList);
-            }
-            if (readList.size() > 0) {
-                zongheBakService.save(readList);
-            }
-
-            logger.info("综合分析,入库 {} 条", saveList.size());
-            logger.info("综合分析,分析 {} 条", readList.size());
-
-            recordNum(newIndexMap);
+        if (list.size() <= 0) {
+            return;
         }
+
+        String newId = list.get(list.size() - 1).getId() + "";
+        String oldId = indexMap.get(SysConst.ZONGHE);
+        Map<String, String> newIndexMap = new HashMap<>(indexMap);
+        if (Long.parseLong(newId) > Long.parseLong(oldId)) {
+            newIndexMap.put(SysConst.NEWS, newId);
+        }
+
+        List<DgapData> saveList = new ArrayList<DgapData>();
+        List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
+        List<ZongheBak> readList = new ArrayList<ZongheBak>();
+        for (ZongheBak item : list) {
+            if (isNotExists(STATIC_LIST, item.getFldUrlAddr())) {
+                // 分析
+                SiteLib site = siteLibService.findByName(item.getWebname());
+                SiteLib newSite = fillAreaInfoForSiteLib(item.getFldtitle(), item.getFldcontent(), site);
+                if (newSite != null) {
+                    ValidationVO validationVO = ValidationVO.create(item, newSite);
+                    if (validate(validationVO)) {
+                        NewsVO newsVO = NewsVO.create(item, newSite);
+                        DgapData dgapData = fillDgapData(newsVO);
+                        item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
+                        addKingBaseData(historyList, dgapData);
+                        dgapData.setId(String.valueOf(item.getId()));
+                        saveList.add(dgapData);
+                        STATIC_LIST.add(dgapData);
+                    }
+                }
+                if (SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode().equals(item.getBiaoShi())) {
+                    item.setBiaoShi(SysConst.ESDataStatus.EXCEPTION.getCode());
+                }
+                readList.add(item);
+            }
+        }
+        if (saveList.size() > 0) {
+            saveToFile(saveList, SysConst.ZONGHE, analysisConfig.getSourceMorePath());
+            saveToKingBase(historyList);
+        }
+        if (readList.size() > 0) {
+            zongheBakService.save(readList);
+        }
+
+        logger.info("综合分析,入库 {} 条", saveList.size());
+        logger.info("综合分析,分析 {} 条", readList.size());
+
+        recordNum(newIndexMap);
     }
 
     @Override

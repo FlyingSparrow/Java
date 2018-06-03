@@ -69,18 +69,18 @@ public class NewsAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        NewsLibBak news = new NewsLibBak();
-        news.setId(Long.valueOf(indexMap.get(SysConst.NEWS)));
+        NewsLibBak entity = new NewsLibBak();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.NEWS)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<NewsLibBak> newsList = newsLibService.findOneHundred(news, pageable);
+        List<NewsLibBak> list = newsLibService.findOneHundred(entity, pageable);
 
-        logger.info("新闻分析,读取 {} 条", newsList.size());
+        logger.info("新闻分析,读取 {} 条", list.size());
 
-        if (newsList.size() <= 0) {
+        if (list.size() <= 0) {
             return;
         }
 
-        String newId = newsList.get(newsList.size() - 1).getId() + "";
+        String newId = list.get(list.size() - 1).getId() + "";
         String oldId = indexMap.get(SysConst.NEWS);
         Map<String, String> newIndexMap = new HashMap<>(indexMap);
         if (Long.parseLong(newId) > Long.parseLong(oldId)) {
@@ -90,7 +90,7 @@ public class NewsAnalyzer extends DefaultAnalyzer {
         List<DgapData> saveList = new ArrayList<DgapData>();
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
         List<NewsLibBak> readList = new ArrayList<NewsLibBak>();
-        for (NewsLibBak item : newsList) {
+        for (NewsLibBak item : list) {
             if (isNotExists(STATIC_LIST, item.getFldUrlAddr())) {
                 // 分析
                 SiteLib site = siteLibService.findByName(item.getWebname());

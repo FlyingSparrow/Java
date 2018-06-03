@@ -72,10 +72,10 @@ public class WechatAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        Wechat wechat = new Wechat();
-        wechat.setId(Long.valueOf(indexMap.get(SysConst.WECHAT)));
+        Wechat entity = new Wechat();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.WECHAT)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<Wechat> list = wechatService.findOneHundred(wechat, pageable);
+        List<Wechat> list = wechatService.findOneHundred(entity, pageable);
 
         logger.info("微信分析,读取 {} 条", list.size());
 
@@ -143,11 +143,12 @@ public class WechatAnalyzer extends DefaultAnalyzer {
             return false;
         }
 
-        int yearIndex = publishDate.indexOf("-");
+        String tempTime = com.huishu.utils.StringUtils.transformTime(publishDate);
+        int yearIndex = tempTime.indexOf("-");
         if (yearIndex <= 0) {
             return false;
         }
-        int monthIndex = publishDate.indexOf("-", yearIndex + 1);
+        int monthIndex = tempTime.indexOf("-", yearIndex + 1);
         if (monthIndex <= 0) {
             return false;
         }

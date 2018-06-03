@@ -58,15 +58,16 @@ public class MergerAnalyzer extends DefaultAnalyzer {
 
     /**
      * 分析数据
+     *
      * @param analysisConfig
      * @param indexMap
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        MergerDataBak mergerDataBak = new MergerDataBak();
-        mergerDataBak.setId(Long.valueOf(indexMap.get(SysConst.MERGER)));
-        Pageable pageable = new PageRequest(pageNumber,  analysisConfig.getTransformNum());
-        List<MergerDataBak> list = mergerDataService.findOneHundred(mergerDataBak, pageable);
+        MergerDataBak entity = new MergerDataBak();
+        entity.setId(Long.valueOf(indexMap.get(SysConst.MERGER)));
+        Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
+        List<MergerDataBak> list = mergerDataService.findOneHundred(entity, pageable);
 
         logger.info("并购分析,读取 {} 条", list.size());
 
@@ -77,7 +78,7 @@ public class MergerAnalyzer extends DefaultAnalyzer {
         String newId = list.get(list.size() - 1).getId() + "";
         String oldId = indexMap.get(SysConst.MERGER);
         Map<String, String> newIndexMap = new HashMap<>(indexMap);
-        if (Long.valueOf(newId)>Long.valueOf(oldId)) {
+        if (Long.parseLong(newId) > Long.parseLong(oldId)) {
             newIndexMap.put(SysConst.MERGER, newId);
         }
 
@@ -87,7 +88,7 @@ public class MergerAnalyzer extends DefaultAnalyzer {
         List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
         for (MergerDataBak item : list) {
             // 分析
-            if(validate(item)){
+            if (validate(item)) {
                 DgapData dgapData = fillDgapData(item);
                 if (dgapData != null) {
                     item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
@@ -116,7 +117,7 @@ public class MergerAnalyzer extends DefaultAnalyzer {
         recordNum(newIndexMap);
     }
 
-    private boolean validate(MergerDataBak mergerDataBak){
+    private boolean validate(MergerDataBak mergerDataBak) {
         String time = mergerDataBak.getEndTime();
         if (StringUtils.isEmpty(mergerDataBak.getIndustry())
                 || StringUtils.isEmpty(time)) {
