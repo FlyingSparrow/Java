@@ -323,6 +323,9 @@ public class StringUtils {
      * @return
      */
     public static boolean isNumber(String str) {
+        if(isEmpty(str)){
+            return false;
+        }
         return str.matches(NUMBER_REGEX);
     }
 
