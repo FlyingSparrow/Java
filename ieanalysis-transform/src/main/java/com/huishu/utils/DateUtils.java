@@ -208,6 +208,10 @@ public class DateUtils {
 		return new DateTime().getYear();
 	}
 
+	public static int getCurrentMonth(){
+		return new DateTime().getMonthOfYear();
+	}
+
 	public static Date getBeforeYesterdayNow(Date date) {
 		return plus(date, DateFields.DAY, -2);
 	}

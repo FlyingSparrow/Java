@@ -52,6 +52,9 @@ public class SimpleTest {
         String aaResult3 = parseDate(str2);
         String aaResult4 = parseDate2(str2);
         Assert.assertEquals(aaResult3, aaResult4);
+
+        int currentMonth = DateUtils.getCurrentMonth();
+        Assert.assertEquals(6, currentMonth);
     }
 
     @Test

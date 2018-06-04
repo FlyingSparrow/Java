@@ -297,7 +297,11 @@ public class DefaultAnalyzer implements Analyzer {
                     dgapData.setHour(Long.valueOf(tempTime.substring(sIndex + 1, hourIndex).trim()));
                 }
             } else {
-                dgapData.setDay(Long.valueOf(tempTime.substring(monthIndex + 1, tempTime.length()).trim()));
+                String day = tempTime.substring(monthIndex + 1, tempTime.length()).trim();
+                if(day.length() > 2){
+                    day = day.substring(0, 2);
+                }
+                dgapData.setDay(Long.valueOf(day));
             }
         } catch (NumberFormatException e) {
             logger.error("日期[{}]转换错误：{}", time, e);
