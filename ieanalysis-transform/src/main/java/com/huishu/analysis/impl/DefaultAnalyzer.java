@@ -467,7 +467,11 @@ public class DefaultAnalyzer implements Analyzer {
         result.setPublishType(SysConst.PublishType.LOCAL.getCode());
         // 分类
         result.setDataType(SysConst.DataType.POLICY.getCode());
-        result.setTime(newsVO.getFldrecddate());
+        String publishDate = newsVO.getFldrecddate();
+        if(StringUtils.isNotEmpty(publishDate) && publishDate.length() <= 10){
+            publishDate += " 00:00:00";
+        }
+        result.setTime(publishDate);
         // 时间
         fillDateInfoOfDgapData(result, newsVO.getFldrecddate());
         // 站点

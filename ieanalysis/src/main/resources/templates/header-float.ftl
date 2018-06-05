@@ -51,7 +51,11 @@
 				<#list datas  as  data>
 				<div class="div-hover">
  				<p><a target="_blank" href="${data.policyUrl}">${data_index+1}、${data.policyTitle}</a></p>
-		    	<p><span>时间：${data.time[0..10]}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span></span></p>
+					<#if (data.time?length > 10) >
+                        <p><span>时间：${data.time[0..10]}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span></span></p>
+					<#else>
+                        <p><span>时间：${data.time}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span></span></p>
+					</#if>
 				</div> 
 				</#list>
 			<#else>
