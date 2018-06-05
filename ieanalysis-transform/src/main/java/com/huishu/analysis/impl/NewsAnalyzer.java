@@ -44,7 +44,6 @@ public class NewsAnalyzer extends DefaultAnalyzer {
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        STATIC_LIST.clear();
         if (analysisConfig.isNewsMark()) {
             for (int i = 0; i < analysisConfig.getNewsThreadNum(); i++) {
                 final int pageNumber = i;
@@ -69,6 +68,8 @@ public class NewsAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
+        STATIC_LIST.clear();
+
         NewsLibBak entity = new NewsLibBak();
         entity.setId(Long.valueOf(indexMap.get(SysConst.NEWS)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());

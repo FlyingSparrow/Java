@@ -45,7 +45,6 @@ public class ForumAnalyzer extends DefaultAnalyzer {
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        STATIC_LIST.clear();
         if (analysisConfig.isForumMark()) {
             for (int i = 0; i < analysisConfig.getForumThreadNum(); i++) {
                 final int pageNumber = i;
@@ -70,6 +69,8 @@ public class ForumAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
+        STATIC_LIST.clear();
+
         ForumLibBak entity = new ForumLibBak();
         entity.setId(Long.valueOf(indexMap.get(SysConst.FORUM)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());

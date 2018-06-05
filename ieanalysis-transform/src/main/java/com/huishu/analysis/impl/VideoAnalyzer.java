@@ -45,7 +45,6 @@ public class VideoAnalyzer extends DefaultAnalyzer {
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        STATIC_LIST.clear();
         if (analysisConfig.isVideoMark()) {
             for (int i = 0; i < analysisConfig.getVideoThreadNum(); i++) {
                 final int pageNumber = i;
@@ -64,6 +63,8 @@ public class VideoAnalyzer extends DefaultAnalyzer {
     }
 
     private void analysisVideo(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
+        STATIC_LIST.clear();
+
         VideoBak entity = new VideoBak();
         entity.setId(Long.valueOf(indexMap.get(SysConst.VIDEO)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());

@@ -378,7 +378,8 @@ public class DefaultAnalyzer implements Analyzer {
         }
 
         // 类型 中央 地方 法院
-        if ("中华人民共和国中央人民政府".equals(webName.trim())) {
+        if ("中华人民共和国中央人民政府".equals(webName.trim())
+                || "中国政府网".equals(webName.trim())) {
             dgapData.setPublishType(SysConst.PublishType.LOCAL.getCode());
             dgapData.setHotEventMark(SysConst.HotEventMark.HOT_EVENT.getCode());
 
@@ -390,7 +391,13 @@ public class DefaultAnalyzer implements Analyzer {
                 int start = content.indexOf("<b>发文字号：</b>");
                 int end = content.indexOf("<b>发布日期：</b>");
                 // 发文字号
-                dgapData.setPolicyPostShopName(content.substring(start + 12, end));
+                if(start+12 < end){
+                    dgapData.setPolicyPostShopName(content.substring(start + 12, end));
+                }else{
+                    String policyPostShopName = com.huishu.utils.StringUtils.parsePolicyPostShopName(content);
+                    dgapData.setPolicyPostShopName(policyPostShopName);
+                }
+
                 dgapData.setPolicyReleaseMechanism("国务院文件");
                 dgapData.setPolicyPublishAuthor("国务院");
             } else {
@@ -407,21 +414,12 @@ public class DefaultAnalyzer implements Analyzer {
                         continue;
                     }
 
-                    int first = content.indexOf("〔");
-                    if (first == -1) {
-                        first = content.indexOf("[");
-                    }
-                    if (first >= 0) {
-                        int end = content.indexOf("号", first);
-                        int start = content.lastIndexOf(">", first);
-                        if (end >= 0) {
-                            if (end - start <= 25) {
-                                dgapData.setPublishType(SysConst.PublishType.CENTER.getCode());
-                                dgapData.setPolicyPostShopName(content.substring(start + 1, end + 1));
-                                dgapData.setPolicyReleaseMechanism("部委文件");
-                                dgapData.setPolicyPublishAuthor(channelName);
-                            }
-                        }
+                    String policyPostShopName = com.huishu.utils.StringUtils.parsePolicyPostShopName(content);
+                    if(StringUtils.isNotEmpty(policyPostShopName)){
+                        dgapData.setPublishType(SysConst.PublishType.CENTER.getCode());
+                        dgapData.setPolicyPostShopName(policyPostShopName);
+                        dgapData.setPolicyReleaseMechanism("部委文件");
+                        dgapData.setPolicyPublishAuthor(channelName);
                     }
                 }
             }
@@ -485,8 +483,6 @@ public class DefaultAnalyzer implements Analyzer {
         // 是否社交网站
         result.setReportType(SysConst.SiteType.MEDIA.getCode());
         // 是否热点 评论 点击 转发 超过1000
-
-
         String hitNum = newsVO.getFldHits();
         if(StringUtils.isEmpty(hitNum)){
             hitNum = "0";
@@ -517,8 +513,6 @@ public class DefaultAnalyzer implements Analyzer {
             result.setEmotionMark(SysConst.Emotion.POSITIVE.getCode());
         }
 
-        fillPolicyInfo(newsVO.getFldcontent(), newsVO.getWebname(), newsVO.getPdmc(),
-                newsVO.getFldUrlAddr(), result);
         // 标题
         result.setPolicyTitle(newsVO.getFldtitle());
 

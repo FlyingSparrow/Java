@@ -44,7 +44,6 @@ public class RecruitmentAnalyzer extends DefaultAnalyzer {
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        STATIC_LIST.clear();
         if (analysisConfig.isRecruitmentMark()) {
             // 分析招聘数据
             for (int i = 0; i < analysisConfig.getRecruitmentThreadNum(); i++) {
@@ -73,6 +72,8 @@ public class RecruitmentAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
+        STATIC_LIST.clear();
+
         RecruitmentBak entity = new RecruitmentBak();
         entity.setId(Long.valueOf(indexMap.get(SysConst.RECRIUTMENT)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());

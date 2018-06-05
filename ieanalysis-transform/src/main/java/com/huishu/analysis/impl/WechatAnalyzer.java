@@ -46,7 +46,6 @@ public class WechatAnalyzer extends DefaultAnalyzer {
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        STATIC_LIST.clear();
         if (analysisConfig.isWechatMark()) {
             for (int i = 0; i < analysisConfig.getWechatThreadNum(); i++) {
                 final int pageNumber = i;
@@ -72,6 +71,8 @@ public class WechatAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
+        STATIC_LIST.clear();
+
         Wechat entity = new Wechat();
         entity.setId(Long.valueOf(indexMap.get(SysConst.WECHAT)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());

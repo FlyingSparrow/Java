@@ -44,7 +44,6 @@ public class PolicyAnalyzer extends DefaultAnalyzer {
 
     @Override
     public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        STATIC_LIST.clear();
         if (analysisConfig.isPolicyMark()) {
             for (int i = 0; i < analysisConfig.getPolicyThreadNum(); i++) {
                 final int pageNumber = i;
@@ -69,6 +68,8 @@ public class PolicyAnalyzer extends DefaultAnalyzer {
      * @param pageNumber
      */
     private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
+        STATIC_LIST.clear();
+
         PolicyBak entity = new PolicyBak();
         entity.setId(Long.valueOf(indexMap.get(SysConst.POLICY)));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
@@ -132,6 +133,8 @@ public class PolicyAnalyzer extends DefaultAnalyzer {
     @Override
     protected DgapData fillDgapData(NewsVO newsVO) {
         DgapData result = super.fillDgapData(newsVO);
+        fillPolicyInfo(newsVO.getFldcontent(), newsVO.getWebname(), newsVO.getPdmc(),
+                newsVO.getFldUrlAddr(), result);
 
         return result;
     }

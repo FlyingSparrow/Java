@@ -329,4 +329,28 @@ public class StringUtils {
         return str.matches(NUMBER_REGEX);
     }
 
+    /**
+     * 解析发文字号
+     * @param content
+     * @return
+     */
+    public static String parsePolicyPostShopName(String content){
+        String result = "";
+        int first = content.indexOf("〔");
+        if (first == -1) {
+            first = content.indexOf("[");
+        }
+        if (first >= 0) {
+            int end = content.indexOf("号", first);
+            int start = content.lastIndexOf(">", first);
+            if (end >= 0) {
+                if (end - start <= 25) {
+                    result = content.substring(start + 1, end + 1);
+                }
+            }
+        }
+
+        return result;
+    }
+
 }
