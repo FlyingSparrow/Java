@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public abstract class AbstractTransformer implements Transformer {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public void transform(ThreadPoolExecutor executor) {
@@ -35,10 +35,27 @@ public abstract class AbstractTransformer implements Transformer {
         }
     }
 
+    @Override
+    public void transformV2(ThreadPoolExecutor executor) {
+        if (getMark()) {
+            executor.execute(() -> {
+                while (true) {
+                    transformDataV2();
+                }
+            });
+        }
+    }
+
     /**
      * 转换数据
+     *
      * @param pageNumber
      */
     protected abstract void transformData(int pageNumber);
+
+    /**
+     * 转换数据
+     */
+    protected abstract void transformDataV2();
 
 }

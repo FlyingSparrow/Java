@@ -28,7 +28,7 @@ public class ForumLibServiceImpl implements ForumLibService {
 
     @Override
     @TargetDataSource(name = "news")
-    public List<ForumLib> findOneHundred(ForumLib forum, Pageable pageable) {
+    public List<ForumLib> findOneHundred(ForumLib entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
@@ -36,13 +36,13 @@ public class ForumLibServiceImpl implements ForumLibService {
         Page<ForumLib> page = forumLibRepository.findAll((root, query, cb) ->  {
             Path<String> fldRecdId = root.get("fldRecdId");
             Path<Integer> fldFlowFlag = root.get("fldFlowFlag");
-            if (forum != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (StringUtils.isNotEmpty(forum.getFldRecdId())) {
-                    queryList.add(cb.greaterThan(fldRecdId, forum.getFldRecdId()));
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
                 }
-                if (forum.getFldReadFlag() != null) {
-                    queryList.add(cb.equal(fldFlowFlag, forum.getFldReadFlag()));
+                if (entity.getFldReadFlag() != null) {
+                    queryList.add(cb.equal(fldFlowFlag, entity.getFldReadFlag()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -60,6 +60,38 @@ public class ForumLibServiceImpl implements ForumLibService {
         } else {
             return page.getContent();
         }
+    }
+
+    @Override
+    @TargetDataSource(name = "news")
+    public Page<ForumLib> findPageList(ForumLib entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+
+        Page<ForumLib> page = forumLibRepository.findAll((root, query, cb) ->  {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<Integer> fldFlowFlag = root.get("fldFlowFlag");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
+                }
+                if (entity.getFldReadFlag() != null) {
+                    queryList.add(cb.equal(fldFlowFlag, entity.getFldReadFlag()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, false));
+            }
+            return null;
+        }, pageable);
+
+        return page;
     }
 
     @Override
