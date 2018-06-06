@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,29 +32,26 @@ public class NewsLibServiceImpl implements NewsLibService {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
-        Page<NewsLib> page = newsLibRepository.findAll(new Specification<NewsLib>() {
-            @Override
-            public Predicate toPredicate(Root<NewsLib> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path<String> fldRecdId = root.get("fldRecdId");
-                Path<String> biaoShi = root.get("biaoShi");
-                if (news != null) {
-                    List<Predicate> queryList = new ArrayList<Predicate>();
-                    if (StringUtils.isNotEmpty(news.getFldRecdId())) {
-                        queryList.add(cb.greaterThan(fldRecdId, news.getFldRecdId()));
-                    }
-                    if (news.getBiaoShi() != null) {
-                        queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
-                    }
-                    Predicate[] querys = new Predicate[queryList.size()];
-                    if (queryList != null && queryList.size() > 0) {
-                        for (int i = 0, len = queryList.size(); i < len; i++) {
-                            querys[i] = queryList.get(i);
-                        }
-                    }
-                    query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+        Page<NewsLib> page = newsLibRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (news != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(news.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, news.getFldRecdId()));
                 }
-                return null;
+                if (news.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
             }
+            return null;
         }, pageable);
         if (page == null || page.getContent() == null || page.getContent().size() == 0) {
             return new ArrayList<NewsLib>();
@@ -75,29 +72,26 @@ public class NewsLibServiceImpl implements NewsLibService {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
-        Page<NewsLib> page = newsLibRepository.findAll(new Specification<NewsLib>() {
-            @Override
-            public Predicate toPredicate(Root<NewsLib> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path<String> fldRecdId = root.get("fldRecdId");
-                Path<String> biaoShi = root.get("biaoShi");
-                if (news != null) {
-                    List<Predicate> queryList = new ArrayList<Predicate>();
-                    if (StringUtils.isNotEmpty(news.getFldRecdId())) {
-                        queryList.add(cb.greaterThan(fldRecdId, news.getFldRecdId()));
-                    }
-                    if (news.getBiaoShi() != null) {
-                        queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
-                    }
-                    Predicate[] querys = new Predicate[queryList.size()];
-                    if (queryList != null && queryList.size() > 0) {
-                        for (int i = 0, len = queryList.size(); i < len; i++) {
-                            querys[i] = queryList.get(i);
-                        }
-                    }
-                    query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+        Page<NewsLib> page = newsLibRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (news != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(news.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, news.getFldRecdId()));
                 }
-                return null;
+                if (news.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
             }
+            return null;
         }, pageable);
         if (page == null || page.getContent() == null || page.getContent().size() == 0) {
             return new ArrayList<NewsLib>();
@@ -119,29 +113,26 @@ public class NewsLibServiceImpl implements NewsLibService {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
-        Page<NewsLib> page = newsLibRepository.findAll(new Specification<NewsLib>() {
-            @Override
-            public Predicate toPredicate(Root<NewsLib> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path<String> fldRecdId = root.get("fldRecdId");
-                Path<String> biaoShi = root.get("biaoShi");
-                if (news != null) {
-                    List<Predicate> queryList = new ArrayList<Predicate>();
-                    if (StringUtils.isNotEmpty(news.getFldRecdId())) {
-                        queryList.add(cb.greaterThan(fldRecdId, news.getFldRecdId()));
-                    }
-                    if (news.getBiaoShi() != null) {
-                        queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
-                    }
-                    Predicate[] querys = new Predicate[queryList.size()];
-                    if (queryList != null && queryList.size() > 0) {
-                        for (int i = 0, len = queryList.size(); i < len; i++) {
-                            querys[i] = queryList.get(i);
-                        }
-                    }
-                    query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+        Page<NewsLib> page = newsLibRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (news != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(news.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, news.getFldRecdId()));
                 }
-                return null;
+                if (news.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
             }
+            return null;
         }, pageable);
         if (page == null || page.getContent() == null || page.getContent().size() == 0) {
             return new ArrayList<NewsLib>();
@@ -191,6 +182,5 @@ public class NewsLibServiceImpl implements NewsLibService {
     public void deletePolicyById(String id) {
         newsLibRepository.delete(id);
     }
-
 
 }

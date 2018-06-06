@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,29 +32,26 @@ public class InvestmentDataTzServiceImpl implements InvestmentDataTzService {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
-        Page<InvestmentDataTz> page = investmentDataTzRepository.findAll(new Specification<InvestmentDataTz>() {
-            @Override
-            public Predicate toPredicate(Root<InvestmentDataTz> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path<String> fldRecdId = root.get("fldRecdId");
-                Path<String> biaoShi = root.get("biaoShi");
-                if (data != null) {
-                    List<Predicate> queryList = new ArrayList<Predicate>();
-                    if (StringUtils.isNotEmpty(data.getFldRecdId())) {
-                        queryList.add(cb.greaterThan(fldRecdId, data.getFldRecdId()));
-                    }
-                    if (data.getBiaoShi() != null) {
-                        queryList.add(cb.equal(biaoShi, data.getBiaoShi()));
-                    }
-                    Predicate[] querys = new Predicate[queryList.size()];
-                    if (queryList != null && queryList.size() > 0) {
-                        for (int i = 0, len = queryList.size(); i < len; i++) {
-                            querys[i] = queryList.get(i);
-                        }
-                    }
-                    query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+        Page<InvestmentDataTz> page = investmentDataTzRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (data != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(data.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, data.getFldRecdId()));
                 }
-                return null;
+                if (data.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, data.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
             }
+            return null;
         }, pageable);
         if (page == null || page.getContent() == null || page.getContent().size() == 0) {
             return new ArrayList<InvestmentDataTz>();

@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,29 +32,26 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
-        Page<Recruitment> page = recruitmentRepository.findAll(new Specification<Recruitment>() {
-            @Override
-            public Predicate toPredicate(Root<Recruitment> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path<String> fldRecdId = root.get("fldRecdId");
-                Path<String> biaoShi = root.get("biaoShi");
-                if (recruitment != null) {
-                    List<Predicate> queryList = new ArrayList<Predicate>();
-                    if (StringUtils.isNotEmpty(recruitment.getFldRecdId())) {
-                        queryList.add(cb.greaterThan(fldRecdId, recruitment.getFldRecdId()));
-                    }
-                    if (recruitment.getBiaoShi() != null) {
-                        queryList.add(cb.equal(biaoShi, recruitment.getBiaoShi()));
-                    }
-                    Predicate[] querys = new Predicate[queryList.size()];
-                    if (queryList != null && queryList.size() > 0) {
-                        for (int i = 0, len = queryList.size(); i < len; i++) {
-                            querys[i] = queryList.get(i);
-                        }
-                    }
-                    query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+        Page<Recruitment> page = recruitmentRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (recruitment != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(recruitment.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, recruitment.getFldRecdId()));
                 }
-                return null;
+                if (recruitment.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, recruitment.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
             }
+            return null;
         }, pageable);
         if (page == null || page.getContent() == null || page.getContent().size() == 0) {
             return new ArrayList<Recruitment>();

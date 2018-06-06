@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,29 +32,26 @@ public class WechatServiceImpl implements WechatService {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
-        Page<Wechat> page = wechatRepository.findAll(new Specification<Wechat>() {
-            @Override
-            public Predicate toPredicate(Root<Wechat> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path<Long> id = root.get("id");
-                Path<String> isRead = root.get("isRead");
-                if (wechat != null) {
-                    List<Predicate> queryList = new ArrayList<Predicate>();
-                    if (wechat.getId() != null) {
-                        queryList.add(cb.greaterThan(id, wechat.getId()));
-                    }
-                    if (StringUtils.isNotEmpty(wechat.getIsRead())) {
-                        queryList.add(cb.equal(isRead, wechat.getIsRead()));
-                    }
-                    Predicate[] querys = new Predicate[queryList.size()];
-                    if (queryList != null && queryList.size() > 0) {
-                        for (int i = 0, len = queryList.size(); i < len; i++) {
-                            querys[i] = queryList.get(i);
-                        }
-                    }
-                    query.where(querys).orderBy(new OrderImpl(id, true));
+        Page<Wechat> page = wechatRepository.findAll((root, query, cb) -> {
+            Path<Long> id = root.get("id");
+            Path<String> isRead = root.get("isRead");
+            if (wechat != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (wechat.getId() != null) {
+                    queryList.add(cb.greaterThan(id, wechat.getId()));
                 }
-                return null;
+                if (StringUtils.isNotEmpty(wechat.getIsRead())) {
+                    queryList.add(cb.equal(isRead, wechat.getIsRead()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(id, true));
             }
+            return null;
         }, pageable);
         if (page == null || page.getContent() == null || page.getContent().size() == 0) {
             return new ArrayList<Wechat>();
