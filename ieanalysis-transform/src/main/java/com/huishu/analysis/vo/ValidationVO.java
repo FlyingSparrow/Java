@@ -57,7 +57,7 @@ public class ValidationVO {
         this.fldUrlAddr = fldUrlAddr;
     }
 
-    public ValidationVO(String province, String industry, String publishDate, String content, String title) {
+    private ValidationVO(String province, String industry, String publishDate, String content, String title) {
         this.province = province;
         this.industry = industry;
         this.fldrecddate = publishDate;
@@ -65,7 +65,7 @@ public class ValidationVO {
         this.fldtitle = title;
     }
 
-    public ValidationVO(String gwGZ, String addr, String publishDate) {
+    private ValidationVO(String gwGZ, String addr, String publishDate) {
         this.gwGZ = gwGZ;
         this.addr = addr;
         this.fldrecddate = publishDate;
