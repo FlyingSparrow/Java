@@ -201,6 +201,7 @@ public class NewsAnalyzer extends DefaultAnalyzer {
                     pageNumber++;
                 }else{
                     pageNumber = 0;
+                    totalPages = 10;
                     //如果没有数据需要分析，那么当前线程休眠5分钟
                     Thread.sleep(300000);
                 }
