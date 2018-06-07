@@ -73,7 +73,7 @@ public class InvestmentTransformer extends AbstractTransformer {
     }
 
     private void transformInvestmentSmt() throws InterruptedException {
-        int pageNumber = 1;
+        int pageNumber = 0;
         int totalPages = 10;
         InvestmentDataSmt entity = new InvestmentDataSmt();
         while (pageNumber <= totalPages){
@@ -165,7 +165,7 @@ public class InvestmentTransformer extends AbstractTransformer {
      * @date 2018-6-3
      */
     private void transformInvestmentTz() throws InterruptedException {
-        int pageNumber = 1;
+        int pageNumber = 0;
         int totalPages = 10;
         InvestmentDataTz entity = new InvestmentDataTz();
         while (pageNumber <= totalPages){

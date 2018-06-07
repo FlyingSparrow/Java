@@ -72,7 +72,7 @@ public class QuitTransformer extends AbstractTransformer {
     }
 
     private void transformQuitSmt() throws InterruptedException {
-        int pageNumber = 1;
+        int pageNumber = 0;
         int totalPages = 10;
         QuitDataSmt entity = new QuitDataSmt();
         while (pageNumber <= totalPages){
@@ -165,7 +165,7 @@ public class QuitTransformer extends AbstractTransformer {
      * @date 2018-6-3
      */
     private void transformQuitTz() throws InterruptedException {
-        int pageNumber = 1;
+        int pageNumber = 0;
         int totalPages = 10;
         QuitDataTz entity = new QuitDataTz();
         while (pageNumber <= totalPages){

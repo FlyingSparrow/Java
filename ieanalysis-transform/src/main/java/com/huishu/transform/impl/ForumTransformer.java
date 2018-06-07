@@ -61,7 +61,7 @@ public class ForumTransformer extends AbstractTransformer {
 
     @Override
     protected void transformData() throws InterruptedException {
-        int pageNumber = 1;
+        int pageNumber = 0;
         int totalPages = 10;
         ForumLib entity = new ForumLib();
         while (pageNumber <= totalPages){

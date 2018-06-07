@@ -5,7 +5,8 @@ import com.huishu.constants.SysConst;
 import com.huishu.transform.Transformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -22,8 +23,8 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author xiaobo
  * @date 2017年4月10日
  */
-//@Component
-public class TransformTask {
+@Component
+public class TransformJob implements CommandLineRunner {
 
     private static ThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(SysConst.DEFAULT_CORE_POOL_SIZE,
             new ThreadFactoryBuilder().setNameFormat("transform-pool-%d").build());
@@ -65,19 +66,18 @@ public class TransformTask {
     private Transformer quitTransformer;
 
     /**
-     * 间隔 15 秒钟执行一次
+     * 项目启动后执行
      */
-    @Scheduled(fixedDelay = 1000 * 15)
-    public void warn() {
-        newsTransformer.transform(executor);
-        policyTransformer.transform(executor);
-        zongheTransformer.transform(executor);
-        forumTransformer.transform(executor);
-        videoTransformer.transform(executor);
-        recruitmentTransformer.transform(executor);
-        investmentTransformer.transform(executor);
-        mergerTransformer.transform(executor);
-        quitTransformer.transform(executor);
+    @Override
+    public void run(String... strings) throws Exception {
+        newsTransformer.transformV2(executor);
+        policyTransformer.transformV2(executor);
+        zongheTransformer.transformV2(executor);
+        forumTransformer.transformV2(executor);
+        videoTransformer.transformV2(executor);
+        recruitmentTransformer.transformV2(executor);
+        investmentTransformer.transformV2(executor);
+        mergerTransformer.transformV2(executor);
+        quitTransformer.transformV2(executor);
     }
-
 }

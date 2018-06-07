@@ -60,7 +60,7 @@ public class RecruitmentTransformer extends AbstractTransformer {
 
     @Override
     protected void transformData() throws InterruptedException {
-        int pageNumber = 1;
+        int pageNumber = 0;
         int totalPages = 10;
         Recruitment entity = new Recruitment();
         while (pageNumber <= totalPages){

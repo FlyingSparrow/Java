@@ -10,170 +10,170 @@ import org.springframework.stereotype.Component;
  * @author wangjianchun
  */
 @Component
-@PropertySource("classpath:analysis-config.properties")
+@PropertySource(value = "classpath:analysis-config.properties")
 public class AnalysisConfig {
 
-    @Value("${source.more.path}")
+    @Value("${analysis.source.more.path}")
     private String sourceMorePath;
-    @Value("${source.less.path}")
+    @Value("${analysis.source.less.path}")
     private String sourceLessPath;
-    @Value("${transform.num}")
+    @Value("${analysis.transform.num}")
     private Integer transformNum;
 
     /**
      * 互联网关键词
      */
-    @Value("${keywords.industry.internet}")
+    @Value("${analysis.keywords.industry.internet}")
     private String internetKeyWords;
     /**
      * 交通关词
      */
-    @Value("${keywords.industry.traffic}")
+    @Value("${analysis.keywords.industry.traffic}")
     private String trafficKeyWords;
     /**
      * 教育关键词
      */
-    @Value("${keywords.industry.education}")
+    @Value("${analysis.keywords.industry.education}")
     private String educationKeyWords;
     /**
      * 旅游关键词
      */
-    @Value("${keywords.industry.tourism}")
+    @Value("${analysis.keywords.industry.tourism}")
     private String tourismKeyWords;
     /**
      * 金融关键词
      */
-    @Value("${keywords.industry.finance}")
+    @Value("${analysis.keywords.industry.finance}")
     private String financeKeyWords;
 
     /**
      * 视频是否分析
      */
-    @Value("${data.video.mark}")
+    @Value("${analysis.data.video.mark}")
     private boolean videoMark;
-    @Value("${video.thread.num}")
+    @Value("${analysis.video.thread.num}")
     private Integer videoThreadNum;
     /**
      * 论坛是否分析
      */
-    @Value("${data.forum.mark}")
+    @Value("${analysis.data.forum.mark}")
     private boolean forumMark;
-    @Value("${forum.thread.num}")
+    @Value("${analysis.forum.thread.num}")
     private Integer forumThreadNum;
     /**
      * 新闻是否分析
      */
-    @Value("${data.news.mark}")
+    @Value("${analysis.data.news.mark}")
     private boolean newsMark;
-    @Value("${news.thread.num}")
+    @Value("${analysis.news.thread.num}")
     private Integer newsThreadNum;
     /**
      * 微信 标识 data.wecchat.mark
      */
-    @Value("${data.wecchat.mark}")
+    @Value("${analysis.data.wecchat.mark}")
     private boolean wechatMark;
-    @Value("${wecchat.thread.num}")
+    @Value("${analysis.wecchat.thread.num}")
     private Integer wechatThreadNum;
     /**
      * 招聘data.recruitment.mark=true
      */
-    @Value("${data.recruitment.mark}")
+    @Value("${analysis.data.recruitment.mark}")
     private boolean recruitmentMark;
-    @Value("${recruitment.thread.num}")
+    @Value("${analysis.recruitment.thread.num}")
     private Integer recruitmentThreadNum;
     /**
      * 投资 data.investment.mark=false
      */
-    @Value("${data.investment.mark}")
+    @Value("${analysis.data.investment.mark}")
     private boolean investmentMark;
-    @Value("${investment.thread.num}")
+    @Value("${analysis.investment.thread.num}")
     private Integer investmentThreadNum;
     /**
      * 政策
      */
-    @Value("${data.policy.mark}")
+    @Value("${analysis.data.policy.mark}")
     private boolean policyMark;
-    @Value("${policy.thread.num}")
+    @Value("${analysis.policy.thread.num}")
     private Integer policyThreadNum;
     /**
      * 综合
      */
-    @Value("${data.zonghe.mark}")
+    @Value("${analysis.data.zonghe.mark}")
     private boolean zongheMark;
-    @Value("${zonghe.thread.num}")
+    @Value("${analysis.zonghe.thread.num}")
     private Integer zongheThreadNum;
 
     /**
      * 并购
      */
-    @Value("${data.merger.mark}")
+    @Value("${analysis.data.merger.mark}")
     private boolean mergerMark;
-    @Value("${merger.thread.num}")
+    @Value("${analysis.merger.thread.num}")
     private Integer mergerThreadNum;
     /**
      * 退出
      */
-    @Value("${data.quit.mark}")
+    @Value("${analysis.data.quit.mark}")
     private boolean quitMark;
-    @Value("${quit.thread.num}")
+    @Value("${analysis.quit.thread.num}")
     private Integer quitThreadNum;
 
     /**
      * 工商数据
      */
-    @Value("${data.industry.mark}")
+    @Value("${analysis.data.industry.mark}")
     private boolean industryMark;
-    @Value("${industry.thread.num}")
+    @Value("${analysis.industry.thread.num}")
     private Integer industryThreadNum;
 
     /**
      * 教育水平
      */
-    @Value("${recruitment.education}")
+    @Value("${analysis.recruitment.education}")
     private String recruitmentEdu;
     /**
      * 地域
      */
-    @Value("${common.area}")
+    @Value("${analysis.common.area}")
     private String commonArea;
     /**
      * 图片后缀
      */
-    @Value("${picture.suffix}")
+    @Value("${analysis.picture.suffix}")
     private String pictureSuffix;
-    @Value("${social.site}")
+    @Value("${analysis.social.site}")
     private String socialSite;
-    @Value("${center.department}")
+    @Value("${analysis.center.department}")
     private String centerDepartment;
 
     /**
      * recruitment.internet.keywords=工程师,助理,互联网
      */
-    @Value("${recruitment.internet.keywords}")
+    @Value("${analysis.recruitment.internet.keywords}")
     private String recruitmentInternetKeywords;
     /**
      * recruitment.traffic.keywords=车,快递,运输,司机,进口,出口,贸易,航空,列车
      */
-    @Value("${recruitment.traffic.keywords}")
+    @Value("${analysis.recruitment.traffic.keywords}")
     private String recruitmentTrafficKeywords;
     /**
      * recruitment.education.keywords=教师,助教
      */
-    @Value("${recruitment.education.keywords}")
+    @Value("${analysis.recruitment.education.keywords}")
     private String recruitmentEducationKeywords;
     /**
      * recruitment.tourism.keywords=导游,旅游
      */
-    @Value("${recruitment.tourism.keywords}")
+    @Value("${analysis.recruitment.tourism.keywords}")
     private String recruitmentTourismKeywords;
     /**
      * recruitment.finance.keywords=分析师,券商,银行,基金,保险,金融,理财
      */
-    @Value("${recruitment.finance.keywords}")
+    @Value("${analysis.recruitment.finance.keywords}")
     private String recruitmentFinanceKeywords;
-    @Value("${invalid.imageurl}")
+    @Value("${analysis.invalid.imageurl}")
     private String invalidImageurl;
-    @Value("${king.save.mark}")
+    @Value("${analysis.king.save.mark}")
     private boolean kingSaveMark;
 
     public String getSourceMorePath() {

@@ -73,7 +73,7 @@ public class MergerTransformer extends AbstractTransformer{
     }
 
     private void transformMergerSmt() throws InterruptedException {
-        int pageNumber = 1;
+        int pageNumber = 0;
         int totalPages = 10;
         MergerDataSmt entity = new MergerDataSmt();
         while (pageNumber <= totalPages){
@@ -165,7 +165,7 @@ public class MergerTransformer extends AbstractTransformer{
      * @date 2018-6-3
      */
     private void transformMergerTz() throws InterruptedException {
-        int pageNumber = 1;
+        int pageNumber = 0;
         int totalPages = 10;
         MergerDataTz entity = new MergerDataTz();
         while (pageNumber <= totalPages){

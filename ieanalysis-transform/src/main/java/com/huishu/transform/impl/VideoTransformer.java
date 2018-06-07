@@ -60,7 +60,7 @@ public class VideoTransformer extends AbstractTransformer  {
 
     @Override
     protected void transformData() throws InterruptedException {
-        int pageNumber = 1;
+        int pageNumber = 0;
         int totalPages = 10;
         Video entity = new Video();
         while (pageNumber <= totalPages){
