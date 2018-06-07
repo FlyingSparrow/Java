@@ -186,6 +186,7 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
                     pageNumber = 0;
                     totalPages = 10;
                     //如果没有数据需要分析，那么当前线程休眠5分钟
+                    logger.info("没有{}数据需要分析，线程休眠 5 分钟", getName());
                     Thread.sleep(300000);
                 }
             } catch (Exception e) {
