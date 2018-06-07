@@ -1,6 +1,7 @@
 package com.huishu.service;
 
 import com.huishu.entity.InvestmentDataBak;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -40,4 +41,13 @@ public interface InvestmentDataBakService {
      * @return
      */
     long findExit(InvestmentDataBak entity);
+
+    /**
+     * 分页查询
+     *
+     * @param entity
+     * @param pageable
+     * @return
+     */
+    Page<InvestmentDataBak> findByPage(InvestmentDataBak entity, Pageable pageable);
 }

@@ -59,6 +59,36 @@ public class ForumLibBakServiceImpl implements ForumLibBakService {
     }
 
     @Override
+    public Page<ForumLibBak> findByPage(ForumLibBak entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+        Page<ForumLibBak> page = forumLibBakRepository.findAll((root, query, cb) -> {
+            Path<Long> id = root.get("id");
+            Path<String> biaoshi = root.get("biaoShi");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
+                }
+                if (StringUtils.isNotEmpty(entity.getBiaoShi())) {
+                    queryList.add(cb.equal(biaoshi, entity.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(id, false));
+            }
+            return null;
+        }, pageable);
+
+        return page;
+    }
+
+    @Override
     public void save(List<ForumLibBak> list) {
         forumLibBakRepository.save(list);
     }

@@ -13,12 +13,12 @@ import com.huishu.service.InvestmentDataBakService;
 import com.huishu.vo.DgapData;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 分析投资数据
@@ -30,33 +30,23 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class InvestmentAnalyzer extends DefaultAnalyzer {
 
     @Autowired
-    private InvestmentDataBakService investmentDataService;
+    private InvestmentDataBakService investmentDataBakService;
     @Autowired
     private UnitsConfig unitsConfig;
 
     @Override
     public String getName() {
-        return SysConst.INVESTMENT;
+        return "投资";
     }
 
     @Override
-    public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        if (analysisConfig.isInvestmentMark()) {
-            // 分析投资数据
-            for (int i = 0; i < analysisConfig.getInvestmentThreadNum(); i++) {
-                final int pageNumber = i;
-                executor.execute(() -> {
-                    Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{}投资数据分析开始", currentThread.getName(), currentThread.getId());
-                    try {
-                        analysisData(analysisConfig, indexMap, pageNumber);
-                    } catch (Exception e) {
-                        logger.error("投资数据分析异常", e);
-                    }
-                    logger.info("{}:{}投资数据分析结束", currentThread.getName(), currentThread.getId());
-                });
-            }
-        }
+    public boolean getMark() {
+        return analysisConfig.isInvestmentMark();
+    }
+
+    @Override
+    public String getType() {
+        return SysConst.INVESTMENT;
     }
 
     /**
@@ -66,23 +56,25 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
      * @param indexMap
      * @param pageNumber
      */
-    private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        InvestmentDataBak entity = new InvestmentDataBak();
-        entity.setId(Long.valueOf(indexMap.get(SysConst.INVESTMENT)));
-        Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
-        List<InvestmentDataBak> list = investmentDataService.findOneHundred(entity, pageable);
+    @Override
+    protected void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
+        Map<String, String> newIndexMap = new HashMap<>(indexMap);
 
-        logger.info("投资分析,读取 {} 条", list.size());
+        InvestmentDataBak entity = new InvestmentDataBak();
+        entity.setId(Long.valueOf(newIndexMap.get(getType())));
+        Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
+        List<InvestmentDataBak> list = investmentDataBakService.findOneHundred(entity, pageable);
+
+        logger.info("{}分析,读取 {} 条", getName(), list.size());
 
         if (list.size() <= 0) {
             return;
         }
 
         String newId = list.get(list.size() - 1).getId() + "";
-        String oldId = indexMap.get(SysConst.INVESTMENT);
-        Map<String, String> newIndexMap = new HashMap<>(indexMap);
+        String oldId = newIndexMap.get(getType());
         if (Long.parseLong(newId) > Long.parseLong(oldId)) {
-            newIndexMap.put(SysConst.INVESTMENT, newId);
+            newIndexMap.put(getType(), newId);
         }
 
 
@@ -107,17 +99,98 @@ public class InvestmentAnalyzer extends DefaultAnalyzer {
         }
 
         if (saveList.size() > 0) {
-            saveToFile(saveList, SysConst.INVESTMENT, analysisConfig.getSourceLessPath());
+            saveToFile(saveList, getType(), analysisConfig.getSourceLessPath());
             saveToKingBase(historyList);
         }
         if (readList.size() > 0) {
-            investmentDataService.save(readList);
+            investmentDataBakService.save(readList);
         }
 
-        logger.info("投资分析,入库 {} 条", saveList.size());
-        logger.info("投资分析,分析 {} 条", readList.size());
+        logger.info("{}分析,入库 {} 条", getName(), saveList.size());
+        logger.info("{}分析,分析 {} 条", getName(), readList.size());
 
         recordNum(newIndexMap);
+    }
+
+    /**
+     * 分析数据
+     *
+     * @param analysisConfig
+     * @param indexMap
+     */
+    @Override
+    protected void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap) {
+        Map<String, String> newIndexMap = new HashMap<>(indexMap);
+
+        int pageNumber = 0;
+        int totalPages = 10;
+        InvestmentDataBak entity = new InvestmentDataBak();
+        while (pageNumber <= totalPages){
+            try {
+                entity.setId(Long.valueOf(newIndexMap.get(getType())));
+                Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
+                Page<InvestmentDataBak> page = investmentDataBakService.findByPage(entity, pageable);
+                totalPages = page.getTotalPages();
+
+                List<InvestmentDataBak> list = page.getContent();
+                if(list != null && list.size() > 0){
+                    logger.info("{}分析,读取 {} 条", getName(), list.size());
+                    logger.info("总页数：{}，每页记录数：{}，剩余 {} 条{}数据待分析", page.getTotalPages(),
+                            analysisConfig.getTransformNum(), page.getTotalElements(), getName());
+                    logger.info("第 {} 页{}数据分析开始", pageNumber, getName());
+
+                    String newId = list.get(list.size() - 1).getId() + "";
+                    String oldId = newIndexMap.get(getType());
+                    if (Long.parseLong(newId) > Long.parseLong(oldId)) {
+                        newIndexMap.put(getType(), newId);
+                    }
+
+
+                    List<DgapData> saveList = new ArrayList<DgapData>();
+                    List<InvestmentDataBak> readList = new ArrayList<InvestmentDataBak>();
+                    List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
+                    for (InvestmentDataBak item : list) {
+                        // 分析
+                        if (validate(item)) {
+                            DgapData dgapData = fillDgapData(item);
+                            if (dgapData != null) {
+                                item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
+                                addKingBaseData(historyList, dgapData);
+                                dgapData.setId(String.valueOf(item.getId()));
+                                saveList.add(dgapData);
+                            }
+                        }
+                        if (SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode().equals(item.getBiaoShi())) {
+                            item.setBiaoShi(SysConst.ESDataStatus.EXCEPTION.getCode());
+                        }
+                        readList.add(item);
+                    }
+
+                    if (saveList.size() > 0) {
+                        saveToFile(saveList, getType(), analysisConfig.getSourceLessPath());
+                        saveToKingBase(historyList);
+                    }
+                    if (readList.size() > 0) {
+                        investmentDataBakService.save(readList);
+                    }
+
+                    logger.info("{}分析,入库 {} 条", getName(), saveList.size());
+                    logger.info("{}分析,分析 {} 条", getName(), readList.size());
+
+                    recordNum(newIndexMap);
+
+                    logger.info("第 {} 页{}数据分析结束", pageNumber, getName());
+
+                    pageNumber++;
+                }else{
+                    pageNumber = 0;
+                    //如果没有数据需要分析，那么当前线程休眠5分钟
+                    Thread.sleep(300000);
+                }
+            } catch (Exception e) {
+                logger.error("第 {} 页的{}数据分析出错", pageNumber, getName(), e);
+            }
+        }
     }
 
     private DgapData fillDgapData(InvestmentDataBak investmentDataBak) {

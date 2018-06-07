@@ -1,6 +1,7 @@
 package com.huishu.service;
 
 import com.huishu.entity.QuitDataBak;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -39,4 +40,13 @@ public interface QuitDataBakService {
      * @return
      */
     long findExit(QuitDataBak entity);
+
+    /**
+     * 分页查询
+     *
+     * @param entity
+     * @param pageable
+     * @return
+     */
+    Page<QuitDataBak> findByPage(QuitDataBak entity, Pageable pageable);
 }

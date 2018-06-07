@@ -1,6 +1,7 @@
 package com.huishu.service;
 
 import com.huishu.entity.MergerDataBak;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -40,4 +41,13 @@ public interface MergerDataBakService {
      * @return
      */
     long findExit(MergerDataBak entity);
+
+    /**
+     * 分页查询
+     *
+     * @param entity
+     * @param pageable
+     * @return
+     */
+    Page<MergerDataBak> findByPage(MergerDataBak entity, Pageable pageable);
 }

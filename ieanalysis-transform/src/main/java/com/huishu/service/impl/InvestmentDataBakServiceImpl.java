@@ -72,5 +72,33 @@ public class InvestmentDataBakServiceImpl implements InvestmentDataBakService {
         return investmentDataBakRepository.countByInvestorAndCompanyNameAndIndustryAndRegionAndTimeAndAmount(entity.getInvestor(), entity.getCompanyName(), entity.getIndustry(), entity.getRegion(), entity.getTime(), entity.getAmount());
     }
 
+    @Override
+    public Page<InvestmentDataBak> findByPage(InvestmentDataBak entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+        Page<InvestmentDataBak> page = investmentDataBakRepository.findAll((root, query, cb) -> {
+            Path<Long> id = root.get("id");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
+                }
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(id, true));
+            }
+            return null;
+        }, pageable);
 
+        return page;
+    }
 }

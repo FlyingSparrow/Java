@@ -66,4 +66,35 @@ public class NewsLibBakServiceImpl implements NewsLibBakService {
     public long findExist(NewsLibBak entity) {
         return newsLibBakRepository.countByFldUrlAddrAndFldtitle(entity.getFldUrlAddr(), entity.getFldtitle());
     }
+
+
+    @Override
+    public Page<NewsLibBak> findByPage(NewsLibBak entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+        Page<NewsLibBak> page = newsLibBakRepository.findAll((root, query, cb) -> {
+            Path<Long> id = root.get("id");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
+                }
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(id, true));
+            }
+            return null;
+        }, pageable);
+
+        return page;
+    }
 }

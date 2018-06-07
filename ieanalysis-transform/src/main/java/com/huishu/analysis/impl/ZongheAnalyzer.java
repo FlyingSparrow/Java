@@ -11,6 +11,7 @@ import com.huishu.service.SiteLibService;
 import com.huishu.service.ZongheBakService;
 import com.huishu.vo.DgapData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 分析综合数据
@@ -39,26 +39,17 @@ public class ZongheAnalyzer extends DefaultAnalyzer {
 
     @Override
     public String getName() {
-        return SysConst.ZONGHE;
+        return "综合";
     }
 
     @Override
-    public void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        if (analysisConfig.isZongheMark()) {
-            for (int i = 0; i < analysisConfig.getZongheThreadNum(); i++) {
-                final int pageNumber = i;
-                executor.execute(() -> {
-                    Thread currentThread = Thread.currentThread();
-                    logger.info("{}:{}综合数据分析开始", currentThread.getName(), currentThread.getId());
-                    try {
-                        analysisData(analysisConfig, indexMap, pageNumber);
-                    } catch (Exception e) {
-                        logger.error("综合数据分析异常", e);
-                    }
-                    logger.info("{}:{}综合数据分析结束", currentThread.getName(), currentThread.getId());
-                });
-            }
-        }
+    public boolean getMark() {
+        return analysisConfig.isZongheMark();
+    }
+
+    @Override
+    public String getType() {
+        return SysConst.ZONGHE;
     }
 
     /**
@@ -67,25 +58,26 @@ public class ZongheAnalyzer extends DefaultAnalyzer {
      * @param indexMap
      * @param pageNumber
      */
-    private void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
+    @Override
+    protected void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
         STATIC_LIST.clear();
+        Map<String, String> newIndexMap = new HashMap<>(indexMap);
 
         ZongheBak entity = new ZongheBak();
-        entity.setId(Long.valueOf(indexMap.get(SysConst.ZONGHE)));
+        entity.setId(Long.valueOf(newIndexMap.get(getType())));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
         List<ZongheBak> list = zongheBakService.findOneHundred(entity, pageable);
 
-        logger.info("综合分析,读取 {} 条", list.size());
+        logger.info("{}分析,读取 {} 条", getName(), list.size());
 
         if (list.size() <= 0) {
             return;
         }
 
         String newId = list.get(list.size() - 1).getId() + "";
-        String oldId = indexMap.get(SysConst.ZONGHE);
-        Map<String, String> newIndexMap = new HashMap<>(indexMap);
+        String oldId = newIndexMap.get(getType());
         if (Long.parseLong(newId) > Long.parseLong(oldId)) {
-            newIndexMap.put(SysConst.NEWS, newId);
+            newIndexMap.put(getType(), newId);
         }
 
         List<DgapData> saveList = new ArrayList<DgapData>();
@@ -115,17 +107,103 @@ public class ZongheAnalyzer extends DefaultAnalyzer {
             }
         }
         if (saveList.size() > 0) {
-            saveToFile(saveList, SysConst.ZONGHE, analysisConfig.getSourceMorePath());
+            saveToFile(saveList, getType(), analysisConfig.getSourceMorePath());
             saveToKingBase(historyList);
         }
         if (readList.size() > 0) {
             zongheBakService.save(readList);
         }
 
-        logger.info("综合分析,入库 {} 条", saveList.size());
-        logger.info("综合分析,分析 {} 条", readList.size());
+        logger.info("{}分析,入库 {} 条", getName(), saveList.size());
+        logger.info("{}分析,分析 {} 条", getName(), readList.size());
 
         recordNum(newIndexMap);
+    }
+
+    /**
+     * 分析数据
+     * @param analysisConfig
+     * @param indexMap
+     */
+    @Override
+    protected void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap) {
+        STATIC_LIST.clear();
+        Map<String, String> newIndexMap = new HashMap<>(indexMap);
+
+        int pageNumber = 0;
+        int totalPages = 10;
+        ZongheBak entity = new ZongheBak();
+        while (pageNumber <= totalPages){
+            try {
+                entity.setId(Long.valueOf(newIndexMap.get(getType())));
+                Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
+                Page<ZongheBak> page = zongheBakService.findByPage(entity, pageable);
+                totalPages = page.getTotalPages();
+
+                List<ZongheBak> list = page.getContent();
+                if(list != null && list.size() > 0){
+                    logger.info("{}分析,读取 {} 条", getName(), list.size());
+                    logger.info("总页数：{}，每页记录数：{}，剩余 {} 条{}数据待分析", page.getTotalPages(),
+                            analysisConfig.getTransformNum(), page.getTotalElements(), getName());
+                    logger.info("第 {} 页{}数据分析开始", pageNumber, getName());
+
+                    String newId = list.get(list.size() - 1).getId() + "";
+                    String oldId = newIndexMap.get(getType());
+                    if (Long.parseLong(newId) > Long.parseLong(oldId)) {
+                        newIndexMap.put(getType(), newId);
+                    }
+
+                    List<DgapData> saveList = new ArrayList<DgapData>();
+                    List<KingBaseDgap> historyList = new ArrayList<KingBaseDgap>();
+                    List<ZongheBak> readList = new ArrayList<ZongheBak>();
+                    for (ZongheBak item : list) {
+                        if (isNotExists(STATIC_LIST, item.getFldUrlAddr())) {
+                            // 分析
+                            SiteLib site = siteLibService.findByName(item.getWebname());
+                            SiteLib newSite = fillAreaInfoForSiteLib(item.getFldtitle(), item.getFldcontent(), site);
+                            if (newSite != null) {
+                                ValidationVO validationVO = ValidationVO.create(item, newSite);
+                                if (validate(validationVO)) {
+                                    NewsVO newsVO = NewsVO.create(item, newSite);
+                                    DgapData dgapData = fillDgapData(newsVO);
+                                    item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
+                                    addKingBaseData(historyList, dgapData);
+                                    dgapData.setId(String.valueOf(item.getId()));
+                                    saveList.add(dgapData);
+                                    STATIC_LIST.add(dgapData);
+                                }
+                            }
+                            if (SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode().equals(item.getBiaoShi())) {
+                                item.setBiaoShi(SysConst.ESDataStatus.EXCEPTION.getCode());
+                            }
+                            readList.add(item);
+                        }
+                    }
+                    if (saveList.size() > 0) {
+                        saveToFile(saveList, getType(), analysisConfig.getSourceMorePath());
+                        saveToKingBase(historyList);
+                    }
+                    if (readList.size() > 0) {
+                        zongheBakService.save(readList);
+                    }
+
+                    logger.info("{}分析,入库 {} 条", getName(), saveList.size());
+                    logger.info("{}分析,分析 {} 条", getName(), readList.size());
+
+                    recordNum(newIndexMap);
+
+                    logger.info("第 {} 页{}数据分析结束", pageNumber, getName());
+
+                    pageNumber++;
+                }else {
+                    pageNumber = 0;
+                    //如果没有数据需要分析，那么当前线程休眠5分钟
+                    Thread.sleep(300000);
+                }
+            } catch (Exception e) {
+                logger.error("第 {} 页的{}数据分析出错", pageNumber, getName(), e);
+            }
+        }
     }
 
     @Override

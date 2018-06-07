@@ -17,11 +17,26 @@ public interface Analyzer {
     String getName();
 
     /**
+     * 获取标记，用于判断是否进行数据分析
+     *
+     * @return
+     */
+    boolean getMark();
+
+    /**
+     * 获取分析器类型
+     * @return
+     */
+    String getType();
+
+    /**
      * 分析数据
      * @param analysisConfig 分析配置
      * @param executor 线程池执行器
      * @param indexMap 分析配置map
      */
     void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap);
+
+    void analysisV2(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap);
 
 }

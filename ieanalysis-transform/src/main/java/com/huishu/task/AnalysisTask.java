@@ -8,7 +8,6 @@ import com.huishu.init.SysInit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -26,7 +25,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author xiaobo
  * @date 2017年4月10日
  */
-@Component
+//@Component
 public class AnalysisTask {
 
 	private static ThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(SysConst.DEFAULT_CORE_POOL_SIZE,
@@ -92,7 +91,7 @@ public class AnalysisTask {
 		forumAnalyzer.analysis(analysisConfig, executor, indexMap);
 		// 视频数据分析
 		videoAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 微信 分析
+		// 微信分析
 		wechatAnalyzer.analysis(analysisConfig, executor, indexMap);
 		// 招聘数据分析
 		recruitmentAnalyzer.analysis(analysisConfig, executor, indexMap);

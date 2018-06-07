@@ -69,7 +69,7 @@ public class TransformTask {
      */
     @Scheduled(fixedDelay = 1000 * 15)
     public void warn() {
-        newsTransformer.transform(executor);
+        /*newsTransformer.transform(executor);
         policyTransformer.transform(executor);
         zongheTransformer.transform(executor);
         forumTransformer.transform(executor);
@@ -77,7 +77,7 @@ public class TransformTask {
         recruitmentTransformer.transform(executor);
         investmentTransformer.transform(executor);
         mergerTransformer.transform(executor);
-        quitTransformer.transform(executor);
+        quitTransformer.transform(executor);*/
     }
 
 }
