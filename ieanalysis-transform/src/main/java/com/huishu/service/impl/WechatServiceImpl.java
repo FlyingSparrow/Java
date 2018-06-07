@@ -28,20 +28,20 @@ public class WechatServiceImpl implements WechatService {
 
     @Override
     @TargetDataSource(name = "sapro")
-    public List<Wechat> findOneHundred(Wechat wechat, Pageable pageable) {
+    public List<Wechat> findOneHundred(Wechat entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<Wechat> page = wechatRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> isRead = root.get("isRead");
-            if (wechat != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (wechat.getId() != null) {
-                    queryList.add(cb.greaterThan(id, wechat.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (StringUtils.isNotEmpty(wechat.getIsRead())) {
-                    queryList.add(cb.equal(isRead, wechat.getIsRead()));
+                if (StringUtils.isNotEmpty(entity.getIsRead())) {
+                    queryList.add(cb.equal(isRead, entity.getIsRead()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -62,8 +62,8 @@ public class WechatServiceImpl implements WechatService {
 
     @Override
     @TargetDataSource(name = "sapro")
-    public void save(List<Wechat> news) {
-        wechatRepository.save(news);
+    public void save(List<Wechat> list) {
+        wechatRepository.save(list);
     }
 
 

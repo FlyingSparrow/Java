@@ -12,16 +12,16 @@ public interface WechatService {
     /**
      * 分页查询
      *
-     * @param news
+     * @param entity
      * @param pageable
      * @return
      */
-    List<Wechat> findOneHundred(Wechat news, Pageable pageable);
+    List<Wechat> findOneHundred(Wechat entity, Pageable pageable);
 
     /**
      * 批量保存
      *
-     * @param news
+     * @param list
      */
-    void save(List<Wechat> news);
+    void save(List<Wechat> list);
 }

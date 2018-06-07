@@ -24,17 +24,17 @@ public class SiteLibServiceImpl implements SiteLibService {
     @PersistenceContext
     private EntityManager em;
 
-    public SiteLib search(SiteLib site) {
+    public SiteLib search(SiteLib entity) {
         String dataSql = "select * from site_lib t where 1 = 1";
-        if (null != site) {
-            if (StringUtils.isNotEmpty(site.getName())) {
+        if (null != entity) {
+            if (StringUtils.isNotEmpty(entity.getName())) {
                 dataSql += " and t.name = ?1";
             }
         }
         Query dataQuery = em.createQuery(dataSql);
-        if (null != site) {
-            if (StringUtils.isNotEmpty(site.getName())) {
-                dataQuery.setParameter(1, site.getName());
+        if (null != entity) {
+            if (StringUtils.isNotEmpty(entity.getName())) {
+                dataQuery.setParameter(1, entity.getName());
             }
         }
         List<SiteLib> data = dataQuery.getResultList();

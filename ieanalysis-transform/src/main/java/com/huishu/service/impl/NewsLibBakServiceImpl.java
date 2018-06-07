@@ -25,20 +25,20 @@ public class NewsLibBakServiceImpl implements NewsLibBakService {
     private NewsLibBakRepository newsLibBakRepository;
 
     @Override
-    public List<NewsLibBak> findOneHundred(NewsLibBak news, Pageable pageable) {
+    public List<NewsLibBak> findOneHundred(NewsLibBak entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<NewsLibBak> page = newsLibBakRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> biaoShi = root.get("biaoShi");
-            if (news != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (news.getId() != null) {
-                    queryList.add(cb.greaterThan(id, news.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (news.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -58,12 +58,12 @@ public class NewsLibBakServiceImpl implements NewsLibBakService {
     }
 
     @Override
-    public void save(List<NewsLibBak> news) {
-        newsLibBakRepository.save(news);
+    public void save(List<NewsLibBak> list) {
+        newsLibBakRepository.save(list);
     }
 
     @Override
-    public long findExist(NewsLibBak bak) {
-        return newsLibBakRepository.countByFldUrlAddrAndFldtitle(bak.getFldUrlAddr(), bak.getFldtitle());
+    public long findExist(NewsLibBak entity) {
+        return newsLibBakRepository.countByFldUrlAddrAndFldtitle(entity.getFldUrlAddr(), entity.getFldtitle());
     }
 }

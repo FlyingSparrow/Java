@@ -25,20 +25,20 @@ public class VideoBakServiceImpl implements VideoBakService {
     private VideoBakRepository videoBakRepository;
 
     @Override
-    public List<VideoBak> findOneHundred(VideoBak data, Pageable pageable) {
+    public List<VideoBak> findOneHundred(VideoBak entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<VideoBak> page = videoBakRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> biaoShi = root.get("biaoShi");
-            if (data != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (data.getId() != null) {
-                    queryList.add(cb.greaterThan(id, data.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (data.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, data.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -58,18 +58,18 @@ public class VideoBakServiceImpl implements VideoBakService {
     }
 
     @Override
-    public void save(List<VideoBak> news) {
-        videoBakRepository.save(news);
+    public void save(List<VideoBak> list) {
+        videoBakRepository.save(list);
     }
 
     @Override
-    public void delete(List<VideoBak> news) {
-        videoBakRepository.delete(news);
+    public void delete(List<VideoBak> list) {
+        videoBakRepository.delete(list);
     }
 
     @Override
-    public long findExist(VideoBak bak) {
-        return videoBakRepository.countByUrlAndFabushijian(bak.getUrl(), bak.getFabushijian());
+    public long findExist(VideoBak entity) {
+        return videoBakRepository.countByUrlAndFabushijian(entity.getUrl(), entity.getFabushijian());
     }
 
 

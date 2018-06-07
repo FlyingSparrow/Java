@@ -25,20 +25,20 @@ public class PolicyBakServiceImpl implements PolicyBakService {
     private PolicyBakRepository policyBakRepository;
 
     @Override
-    public List<PolicyBak> findOneHundred(PolicyBak news, Pageable pageable) {
+    public List<PolicyBak> findOneHundred(PolicyBak entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<PolicyBak> page = policyBakRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> biaoShi = root.get("biaoShi");
-            if (news != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (news.getId() != null) {
-                    queryList.add(cb.greaterThan(id, news.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (news.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -58,12 +58,12 @@ public class PolicyBakServiceImpl implements PolicyBakService {
     }
 
     @Override
-    public void save(List<PolicyBak> news) {
-        policyBakRepository.save(news);
+    public void save(List<PolicyBak> list) {
+        policyBakRepository.save(list);
     }
 
     @Override
-    public long findExist(PolicyBak bak) {
-        return policyBakRepository.countByFldUrlAddrAndFldtitle(bak.getFldUrlAddr(), bak.getFldtitle());
+    public long findExist(PolicyBak entity) {
+        return policyBakRepository.countByFldUrlAddrAndFldtitle(entity.getFldUrlAddr(), entity.getFldtitle());
     }
 }

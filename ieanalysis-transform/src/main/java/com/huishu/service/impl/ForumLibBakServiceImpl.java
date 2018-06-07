@@ -26,20 +26,20 @@ public class ForumLibBakServiceImpl implements ForumLibBakService {
     private ForumLibBakRepository forumLibBakRepository;
 
     @Override
-    public List<ForumLibBak> findOneHundred(ForumLibBak forum, Pageable pageable) {
+    public List<ForumLibBak> findOneHundred(ForumLibBak entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<ForumLibBak> page = forumLibBakRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> biaoshi = root.get("biaoShi");
-            if (forum != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (forum.getId() != null) {
-                    queryList.add(cb.greaterThan(id, forum.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (StringUtils.isNotEmpty(forum.getBiaoShi())) {
-                    queryList.add(cb.equal(biaoshi, forum.getBiaoShi()));
+                if (StringUtils.isNotEmpty(entity.getBiaoShi())) {
+                    queryList.add(cb.equal(biaoshi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -59,18 +59,18 @@ public class ForumLibBakServiceImpl implements ForumLibBakService {
     }
 
     @Override
-    public void save(List<ForumLibBak> news) {
-        forumLibBakRepository.save(news);
+    public void save(List<ForumLibBak> list) {
+        forumLibBakRepository.save(list);
     }
 
     @Override
-    public void delete(List<ForumLibBak> news) {
-        forumLibBakRepository.delete(news);
+    public void delete(List<ForumLibBak> list) {
+        forumLibBakRepository.delete(list);
     }
 
     @Override
-    public long findExist(ForumLibBak bak) {
-        return forumLibBakRepository.countByFldUrlAddrAndFldtitle(bak.getFldUrlAddr(), bak.getFldtitle());
+    public long findExist(ForumLibBak entity) {
+        return forumLibBakRepository.countByFldUrlAddrAndFldtitle(entity.getFldUrlAddr(), entity.getFldtitle());
     }
 
 

@@ -64,7 +64,7 @@ public class ForumLibServiceImpl implements ForumLibService {
 
     @Override
     @TargetDataSource(name = "news")
-    public Page<ForumLib> findPageList(ForumLib entity, Pageable pageable) {
+    public Page<ForumLib> findByPage(ForumLib entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
@@ -96,14 +96,14 @@ public class ForumLibServiceImpl implements ForumLibService {
 
     @Override
     @TargetDataSource(name = "news")
-    public void save(List<ForumLib> news) {
-        forumLibRepository.save(news);
+    public void save(List<ForumLib> list) {
+        forumLibRepository.save(list);
     }
 
     @Override
     @TargetDataSource(name = "news")
-    public void delete(List<ForumLib> news) {
-        forumLibRepository.delete(news);
+    public void delete(List<ForumLib> list) {
+        forumLibRepository.delete(list);
     }
 
 

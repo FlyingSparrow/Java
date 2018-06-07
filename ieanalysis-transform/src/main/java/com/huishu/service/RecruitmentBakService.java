@@ -12,31 +12,31 @@ public interface RecruitmentBakService {
     /**
      * 分页查询
      *
-     * @param news
+     * @param entity
      * @param pageable
      * @return
      */
-    List<RecruitmentBak> findOneHundred(RecruitmentBak news, Pageable pageable);
+    List<RecruitmentBak> findOneHundred(RecruitmentBak entity, Pageable pageable);
 
     /**
      * 批量保存
      *
-     * @param news
+     * @param list
      */
-    void save(List<RecruitmentBak> news);
+    void save(List<RecruitmentBak> list);
 
     /**
      * 批量删除
      *
-     * @param news
+     * @param list
      */
-    void delete(List<RecruitmentBak> news);
+    void delete(List<RecruitmentBak> list);
 
     /**
      * 查询已经存在的数据的记录数
      *
-     * @param bak
+     * @param entity
      * @return
      */
-    long findExist(RecruitmentBak bak);
+    long findExist(RecruitmentBak entity);
 }

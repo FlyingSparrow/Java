@@ -12,28 +12,28 @@ public interface ForumLibBakService {
 
     /**
      * 分页查询
-     * @param news
+     * @param entity
      * @param pageable
      * @return
      */
-    List<ForumLibBak> findOneHundred(ForumLibBak news, Pageable pageable);
+    List<ForumLibBak> findOneHundred(ForumLibBak entity, Pageable pageable);
 
     /**
      * 批量保存
-     * @param news
+     * @param list
      */
-    void save(List<ForumLibBak> news);
+    void save(List<ForumLibBak> list);
 
     /**
      * 批量删除
-     * @param news
+     * @param list
      */
-    void delete(List<ForumLibBak> news);
+    void delete(List<ForumLibBak> list);
 
     /**
      * 查询已经存在的数据的记录数
-     * @param bak
+     * @param entity
      * @return
      */
-    long findExist(ForumLibBak bak);
+    long findExist(ForumLibBak entity);
 }

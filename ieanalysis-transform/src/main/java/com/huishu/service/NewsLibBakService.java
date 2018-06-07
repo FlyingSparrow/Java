@@ -12,22 +12,22 @@ public interface NewsLibBakService {
 
     /**
      * 分页查询
-     * @param news
+     * @param entity
      * @param pageable
      * @return
      */
-    List<NewsLibBak> findOneHundred(NewsLibBak news, Pageable pageable);
+    List<NewsLibBak> findOneHundred(NewsLibBak entity, Pageable pageable);
 
     /**
      * 批量保存
-     * @param news
+     * @param list
      */
-    void save(List<NewsLibBak> news);
+    void save(List<NewsLibBak> list);
 
     /**
      * 查询已经存在的数据的记录数
-     * @param bak
+     * @param entity
      * @return
      */
-    long findExist(NewsLibBak bak);
+    long findExist(NewsLibBak entity);
 }

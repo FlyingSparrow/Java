@@ -28,20 +28,20 @@ public class InvestmentDataSmtServiceImpl implements InvestmentDataSmtService {
 
     @Override
     @TargetDataSource(name = "chuangtou")
-    public List<InvestmentDataSmt> findOneHundred(InvestmentDataSmt data, Pageable pageable) {
+    public List<InvestmentDataSmt> findOneHundred(InvestmentDataSmt entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<InvestmentDataSmt> page = investmentDataSmtRepository.findAll((root, query, cb) -> {
             Path<String> fldRecdId = root.get("fldRecdId");
             Path<String> biaoShi = root.get("biaoShi");
-            if (data != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (StringUtils.isNotEmpty(data.getFldRecdId())) {
-                    queryList.add(cb.greaterThan(fldRecdId, data.getFldRecdId()));
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
                 }
-                if (data.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, data.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -62,15 +62,44 @@ public class InvestmentDataSmtServiceImpl implements InvestmentDataSmtService {
 
     @Override
     @TargetDataSource(name = "chuangtou")
-    public void save(List<InvestmentDataSmt> news) {
-        investmentDataSmtRepository.save(news);
+    public void save(List<InvestmentDataSmt> list) {
+        investmentDataSmtRepository.save(list);
     }
 
     @Override
     @TargetDataSource(name = "chuangtou")
-    public void delete(List<InvestmentDataSmt> news) {
-        investmentDataSmtRepository.delete(news);
+    public void delete(List<InvestmentDataSmt> list) {
+        investmentDataSmtRepository.delete(list);
     }
 
+    @Override
+    @TargetDataSource(name = "chuangtou")
+    public Page<InvestmentDataSmt> findByPage(InvestmentDataSmt entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+        Page<InvestmentDataSmt> page = investmentDataSmtRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
+                }
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+            }
+            return null;
+        }, pageable);
 
+        return page;
+    }
 }

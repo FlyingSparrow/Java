@@ -28,20 +28,20 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     @Override
     @TargetDataSource(name = "news")
-    public List<Recruitment> findOneHundred(Recruitment recruitment, Pageable pageable) {
+    public List<Recruitment> findOneHundred(Recruitment entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<Recruitment> page = recruitmentRepository.findAll((root, query, cb) -> {
             Path<String> fldRecdId = root.get("fldRecdId");
             Path<String> biaoShi = root.get("biaoShi");
-            if (recruitment != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (StringUtils.isNotEmpty(recruitment.getFldRecdId())) {
-                    queryList.add(cb.greaterThan(fldRecdId, recruitment.getFldRecdId()));
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
                 }
-                if (recruitment.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, recruitment.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -62,15 +62,44 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     @Override
     @TargetDataSource(name = "news")
-    public void save(List<Recruitment> news) {
-        recruitmentRepository.save(news);
+    public void save(List<Recruitment> list) {
+        recruitmentRepository.save(list);
     }
 
     @Override
     @TargetDataSource(name = "news")
-    public void delete(List<Recruitment> news) {
-        recruitmentRepository.delete(news);
+    public void delete(List<Recruitment> list) {
+        recruitmentRepository.delete(list);
     }
 
+    @Override
+    @TargetDataSource(name = "news")
+    public Page<Recruitment> findByPage(Recruitment entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+        Page<Recruitment> page = recruitmentRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
+                }
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+            }
+            return null;
+        }, pageable);
 
+        return page;
+    }
 }

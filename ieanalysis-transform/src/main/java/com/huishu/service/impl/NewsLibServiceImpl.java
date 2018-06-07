@@ -28,20 +28,20 @@ public class NewsLibServiceImpl implements NewsLibService {
 
     @Override
     @TargetDataSource(name = "news")
-    public List<NewsLib> findOneHundred(NewsLib news, Pageable pageable) {
+    public List<NewsLib> findOneHundred(NewsLib entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<NewsLib> page = newsLibRepository.findAll((root, query, cb) -> {
             Path<String> fldRecdId = root.get("fldRecdId");
             Path<String> biaoShi = root.get("biaoShi");
-            if (news != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (StringUtils.isNotEmpty(news.getFldRecdId())) {
-                    queryList.add(cb.greaterThan(fldRecdId, news.getFldRecdId()));
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
                 }
-                if (news.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -62,26 +62,26 @@ public class NewsLibServiceImpl implements NewsLibService {
 
     @Override
     @TargetDataSource(name = "news")
-    public void save(List<NewsLib> news) {
-        newsLibRepository.save(news);
+    public void save(List<NewsLib> list) {
+        newsLibRepository.save(list);
     }
 
     @Override
     @TargetDataSource(name = "zonghe")
-    public List<NewsLib> findOneHundredZonghe(NewsLib news, Pageable pageable) {
+    public List<NewsLib> findOneHundredZonghe(NewsLib entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<NewsLib> page = newsLibRepository.findAll((root, query, cb) -> {
             Path<String> fldRecdId = root.get("fldRecdId");
             Path<String> biaoShi = root.get("biaoShi");
-            if (news != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (StringUtils.isNotEmpty(news.getFldRecdId())) {
-                    queryList.add(cb.greaterThan(fldRecdId, news.getFldRecdId()));
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
                 }
-                if (news.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -102,27 +102,58 @@ public class NewsLibServiceImpl implements NewsLibService {
 
     @Override
     @TargetDataSource(name = "zonghe")
-    public void saveZonghe(List<NewsLib> news) {
-        newsLibRepository.save(news);
-    }
-
-
-    @Override
-    @TargetDataSource(name = "policy")
-    public List<NewsLib> findOneHundredPolicy(NewsLib news, Pageable pageable) {
+    public Page<NewsLib> findZongheListByPage(NewsLib entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<NewsLib> page = newsLibRepository.findAll((root, query, cb) -> {
             Path<String> fldRecdId = root.get("fldRecdId");
             Path<String> biaoShi = root.get("biaoShi");
-            if (news != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (StringUtils.isNotEmpty(news.getFldRecdId())) {
-                    queryList.add(cb.greaterThan(fldRecdId, news.getFldRecdId()));
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
                 }
-                if (news.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+            }
+            return null;
+        }, pageable);
+
+        return page;
+    }
+
+    @Override
+    @TargetDataSource(name = "zonghe")
+    public void saveZonghe(List<NewsLib> list) {
+        newsLibRepository.save(list);
+    }
+
+
+    @Override
+    @TargetDataSource(name = "policy")
+    public List<NewsLib> findOneHundredPolicy(NewsLib entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+        Page<NewsLib> page = newsLibRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
+                }
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -143,26 +174,57 @@ public class NewsLibServiceImpl implements NewsLibService {
 
     @Override
     @TargetDataSource(name = "policy")
-    public void savePolicy(List<NewsLib> news) {
-        newsLibRepository.save(news);
+    public Page<NewsLib> findPolicyListByPage(NewsLib entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+        Page<NewsLib> page = newsLibRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
+                }
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+            }
+            return null;
+        }, pageable);
+
+        return page;
+    }
+
+    @Override
+    @TargetDataSource(name = "policy")
+    public void savePolicy(List<NewsLib> list) {
+        newsLibRepository.save(list);
     }
 
     @Override
     @TargetDataSource(name = "news")
-    public void delete(List<NewsLib> news) {
-        newsLibRepository.delete(news);
+    public void delete(List<NewsLib> list) {
+        newsLibRepository.delete(list);
     }
 
     @Override
     @TargetDataSource(name = "zonghe")
-    public void deleteZonghe(List<NewsLib> news) {
-        newsLibRepository.delete(news);
+    public void deleteZonghe(List<NewsLib> list) {
+        newsLibRepository.delete(list);
     }
 
     @Override
     @TargetDataSource(name = "policy")
-    public void deletePolicy(List<NewsLib> news) {
-        newsLibRepository.delete(news);
+    public void deletePolicy(List<NewsLib> list) {
+        newsLibRepository.delete(list);
     }
 
     @Override
@@ -183,4 +245,34 @@ public class NewsLibServiceImpl implements NewsLibService {
         newsLibRepository.delete(id);
     }
 
+    @Override
+    @TargetDataSource(name = "news")
+    public Page<NewsLib> findByPage(NewsLib entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+        Page<NewsLib> page = newsLibRepository.findAll((root, query, cb) -> {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
+                }
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+            }
+            return null;
+        }, pageable);
+
+        return page;
+    }
 }

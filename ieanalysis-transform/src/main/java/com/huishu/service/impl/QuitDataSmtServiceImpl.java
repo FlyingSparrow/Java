@@ -28,20 +28,20 @@ public class QuitDataSmtServiceImpl implements QuitDataSmtService {
 
     @Override
     @TargetDataSource(name = "chuangtou")
-    public List<QuitDataSmt> findOneHundred(QuitDataSmt data, Pageable pageable) {
+    public List<QuitDataSmt> findOneHundred(QuitDataSmt entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<QuitDataSmt> page = quitDataSmtRepository.findAll((root, query, cb) ->  {
             Path<String> fldRecdId = root.get("fldRecdId");
             Path<String> biaoShi = root.get("biaoShi");
-            if (data != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (StringUtils.isNotEmpty(data.getFldRecdId())) {
-                    queryList.add(cb.greaterThan(fldRecdId, data.getFldRecdId()));
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
                 }
-                if (data.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, data.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -62,15 +62,44 @@ public class QuitDataSmtServiceImpl implements QuitDataSmtService {
 
     @Override
     @TargetDataSource(name = "chuangtou")
-    public void save(List<QuitDataSmt> news) {
-        quitDataSmtRepository.save(news);
+    public void save(List<QuitDataSmt> list) {
+        quitDataSmtRepository.save(list);
     }
 
     @Override
     @TargetDataSource(name = "chuangtou")
-    public void delete(List<QuitDataSmt> news) {
-        quitDataSmtRepository.delete(news);
+    public void delete(List<QuitDataSmt> list) {
+        quitDataSmtRepository.delete(list);
     }
 
+    @Override
+    @TargetDataSource(name = "chuangtou")
+    public Page<QuitDataSmt> findByPage(QuitDataSmt entity, Pageable pageable) {
+        if (pageable == null) {
+            pageable = new PageRequest(0, 100);
+        }
+        Page<QuitDataSmt> page = quitDataSmtRepository.findAll((root, query, cb) ->  {
+            Path<String> fldRecdId = root.get("fldRecdId");
+            Path<String> biaoShi = root.get("biaoShi");
+            if (entity != null) {
+                List<Predicate> queryList = new ArrayList<Predicate>();
+                if (StringUtils.isNotEmpty(entity.getFldRecdId())) {
+                    queryList.add(cb.greaterThan(fldRecdId, entity.getFldRecdId()));
+                }
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
+                }
+                Predicate[] querys = new Predicate[queryList.size()];
+                if (queryList != null && queryList.size() > 0) {
+                    for (int i = 0, len = queryList.size(); i < len; i++) {
+                        querys[i] = queryList.get(i);
+                    }
+                }
+                query.where(querys).orderBy(new OrderImpl(fldRecdId, true));
+            }
+            return null;
+        }, pageable);
 
+        return page;
+    }
 }

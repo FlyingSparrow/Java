@@ -25,20 +25,20 @@ public class RecruitmentBakServiceImpl implements RecruitmentBakService {
     private RecruitmentBakRepository recruitmentBakRepository;
 
     @Override
-    public List<RecruitmentBak> findOneHundred(RecruitmentBak data, Pageable pageable) {
+    public List<RecruitmentBak> findOneHundred(RecruitmentBak entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<RecruitmentBak> page = recruitmentBakRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> biaoShi = root.get("biaoShi");
-            if (data != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (data.getId() != null) {
-                    queryList.add(cb.greaterThan(id, data.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (data.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, data.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -58,18 +58,18 @@ public class RecruitmentBakServiceImpl implements RecruitmentBakService {
     }
 
     @Override
-    public void save(List<RecruitmentBak> news) {
-        recruitmentBakRepository.save(news);
+    public void save(List<RecruitmentBak> list) {
+        recruitmentBakRepository.save(list);
     }
 
     @Override
-    public void delete(List<RecruitmentBak> news) {
-        recruitmentBakRepository.delete(news);
+    public void delete(List<RecruitmentBak> list) {
+        recruitmentBakRepository.delete(list);
     }
 
     @Override
-    public long findExist(RecruitmentBak bak) {
-        return recruitmentBakRepository.countByFldUrlAddrAndFldtitle(bak.getFldUrlAddr(), bak.getFldtitle());
+    public long findExist(RecruitmentBak entity) {
+        return recruitmentBakRepository.countByFldUrlAddrAndFldtitle(entity.getFldUrlAddr(), entity.getFldtitle());
     }
 
 }

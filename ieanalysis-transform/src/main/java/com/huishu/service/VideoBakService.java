@@ -12,31 +12,31 @@ public interface VideoBakService {
     /**
      * 分页查询
      *
-     * @param news
+     * @param entity
      * @param pageable
      * @return
      */
-    List<VideoBak> findOneHundred(VideoBak news, Pageable pageable);
+    List<VideoBak> findOneHundred(VideoBak entity, Pageable pageable);
 
     /**
      * 批量保存
      *
-     * @param news
+     * @param list
      */
-    void save(List<VideoBak> news);
+    void save(List<VideoBak> list);
 
     /**
      * 批量删除
      *
-     * @param news
+     * @param list
      */
-    void delete(List<VideoBak> news);
+    void delete(List<VideoBak> list);
 
     /**
      * 查询已经存在的数据的记录数
      *
-     * @param bak
+     * @param entity
      * @return
      */
-    long findExist(VideoBak bak);
+    long findExist(VideoBak entity);
 }

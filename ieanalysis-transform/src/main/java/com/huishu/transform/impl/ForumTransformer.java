@@ -60,52 +60,47 @@ public class ForumTransformer extends AbstractTransformer {
     }
 
     @Override
-    protected void transformDataV2(){
-        try {
-            int pageNumber = 1;
-            int totalPages = 10;
-            ForumLib entity = new ForumLib();
-            while (pageNumber <= totalPages){
-                Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-                Page<ForumLib> page = forumLibService.findPageList(entity, pageable);
-                totalPages = page.getTotalPages();
+    protected void transformData() throws InterruptedException {
+        int pageNumber = 1;
+        int totalPages = 10;
+        ForumLib entity = new ForumLib();
+        while (pageNumber <= totalPages){
+            Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
+            Page<ForumLib> page = forumLibService.findByPage(entity, pageable);
+            totalPages = page.getTotalPages();
 
-                List<ForumLib> list = page.getContent();
-                if(list != null && list.size() > 0){
-                    logger.info("总页数：{}，每页记录数：{}，剩余 {} 条{}数据待转换", page.getTotalPages(),
-                            transformConfig.getTransformNum(), page.getTotalElements(), getName());
+            List<ForumLib> list = page.getContent();
+            if(list != null && list.size() > 0){
+                logger.info("总页数：{}，每页记录数：{}，剩余 {} 条{}数据待转换", page.getTotalPages(),
+                        transformConfig.getTransformNum(), page.getTotalElements(), getName());
 
-                    logger.info("第 {} 页{}数据转换开始", pageNumber, getName());
+                logger.info("第 {} 页{}数据转换开始", pageNumber, getName());
 
-                    list.stream().forEach(item -> {
-                        List<ForumLibBak> bakList = new ArrayList<ForumLibBak>();
-                        for (ForumLib forumItem : list) {
-                            ForumLibBak bak = new ForumLibBak();
-                            BeanUtils.copyProperties(forumItem, bak);
-                            bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
-                            bak.setBiaoShi("0");
-                            long count = forumLibBakService.findExist(bak);
-                            if (count == 0) {
-                                bakList.add(bak);
-                            }
-                        }
 
-                        if (bakList.size() > 0) {
-                            forumLibBakService.save(bakList);
-                        }
-                        forumLibService.delete(list);
-                    });
-
-                    logger.info("第 {} 页{}数据转换结束", pageNumber, getName());
-
-                }else{
-                    //如果没有数据需要分析，那么当前线程休眠5分钟
-                    Thread.sleep(300000);
+                List<ForumLibBak> bakList = new ArrayList<ForumLibBak>();
+                for (ForumLib forumItem : list) {
+                    ForumLibBak bak = new ForumLibBak();
+                    BeanUtils.copyProperties(forumItem, bak);
+                    bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
+                    bak.setBiaoShi("0");
+                    long count = forumLibBakService.findExist(bak);
+                    if (count == 0) {
+                        bakList.add(bak);
+                    }
                 }
-                pageNumber++;
+
+                if (bakList.size() > 0) {
+                    forumLibBakService.save(bakList);
+                }
+                forumLibService.delete(list);
+
+                logger.info("第 {} 页{}数据转换结束", pageNumber, getName());
+
+            }else{
+                //如果没有数据需要分析，那么当前线程休眠5分钟
+                Thread.sleep(300000);
             }
-        } catch (InterruptedException e) {
-            logger.error("转换{}数据出错", getName(), e);
+            pageNumber++;
         }
     }
 

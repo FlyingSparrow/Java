@@ -25,20 +25,20 @@ public class MergerDataBakServiceImpl implements MergerDataBakService {
     private MergerDataBakRepository megerDataBakRepository;
 
     @Override
-    public List<MergerDataBak> findOneHundred(MergerDataBak data, Pageable pageable) {
+    public List<MergerDataBak> findOneHundred(MergerDataBak entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<MergerDataBak> page = megerDataBakRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> biaoShi = root.get("biaoShi");
-            if (data != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (data.getId() != null) {
-                    queryList.add(cb.greaterThan(id, data.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (data.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, data.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -58,18 +58,18 @@ public class MergerDataBakServiceImpl implements MergerDataBakService {
     }
 
     @Override
-    public void save(List<MergerDataBak> news) {
-        megerDataBakRepository.save(news);
+    public void save(List<MergerDataBak> list) {
+        megerDataBakRepository.save(list);
     }
 
     @Override
-    public void delete(List<MergerDataBak> news) {
-        megerDataBakRepository.delete(news);
+    public void delete(List<MergerDataBak> list) {
+        megerDataBakRepository.delete(list);
     }
 
     @Override
-    public long findExit(MergerDataBak bak) {
-        return megerDataBakRepository.countByAcquirerAndBeMergeredAndIndustryAndEndTimeAndMergerAmount(bak.getAcquirer(), bak.getBeMergered(), bak.getIndustry(), bak.getEndTime(), bak.getMergerAmount());
+    public long findExit(MergerDataBak entity) {
+        return megerDataBakRepository.countByAcquirerAndBeMergeredAndIndustryAndEndTimeAndMergerAmount(entity.getAcquirer(), entity.getBeMergered(), entity.getIndustry(), entity.getEndTime(), entity.getMergerAmount());
     }
 
 

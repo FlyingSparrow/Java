@@ -1,6 +1,7 @@
 package com.huishu.service;
 
 import com.huishu.entity.Video;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -12,23 +13,32 @@ public interface VideoService {
     /**
      * 分页查询
      *
-     * @param news
+     * @param entity
      * @param pageable
      * @return
      */
-    List<Video> findOneHundred(Video news, Pageable pageable);
+    List<Video> findOneHundred(Video entity, Pageable pageable);
 
     /**
      * 批量保存
      *
-     * @param news
+     * @param list
      */
-    void save(List<Video> news);
+    void save(List<Video> list);
 
     /**
      * 批量删除
      *
-     * @param news
+     * @param list
      */
-    void delete(List<Video> news);
+    void delete(List<Video> list);
+
+    /**
+     * 分页查询
+     *
+     * @param entity
+     * @param pageable
+     * @return
+     */
+    Page<Video> findByPage(Video entity, Pageable pageable);
 }

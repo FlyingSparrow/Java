@@ -1,6 +1,7 @@
 package com.huishu.service;
 
 import com.huishu.entity.QuitDataTz;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -12,23 +13,32 @@ public interface QuitDataTzService {
     /**
      * 分页查询
      *
-     * @param data
+     * @param entity
      * @param pageable
      * @return
      */
-    List<QuitDataTz> findOneHundred(QuitDataTz data, Pageable pageable);
+    List<QuitDataTz> findOneHundred(QuitDataTz entity, Pageable pageable);
 
     /**
      * 批量保存
      *
-     * @param news
+     * @param list
      */
-    void save(List<QuitDataTz> news);
+    void save(List<QuitDataTz> list);
 
     /**
      * 批量删除
      *
-     * @param news
+     * @param list
      */
-    void delete(List<QuitDataTz> news);
+    void delete(List<QuitDataTz> list);
+
+    /**
+     * 分页查询
+     *
+     * @param entity
+     * @param pageable
+     * @return
+     */
+    Page<QuitDataTz> findByPage(QuitDataTz entity, Pageable pageable);
 }

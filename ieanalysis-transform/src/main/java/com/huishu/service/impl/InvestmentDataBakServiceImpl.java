@@ -25,20 +25,20 @@ public class InvestmentDataBakServiceImpl implements InvestmentDataBakService {
     private InvestmentDataBakRepository investmentDataBakRepository;
 
     @Override
-    public List<InvestmentDataBak> findOneHundred(InvestmentDataBak data, Pageable pageable) {
+    public List<InvestmentDataBak> findOneHundred(InvestmentDataBak entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<InvestmentDataBak> page = investmentDataBakRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> biaoShi = root.get("biaoShi");
-            if (data != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (data.getId() != null) {
-                    queryList.add(cb.greaterThan(id, data.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (data.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, data.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -58,18 +58,18 @@ public class InvestmentDataBakServiceImpl implements InvestmentDataBakService {
     }
 
     @Override
-    public void save(List<InvestmentDataBak> news) {
-        investmentDataBakRepository.save(news);
+    public void save(List<InvestmentDataBak> list) {
+        investmentDataBakRepository.save(list);
     }
 
     @Override
-    public void delete(List<InvestmentDataBak> news) {
-        investmentDataBakRepository.delete(news);
+    public void delete(List<InvestmentDataBak> list) {
+        investmentDataBakRepository.delete(list);
     }
 
     @Override
-    public long findExit(InvestmentDataBak bak) {
-        return investmentDataBakRepository.countByInvestorAndCompanyNameAndIndustryAndRegionAndTimeAndAmount(bak.getInvestor(), bak.getCompanyName(), bak.getIndustry(), bak.getRegion(), bak.getTime(), bak.getAmount());
+    public long findExit(InvestmentDataBak entity) {
+        return investmentDataBakRepository.countByInvestorAndCompanyNameAndIndustryAndRegionAndTimeAndAmount(entity.getInvestor(), entity.getCompanyName(), entity.getIndustry(), entity.getRegion(), entity.getTime(), entity.getAmount());
     }
 
 

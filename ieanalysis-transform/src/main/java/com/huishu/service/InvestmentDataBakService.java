@@ -13,31 +13,31 @@ public interface InvestmentDataBakService {
     /**
      * 分页查询
      *
-     * @param data
+     * @param entity
      * @param pageable
      * @return
      */
-    List<InvestmentDataBak> findOneHundred(InvestmentDataBak data, Pageable pageable);
+    List<InvestmentDataBak> findOneHundred(InvestmentDataBak entity, Pageable pageable);
 
     /**
      * 批量保存
      *
-     * @param news
+     * @param list
      */
-    void save(List<InvestmentDataBak> news);
+    void save(List<InvestmentDataBak> list);
 
     /**
      * 批量删除
      *
-     * @param news
+     * @param list
      */
-    void delete(List<InvestmentDataBak> news);
+    void delete(List<InvestmentDataBak> list);
 
     /**
      * 查询已经存在的数据的记录数
      *
-     * @param bak
+     * @param entity
      * @return
      */
-    long findExit(InvestmentDataBak bak);
+    long findExit(InvestmentDataBak entity);
 }

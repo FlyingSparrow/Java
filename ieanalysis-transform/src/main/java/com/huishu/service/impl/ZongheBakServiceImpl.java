@@ -25,20 +25,20 @@ public class ZongheBakServiceImpl implements ZongheBakService {
     private ZongheBakRepository zongheBakRepository;
 
     @Override
-    public List<ZongheBak> findOneHundred(ZongheBak news, Pageable pageable) {
+    public List<ZongheBak> findOneHundred(ZongheBak entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<ZongheBak> page = zongheBakRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> biaoShi = root.get("biaoShi");
-            if (news != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (news.getId() != null) {
-                    queryList.add(cb.greaterThan(id, news.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (news.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, news.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -58,12 +58,12 @@ public class ZongheBakServiceImpl implements ZongheBakService {
     }
 
     @Override
-    public void save(List<ZongheBak> news) {
-        zongheBakRepository.save(news);
+    public void save(List<ZongheBak> list) {
+        zongheBakRepository.save(list);
     }
 
     @Override
-    public long findExist(ZongheBak bak) {
-        return zongheBakRepository.countByFldUrlAddrAndFldtitle(bak.getFldUrlAddr(), bak.getFldtitle());
+    public long findExist(ZongheBak entity) {
+        return zongheBakRepository.countByFldUrlAddrAndFldtitle(entity.getFldUrlAddr(), entity.getFldtitle());
     }
 }

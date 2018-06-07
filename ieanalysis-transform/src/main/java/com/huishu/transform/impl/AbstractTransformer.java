@@ -40,7 +40,11 @@ public abstract class AbstractTransformer implements Transformer {
         if (getMark()) {
             executor.execute(() -> {
                 while (true) {
-                    transformDataV2();
+                    try {
+                        transformData();
+                    } catch (Exception e) {
+                        logger.error("转换{}数据出错", getName(), e);
+                    }
                 }
             });
         }
@@ -55,7 +59,9 @@ public abstract class AbstractTransformer implements Transformer {
 
     /**
      * 转换数据
+     *
+     * @throws InterruptedException
      */
-    protected abstract void transformDataV2();
+    protected abstract void transformData() throws InterruptedException;
 
 }

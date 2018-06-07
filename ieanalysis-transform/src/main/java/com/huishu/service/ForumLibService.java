@@ -14,32 +14,32 @@ public interface ForumLibService {
     /**
      * 分页查询
      *
-     * @param news
+     * @param entity
      * @param pageable
      * @return
      */
-    List<ForumLib> findOneHundred(ForumLib news, Pageable pageable);
+    List<ForumLib> findOneHundred(ForumLib entity, Pageable pageable);
 
     /**
      * 分页查询
      *
-     * @param news
+     * @param entity
      * @param pageable
      * @return
      */
-    Page<ForumLib> findPageList(ForumLib news, Pageable pageable);
+    Page<ForumLib> findByPage(ForumLib entity, Pageable pageable);
 
     /**
      * 批量保存
      *
-     * @param news
+     * @param list
      */
-    void save(List<ForumLib> news);
+    void save(List<ForumLib> list);
 
     /**
      * 批量删除
      *
-     * @param news
+     * @param list
      */
-    void delete(List<ForumLib> news);
+    void delete(List<ForumLib> list);
 }

@@ -19,13 +19,13 @@ public class KingBaseDgapServiceImpl implements KingBaseDgapService {
     private KingBaseDgapRepository kingBaseDgapRepository;
 
     @Override
-    public void save(List<KingBaseDgap> dgap) {
-        kingBaseDgapRepository.save(dgap);
+    public void save(List<KingBaseDgap> list) {
+        kingBaseDgapRepository.save(list);
     }
 
     @Override
     @TargetDataSource(name = "king")
-    public void saveKing(List<KingBaseDgap> dgap) {
-        kingBaseDgapRepository.save(dgap);
+    public void saveKing(List<KingBaseDgap> list) {
+        kingBaseDgapRepository.save(list);
     }
 }

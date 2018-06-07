@@ -12,31 +12,31 @@ public interface QuitDataBakService {
     /**
      * 分页查询
      *
-     * @param data
+     * @param entity
      * @param pageable
      * @return
      */
-    List<QuitDataBak> findOneHundred(QuitDataBak data, Pageable pageable);
+    List<QuitDataBak> findOneHundred(QuitDataBak entity, Pageable pageable);
 
     /**
      * 批量保存
      *
-     * @param news
+     * @param list
      */
-    void save(List<QuitDataBak> news);
+    void save(List<QuitDataBak> list);
 
     /**
      * 批量删除
      *
-     * @param news
+     * @param list
      */
-    void delete(List<QuitDataBak> news);
+    void delete(List<QuitDataBak> list);
 
     /**
      * 查询已经存在的数据的记录数
      *
-     * @param bak
+     * @param entity
      * @return
      */
-    long findExit(QuitDataBak bak);
+    long findExit(QuitDataBak entity);
 }

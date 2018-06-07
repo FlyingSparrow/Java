@@ -11,13 +11,13 @@ public interface KingBaseDgapService {
 
     /**
      * 批量保存
-     * @param news
+     * @param list
      */
-    void save(List<KingBaseDgap> news);
+    void save(List<KingBaseDgap> list);
 
     /**
      * 批量保存数据到人大金仓数据库
-     * @param news
+     * @param list
      */
-    void saveKing(List<KingBaseDgap> news);
+    void saveKing(List<KingBaseDgap> list);
 }

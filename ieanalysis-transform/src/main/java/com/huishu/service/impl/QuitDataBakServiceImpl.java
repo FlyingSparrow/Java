@@ -26,20 +26,20 @@ public class QuitDataBakServiceImpl implements QuitDataBakService {
     private QuitDataBakRepository quitDataBakRepository;
 
     @Override
-    public List<QuitDataBak> findOneHundred(QuitDataBak data, Pageable pageable) {
+    public List<QuitDataBak> findOneHundred(QuitDataBak entity, Pageable pageable) {
         if (pageable == null) {
             pageable = new PageRequest(0, 100);
         }
         Page<QuitDataBak> page = quitDataBakRepository.findAll((root, query, cb) -> {
             Path<Long> id = root.get("id");
             Path<String> biaoShi = root.get("biaoShi");
-            if (data != null) {
+            if (entity != null) {
                 List<Predicate> queryList = new ArrayList<Predicate>();
-                if (data.getId() != null) {
-                    queryList.add(cb.greaterThan(id, data.getId()));
+                if (entity.getId() != null) {
+                    queryList.add(cb.greaterThan(id, entity.getId()));
                 }
-                if (data.getBiaoShi() != null) {
-                    queryList.add(cb.equal(biaoShi, data.getBiaoShi()));
+                if (entity.getBiaoShi() != null) {
+                    queryList.add(cb.equal(biaoShi, entity.getBiaoShi()));
                 }
                 Predicate[] querys = new Predicate[queryList.size()];
                 if (queryList != null && queryList.size() > 0) {
@@ -59,19 +59,19 @@ public class QuitDataBakServiceImpl implements QuitDataBakService {
     }
 
     @Override
-    public void save(List<QuitDataBak> news) {
-        quitDataBakRepository.save(news);
+    public void save(List<QuitDataBak> list) {
+        quitDataBakRepository.save(list);
     }
 
     @Override
     @TargetDataSource(name = "chuangtou")
-    public void delete(List<QuitDataBak> news) {
-        quitDataBakRepository.delete(news);
+    public void delete(List<QuitDataBak> list) {
+        quitDataBakRepository.delete(list);
     }
 
     @Override
-    public long findExit(QuitDataBak bak) {
-        return quitDataBakRepository.countByInvestorAndCompanyNameAndIndustryAndTime(bak.getInvestor(), bak.getCompanyName(), bak.getIndustry(), bak.getTime());
+    public long findExit(QuitDataBak entity) {
+        return quitDataBakRepository.countByInvestorAndCompanyNameAndIndustryAndTime(entity.getInvestor(), entity.getCompanyName(), entity.getIndustry(), entity.getTime());
     }
 
 

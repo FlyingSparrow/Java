@@ -12,28 +12,32 @@ public interface MergerDataBakService {
 
     /**
      * 分页查询
-     * @param data
+     *
+     * @param entity
      * @param pageable
      * @return
      */
-    List<MergerDataBak> findOneHundred(MergerDataBak data, Pageable pageable);
+    List<MergerDataBak> findOneHundred(MergerDataBak entity, Pageable pageable);
 
     /**
      * 批量保存
-     * @param news
+     *
+     * @param list
      */
-    void save(List<MergerDataBak> news);
+    void save(List<MergerDataBak> list);
 
     /**
      * 批量删除
-     * @param news
+     *
+     * @param list
      */
-    void delete(List<MergerDataBak> news);
+    void delete(List<MergerDataBak> list);
 
     /**
      * 查询已经存在的数据的记录数
-     * @param bak
+     *
+     * @param entity
      * @return
      */
-    long findExit(MergerDataBak bak);
+    long findExit(MergerDataBak entity);
 }
