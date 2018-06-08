@@ -40,6 +40,12 @@ public interface RecruitmentBakService {
      * @return
      */
     long findExist(RecruitmentBak entity);
-
+    /**
+     * 分页查询
+     *
+     * @param entity
+     * @param pageable
+     * @return
+     */
     Page<RecruitmentBak> findByPage(RecruitmentBak entity, Pageable pageable);
 }

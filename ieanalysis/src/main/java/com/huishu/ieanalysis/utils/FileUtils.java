@@ -28,14 +28,11 @@ public class FileUtils {
                 }
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            logger.error("readFile---FileNotFound", e);
+            logger.error("FileNotFound", e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            logger.error("readFile----UnsupportedEncodingException", e);
+            logger.error("UnsupportedEncodingException", e);
         } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("readFile---IOException", e);
+            logger.error("IOException", e);
         } finally {
             try {
                 if (br != null) {

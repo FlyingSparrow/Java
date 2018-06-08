@@ -206,7 +206,9 @@ public class PolicyAnalyzer extends DefaultAnalyzer {
                     logger.info("没有{}数据需要分析，线程休眠 5 分钟", getName());
                     Thread.sleep(300000);
                 }
-            } catch (Exception e) {
+            }catch (InterruptedException e) {
+                logger.error("第 {} 页的{}数据分析线程异常中断", pageNumber, getName(), e);
+            }catch (Exception e) {
                 logger.error("第 {} 页的{}数据分析出错", pageNumber, getName(), e);
             }
         }
