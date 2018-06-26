@@ -184,6 +184,122 @@ public class KingBaseDgap implements Serializable {
     @Column(name = "REPORT_TYPE")
     private Long reportType;
 
+
+
+    /**
+     * 工商数据 开始
+     */
+
+    /**
+     * 企业名称
+     */
+    @Column(name = "ENTERPRISE_NAME")
+    private String enterpriseName;
+    /**
+     * 公司状态
+     */
+    @Column(name = "STATUS")
+    private String status;
+    /**
+     * 企业真正名称
+     */
+    @Column(name = "REAL_NAME")
+    private String realName;
+    /**
+     * 经营范围
+     */
+    @Column(name = "BUSINESS_SCOPE")
+    private String businessScope;
+    /**
+     * 企业所有者
+     */
+    @Column(name = "OWNER")
+    private String owner;
+    /**
+     * 注册资本
+     */
+    @Column(name = "REGISTERED_CAPITAL")
+    private String registeredCapital;
+    /**
+     * 注册时间
+     */
+    @Column(name = "CREATE_DATE")
+    private String createDate;
+    /**
+     * 联系电话
+     */
+    @Column(name = "CONTACT_NUMBER")
+    private String contactNumber;
+    /**
+     * 公司类型
+     */
+    @Column(name = "COMPANY_TYPE")
+    private String companyType;
+    /**
+     * 软件著作权数量
+     */
+    @Column(name = "SOFTWARE_COPYRIGHT")
+    private Integer softwareCopyright;
+    /**
+     * 专利数量
+     */
+    @Column(name = "PATENTS")
+    private Integer patents;
+    /**
+     * 融资次数
+     */
+    @Column(name = "FINANCING_ROUND")
+    private Integer financingRound;
+    /**
+     * 融资时间，格式：yyyy-MM-dd
+     */
+    @Column(name = "FINANCING_TIME")
+    private String financingTime;
+    /**
+     * 公司融资金额说明
+     */
+    @Column(name = "COMPANY_FINANCING_AMOUNT")
+    private String companyFinancingAmount;
+    /**
+     * 员工人数
+     */
+    @Column(name = "EMPLOYEES")
+    private String employees;
+    /**
+     * 对外投资次数
+     */
+    @Column(name = "INVEST")
+    private Integer invest;
+    /**
+     * 地址
+     */
+    @Column(name = "ADDRESS")
+    private String address;
+    /**
+     * 公司所属行业
+     */
+    @Column(name = "COMPANY_INDUSTRY")
+    private String companyIndustry;
+    /**
+     * 分支机构数量
+     */
+    @Column(name = "BRANCH_COUNT")
+    private Integer branchCount;
+    /**
+     * 股东
+     */
+    @Column(name = "SHAREHOLDER")
+    private String shareholder;
+    /**
+     * 数据来源，天眼查，企查查等
+     */
+    @Column(name = "SOURCE")
+    private String source;
+
+    /**
+     * 工商数据 结束
+     */
+
     public String getId() {
         return id;
     }
@@ -430,6 +546,174 @@ public class KingBaseDgap implements Serializable {
 
     public void setReportType(Long reportType) {
         this.reportType = reportType;
+    }
+
+    public String getEnterpriseName() {
+        return enterpriseName;
+    }
+
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getBusinessScope() {
+        return businessScope;
+    }
+
+    public void setBusinessScope(String businessScope) {
+        this.businessScope = businessScope;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getRegisteredCapital() {
+        return registeredCapital;
+    }
+
+    public void setRegisteredCapital(String registeredCapital) {
+        this.registeredCapital = registeredCapital;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getCompanyType() {
+        return companyType;
+    }
+
+    public void setCompanyType(String companyType) {
+        this.companyType = companyType;
+    }
+
+    public Integer getSoftwareCopyright() {
+        return softwareCopyright;
+    }
+
+    public void setSoftwareCopyright(Integer softwareCopyright) {
+        this.softwareCopyright = softwareCopyright;
+    }
+
+    public Integer getPatents() {
+        return patents;
+    }
+
+    public void setPatents(Integer patents) {
+        this.patents = patents;
+    }
+
+    public Integer getFinancingRound() {
+        return financingRound;
+    }
+
+    public void setFinancingRound(Integer financingRound) {
+        this.financingRound = financingRound;
+    }
+
+    public String getFinancingTime() {
+        return financingTime;
+    }
+
+    public void setFinancingTime(String financingTime) {
+        this.financingTime = financingTime;
+    }
+
+    public String getCompanyFinancingAmount() {
+        return companyFinancingAmount;
+    }
+
+    public void setCompanyFinancingAmount(String companyFinancingAmount) {
+        this.companyFinancingAmount = companyFinancingAmount;
+    }
+
+    public String getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(String employees) {
+        this.employees = employees;
+    }
+
+    public Integer getInvest() {
+        return invest;
+    }
+
+    public void setInvest(Integer invest) {
+        this.invest = invest;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCompanyIndustry() {
+        return companyIndustry;
+    }
+
+    public void setCompanyIndustry(String companyIndustry) {
+        this.companyIndustry = companyIndustry;
+    }
+
+    public Integer getBranchCount() {
+        return branchCount;
+    }
+
+    public void setBranchCount(Integer branchCount) {
+        this.branchCount = branchCount;
+    }
+
+    public String getShareholder() {
+        return shareholder;
+    }
+
+    public void setShareholder(String shareholder) {
+        this.shareholder = shareholder;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     @Override

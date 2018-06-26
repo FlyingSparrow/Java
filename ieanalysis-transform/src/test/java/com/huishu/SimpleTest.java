@@ -46,11 +46,11 @@ public class SimpleTest {
         String str = "9小时前";
         String str2 = "16小时前";
         String aaResult = parseDate(str);
-        String aaResult2 = parseDate2(str);
+        String aaResult2 = parseDate(str);
         Assert.assertEquals(aaResult, aaResult2);
 
         String aaResult3 = parseDate(str2);
-        String aaResult4 = parseDate2(str2);
+        String aaResult4 = parseDate(str2);
         Assert.assertEquals(aaResult3, aaResult4);
 
         int currentMonth = DateUtils.getCurrentMonth();
@@ -91,21 +91,6 @@ public class SimpleTest {
     }
 
     private String parseDate(String str){
-        Date currentDate = DateUtils.currentDate();
-        String day = str.replaceAll("小时前", "");
-        Integer valueOf = Integer.valueOf(day);
-        int hours = currentDate.getHours();
-        String result;
-        if (valueOf > hours) {
-            result = DateUtils.getFormatDate(DateUtils.getYesterdayNow(currentDate));
-        } else {
-            result = DateUtils.getFormatDate(currentDate);
-        }
-
-        return result;
-    }
-
-    private String parseDate2(String str){
         Date currentDate = DateUtils.currentDate();
         int hours = Integer.parseInt(str.replaceAll("小时前", ""));
         int hour = DateUtils.getHour(currentDate);

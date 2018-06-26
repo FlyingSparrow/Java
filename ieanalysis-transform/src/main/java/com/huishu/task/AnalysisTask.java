@@ -81,26 +81,16 @@ public class AnalysisTask {
 	 */
 	@Scheduled(fixedDelay = 1000 * 30)
 	public void warn() {
-		// 分析新闻
-		newsAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 分析政策
+		/*newsAnalyzer.analysis(analysisConfig, executor, indexMap);
 		policyAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 分析综合
 		zongheAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 论坛数据分析
 		forumAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 视频数据分析
 		videoAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 微信分析
 		wechatAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 招聘数据分析
 		recruitmentAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 投资数据分析
 		investmentAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 投资并购数据分析
 		mergerAnalyzer.analysis(analysisConfig, executor, indexMap);
-		// 投资退出数据分析
-		quitAnalyzer.analysis(analysisConfig, executor, indexMap);
+		quitAnalyzer.analysis(analysisConfig, executor, indexMap);*/
 	}
 
 }

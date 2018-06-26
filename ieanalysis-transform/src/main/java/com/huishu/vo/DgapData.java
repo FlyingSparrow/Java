@@ -203,6 +203,101 @@ public class DgapData implements Serializable {
      */
     private Long reportType;
 
+
+
+    /**
+     * 工商数据 开始
+     */
+
+    /**
+     * 企业名称
+     */
+    private String enterName;
+    /**
+     * 公司状态
+     */
+    private String status;
+    /**
+     * 企业真正名称
+     */
+    private String realName;
+    /**
+     * 经营范围
+     */
+    private String businessScope;
+    /**
+     * 企业所有者
+     */
+    private String owner;
+    /**
+     * 注册资本
+     */
+    private String registeredCapital;
+    /**
+     * 注册时间
+     */
+    private String createDate;
+    /**
+     * 联系电话
+     */
+    private String tender;
+    /**
+     * 公司类型
+     */
+    private String companyType;
+    /**
+     * 软件著作权数量
+     */
+    private Integer softwareCopyright;
+    /**
+     * 专利数量
+     */
+    private Integer patents;
+    /**
+     * 融资次数
+     */
+    private Integer financingTime;
+    /**
+     * 融资时间，格式：yyyy-MM-dd
+     */
+    private String financingRaund;
+    /**
+     * 公司融资金额说明
+     */
+    private String companyFinancingAmount;
+    /**
+     * 员工人数
+     */
+    private String employees;
+    /**
+     * 对外投资次数
+     */
+    private Integer invest;
+    /**
+     * 地址
+     */
+    private String address;
+    /**
+     * 公司所属行业
+     */
+    private String companyIndustry;
+    /**
+     * 分支机构数量
+     */
+    private Integer branchCount;
+    /**
+     * 股东
+     */
+    private String shareholder;
+    /**
+     * 数据来源，天眼查，企查查等
+     */
+    private String source;
+
+    /**
+     * 工商数据 结束
+     */
+
     public String getId() {
         return id;
     }
@@ -497,6 +592,174 @@ public class DgapData implements Serializable {
 
     public void setReportType(Long reportType) {
         this.reportType = reportType;
+    }
+
+    public String getEnterName() {
+        return enterName;
+    }
+
+    public void setEnterName(String enterName) {
+        this.enterName = enterName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getBusinessScope() {
+        return businessScope;
+    }
+
+    public void setBusinessScope(String businessScope) {
+        this.businessScope = businessScope;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getRegisteredCapital() {
+        return registeredCapital;
+    }
+
+    public void setRegisteredCapital(String registeredCapital) {
+        this.registeredCapital = registeredCapital;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getTender() {
+        return tender;
+    }
+
+    public void setTender(String tender) {
+        this.tender = tender;
+    }
+
+    public String getCompanyType() {
+        return companyType;
+    }
+
+    public void setCompanyType(String companyType) {
+        this.companyType = companyType;
+    }
+
+    public Integer getSoftwareCopyright() {
+        return softwareCopyright;
+    }
+
+    public void setSoftwareCopyright(Integer softwareCopyright) {
+        this.softwareCopyright = softwareCopyright;
+    }
+
+    public Integer getPatents() {
+        return patents;
+    }
+
+    public void setPatents(Integer patents) {
+        this.patents = patents;
+    }
+
+    public Integer getFinancingTime() {
+        return financingTime;
+    }
+
+    public void setFinancingTime(Integer financingTime) {
+        this.financingTime = financingTime;
+    }
+
+    public String getFinancingRaund() {
+        return financingRaund;
+    }
+
+    public void setFinancingRaund(String financingRaund) {
+        this.financingRaund = financingRaund;
+    }
+
+    public String getCompanyFinancingAmount() {
+        return companyFinancingAmount;
+    }
+
+    public void setCompanyFinancingAmount(String companyFinancingAmount) {
+        this.companyFinancingAmount = companyFinancingAmount;
+    }
+
+    public String getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(String employees) {
+        this.employees = employees;
+    }
+
+    public Integer getInvest() {
+        return invest;
+    }
+
+    public void setInvest(Integer invest) {
+        this.invest = invest;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCompanyIndustry() {
+        return companyIndustry;
+    }
+
+    public void setCompanyIndustry(String companyIndustry) {
+        this.companyIndustry = companyIndustry;
+    }
+
+    public Integer getBranchCount() {
+        return branchCount;
+    }
+
+    public void setBranchCount(Integer branchCount) {
+        this.branchCount = branchCount;
+    }
+
+    public String getShareholder() {
+        return shareholder;
+    }
+
+    public void setShareholder(String shareholder) {
+        this.shareholder = shareholder;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     @Override

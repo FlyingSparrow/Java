@@ -65,6 +65,10 @@ public class TransformJob implements CommandLineRunner {
     @Qualifier("quitTransformer")
     private Transformer quitTransformer;
 
+    @Autowired
+    @Qualifier("industryDataTransformer")
+    private Transformer industryDataTransformer;
+
     /**
      * 项目启动后执行
      */
@@ -79,5 +83,6 @@ public class TransformJob implements CommandLineRunner {
         investmentTransformer.transformV2(executor);
         mergerTransformer.transformV2(executor);
         quitTransformer.transformV2(executor);
+        industryDataTransformer.transformV2(executor);
     }
 }

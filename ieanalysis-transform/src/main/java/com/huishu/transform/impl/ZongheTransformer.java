@@ -41,7 +41,9 @@ public class ZongheTransformer extends AbstractTransformer {
             return;
         }
 
-        List<ZongheBak> bakList = new ArrayList<ZongheBak>();
+        logger.info("待转换{}数据 {} 条", getName(), list.size());
+
+        List<ZongheBak> bakList = new ArrayList<ZongheBak>(list.size());
         for (NewsLib item : list) {
             ZongheBak bak = new ZongheBak();
             BeanUtils.copyProperties(item, bak);
@@ -77,7 +79,7 @@ public class ZongheTransformer extends AbstractTransformer {
                 logger.info("第 {} 页{}数据转换开始", pageNumber, getName());
 
 
-                List<ZongheBak> bakList = new ArrayList<ZongheBak>();
+                List<ZongheBak> bakList = new ArrayList<ZongheBak>(list.size());
                 for (NewsLib item : list) {
                     ZongheBak bak = new ZongheBak();
                     BeanUtils.copyProperties(item, bak);
@@ -96,11 +98,15 @@ public class ZongheTransformer extends AbstractTransformer {
 
                 logger.info("第 {} 页{}数据转换结束", pageNumber, getName());
 
+                pageNumber++;
             }else{
-                //如果没有数据需要分析，那么当前线程休眠5分钟
+                //如果待转换数据都已经处理完成，那么重置 pageNumber 和 totalPages，确保可以无限循环，在有数据以后继续处理
+                pageNumber = 0;
+                totalPages = 10;
+                //如果没有数据需要转换，那么当前线程休眠5分钟
+                logger.info("没有{}数据需要转换，线程休眠 5 分钟", getName());
                 Thread.sleep(300000);
             }
-            pageNumber++;
         }
     }
 

@@ -41,7 +41,9 @@ public class VideoTransformer extends AbstractTransformer  {
             return;
         }
 
-        List<VideoBak> bakList = new ArrayList<VideoBak>();
+        logger.info("待转换{}数据 {} 条", getName(), list.size());
+
+        List<VideoBak> bakList = new ArrayList<VideoBak>(list.size());
         for (Video item : list) {
             VideoBak bak = new VideoBak();
             BeanUtils.copyProperties(item, bak);
@@ -76,7 +78,7 @@ public class VideoTransformer extends AbstractTransformer  {
                 logger.info("第 {} 页{}数据转换开始", pageNumber, getName());
 
 
-                List<VideoBak> bakList = new ArrayList<VideoBak>();
+                List<VideoBak> bakList = new ArrayList<VideoBak>(list.size());
                 for (Video item : list) {
                     VideoBak bak = new VideoBak();
                     BeanUtils.copyProperties(item, bak);
@@ -94,11 +96,15 @@ public class VideoTransformer extends AbstractTransformer  {
 
                 logger.info("第 {} 页{}数据转换结束", pageNumber, getName());
 
+                pageNumber++;
             }else{
-                //如果没有数据需要分析，那么当前线程休眠5分钟
+                //如果待转换数据都已经处理完成，那么重置 pageNumber 和 totalPages，确保可以无限循环，在有数据以后继续处理
+                pageNumber = 0;
+                totalPages = 10;
+                //如果没有数据需要转换，那么当前线程休眠5分钟
+                logger.info("没有{}数据需要转换，线程休眠 5 分钟", getName());
                 Thread.sleep(300000);
             }
-            pageNumber++;
         }
     }
 

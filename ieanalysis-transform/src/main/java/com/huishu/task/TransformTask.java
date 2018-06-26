@@ -64,6 +64,10 @@ public class TransformTask {
     @Qualifier("quitTransformer")
     private Transformer quitTransformer;
 
+    @Autowired
+    @Qualifier("industryDataTransformer")
+    private Transformer industryDataTransformer;
+
     /**
      * 间隔 15 秒钟执行一次
      */
@@ -77,7 +81,8 @@ public class TransformTask {
         recruitmentTransformer.transform(executor);
         investmentTransformer.transform(executor);
         mergerTransformer.transform(executor);
-        quitTransformer.transform(executor);*/
+        quitTransformer.transform(executor);
+        industryDataTransformer.transform(executor);*/
     }
 
 }
