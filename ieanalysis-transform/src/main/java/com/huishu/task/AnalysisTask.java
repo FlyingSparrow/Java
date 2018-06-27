@@ -5,9 +5,12 @@ import com.huishu.analysis.Analyzer;
 import com.huishu.config.AnalysisConfig;
 import com.huishu.constants.SysConst;
 import com.huishu.init.SysInit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -25,8 +28,10 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author xiaobo
  * @date 2017年4月10日
  */
-//@Component
+@Component
 public class AnalysisTask {
+
+	private static final Logger logger = LoggerFactory.getLogger(AnalysisTask.class);
 
 	private static ThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(SysConst.DEFAULT_CORE_POOL_SIZE,
 			new ThreadFactoryBuilder().setNameFormat("analysis-pool-%d").build());
@@ -81,16 +86,22 @@ public class AnalysisTask {
 	 */
 	@Scheduled(fixedDelay = 1000 * 30)
 	public void warn() {
-		/*newsAnalyzer.analysis(analysisConfig, executor, indexMap);
-		policyAnalyzer.analysis(analysisConfig, executor, indexMap);
-		zongheAnalyzer.analysis(analysisConfig, executor, indexMap);
-		forumAnalyzer.analysis(analysisConfig, executor, indexMap);
-		videoAnalyzer.analysis(analysisConfig, executor, indexMap);
-		wechatAnalyzer.analysis(analysisConfig, executor, indexMap);
-		recruitmentAnalyzer.analysis(analysisConfig, executor, indexMap);
-		investmentAnalyzer.analysis(analysisConfig, executor, indexMap);
-		mergerAnalyzer.analysis(analysisConfig, executor, indexMap);
-		quitAnalyzer.analysis(analysisConfig, executor, indexMap);*/
+		try {
+			newsAnalyzer.analysis(analysisConfig, executor, indexMap);
+			policyAnalyzer.analysis(analysisConfig, executor, indexMap);
+			zongheAnalyzer.analysis(analysisConfig, executor, indexMap);
+			forumAnalyzer.analysis(analysisConfig, executor, indexMap);
+			videoAnalyzer.analysis(analysisConfig, executor, indexMap);
+			wechatAnalyzer.analysis(analysisConfig, executor, indexMap);
+			recruitmentAnalyzer.analysis(analysisConfig, executor, indexMap);
+			investmentAnalyzer.analysis(analysisConfig, executor, indexMap);
+			mergerAnalyzer.analysis(analysisConfig, executor, indexMap);
+			quitAnalyzer.analysis(analysisConfig, executor, indexMap);
+
+			executor.shutdown();
+		} catch (Exception e) {
+			logger.error("分析数据出错", e);
+		}
 	}
 
 }

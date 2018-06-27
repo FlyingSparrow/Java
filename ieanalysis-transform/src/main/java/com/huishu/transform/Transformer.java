@@ -35,11 +35,4 @@ public interface Transformer {
      */
     void transform(ThreadPoolExecutor executor);
 
-    /**
-     * 采集数据转换并保存
-     *
-     * @param executor 线程池执行器
-     */
-    void transformV2(ThreadPoolExecutor executor);
-
 }

@@ -36,12 +36,5 @@ public interface Analyzer {
      * @param indexMap 分析配置map
      */
     void analysis(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap);
-    /**
-     * 分析数据
-     * @param analysisConfig 分析配置
-     * @param executor 线程池执行器
-     * @param indexMap 分析配置map
-     */
-    void analysisV2(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap);
 
 }

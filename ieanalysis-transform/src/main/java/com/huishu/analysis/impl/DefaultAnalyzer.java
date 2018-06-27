@@ -79,22 +79,6 @@ public class DefaultAnalyzer implements Analyzer {
         }
     }
 
-    @Override
-    public void analysisV2(AnalysisConfig analysisConfig, ThreadPoolExecutor executor, Map<String, String> indexMap) {
-        if (getMark()) {
-            executor.execute(() -> {
-                Thread currentThread = Thread.currentThread();
-                logger.info("{}:{}{}数据分析开始", currentThread.getName(), currentThread.getId(), getName());
-                try {
-                    analysisData(analysisConfig, indexMap);
-                } catch (Exception e) {
-                    logger.error("{}数据分析异常", getName(), e);
-                }
-                logger.info("{}:{}{}数据分析结束", currentThread.getName(), currentThread.getId(), getName());
-            });
-        }
-    }
-
     /**
      * 分析数据
      *
@@ -103,16 +87,6 @@ public class DefaultAnalyzer implements Analyzer {
      * @param pageNumber
      */
     protected void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        // TODO 需要子类实现
-    }
-
-    /**
-     * 分析数据
-     *
-     * @param analysisConfig
-     * @param indexMap
-     */
-    protected void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap) {
         // TODO 需要子类实现
     }
 

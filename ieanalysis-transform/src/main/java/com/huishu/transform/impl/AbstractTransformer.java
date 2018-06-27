@@ -35,33 +35,11 @@ public abstract class AbstractTransformer implements Transformer {
         }
     }
 
-    @Override
-    public void transformV2(ThreadPoolExecutor executor) {
-        if (getMark()) {
-            executor.execute(() -> {
-                while (true) {
-                    try {
-                        transformData();
-                    } catch (Exception e) {
-                        logger.error("转换{}数据出错", getName(), e);
-                    }
-                }
-            });
-        }
-    }
-
     /**
      * 转换数据
      *
      * @param pageNumber
      */
     protected abstract void transformData(int pageNumber);
-
-    /**
-     * 转换数据
-     *
-     * @throws InterruptedException
-     */
-    protected abstract void transformData() throws InterruptedException;
 
 }

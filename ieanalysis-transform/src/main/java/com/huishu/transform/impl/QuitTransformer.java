@@ -1,14 +1,15 @@
 package com.huishu.transform.impl;
 
 import com.huishu.config.TransformConfig;
-import com.huishu.entity.*;
+import com.huishu.entity.QuitDataBak;
+import com.huishu.entity.QuitDataSmt;
+import com.huishu.entity.QuitDataTz;
 import com.huishu.service.QuitDataBakService;
 import com.huishu.service.QuitDataSmtService;
 import com.huishu.service.QuitDataTzService;
 import com.huishu.utils.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -39,12 +40,6 @@ public class QuitTransformer extends AbstractTransformer {
 //        transformQuitTz(pageNumber);
     }
 
-    @Override
-    protected void transformData() throws InterruptedException {
-        transformQuitSmt();
-//        transformQuitTz();
-    }
-
     private void transformQuitSmt(int pageNumber) {
         QuitDataSmt entity = new QuitDataSmt();
         Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
@@ -71,54 +66,6 @@ public class QuitTransformer extends AbstractTransformer {
             quitDataBakService.save(bakList);
         }
         quitDataSmtService.delete(list);
-    }
-
-    private void transformQuitSmt() throws InterruptedException {
-        int pageNumber = 0;
-        int totalPages = 10;
-        QuitDataSmt entity = new QuitDataSmt();
-        while (pageNumber <= totalPages){
-            Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-            Page<QuitDataSmt> page = quitDataSmtService.findByPage(entity, pageable);
-            totalPages = page.getTotalPages();
-
-            List<QuitDataSmt> list = page.getContent();
-            if(list != null && list.size() > 0){
-                logger.info("总页数：{}，每页记录数：{}，剩余 {} 条{}数据待转换", page.getTotalPages(),
-                        transformConfig.getTransformNum(), page.getTotalElements(), getName());
-
-                logger.info("第 {} 页{}数据转换开始", pageNumber, getName());
-
-
-                List<QuitDataBak> bakList = new ArrayList<QuitDataBak>(list.size());
-                for (QuitDataSmt item : list) {
-                    QuitDataBak bak = new QuitDataBak();
-                    BeanUtils.copyProperties(item, bak);
-                    bak.setTime(StringUtils.transformTime(item.getTime()));
-                    bak.setBiaoShi("0");
-                    bak.setSource("私募通");
-                    long count = quitDataBakService.findExit(bak);
-                    if (count == 0) {
-                        bakList.add(bak);
-                    }
-                }
-                if (bakList.size() > 0) {
-                    quitDataBakService.save(bakList);
-                }
-                quitDataSmtService.delete(list);
-
-                logger.info("第 {} 页{}数据转换结束", pageNumber, getName());
-
-                pageNumber++;
-            }else{
-                //如果待转换数据都已经处理完成，那么重置 pageNumber 和 totalPages，确保可以无限循环，在有数据以后继续处理
-                pageNumber = 0;
-                totalPages = 10;
-                //如果没有数据需要转换，那么当前线程休眠5分钟
-                logger.info("没有{}数据需要转换，线程休眠 5 分钟", getName());
-                Thread.sleep(300000);
-            }
-        }
     }
 
     /**
@@ -164,70 +111,6 @@ public class QuitTransformer extends AbstractTransformer {
             quitDataBakService.save(bakList);
         }
         quitDataTzService.delete(list);
-    }
-
-    /**
-     * 说明：由于投中网页面改版，抓取不到数据，因此不再执行该方法
-     *
-     * @author Wangjianchun
-     * @date 2018-6-3
-     */
-    private void transformQuitTz() throws InterruptedException {
-        int pageNumber = 0;
-        int totalPages = 10;
-        QuitDataTz entity = new QuitDataTz();
-        while (pageNumber <= totalPages){
-            Pageable pageable = new PageRequest(pageNumber, transformConfig.getTransformNum());
-            Page<QuitDataTz> page = quitDataTzService.findByPage(entity, pageable);
-            totalPages = page.getTotalPages();
-
-            List<QuitDataTz> list = page.getContent();
-            if(list != null && list.size() > 0){
-                logger.info("总页数：{}，每页记录数：{}，剩余 {} 条{}数据待转换", page.getTotalPages(),
-                        transformConfig.getTransformNum(), page.getTotalElements(), getName());
-
-                logger.info("第 {} 页{}数据转换开始", pageNumber, getName());
-
-
-                List<QuitDataBak> bakList = new ArrayList<QuitDataBak>(list.size());
-                for (QuitDataTz item : list) {
-                    QuitDataBak bak = new QuitDataBak();
-                    bak.setFldUrlAddr(item.getFldUrlAddr());
-                    bak.setIndustry(item.getIndustry());
-                    bak.setInvestor(item.getInvestor());
-                    bak.setRegion(item.getRegion());
-                    bak.setTime(StringUtils.transformTime(item.getTime()));
-                    bak.setReturnAmount(item.getReturnAmount());
-                    bak.setCompanyName(item.getCompanyName());
-                    bak.setReturnMultiple(item.getReturnMultiple());
-                    bak.setQuitWay(item.getQuitWay());
-                    bak.setQuitEvent(item.getQuitEvent());
-                    bak.setProduct(item.getProduct());
-                    bak.setZongtouzie(item.getZongtouzie());
-                    bak.setSource("投中网");
-                    bak.setBiaoShi("0");
-                    long count = quitDataBakService.findExit(bak);
-                    if (count == 0) {
-                        bakList.add(bak);
-                    }
-                }
-                if (bakList.size() > 0) {
-                    quitDataBakService.save(bakList);
-                }
-                quitDataTzService.delete(list);
-
-                logger.info("第 {} 页{}数据转换结束", pageNumber, getName());
-
-                pageNumber++;
-            }else{
-                //如果待转换数据都已经处理完成，那么重置 pageNumber 和 totalPages，确保可以无限循环，在有数据以后继续处理
-                pageNumber = 0;
-                totalPages = 10;
-                //如果没有数据需要转换，那么当前线程休眠5分钟
-                logger.info("没有{}数据需要转换，线程休眠 5 分钟", getName());
-                Thread.sleep(300000);
-            }
-        }
     }
 
     @Override
