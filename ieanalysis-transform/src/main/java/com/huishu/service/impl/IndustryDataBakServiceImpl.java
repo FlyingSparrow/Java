@@ -66,7 +66,7 @@ public class IndustryDataBakServiceImpl implements IndustryDataBakService {
 
     @Override
     public boolean isExists(IndustryDataBak entity) {
-        List<IndustryDataBak> list = industryDataBakRepository.findByEnterName(entity.getEnterpriseName());
+        List<IndustryDataBak> list = industryDataBakRepository.findByEnterpriseName(entity.getEnterpriseName());
         return (list != null && list.size() > 0);
     }
 }

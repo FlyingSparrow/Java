@@ -81,6 +81,10 @@ public class AnalysisTask {
 	@Qualifier("quitAnalyzer")
 	private Analyzer quitAnalyzer;
 
+	@Autowired
+	@Qualifier("industryDataAnalyzer")
+	private Analyzer industryDataAnalyzer;
+
 	/**
 	 * 间隔 30 秒钟执行一次
 	 */
@@ -97,8 +101,9 @@ public class AnalysisTask {
 			investmentAnalyzer.analysis(analysisConfig, executor, indexMap);
 			mergerAnalyzer.analysis(analysisConfig, executor, indexMap);
 			quitAnalyzer.analysis(analysisConfig, executor, indexMap);
+			industryDataAnalyzer.analysis(analysisConfig, executor, indexMap);
 
-			executor.shutdown();
+//			executor.shutdown();
 		} catch (Exception e) {
 			logger.error("分析数据出错", e);
 		}

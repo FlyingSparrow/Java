@@ -90,10 +90,15 @@ public class IndustryDataBak implements Serializable {
     @Column(name = "FinancingTime")
     private String financingTime;
     /**
-     * 融资金额说明
+     * 融资金额
      */
     @Column(name = "FinancingAmount")
     private Double financingAmount;
+    /**
+     * 融资金额说明
+     */
+    @Column(name = "CompanyFinancingAmount")
+    private String companyFinancingAmount;
     /**
      * 员工人数
      */
@@ -251,6 +256,14 @@ public class IndustryDataBak implements Serializable {
 
     public void setFinancingAmount(Double financingAmount) {
         this.financingAmount = financingAmount;
+    }
+
+    public String getCompanyFinancingAmount() {
+        return companyFinancingAmount;
+    }
+
+    public void setCompanyFinancingAmount(String companyFinancingAmount) {
+        this.companyFinancingAmount = companyFinancingAmount;
     }
 
     public Integer getEmployees() {

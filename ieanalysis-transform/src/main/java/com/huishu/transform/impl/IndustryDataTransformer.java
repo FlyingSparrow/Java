@@ -1,6 +1,7 @@
 package com.huishu.transform.impl;
 
 import com.huishu.config.TransformConfig;
+import com.huishu.config.UnitsConfig;
 import com.huishu.constants.SysConst;
 import com.huishu.entity.IndustryDataBak;
 import com.huishu.entity.IndustryDataTyc;
@@ -35,6 +36,8 @@ public class IndustryDataTransformer extends AbstractTransformer {
     private IndustryDataBakService industryDataBakService;
     @Autowired
     private TransformConfig transformConfig;
+    @Autowired
+    private UnitsConfig unitsConfig;
 
     @Override
     protected void transformData(int pageNumber) {
@@ -54,6 +57,7 @@ public class IndustryDataTransformer extends AbstractTransformer {
             }
             IndustryDataBak bak = new IndustryDataBak();
             BeanUtils.copyProperties(item, bak);
+            bak.setFinancingAmount(com.huishu.utils.StringUtils.transformAmount(unitsConfig, item.getCompanyFinancingAmount()));
             if(StringUtils.isNotEmpty(item.getEnterpriseName())){
                 bak.setEnterpriseName(item.getEnterpriseName().trim());
             }
@@ -64,7 +68,7 @@ public class IndustryDataTransformer extends AbstractTransformer {
             if(StringUtils.isNotEmpty(businessScope)){
                 if(businessScope.length() > 1024){
                     businessScope = businessScope.substring(0, 1000)+"...";
-                    item.setBusinessScope(businessScope);
+                    bak.setBusinessScope(businessScope);
                 }
             }
             bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());

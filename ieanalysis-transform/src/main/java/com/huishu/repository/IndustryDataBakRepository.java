@@ -12,5 +12,5 @@ public interface IndustryDataBakRepository extends JpaRepository<IndustryDataBak
 
     Page<IndustryDataBak> findAll(Specification<IndustryDataBak> specification, Pageable pageable);
 
-    List<IndustryDataBak> findByEnterName(String enterName);
+    List<IndustryDataBak> findByEnterpriseName(String enterpriseName);
 }

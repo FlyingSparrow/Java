@@ -6,7 +6,6 @@ import com.huishu.entity.IndustryDataBak;
 import com.huishu.entity.KingBaseDgap;
 import com.huishu.service.IndustryDataBakService;
 import com.huishu.vo.DgapData;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -112,7 +111,7 @@ public class IndustryDataAnalyzer extends DefaultAnalyzer {
     protected boolean isNotExists(List<DgapData> dgapDataList, String enterpriseName) {
         boolean flag = true;
         for (DgapData item : dgapDataList) {
-            if (StringUtils.isNotEmpty(item.getEnterpriseName()) && item.getEnterpriseName().equals(enterpriseName)) {
+            if (item.getEnterpriseName().equals(enterpriseName)) {
                 flag = false;
                 break;
             }

@@ -90,7 +90,7 @@ public class TransformTask {
             quitTransformer.transform(executor);
             industryDataTransformer.transform(executor);
 
-            executor.shutdown();
+//            executor.shutdown();
         } catch (Exception e) {
             logger.error("转换数据出错", e);
         }

@@ -93,7 +93,7 @@ public class IndustryDataTyc implements Serializable {
      * 融资金额说明
      */
     @Column(name = "FinancingAmount")
-    private String financingAmount;
+    private String companyFinancingAmount;
     /**
      * 员工人数
      */
@@ -240,12 +240,12 @@ public class IndustryDataTyc implements Serializable {
         this.financingRound = financingRound;
     }
 
-    public String getFinancingAmount() {
-        return financingAmount;
+    public String getCompanyFinancingAmount() {
+        return companyFinancingAmount;
     }
 
-    public void setFinancingAmount(String financingAmount) {
-        this.financingAmount = financingAmount;
+    public void setCompanyFinancingAmount(String companyFinancingAmount) {
+        this.companyFinancingAmount = companyFinancingAmount;
     }
 
     public Integer getEmployees() {

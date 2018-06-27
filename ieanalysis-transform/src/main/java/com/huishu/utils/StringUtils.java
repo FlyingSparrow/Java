@@ -250,7 +250,7 @@ public class StringUtils {
 
     public static Double transformAmount(UnitsConfig unitsConfig, String amount) {
         String types = unitsConfig.getTypes();
-        if (isEmpty(types)) {
+        if (isEmpty(types) || isEmpty(amount)) {
             return null;
         }
 
