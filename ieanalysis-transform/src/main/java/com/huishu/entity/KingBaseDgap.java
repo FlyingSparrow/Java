@@ -276,11 +276,6 @@ public class KingBaseDgap implements Serializable {
     @Column(name = "ADDRESS")
     private String address;
     /**
-     * 公司所属行业
-     */
-    @Column(name = "COMPANY_INDUSTRY")
-    private String companyIndustry;
-    /**
      * 分支机构数量
      */
     @Column(name = "BRANCH_COUNT")
@@ -682,14 +677,6 @@ public class KingBaseDgap implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getCompanyIndustry() {
-        return companyIndustry;
-    }
-
-    public void setCompanyIndustry(String companyIndustry) {
-        this.companyIndustry = companyIndustry;
     }
 
     public Integer getBranchCount() {

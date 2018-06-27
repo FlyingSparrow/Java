@@ -48,7 +48,7 @@ public class ZongheTransformer extends AbstractTransformer {
             BeanUtils.copyProperties(item, bak);
             bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
             bak.setType(String.valueOf(SysConst.PublishType.COMPREHENSIVE.getCode()));
-            bak.setBiaoShi("0");
+            bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());
             long count = zongheBakService.findExist(bak);
             if (count == 0) {
                 bakList.add(bak);

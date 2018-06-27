@@ -1,6 +1,7 @@
 package com.huishu.transform.impl;
 
 import com.huishu.config.TransformConfig;
+import com.huishu.constants.SysConst;
 import com.huishu.entity.IndustryDataBak;
 import com.huishu.entity.IndustryDataTyc;
 import com.huishu.service.IndustryDataBakService;
@@ -48,6 +49,9 @@ public class IndustryDataTransformer extends AbstractTransformer {
 
         List<IndustryDataBak> bakList = new ArrayList<IndustryDataBak>(list.size());
         for (IndustryDataTyc item : list) {
+            if(StringUtils.isEmpty(item.getEnterpriseName())){
+                continue;
+            }
             IndustryDataBak bak = new IndustryDataBak();
             BeanUtils.copyProperties(item, bak);
             if(StringUtils.isNotEmpty(item.getEnterpriseName())){
@@ -63,7 +67,7 @@ public class IndustryDataTransformer extends AbstractTransformer {
                     item.setBusinessScope(businessScope);
                 }
             }
-            bak.setBiaoShi("0");
+            bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());
             bak.setSource("天眼查");
             if (!industryDataBakService.isExists(bak)) {
                 bakList.add(bak);

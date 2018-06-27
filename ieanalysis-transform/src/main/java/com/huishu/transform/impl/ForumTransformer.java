@@ -1,6 +1,7 @@
 package com.huishu.transform.impl;
 
 import com.huishu.config.TransformConfig;
+import com.huishu.constants.SysConst;
 import com.huishu.entity.ForumLib;
 import com.huishu.entity.ForumLibBak;
 import com.huishu.service.ForumLibBakService;
@@ -47,7 +48,7 @@ public class ForumTransformer extends AbstractTransformer {
             ForumLibBak bak = new ForumLibBak();
             BeanUtils.copyProperties(item, bak);
             bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
-            bak.setBiaoShi("0");
+            bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());
             long count = forumLibBakService.findExist(bak);
             if (count == 0) {
                 bakList.add(bak);

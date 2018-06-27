@@ -48,7 +48,7 @@ public class PolicyTransformer extends AbstractTransformer {
             BeanUtils.copyProperties(item, bak);
             bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
             bak.setType(String.valueOf(SysConst.PublishType.LOCAL.getCode()));
-            bak.setBiaoShi("0");
+            bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());
             long count = policyBakService.findExist(bak);
             if (count == 0) {
                 bakList.add(bak);

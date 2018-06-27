@@ -326,6 +326,9 @@ public class StringUtils {
         if(isEmpty(str)){
             return false;
         }
+        if("+".equals(str) || "-".equals(str)){
+            return false;
+        }
         return str.matches(NUMBER_REGEX);
     }
 

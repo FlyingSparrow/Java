@@ -1,6 +1,7 @@
 package com.huishu.transform.impl;
 
 import com.huishu.config.TransformConfig;
+import com.huishu.constants.SysConst;
 import com.huishu.entity.Video;
 import com.huishu.entity.VideoBak;
 import com.huishu.service.VideoBakService;
@@ -47,7 +48,7 @@ public class VideoTransformer extends AbstractTransformer  {
             VideoBak bak = new VideoBak();
             BeanUtils.copyProperties(item, bak);
             bak.setFabushijian(StringUtils.transformTime(bak.getFabushijian()));
-            bak.setBiaoShi("0");
+            bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());
             long count = videoBakService.findExist(bak);
             if (count == 0) {
                 bakList.add(bak);

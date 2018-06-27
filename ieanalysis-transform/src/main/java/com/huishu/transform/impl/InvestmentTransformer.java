@@ -1,6 +1,7 @@
 package com.huishu.transform.impl;
 
 import com.huishu.config.TransformConfig;
+import com.huishu.constants.SysConst;
 import com.huishu.entity.InvestmentDataBak;
 import com.huishu.entity.InvestmentDataSmt;
 import com.huishu.entity.InvestmentDataTz;
@@ -56,7 +57,7 @@ public class InvestmentTransformer extends AbstractTransformer {
             InvestmentDataBak bak = new InvestmentDataBak();
             BeanUtils.copyProperties(item, bak);
             bak.setTime(item.getTime());
-            bak.setBiaoShi("0");
+            bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());
             bak.setSource("私募通");
             long count = investmentDataBakService.findExit(bak);
             if (count == 0) {

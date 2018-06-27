@@ -1,6 +1,7 @@
 package com.huishu.transform.impl;
 
 import com.huishu.config.TransformConfig;
+import com.huishu.constants.SysConst;
 import com.huishu.entity.MergerDataBak;
 import com.huishu.entity.MergerDataSmt;
 import com.huishu.entity.MergerDataTz;
@@ -56,7 +57,7 @@ public class MergerTransformer extends AbstractTransformer{
             MergerDataBak bak = new MergerDataBak();
             BeanUtils.copyProperties(item, bak);
             bak.setEndTime(StringUtils.transformTime(item.getEndTime()));
-            bak.setBiaoShi("0");
+            bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());
             bak.setSource("私募通");
             long count = mergerDataBakService.findExit(bak);
             if (count == 0) {

@@ -212,7 +212,7 @@ public class DgapData implements Serializable {
     /**
      * 企业名称
      */
-    private String enterName;
+    private String enterpriseName;
     /**
      * 公司状态
      */
@@ -240,7 +240,7 @@ public class DgapData implements Serializable {
     /**
      * 联系电话
      */
-    private String tender;
+    private String contactNumber;
     /**
      * 公司类型
      */
@@ -256,19 +256,15 @@ public class DgapData implements Serializable {
     /**
      * 融资次数
      */
-    private Integer financingTime;
+    private Integer financingRound;
     /**
      * 融资时间，格式：yyyy-MM-dd
      */
-    private String financingRaund;
-    /**
-     * 公司融资金额说明
-     */
-    private String companyFinancingAmount;
+    private String financingTime;
     /**
      * 员工人数
      */
-    private String employees;
+    private Integer employees;
     /**
      * 对外投资次数
      */
@@ -277,10 +273,6 @@ public class DgapData implements Serializable {
      * 地址
      */
     private String address;
-    /**
-     * 公司所属行业
-     */
-    private String companyIndustry;
     /**
      * 分支机构数量
      */
@@ -594,12 +586,12 @@ public class DgapData implements Serializable {
         this.reportType = reportType;
     }
 
-    public String getEnterName() {
-        return enterName;
+    public String getEnterpriseName() {
+        return enterpriseName;
     }
 
-    public void setEnterName(String enterName) {
-        this.enterName = enterName;
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
     }
 
     public String getStatus() {
@@ -650,12 +642,12 @@ public class DgapData implements Serializable {
         this.createDate = createDate;
     }
 
-    public String getTender() {
-        return tender;
+    public String getContactNumber() {
+        return contactNumber;
     }
 
-    public void setTender(String tender) {
-        this.tender = tender;
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 
     public String getCompanyType() {
@@ -682,35 +674,27 @@ public class DgapData implements Serializable {
         this.patents = patents;
     }
 
-    public Integer getFinancingTime() {
+    public Integer getFinancingRound() {
+        return financingRound;
+    }
+
+    public void setFinancingRound(Integer financingRound) {
+        this.financingRound = financingRound;
+    }
+
+    public String getFinancingTime() {
         return financingTime;
     }
 
-    public void setFinancingTime(Integer financingTime) {
+    public void setFinancingTime(String financingTime) {
         this.financingTime = financingTime;
     }
 
-    public String getFinancingRaund() {
-        return financingRaund;
-    }
-
-    public void setFinancingRaund(String financingRaund) {
-        this.financingRaund = financingRaund;
-    }
-
-    public String getCompanyFinancingAmount() {
-        return companyFinancingAmount;
-    }
-
-    public void setCompanyFinancingAmount(String companyFinancingAmount) {
-        this.companyFinancingAmount = companyFinancingAmount;
-    }
-
-    public String getEmployees() {
+    public Integer getEmployees() {
         return employees;
     }
 
-    public void setEmployees(String employees) {
+    public void setEmployees(Integer employees) {
         this.employees = employees;
     }
 
@@ -728,14 +712,6 @@ public class DgapData implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getCompanyIndustry() {
-        return companyIndustry;
-    }
-
-    public void setCompanyIndustry(String companyIndustry) {
-        this.companyIndustry = companyIndustry;
     }
 
     public Integer getBranchCount() {

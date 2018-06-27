@@ -68,6 +68,7 @@ public class SimpleTest {
         String str7 = "- -";
         String str8 = "-313465";
         String str9 = "+2424234";
+        String str10 = "-";
 
         System.out.println(str1 + ":" + StringUtils.isNumber(str1));
         System.out.println(str2 + ":" + StringUtils.isNumber(str2));
@@ -76,8 +77,9 @@ public class SimpleTest {
         System.out.println(str5 + ":" + StringUtils.isNumber(str5));
         System.out.println(str6 + ":" + StringUtils.isNumber(str6));
         System.out.println(str7 + ":" + StringUtils.isNumber(str7));
-        System.out.println(str7 + ":" + StringUtils.isNumber(str8));
-        System.out.println(str7 + ":" + StringUtils.isNumber(str9));
+        System.out.println(str8 + ":" + StringUtils.isNumber(str8));
+        System.out.println(str9 + ":" + StringUtils.isNumber(str9));
+        System.out.println(str10 + ":" + StringUtils.isNumber(str10));
 
         Assert.assertFalse(StringUtils.isNumber(str1));
         Assert.assertTrue(StringUtils.isNumber(str2));
@@ -88,6 +90,7 @@ public class SimpleTest {
         Assert.assertFalse(StringUtils.isNumber(str7));
         Assert.assertTrue(StringUtils.isNumber(str8));
         Assert.assertTrue(StringUtils.isNumber(str9));
+        Assert.assertFalse(StringUtils.isNumber(str10));
     }
 
     private String parseDate(String str){

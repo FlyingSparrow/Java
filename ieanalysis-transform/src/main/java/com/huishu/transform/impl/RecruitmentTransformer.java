@@ -1,6 +1,7 @@
 package com.huishu.transform.impl;
 
 import com.huishu.config.TransformConfig;
+import com.huishu.constants.SysConst;
 import com.huishu.entity.Recruitment;
 import com.huishu.entity.RecruitmentBak;
 import com.huishu.service.RecruitmentBakService;
@@ -47,7 +48,7 @@ public class RecruitmentTransformer extends AbstractTransformer {
             RecruitmentBak bak = new RecruitmentBak();
             BeanUtils.copyProperties(item, bak);
             bak.setFldrecddate(StringUtils.transformTime(bak.getFldrecddate()));
-            bak.setBiaoShi("0");
+            bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());
             long count = recruitmentBakService.findExist(bak);
             if (count == 0) {
                 bakList.add(bak);

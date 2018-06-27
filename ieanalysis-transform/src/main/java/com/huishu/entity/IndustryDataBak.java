@@ -93,7 +93,7 @@ public class IndustryDataBak implements Serializable {
      * 融资金额说明
      */
     @Column(name = "FinancingAmount")
-    private String financingAmount;
+    private Double financingAmount;
     /**
      * 员工人数
      */
@@ -245,11 +245,11 @@ public class IndustryDataBak implements Serializable {
         this.financingRound = financingRound;
     }
 
-    public String getFinancingAmount() {
+    public Double getFinancingAmount() {
         return financingAmount;
     }
 
-    public void setFinancingAmount(String financingAmount) {
+    public void setFinancingAmount(Double financingAmount) {
         this.financingAmount = financingAmount;
     }
 

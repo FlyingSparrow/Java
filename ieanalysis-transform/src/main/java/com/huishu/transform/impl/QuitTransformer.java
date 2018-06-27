@@ -1,6 +1,7 @@
 package com.huishu.transform.impl;
 
 import com.huishu.config.TransformConfig;
+import com.huishu.constants.SysConst;
 import com.huishu.entity.QuitDataBak;
 import com.huishu.entity.QuitDataSmt;
 import com.huishu.entity.QuitDataTz;
@@ -55,7 +56,7 @@ public class QuitTransformer extends AbstractTransformer {
             QuitDataBak bak = new QuitDataBak();
             BeanUtils.copyProperties(item, bak);
             bak.setTime(StringUtils.transformTime(item.getTime()));
-            bak.setBiaoShi("0");
+            bak.setBiaoShi(SysConst.ESDataStatus.NOT_EXISTS_IN_ES.getCode());
             bak.setSource("私募通");
             long count = quitDataBakService.findExit(bak);
             if (count == 0) {
