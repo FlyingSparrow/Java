@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -139,8 +140,12 @@ public class Task {
                 tempFile.delete();
             }
         } else {
-            dgapDataRepository.save(dgapData);
-            saveToKingbase(dgapData);
+            if(!isExistsInES(dgapData.getEnterpriseName())){
+                dgapDataRepository.save(dgapData);
+            }
+            if(!kingBaseDgapService.isExists(dgapData.getEnterpriseName())){
+                saveToKingbase(dgapData);
+            }
             copyAndDeleteFile(tempFile);
         }
     }
@@ -182,6 +187,21 @@ public class Task {
         Iterable<DgapData> search = dgapDataRepository.search(bool, new PageRequest(0, 2));
 
         return (search != null && search.iterator().hasNext());
+    }
+
+    /**
+     * 根据标题和URL判断在ES中是否存在同样的数据
+     * @param enterpriseName
+     * @return
+     */
+    private boolean isExistsInES(String enterpriseName){
+        BoolQueryBuilder bool = QueryBuilders.boolQuery();
+        if (StringUtils.isNotEmpty(enterpriseName)) {
+            bool.must(QueryBuilders.termQuery("enterpriseName", enterpriseName));
+        }
+        Page<DgapData> page = dgapDataRepository.search(bool, new PageRequest(0, 2));
+
+        return (page != null && page.getTotalElements() > 1);
     }
 
     /**

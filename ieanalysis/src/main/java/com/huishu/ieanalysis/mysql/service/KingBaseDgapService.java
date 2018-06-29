@@ -21,4 +21,6 @@ public interface KingBaseDgapService {
      * @param news
      */
     void save(KingBaseDgap news);
+
+    boolean isExists(String enterpriseName);
 }

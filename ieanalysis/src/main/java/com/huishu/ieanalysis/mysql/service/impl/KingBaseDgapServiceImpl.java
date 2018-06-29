@@ -26,4 +26,10 @@ public class KingBaseDgapServiceImpl implements KingBaseDgapService {
     public synchronized void save(KingBaseDgap dgap) {
         kingBaseDgapRepository.save(dgap);
     }
+
+    @Override
+    public synchronized boolean isExists(String enterpriseName) {
+        int count = kingBaseDgapRepository.countByEnterpriseName(enterpriseName);
+        return (count > 1);
+    }
 }
