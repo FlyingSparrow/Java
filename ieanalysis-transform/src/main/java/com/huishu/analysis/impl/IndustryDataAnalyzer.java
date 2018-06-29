@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,10 +54,9 @@ public class IndustryDataAnalyzer extends DefaultAnalyzer {
     @Override
     protected void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
         STATIC_LIST.clear();
-        Map<String, String> newIndexMap = new HashMap<>(indexMap);
 
         IndustryDataBak entity = new IndustryDataBak();
-        entity.setId(Integer.valueOf(newIndexMap.get(getType())));
+        entity.setId(Integer.valueOf(indexMap.get(getType())));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
         List<IndustryDataBak> list = industryDataBakService.findOneHundred(entity, pageable);
 
@@ -69,9 +67,9 @@ public class IndustryDataAnalyzer extends DefaultAnalyzer {
         }
 
         String newId = list.get(list.size() - 1).getId() + "";
-        String oldId = newIndexMap.get(getType());
+        String oldId = indexMap.get(getType());
         if (Integer.parseInt(newId) > Integer.parseInt(oldId)) {
-            newIndexMap.put(getType(), newId);
+            indexMap.put(getType(), newId);
         }
 
         List<DgapData> saveList = new ArrayList<DgapData>();
@@ -83,7 +81,7 @@ public class IndustryDataAnalyzer extends DefaultAnalyzer {
                 DgapData dgapData = new DgapData();
                 BeanUtils.copyProperties(item, dgapData);
                 dgapData.setPublishType(SysConst.PublishType.INDUSTRY.getCode());
-
+                dgapData.setDataType(SysConst.DataType.INDUSTRY.getCode());
                 item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
                 addKingBaseData(historyList, dgapData);
                 dgapData.setId(String.valueOf(item.getId()));
@@ -104,7 +102,7 @@ public class IndustryDataAnalyzer extends DefaultAnalyzer {
         logger.info("{}分析,入库 {} 条", getName(), saveList.size());
         logger.info("{}分析,分析 {} 条", getName(), readList.size());
 
-        recordNum(newIndexMap);
+        recordNum(indexMap);
     }
 
     @Override

@@ -94,14 +94,11 @@ public class Task {
             if (!com.huishu.ieanalysis.utils.StringUtils.isWindows()) {
                 try {
                     Runtime.getRuntime().exec("chmod 777 " + absolutePath);
-                    readAndDeleteFile(tempFile, list);
                 } catch (IOException e) {
-                    e.printStackTrace();
                     logger.error("文件权限修改失败", e);
                 }
-            } else {
-                readAndDeleteFile(tempFile, list);
             }
+            readAndDeleteFile(tempFile, list);
         }
     }
 

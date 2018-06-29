@@ -89,8 +89,6 @@ public class TransformTask {
             mergerTransformer.transform(executor);
             quitTransformer.transform(executor);
             industryDataTransformer.transform(executor);
-
-//            executor.shutdown();
         } catch (Exception e) {
             logger.error("转换数据出错", e);
         }

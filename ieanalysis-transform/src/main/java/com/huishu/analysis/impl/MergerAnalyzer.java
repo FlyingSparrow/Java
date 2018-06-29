@@ -54,10 +54,8 @@ public class MergerAnalyzer extends DefaultAnalyzer {
      */
     @Override
     protected void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
-        Map<String, String> newIndexMap = new HashMap<>(indexMap);
-
         MergerDataBak entity = new MergerDataBak();
-        entity.setId(Long.valueOf(newIndexMap.get(getType())));
+        entity.setId(Long.valueOf(indexMap.get(getType())));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
         List<MergerDataBak> list = mergerDataBakService.findOneHundred(entity, pageable);
 
@@ -68,9 +66,9 @@ public class MergerAnalyzer extends DefaultAnalyzer {
         }
 
         String newId = list.get(list.size() - 1).getId() + "";
-        String oldId = newIndexMap.get(getType());
+        String oldId = indexMap.get(getType());
         if (Long.parseLong(newId) > Long.parseLong(oldId)) {
-            newIndexMap.put(getType(), newId);
+            indexMap.put(getType(), newId);
         }
 
 
@@ -105,7 +103,7 @@ public class MergerAnalyzer extends DefaultAnalyzer {
         logger.info("{}分析,入库 {} 条", getName(), saveList.size());
         logger.info("{}分析,分析 {} 条", getName(), readList.size());
 
-        recordNum(newIndexMap);
+        recordNum(indexMap);
     }
 
     private boolean validate(MergerDataBak mergerDataBak) {

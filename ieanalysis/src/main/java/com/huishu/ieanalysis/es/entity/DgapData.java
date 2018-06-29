@@ -143,12 +143,144 @@ public class DgapData implements Serializable {
     @Field(type = FieldType.Long)
     private Long reportType;
 
+    /**
+     * 工商数据 开始
+     */
+
+    /**
+     * 企业名称
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String enterpriseName;
+    /**
+     * 公司状态
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String status;
+    /**
+     * 企业真正名称
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String realName;
+    /**
+     * 经营范围
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String businessScope;
+    /**
+     * 企业所有者
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String owner;
+    /**
+     * 注册资本
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String registeredCapital;
+    /**
+     * 注册时间
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String createDate;
+    /**
+     * 联系电话
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String contactNumber;
+    /**
+     * 公司类型
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String companyType;
+    /**
+     * 软件著作权数量
+     */
+    @Field(type = FieldType.Integer)
+    private Integer softwareCopyright;
+    /**
+     * 专利数量
+     */
+    @Field(type = FieldType.Integer)
+    private Integer patents;
+    /**
+     * 融资次数
+     */
+    @Field(type = FieldType.Integer)
+    private Integer financingRound;
+    /**
+     * 融资时间，格式：yyyy-MM-dd
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String financingTime;
+    /**
+     * 员工人数
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String employees;
+    /**
+     * 对外投资次数
+     */
+    @Field(type = FieldType.Integer)
+    private Integer invest;
+    /**
+     * 地址
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String address;
+    /**
+     * 分支机构数量
+     */
+    @Field(type = FieldType.Integer)
+    private Integer branchCount;
+    /**
+     * 股东
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String shareholder;
+    /**
+     * 数据来源，天眼查，企查查等
+     */
+    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    private String source;
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Long getMonth() {
+        return month;
+    }
+
+    public void setMonth(Long month) {
+        this.month = month;
+    }
+
+    public Long getYear() {
+        return year;
+    }
+
+    public void setYear(Long year) {
+        this.year = year;
+    }
+
+    public Long getHour() {
+        return hour;
+    }
+
+    public void setHour(Long hour) {
+        this.hour = hour;
+    }
+
+    public Long getDay() {
+        return day;
+    }
+
+    public void setDay(Long day) {
+        this.day = day;
     }
 
     public String getTime() {
@@ -175,6 +307,46 @@ public class DgapData implements Serializable {
         this.province = province;
     }
 
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getSocialChannel() {
+        return socialChannel;
+    }
+
+    public void setSocialChannel(String socialChannel) {
+        this.socialChannel = socialChannel;
+    }
+
+    public Long getHotEventMark() {
+        return hotEventMark;
+    }
+
+    public void setHotEventMark(Long hotEventMark) {
+        this.hotEventMark = hotEventMark;
+    }
+
+    public Long getEmotionMark() {
+        return emotionMark;
+    }
+
+    public void setEmotionMark(Long emotionMark) {
+        this.emotionMark = emotionMark;
+    }
+
+    public Long getReadNum() {
+        return readNum;
+    }
+
+    public void setReadNum(Long readNum) {
+        this.readNum = readNum;
+    }
+
     public String getIndustry() {
         return industry;
     }
@@ -183,20 +355,12 @@ public class DgapData implements Serializable {
         this.industry = industry;
     }
 
-    public Long getMonth() {
-        return month;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setMonth(Long month) {
-        this.month = month;
-    }
-
-    public Long getYear() {
-        return year;
-    }
-
-    public void setYear(Long year) {
-        this.year = year;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public Double getFinancingAmount() {
@@ -279,6 +443,13 @@ public class DgapData implements Serializable {
         this.reportNum = reportNum;
     }
 
+    public Long getHitNum() {
+        return hitNum;
+    }
+
+    public void setHitNum(Long hitNum) {
+        this.hitNum = hitNum;
+    }
 
     public String getPolicyTitle() {
         return policyTitle;
@@ -312,63 +483,6 @@ public class DgapData implements Serializable {
         this.policyPublishAuthor = policyPublishAuthor;
     }
 
-    public Long getEmotionMark() {
-        return emotionMark;
-    }
-
-    public void setEmotionMark(Long emotionMark) {
-        this.emotionMark = emotionMark;
-    }
-
-    public String getSite() {
-        return site;
-    }
-
-    public void setSite(String site) {
-        this.site = site;
-    }
-
-    public Long getHotEventMark() {
-        return hotEventMark;
-    }
-
-    public void setHotEventMark(Long hotEventMark) {
-        this.hotEventMark = hotEventMark;
-    }
-
-    public Long getHour() {
-        return hour;
-    }
-
-    public void setHour(Long hour) {
-        this.hour = hour;
-    }
-
-    public String getSocialChannel() {
-        return socialChannel;
-    }
-
-    public void setSocialChannel(String socialChannel) {
-        this.socialChannel = socialChannel;
-    }
-
-
-    public String getPolicyUrl() {
-        return policyUrl;
-    }
-
-    public void setPolicyUrl(String policyUrl) {
-        this.policyUrl = policyUrl;
-    }
-
-    public Long getDay() {
-        return day;
-    }
-
-    public void setDay(Long day) {
-        this.day = day;
-    }
-
     public Long getPolicyInfoType() {
         return policyInfoType;
     }
@@ -385,6 +499,30 @@ public class DgapData implements Serializable {
         this.policyImageUrl = policyImageUrl;
     }
 
+    public String getPolicyUrl() {
+        return policyUrl;
+    }
+
+    public void setPolicyUrl(String policyUrl) {
+        this.policyUrl = policyUrl;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public Long getSocialType() {
         return socialType;
     }
@@ -397,49 +535,167 @@ public class DgapData implements Serializable {
         return reportType;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public void setReportType(Long reportType) {
         this.reportType = reportType;
     }
 
-    public String getArea() {
-        return area;
+    public String getEnterpriseName() {
+        return enterpriseName;
     }
 
-    public void setArea(String area) {
-        this.area = area;
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
     }
 
-    public Long getReadNum() {
-        return readNum;
+    public String getStatus() {
+        return status;
     }
 
-    public void setReadNum(Long readNum) {
-        this.readNum = readNum;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public Long getHitNum() {
-        return hitNum;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setHitNum(Long hitNum) {
-        this.hitNum = hitNum;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
-    public String getContent() {
-        return content;
+    public String getBusinessScope() {
+        return businessScope;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setBusinessScope(String businessScope) {
+        this.businessScope = businessScope;
     }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getRegisteredCapital() {
+        return registeredCapital;
+    }
+
+    public void setRegisteredCapital(String registeredCapital) {
+        this.registeredCapital = registeredCapital;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getCompanyType() {
+        return companyType;
+    }
+
+    public void setCompanyType(String companyType) {
+        this.companyType = companyType;
+    }
+
+    public Integer getSoftwareCopyright() {
+        return softwareCopyright;
+    }
+
+    public void setSoftwareCopyright(Integer softwareCopyright) {
+        this.softwareCopyright = softwareCopyright;
+    }
+
+    public Integer getPatents() {
+        return patents;
+    }
+
+    public void setPatents(Integer patents) {
+        this.patents = patents;
+    }
+
+    public Integer getFinancingRound() {
+        return financingRound;
+    }
+
+    public void setFinancingRound(Integer financingRound) {
+        this.financingRound = financingRound;
+    }
+
+    public String getFinancingTime() {
+        return financingTime;
+    }
+
+    public void setFinancingTime(String financingTime) {
+        this.financingTime = financingTime;
+    }
+
+    public String getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(String employees) {
+        this.employees = employees;
+    }
+
+    public Integer getInvest() {
+        return invest;
+    }
+
+    public void setInvest(Integer invest) {
+        this.invest = invest;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getBranchCount() {
+        return branchCount;
+    }
+
+    public void setBranchCount(Integer branchCount) {
+        this.branchCount = branchCount;
+    }
+
+    public String getShareholder() {
+        return shareholder;
+    }
+
+    public void setShareholder(String shareholder) {
+        this.shareholder = shareholder;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    /**
+     * 工商数据 结束
+     */
+
+
 
     @Override
     public String toString() {

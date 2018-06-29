@@ -5,8 +5,7 @@ import com.huishu.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.util.Collections;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -64,7 +63,7 @@ public class SysInit {
     }
 
     public static Map<String, String> getIndexMap() {
-        return Collections.unmodifiableMap(INDEX_MAP);
+        return INDEX_MAP;
     }
 
 }

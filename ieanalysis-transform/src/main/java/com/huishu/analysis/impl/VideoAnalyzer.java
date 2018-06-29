@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,10 +59,9 @@ public class VideoAnalyzer extends DefaultAnalyzer {
     @Override
     protected void analysisData(AnalysisConfig analysisConfig, Map<String, String> indexMap, int pageNumber) {
         STATIC_LIST.clear();
-        Map<String, String> newIndexMap = new HashMap<>(indexMap);
 
         VideoBak entity = new VideoBak();
-        entity.setId(Long.valueOf(newIndexMap.get(getType())));
+        entity.setId(Long.valueOf(indexMap.get(getType())));
         Pageable pageable = new PageRequest(pageNumber, analysisConfig.getTransformNum());
         List<VideoBak> list = videoBakService.findOneHundred(entity, pageable);
 
@@ -74,9 +72,9 @@ public class VideoAnalyzer extends DefaultAnalyzer {
         }
 
         String newId = list.get(list.size() - 1).getId() + "";
-        String oldId = newIndexMap.get(getType());
+        String oldId = indexMap.get(getType());
         if (Long.parseLong(newId) > Long.parseLong(oldId)) {
-            newIndexMap.put(getType(), newId);
+            indexMap.put(getType(), newId);
         }
 
 
@@ -118,7 +116,7 @@ public class VideoAnalyzer extends DefaultAnalyzer {
         logger.info("{}分析,入库 {} 条", getName(), saveList.size());
         logger.info("{}分析,分析 {} 条", getName(), readList.size());
 
-        recordNum(newIndexMap);
+        recordNum(indexMap);
     }
 
     @Override

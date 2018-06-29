@@ -98,7 +98,7 @@ public class IndustryDataTyc implements Serializable {
      * 员工人数
      */
     @Column(name = "Employees")
-    private Integer employees;
+    private String employees;
     /**
      * 对外投资次数
      */
@@ -248,11 +248,11 @@ public class IndustryDataTyc implements Serializable {
         this.companyFinancingAmount = companyFinancingAmount;
     }
 
-    public Integer getEmployees() {
+    public String getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Integer employees) {
+    public void setEmployees(String employees) {
         this.employees = employees;
     }
 

@@ -102,8 +102,6 @@ public class AnalysisTask {
 			mergerAnalyzer.analysis(analysisConfig, executor, indexMap);
 			quitAnalyzer.analysis(analysisConfig, executor, indexMap);
 			industryDataAnalyzer.analysis(analysisConfig, executor, indexMap);
-
-//			executor.shutdown();
 		} catch (Exception e) {
 			logger.error("分析数据出错", e);
 		}
