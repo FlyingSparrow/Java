@@ -234,6 +234,10 @@ public class DgapData implements Serializable {
      */
     private String registeredCapital;
     /**
+     * 注册资本金额，单位：元，币种：人民币
+     */
+    private Double registeredCapitalAmount;
+    /**
      * 注册时间
      */
     private String createDate;
@@ -632,6 +636,14 @@ public class DgapData implements Serializable {
 
     public void setRegisteredCapital(String registeredCapital) {
         this.registeredCapital = registeredCapital;
+    }
+
+    public Double getRegisteredCapitalAmount() {
+        return registeredCapitalAmount;
+    }
+
+    public void setRegisteredCapitalAmount(Double registeredCapitalAmount) {
+        this.registeredCapitalAmount = registeredCapitalAmount;
     }
 
     public String getCreateDate() {

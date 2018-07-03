@@ -54,7 +54,10 @@ public class SimpleTest {
         Assert.assertEquals(aaResult3, aaResult4);
 
         int currentMonth = DateUtils.getCurrentMonth();
-        Assert.assertEquals(6, currentMonth);
+        Assert.assertEquals(7, currentMonth);
+
+        Date today = DateUtils.currentDate();
+        System.out.println(DateUtils.getMonth(today));
     }
 
     @Test
@@ -69,6 +72,8 @@ public class SimpleTest {
         String str8 = "-313465";
         String str9 = "+2424234";
         String str10 = "-";
+
+        double amount = 1.05887336E8;
 
         System.out.println(str1 + ":" + StringUtils.isNumber(str1));
         System.out.println(str2 + ":" + StringUtils.isNumber(str2));

@@ -14,11 +14,11 @@ import java.util.List;
  */
 public class DateUtils {
 
-	private static final String FORMAT_DATE = "yyyy-MM-dd";
+	public static final String FORMAT_DATE = "yyyy-MM-dd";
 
-	private static final String FORMAT_TIME = "yyyy-MM-dd HH:mm:ss";
-	
-	private static final String FORMAT_FILE_PATH = "yyyyMMdd";
+	public static final String FORMAT_TIME = "yyyy-MM-dd HH:mm:ss";
+
+	public static final String FORMAT_FILE_PATH = "yyyyMMdd";
 
 	public static String getDateFilePath(Date date) {
 		return formatDate(date, FORMAT_FILE_PATH);
@@ -244,6 +244,67 @@ public class DateUtils {
 			return 0;
 		}
 		return new DateTime(date).getHourOfDay();
+	}
+
+	/**
+	 * <p>
+	 * Description: 解析yyyy-MM-dd HH:mm:ss格式的日期字符串，返回日期对象
+	 * </p>
+	 *
+	 * @param date
+	 * @return
+	 * @author wjc
+	 * @date 2016年12月30日
+	 */
+	public static Date parseDate(String date) {
+		return parseDate(date, FORMAT_TIME);
+	}
+
+	/**
+	 * <p>
+	 * Description: 使用指定的日期格式解析日期字符串，返回日期对象
+	 * </p>
+	 *
+	 * @param date
+	 * @param dateFormat
+	 * @return
+	 * @author wjc
+	 * @date 2016年12月30日
+	 */
+	public static Date parseDate(String date, String dateFormat) {
+		Date result = null;
+		if (StringUtils.isNotEmpty(date) && StringUtils.isNotEmpty(dateFormat)
+				&& (date.length() == dateFormat.length())) {
+			DateTimeFormatter format = DateTimeFormat.forPattern(dateFormat);
+			DateTime dateTime = DateTime.parse(date, format);
+			result = dateTime.toDate();
+		}
+
+		return result;
+	}
+
+	/**
+	 * 获取指定日期对象所属的年份
+	 * @param date
+	 * @return
+	 */
+	public static int getYear(Date date) {
+		if (date == null) {
+			return -1;
+		}
+		return new DateTime(date).getYear();
+	}
+
+	/**
+	 * 获取指定日期对象所属的月份
+	 * @param date
+	 * @return
+	 */
+	public static int getMonth(Date date) {
+		if (date == null) {
+			return -1;
+		}
+		return new DateTime(date).getMonthOfYear();
 	}
 
 }

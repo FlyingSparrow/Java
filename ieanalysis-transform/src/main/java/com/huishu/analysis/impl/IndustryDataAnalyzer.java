@@ -1,10 +1,13 @@
 package com.huishu.analysis.impl;
 
 import com.huishu.config.AnalysisConfig;
+import com.huishu.config.UnitsConfig;
 import com.huishu.constants.SysConst;
 import com.huishu.entity.IndustryDataBak;
 import com.huishu.entity.KingBaseDgap;
 import com.huishu.service.IndustryDataBakService;
+import com.huishu.utils.DateUtils;
+import com.huishu.utils.StringUtils;
 import com.huishu.vo.DgapData;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,8 @@ public class IndustryDataAnalyzer extends DefaultAnalyzer {
 
     @Autowired
     private IndustryDataBakService industryDataBakService;
+    @Autowired
+    private UnitsConfig unitsConfig;
 
     @Override
     public String getName() {
@@ -83,6 +89,23 @@ public class IndustryDataAnalyzer extends DefaultAnalyzer {
                 dgapData.setPublishType(SysConst.PublishType.INDUSTRY.getCode());
                 dgapData.setDataType(SysConst.DataType.INDUSTRY.getCode());
                 item.setBiaoShi(SysConst.ESDataStatus.EXISTS_IN_ES.getCode());
+                String createDate = item.getCreateDate();
+                if(StringUtils.isNotEmpty(createDate)){
+                    Date tempCreateDate = DateUtils.parseDate(createDate, DateUtils.FORMAT_DATE);
+                    if(tempCreateDate != null){
+                        dgapData.setYear(Long.valueOf(DateUtils.getYear(tempCreateDate)));
+                        dgapData.setMonth(Long.valueOf(DateUtils.getMonth(tempCreateDate)));
+                    }
+                }
+                Double registeredCapitalAmount = StringUtils.transformAmount(unitsConfig, dgapData.getRegisteredCapital());
+
+                logger.info("registeredCapitalAmount: {}", registeredCapitalAmount);
+
+                if(registeredCapitalAmount == null){
+                    registeredCapitalAmount = 0D;
+                }
+                dgapData.setRegisteredCapitalAmount(registeredCapitalAmount);
+
                 addKingBaseData(historyList, dgapData);
                 dgapData.setId(String.valueOf(item.getId()));
                 saveList.add(dgapData);

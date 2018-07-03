@@ -178,6 +178,11 @@ public class DgapData implements Serializable {
     @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
     private String registeredCapital;
     /**
+     * 注册资本金额，单位：元，币种：人民币
+     */
+    @Field(type = FieldType.Double)
+    private Double registeredCapitalAmount;
+    /**
      * 注册时间
      */
     @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
@@ -585,6 +590,14 @@ public class DgapData implements Serializable {
 
     public void setRegisteredCapital(String registeredCapital) {
         this.registeredCapital = registeredCapital;
+    }
+
+    public Double getRegisteredCapitalAmount() {
+        return registeredCapitalAmount;
+    }
+
+    public void setRegisteredCapitalAmount(Double registeredCapitalAmount) {
+        this.registeredCapitalAmount = registeredCapitalAmount;
     }
 
     public String getCreateDate() {

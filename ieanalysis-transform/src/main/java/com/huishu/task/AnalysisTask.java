@@ -36,7 +36,8 @@ public class AnalysisTask {
 	private static ThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(SysConst.DEFAULT_CORE_POOL_SIZE,
 			new ThreadFactoryBuilder().setNameFormat("analysis-pool-%d").build());
 
-	private Map<String, String> indexMap = SysInit.getIndexMap();
+	@Autowired
+	private SysInit sysInit;
 
 	@Autowired
 	private AnalysisConfig analysisConfig;
@@ -91,6 +92,8 @@ public class AnalysisTask {
 	@Scheduled(fixedDelay = 1000 * 30)
 	public void warn() {
 		try {
+			Map<String, String> indexMap = sysInit.getIndexMap();
+
 			newsAnalyzer.analysis(analysisConfig, executor, indexMap);
 			policyAnalyzer.analysis(analysisConfig, executor, indexMap);
 			zongheAnalyzer.analysis(analysisConfig, executor, indexMap);
