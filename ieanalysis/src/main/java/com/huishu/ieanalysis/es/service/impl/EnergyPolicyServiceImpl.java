@@ -1,25 +1,28 @@
 package com.huishu.ieanalysis.es.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.huishu.ieanalysis.constants.SysConst;
 import com.huishu.ieanalysis.dto.ConditionDTO;
 import com.huishu.ieanalysis.echarts.series.Bar;
-import com.huishu.ieanalysis.echarts.series.Line;
 import com.huishu.ieanalysis.echarts.series.BaseSeries;
+import com.huishu.ieanalysis.echarts.series.Line;
 import com.huishu.ieanalysis.echarts.vo.DataLongVo;
 import com.huishu.ieanalysis.echarts.vo.DataVo;
 import com.huishu.ieanalysis.echarts.vo.IndicatorVo;
 import com.huishu.ieanalysis.es.service.AbstractService;
 import com.huishu.ieanalysis.es.service.EnergyPolicyService;
 import com.huishu.ieanalysis.utils.NumberUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.aggregations.metrics.sum.SumBuilder;
+import org.elasticsearch.search.aggregations.metrics.valuecount.ValueCount;
+import org.elasticsearch.search.aggregations.metrics.valuecount.ValueCountBuilder;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.stereotype.Service;
 
@@ -250,8 +253,44 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         JSONObject result = new JSONObject();
 
         List<BaseSeries<Integer>> series = new ArrayList<BaseSeries<Integer>>();
-        List<Integer> monthAmountList = NumberUtils.generateIntegerData(12, 300000);
-        series.add(new Bar<Integer>().setData(monthAmountList));
+
+        int monthCount = 12;
+        Integer[] value = new Integer[monthCount];
+        for (int i = 0; i < monthCount; i++) {
+            value[i] = 0;
+        }
+
+        cond.setProvince(null);
+        cond.setDataType(SysConst.DataType.INDUSTRY.getCode());
+        BoolQueryBuilder queryBuilder = getBuilders(cond);
+
+        logger.info("queryBuilder: {}", queryBuilder.toString());
+
+        TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
+        ValueCountBuilder enterpriseNameNumAgg = AggregationBuilders.count("enterpriseName").field("enterpriseName");
+        monthAgg.subAggregation(enterpriseNameNumAgg);
+        NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
+        template.query(query, res -> {
+            Terms terms = res.getAggregations().get("month");
+            List<Terms.Bucket> buckets = terms.getBuckets();
+            if (buckets == null || buckets.size() < 1) {
+                return null;
+            }
+            for (Terms.Bucket bucket : buckets) {
+                if (org.apache.commons.lang.StringUtils.isNotEmpty(bucket.getKeyAsString())) {
+                    int month = bucket.getKeyAsNumber().intValue();
+                    ValueCount enterpriseCount = bucket.getAggregations().get("enterpriseName");
+                    long enterpriseCountValue = enterpriseCount == null ? 0 : enterpriseCount.getValue();
+                    value[month-1] = Integer.valueOf(enterpriseCountValue+"");
+                }
+            }
+            return null;
+        });
+
+        series.add(new Bar<Integer>().setData(Arrays.asList(value)));
         result.put("series", series);
         result.put("name", SysConst.getMonthList());
 
@@ -263,18 +302,58 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
         JSONObject result = new JSONObject();
 
         int monthCount = 12;
-        List<Double> monthAmountList = NumberUtils.generateDoubleData(monthCount, 300000);
+        Integer[] value = new Integer[monthCount];
+        for (int i = 0; i < monthCount; i++) {
+            value[i] = 0;
+        }
+
+        cond.setProvince(null);
+        cond.setDataType(SysConst.DataType.INDUSTRY.getCode());
+        BoolQueryBuilder queryBuilder = getBuilders(cond);
+
+        logger.info("queryBuilder: {}", queryBuilder.toString());
+
+        TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
+        ValueCountBuilder enterpriseNameNumAgg = AggregationBuilders.count("enterpriseName").field("enterpriseName");
+        monthAgg.subAggregation(enterpriseNameNumAgg);
+        NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
+        template.query(query, res -> {
+            Terms terms = res.getAggregations().get("month");
+            List<Terms.Bucket> buckets = terms.getBuckets();
+            if (buckets == null || buckets.size() < 1) {
+                return null;
+            }
+            for (Terms.Bucket bucket : buckets) {
+                if (org.apache.commons.lang.StringUtils.isNotEmpty(bucket.getKeyAsString())) {
+                    int month = bucket.getKeyAsNumber().intValue();
+                    ValueCount enterpriseCount = bucket.getAggregations().get("enterpriseName");
+                    long enterpriseCountValue = enterpriseCount == null ? 0 : enterpriseCount.getValue();
+                    value[month-1] = Integer.valueOf(enterpriseCountValue+"");
+                }
+            }
+            return null;
+        });
+
         Double[] rateArray = new Double[monthCount];
         for (int i = 0; i < monthCount; i++) {
             if (i == 0) {
                 rateArray[i] = 0D;
             } else {
-                Double monthAmount = monthAmountList.get(i);
-                Double previousMonthAmount = monthAmountList.get(i - 1);
-                rateArray[i] = Math.abs(NumberUtils.formatDouble(
-                        (monthAmount - previousMonthAmount) * 100 / previousMonthAmount));
+                Integer monthAmount = value[i];
+                Integer previousMonthAmount = value[i - 1];
+                if(previousMonthAmount > 0){
+                    rateArray[i] = Math.abs(NumberUtils.formatDouble(
+                            Double.valueOf(monthAmount - previousMonthAmount) * 100 / previousMonthAmount));
+                }else{
+                    rateArray[i] = Math.abs(NumberUtils.formatDouble(
+                            Double.valueOf(monthAmount - previousMonthAmount) * 100));
+                }
             }
         }
+
         List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         series.add(new Line<Double>().setData(Arrays.asList(rateArray)));
         result.put("name", SysConst.getMonthList());
@@ -288,15 +367,64 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
             ConditionDTO cond) {
         JSONObject result = new JSONObject();
 
-        List<Long> amountList = NumberUtils.generateLongData(4, 10000000);
+        int monthCount = 12;
+        Long[] value = new Long[monthCount];
+        for (int i = 0; i < monthCount; i++) {
+            value[i] = 0L;
+        }
+
+        int year = cond.getYear();
+        cond.setProvince(null);
+        cond.setDataType(SysConst.DataType.INDUSTRY.getCode());
+        BoolQueryBuilder queryBuilder = getBuilders(cond);
+
+        logger.info("queryBuilder: {}", queryBuilder.toString());
+
+        TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
+        ValueCountBuilder enterpriseNameNumAgg = AggregationBuilders.count("enterpriseName").field("enterpriseName");
+        monthAgg.subAggregation(enterpriseNameNumAgg);
+        NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
+        template.query(query, res -> {
+            Terms terms = res.getAggregations().get("month");
+            List<Terms.Bucket> buckets = terms.getBuckets();
+            if (buckets == null || buckets.size() < 1) {
+                return null;
+            }
+            for (Terms.Bucket bucket : buckets) {
+                if (org.apache.commons.lang.StringUtils.isNotEmpty(bucket.getKeyAsString())) {
+                    int month = bucket.getKeyAsNumber().intValue();
+                    ValueCount enterpriseCount = bucket.getAggregations().get("enterpriseName");
+                    long enterpriseCountValue = enterpriseCount == null ? 0 : enterpriseCount.getValue();
+                    value[month-1] = enterpriseCountValue;
+                }
+            }
+            return null;
+        });
+
+        List<Long> amountList = Lists.newArrayList();
+        long firstQuarterAmount = value[0]+value[1]+value[2];
+        long secondQuarterAmount = value[3]+value[4]+value[5];
+        long thirdQuarterAmount = value[6]+value[7]+value[8];
+        long fourthQuarterAmount = value[9]+value[10]+value[11];
+        amountList.add(firstQuarterAmount);
+        amountList.add(secondQuarterAmount);
+        amountList.add(thirdQuarterAmount);
+        amountList.add(fourthQuarterAmount);
+
+        List<String> quarterList = Arrays.asList(
+                new String[]{year+"年第一季度", year+"年第二季度", year+"年第三季度", year+"年第四季度"});
         List<DataLongVo> dataList = new ArrayList<DataLongVo>();
-        for (int i = 0; i < amountList.size(); i++) {
+        for (int i = 0; i < quarterList.size(); i++) {
             DataLongVo vo = new DataLongVo();
-            vo.setName(SysConst.getQuarter(i));
+            vo.setName(quarterList.get(i));
             vo.setValue(amountList.get(i));
             dataList.add(vo);
         }
-        result.put("legend", SysConst.getQuarterList());
+
+        result.put("legend", quarterList);
         result.put("piedata", dataList);
 
         return result;
@@ -307,11 +435,68 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
             ConditionDTO cond) {
         JSONObject result = new JSONObject();
 
-        List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
-        List<Double> amountList = NumberUtils.generateDoubleData(4, 1000000);
-        series.add(new Bar<Double>().setData(amountList));
+        int monthCount = 12;
+        Long[] value = new Long[monthCount];
+        for (int i = 0; i < monthCount; i++) {
+            value[i] = 0L;
+        }
+
+        int year = cond.getYear();
+        cond.setProvince(null);
+        cond.setDataType(SysConst.DataType.INDUSTRY.getCode());
+        BoolQueryBuilder queryBuilder = getBuilders(cond);
+
+        logger.info("queryBuilder: {}", queryBuilder.toString());
+
+        TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
+        ValueCountBuilder enterpriseNameNumAgg = AggregationBuilders.count("enterpriseName").field("enterpriseName");
+        monthAgg.subAggregation(enterpriseNameNumAgg);
+        NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
+        template.query(query, res -> {
+            Terms terms = res.getAggregations().get("month");
+            List<Terms.Bucket> buckets = terms.getBuckets();
+            if (buckets == null || buckets.size() < 1) {
+                return null;
+            }
+            for (Terms.Bucket bucket : buckets) {
+                if (org.apache.commons.lang.StringUtils.isNotEmpty(bucket.getKeyAsString())) {
+                    int month = bucket.getKeyAsNumber().intValue();
+                    ValueCount enterpriseCount = bucket.getAggregations().get("enterpriseName");
+                    long enterpriseCountValue = enterpriseCount == null ? 0 : enterpriseCount.getValue();
+                    value[month-1] = enterpriseCountValue;
+                }
+            }
+            return null;
+        });
+
+        List<Long> amountList = Lists.newArrayList();
+        long firstQuarterAmount = value[0]+value[1]+value[2];
+        long secondQuarterAmount = value[3]+value[4]+value[5];
+        long thirdQuarterAmount = value[6]+value[7]+value[8];
+        long fourthQuarterAmount = value[9]+value[10]+value[11];
+        amountList.add(firstQuarterAmount);
+        amountList.add(secondQuarterAmount);
+        amountList.add(thirdQuarterAmount);
+        amountList.add(fourthQuarterAmount);
+
+        List<String> quarterList = Arrays.asList(
+                new String[]{year+"年第一季度", year+"年第二季度", year+"年第三季度", year+"年第四季度"});
+        List<DataLongVo> dataList = new ArrayList<DataLongVo>();
+        for (int i = 0; i < quarterList.size(); i++) {
+            DataLongVo vo = new DataLongVo();
+            vo.setName(quarterList.get(i));
+            vo.setValue(amountList.get(i));
+            dataList.add(vo);
+        }
+
+
+        List<BaseSeries<Long>> series = new ArrayList<BaseSeries<Long>>();
+        series.add(new Bar<Long>().setData(amountList));
         result.put("series", series);
-        result.put("name", SysConst.getQuarterList());
+        result.put("name", quarterList);
 
         return result;
     }
@@ -321,16 +506,55 @@ public class EnergyPolicyServiceImpl extends AbstractService implements EnergyPo
             ConditionDTO cond) {
         JSONObject result = new JSONObject();
 
-        List<Integer> monthAmountList = NumberUtils.generateIntegerData(12, 300000);
-        List<Integer> spaceList = NumberUtils.generateIntegerData(12, 1000);
+        int monthCount = 12;
+        List<Integer> spaceList = new ArrayList<>(monthCount);
+        Integer[] value = new Integer[monthCount];
+        for (int i = 0; i < monthCount; i++) {
+            value[i] = 0;
+            spaceList.add(0);
+        }
+
+        cond.setProvince(null);
+        cond.setDataType(SysConst.DataType.INDUSTRY.getCode());
+        BoolQueryBuilder queryBuilder = getBuilders(cond);
+
+        logger.info("queryBuilder: {}", queryBuilder.toString());
+
+        TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
+        ValueCountBuilder enterpriseNameNumAgg = AggregationBuilders.count("enterpriseName").field("enterpriseName");
+        monthAgg.subAggregation(enterpriseNameNumAgg);
+        NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
+        template.query(query, res -> {
+            Terms terms = res.getAggregations().get("month");
+            List<Terms.Bucket> buckets = terms.getBuckets();
+            if (buckets == null || buckets.size() < 1) {
+                return null;
+            }
+            for (Terms.Bucket bucket : buckets) {
+                if (org.apache.commons.lang.StringUtils.isNotEmpty(bucket.getKeyAsString())) {
+                    int month = bucket.getKeyAsNumber().intValue();
+                    ValueCount enterpriseCount = bucket.getAggregations().get("enterpriseName");
+                    long enterpriseCountValue = enterpriseCount == null ? 0 : enterpriseCount.getValue();
+                    value[month-1] = Integer.valueOf(enterpriseCountValue+"");
+                }
+            }
+            return null;
+        });
+
+
+        List<Integer> monthAmountList = Arrays.asList(value);
+
         List<List<Integer>> list = new ArrayList<List<Integer>>();
         list.add(monthAmountList);
         list.add(spaceList);
-        List<String> namelist = new ArrayList<String>();
-        namelist.add("新企业注册量");
-        namelist.add("众创空间量");
+        List<String> nameList = new ArrayList<String>();
+        nameList.add("新企业注册量");
+        nameList.add("众创空间量");
         result.put("value", list);
-        result.put("name", namelist);
+        result.put("name", nameList);
 
         return result;
     }

@@ -130,8 +130,4 @@ public class SysConst {
         return Collections.unmodifiableList(X_NAME_QUARTER);
     }
 
-    public static String getQuarter(int index){
-        return X_NAME_QUARTER.get(index);
-    }
-
 }

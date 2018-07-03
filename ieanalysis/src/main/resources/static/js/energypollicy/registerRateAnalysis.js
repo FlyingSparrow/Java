@@ -12,7 +12,7 @@ $(function() {
 	
 	$(document).on('change', '#queryContrastYearSelect', function() {
 		selectContrastYear=$("#queryContrastYearSelect").val();
-		loadThree();
+        load();
 	});
 	load();
 }); 
@@ -21,10 +21,6 @@ function load(){
 	loadfirst();
 	loadsecond();
 	loadThree();
-	$(document).on('change', '#queryMonthSelect', function() {
-		selectMonth=$("#queryMonthSelect").val();
-		loadThree();
-	});
 }
 
 function  postData(){
@@ -131,7 +127,7 @@ function loadFirstEchart(result){
 	             type: 'value',
 	             name: '新企业注册量',
 	             min: 0,
-	             max: 300000,
+	             // max: 300000,
 	             position: 'left',
 	             axisLine: {
 	                 lineStyle: {
@@ -147,7 +143,7 @@ function loadFirstEchart(result){
 	             type: 'value',
 	             name: '众创空间量',
 	             min: 0,
-	             max: 3000,
+	             // max: 3000,
 	             position: 'right',
 	             axisLine: {
 	                 lineStyle: {

@@ -152,7 +152,6 @@ public class EnergyPolicyController extends BaseController {
      */
     @RequestMapping(value = "/searchNewEnterpriseRegistrationThanSamePeriod.json", method = RequestMethod.POST)
     public AjaxResult searchNewEnterpriseRegistrationThanSamePeriod(ConditionDTO cond) {
-        setDefaultCond(cond);
         cond.setDataType(SysConst.DataType.INDUSTRY.getCode());
         JSONObject map = energyPolicyService.searchNewEnterpriseRegistrationThanSamePeriod(cond);
         return success(map);

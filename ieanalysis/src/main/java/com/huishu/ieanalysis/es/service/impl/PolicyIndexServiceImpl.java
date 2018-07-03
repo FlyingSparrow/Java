@@ -545,8 +545,8 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         logger.info("queryBuilder: {}", queryBuilder.toString());
 
         TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
-        ValueCountBuilder reportNumAgg = AggregationBuilders.count("enterpriseName").field("enterpriseName");
-        monthAgg.subAggregation(reportNumAgg);
+        ValueCountBuilder enterpriseNameNumAgg = AggregationBuilders.count("enterpriseName").field("enterpriseName");
+        monthAgg.subAggregation(enterpriseNameNumAgg);
         NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
 
         logger.info("query: {}", query.toString());
