@@ -22,6 +22,8 @@ import org.elasticsearch.search.aggregations.metrics.avg.AvgBuilder;
 import org.elasticsearch.search.aggregations.metrics.avg.InternalAvg;
 import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.aggregations.metrics.sum.SumBuilder;
+import org.elasticsearch.search.aggregations.metrics.valuecount.ValueCount;
+import org.elasticsearch.search.aggregations.metrics.valuecount.ValueCountBuilder;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.stereotype.Service;
 
@@ -531,18 +533,58 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         JSONObject result = new JSONObject();
 
         int monthCount = 12;
-        List<Double> amountList = NumberUtils.generateDoubleData(monthCount, 400000);
+        Long[] value = new Long[monthCount];
+        for (int i = 0; i < monthCount; i++) {
+            value[i] = 0L;
+        }
+
+        cond.setProvince(null);
+        cond.setDataType(SysConst.DataType.INDUSTRY.getCode());
+        BoolQueryBuilder queryBuilder = getBuilders(cond);
+
+        logger.info("queryBuilder: {}", queryBuilder.toString());
+
+        TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
+        ValueCountBuilder reportNumAgg = AggregationBuilders.count("enterpriseName").field("enterpriseName");
+        monthAgg.subAggregation(reportNumAgg);
+        NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
+        template.query(query, res -> {
+            Terms terms = res.getAggregations().get("month");
+            List<Terms.Bucket> buckets = terms.getBuckets();
+            if (buckets == null || buckets.size() < 1) {
+                return null;
+            }
+            for (Terms.Bucket bucket : buckets) {
+                if (StringUtils.isNotEmpty(bucket.getKeyAsString())) {
+                    int month = bucket.getKeyAsNumber().intValue();
+                    ValueCount enterpriseCount = bucket.getAggregations().get("enterpriseName");
+                    long enterpriseCountValue = enterpriseCount == null ? 0 : enterpriseCount.getValue();
+                    value[month-1] = enterpriseCountValue;
+                }
+            }
+            return null;
+        });
+
         Double[] rateArray = new Double[monthCount];
         for (int i = 0; i < monthCount; i++) {
             if (i == 0) {
                 rateArray[i] = 0D;
             } else {
-                Double monthAmount = amountList.get(i);
-                Double previousMonthAmount = amountList.get(i - 1);
-                rateArray[i] = Math.abs(NumberUtils.formatDouble((monthAmount - previousMonthAmount)
-                        * 100 / previousMonthAmount));
+                Long monthAmount = value[i];
+                Long previousMonthAmount = value[i - 1];
+                if(previousMonthAmount > 0){
+                    rateArray[i] = Math.abs(NumberUtils.formatDouble(
+                            Double.valueOf(monthAmount - previousMonthAmount) * 100 / previousMonthAmount));
+                }else{
+                    rateArray[i] = Math.abs(NumberUtils.formatDouble(
+                            Double.valueOf(monthAmount - previousMonthAmount) * 100));
+                }
             }
         }
+
         List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         series.add(new Line<Double>().setData(Arrays.asList(rateArray)));
         result.put("name", SysConst.getMonthList());
@@ -556,11 +598,41 @@ public class PolicyIndexServiceImpl extends AbstractService implements PolicyInd
         JSONObject result = new JSONObject();
 
         int monthCount = 12;
-        List<Double> amountList = NumberUtils.generateDoubleData(monthCount, 1280000000);
         Double[] value = new Double[monthCount];
         for (int i = 0; i < monthCount; i++) {
-            value[i] = Math.abs(NumberUtils.formatDouble(amountList.get(i) / 100000000));
+            value[i] = 0D;
         }
+
+        cond.setProvince(null);
+        cond.setDataType(SysConst.DataType.INDUSTRY.getCode());
+        BoolQueryBuilder queryBuilder = getBuilders(cond);
+
+        logger.info("queryBuilder: {}", queryBuilder.toString());
+
+        TermsBuilder monthAgg = AggregationBuilders.terms("month").field("month").size(monthCount);
+        SumBuilder reportNumAgg = AggregationBuilders.sum("registeredCapitalAmount").field("registeredCapitalAmount");
+        monthAgg.subAggregation(reportNumAgg);
+        NativeSearchQuery query = getSearchQueryBuilder().withQuery(queryBuilder).addAggregation(monthAgg).build();
+
+        logger.info("query: {}", query.toString());
+
+        template.query(query, res -> {
+            Terms terms = res.getAggregations().get("month");
+            List<Terms.Bucket> buckets = terms.getBuckets();
+            if (buckets == null || buckets.size() < 1) {
+                return null;
+            }
+            for (Terms.Bucket bucket : buckets) {
+                if (StringUtils.isNotEmpty(bucket.getKeyAsString())) {
+                    int month = bucket.getKeyAsNumber().intValue();
+                    Sum registeredCapitalAmount = bucket.getAggregations().get("registeredCapitalAmount");
+                    double reportNumSumValue = registeredCapitalAmount == null ? 0 : registeredCapitalAmount.getValue();
+                    value[month-1] = reportNumSumValue/100000000;
+                }
+            }
+            return null;
+        });
+
         List<BaseSeries<Double>> series = new ArrayList<BaseSeries<Double>>();
         series.add(new Line<Double>().setData(Arrays.asList(value)));
         result.put("name", SysConst.getMonthList());
