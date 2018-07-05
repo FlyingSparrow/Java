@@ -3,7 +3,7 @@ package com.sparrow.ibe.bookingservice.airbook.request.builder;
 import com.sparrow.ibe.bookingservice.airbook.model.*;
 import com.sparrow.integration.builder.RequestBuilder;
 import com.sparrow.integration.exception.IntegrationException;
-import com.sparrow.utils.StringUtil;
+import com.sparrow.utils.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -26,7 +26,7 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
     /**
      * 功能：构造请求的xml
      *
-     * @author wangjc
+     * @author wangjc2
      * @date 2014-7-11
      */
     @Override
@@ -40,23 +40,23 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
         Document document = DocumentHelper.createDocument();
         Element rootElement = document.addElement("OTA_AirBookRQ");
         String displayResInd = request.getDisplayResInd();
-        if (StringUtil.isNotEmpty(displayResInd)) {
+        if (StringUtils.isNotEmpty(displayResInd)) {
             rootElement.addAttribute("DisplayResInd", displayResInd);
         }
 
         String ptcBindInd = request.getPtcBindInd();
-        if (StringUtil.isNotEmpty(ptcBindInd)) {
+        if (StringUtils.isNotEmpty(ptcBindInd)) {
             rootElement.addAttribute("PTCBindInd", ptcBindInd);
         }
 
 
         String segmentCheckInd = request.getSegmentCheckInd();
-        if (StringUtil.isNotEmpty(segmentCheckInd)) {
+        if (StringUtils.isNotEmpty(segmentCheckInd)) {
             rootElement.addAttribute("SegmentCheckInd", segmentCheckInd);
         }
 
         String autoARNKInd = request.getAutoARNKInd();
-        if (StringUtil.isNotEmpty(autoARNKInd)) {
+        if (StringUtils.isNotEmpty(autoARNKInd)) {
             rootElement.addAttribute("AutoARNKInd", autoARNKInd);
         }
 
@@ -68,7 +68,7 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
         buildTravelerInfoElement(request, rootElement);
 
         String ticketTimeLimit = request.getTicketTimeLimit();
-        if (StringUtil.isNotEmpty(ticketTimeLimit)) {
+        if (StringUtils.isNotEmpty(ticketTimeLimit)) {
             Element ticketingElement = rootElement.addElement("Ticketing");
             ticketingElement.addAttribute("TicketTimeLimit", ticketTimeLimit);
         }
@@ -101,28 +101,28 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 String numberInParty = fs.getNumberInParty();
 
                 Element fsElement = odoElement.addElement("FlightSegment");
-                if (StringUtil.isNotEmpty(rph)) {
+                if (StringUtils.isNotEmpty(rph)) {
                     fsElement.addAttribute("RPH", rph);
                 }
-                if (StringUtil.isNotEmpty(departureDateTime)) {
+                if (StringUtils.isNotEmpty(departureDateTime)) {
                     fsElement.addAttribute("DepartureDateTime", departureDateTime);
                 }
-                if (StringUtil.isNotEmpty(arrivalDateTime)) {
+                if (StringUtils.isNotEmpty(arrivalDateTime)) {
                     fsElement.addAttribute("ArrivalDateTime", arrivalDateTime);
                 }
-                if (StringUtil.isNotEmpty(codeshareInd)) {
+                if (StringUtils.isNotEmpty(codeshareInd)) {
                     fsElement.addAttribute("CodeshareInd", codeshareInd);
                 }
-                if (StringUtil.isNotEmpty(flightNumber)) {
+                if (StringUtils.isNotEmpty(flightNumber)) {
                     fsElement.addAttribute("FlightNumber", flightNumber);
                 }
-                if (StringUtil.isNotEmpty(status)) {
+                if (StringUtils.isNotEmpty(status)) {
                     fsElement.addAttribute("Status", status);
                 }
-                if (StringUtil.isNotEmpty(numberInParty)) {
+                if (StringUtils.isNotEmpty(numberInParty)) {
                     fsElement.addAttribute("NumberInParty", numberInParty);
                 }
-                if (StringUtil.isNotEmpty(segmentType)) {
+                if (StringUtils.isNotEmpty(segmentType)) {
                     fsElement.addAttribute("SegmentType", segmentType);
                 }
 
@@ -135,36 +135,36 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 String flightNumberOfMarketingAirline = fs.getFlightNumberOfMarketingAirline();
                 String resBookDesigCode = fs.getResBookDesigCode();
 
-                if (StringUtil.isNotEmpty(operatingAirline) || StringUtil.isNotEmpty(flightNumberOfOperatingAirline)) {
+                if (StringUtils.isNotEmpty(operatingAirline) || StringUtils.isNotEmpty(flightNumberOfOperatingAirline)) {
                     Element oaElement = fsElement.addElement("OperatingAirline");
-                    if (StringUtil.isNotEmpty(operatingAirline)) {
+                    if (StringUtils.isNotEmpty(operatingAirline)) {
                         oaElement.addAttribute("Code", operatingAirline);
                     }
-                    if (StringUtil.isNotEmpty(flightNumberOfOperatingAirline)) {
+                    if (StringUtils.isNotEmpty(flightNumberOfOperatingAirline)) {
                         oaElement.addAttribute("FlightNumber", flightNumberOfOperatingAirline);
                     }
                 }
-                if (StringUtil.isNotEmpty(departureAirport)) {
+                if (StringUtils.isNotEmpty(departureAirport)) {
                     Element daElement = fsElement.addElement("DepartureAirport");
                     daElement.addAttribute("LocationCode", departureAirport);
                 }
-                if (StringUtil.isNotEmpty(arrivalAirport)) {
+                if (StringUtils.isNotEmpty(arrivalAirport)) {
                     Element aaElement = fsElement.addElement("ArrivalAirport");
                     aaElement.addAttribute("LocationCode", arrivalAirport);
                 }
-                if (StringUtil.isNotEmpty(airEquipType)) {
+                if (StringUtils.isNotEmpty(airEquipType)) {
                     Element equipmentElement = fsElement.addElement("Equipment");
                     equipmentElement.addAttribute("AirEquipType", airEquipType);
                 }
-                if (StringUtil.isNotEmpty(marketingAirline)) {
+                if (StringUtils.isNotEmpty(marketingAirline)) {
                     Element maElement = fsElement.addElement("MarketingAirline");
                     maElement.addAttribute("Code", marketingAirline);
 
-                    if (StringUtil.isNotEmpty(flightNumberOfMarketingAirline)) {
+                    if (StringUtils.isNotEmpty(flightNumberOfMarketingAirline)) {
                         maElement.addAttribute("FlightNumber", flightNumberOfMarketingAirline);
                     }
                 }
-                if (StringUtil.isNotEmpty(resBookDesigCode)) {
+                if (StringUtils.isNotEmpty(resBookDesigCode)) {
                     Element bcaElement = fsElement.addElement("BookingClassAvail");
                     bcaElement.addAttribute("ResBookDesigCode", resBookDesigCode);
                 }
@@ -188,13 +188,13 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 String birthDate = item.getBirthDate();
 
                 Element atElement = tiElement.addElement("AirTraveler");
-                if (StringUtil.isNotEmpty(birthDate)) {
+                if (StringUtils.isNotEmpty(birthDate)) {
                     atElement.addAttribute("BirthDate", birthDate);
                 }
-                if (StringUtil.isNotEmpty(gender)) {
+                if (StringUtils.isNotEmpty(gender)) {
                     atElement.addAttribute("Gender", gender);
                 }
-                if (StringUtil.isNotEmpty(passengerTypeCode)) {
+                if (StringUtils.isNotEmpty(passengerTypeCode)) {
                     atElement.addAttribute("PassengerTypeCode", passengerTypeCode);
                 }
 
@@ -203,7 +203,7 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 PassengerTypeQuantity ptq = item.getPassengerTypeQuantity();
                 if (ptq != null) {
                     String age = ptq.getAge();
-                    if (StringUtil.isNotEmpty(age)) {
+                    if (StringUtils.isNotEmpty(age)) {
                         Element ptqElement = atElement.addElement("PassengerTypeQuantity");
                         ptqElement.addAttribute("Age", age);
                     }
@@ -214,7 +214,7 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 buildTravelerRefNumberElement(item.getTravelerRefNumberList(), atElement);
 
                 String rphOfTravelerRefNumber = item.getRphOfTravelerRefNumber();
-                if (StringUtil.isNotEmpty(rphOfTravelerRefNumber)) {
+                if (StringUtils.isNotEmpty(rphOfTravelerRefNumber)) {
                     Element travelerRefNumber = atElement.addElement("TravelerRefNumber");
                     travelerRefNumber.addAttribute("RPH", rphOfTravelerRefNumber);
                 }
@@ -229,7 +229,7 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 buildDocumentFlightBindingElement(item.getDocumentFlightBinding(), atElement);
                 buildAddressFlightBindingElement(item.getAddressFlightBindingList(), atElement);
                 buildAddressElement(item.getAddressList(), atElement);
-                if (StringUtil.isNotEmpty(comment)) {
+                if (StringUtils.isNotEmpty(comment)) {
                     Element commentElement = atElement.addElement("Comment");
                     commentElement.addText(comment);
                 }
@@ -255,51 +255,51 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 String middleName = item.getDocHolderMiddleName();
 
                 Element documentElement = tiElement.addElement("Document");
-                if (StringUtil.isNotEmpty(rph)) {
+                if (StringUtils.isNotEmpty(rph)) {
                     documentElement.addAttribute("RPH", rph);
                 }
-                if (StringUtil.isNotEmpty(docType)) {
+                if (StringUtils.isNotEmpty(docType)) {
                     documentElement.addAttribute("DocType", docType);
                 }
-                if (StringUtil.isNotEmpty(docId)) {
+                if (StringUtils.isNotEmpty(docId)) {
                     documentElement.addAttribute("DocID", docId);
                 }
-                if (StringUtil.isNotEmpty(docTypeDetail)) {
+                if (StringUtils.isNotEmpty(docTypeDetail)) {
                     documentElement.addAttribute("DocTypeDetail", docTypeDetail);
                 }
-                if (StringUtil.isNotEmpty(docHolderInd)) {
+                if (StringUtils.isNotEmpty(docHolderInd)) {
                     documentElement.addAttribute("DocHolderInd", docHolderInd);
                 }
-                if (StringUtil.isNotEmpty(docIssueCountry)) {
+                if (StringUtils.isNotEmpty(docIssueCountry)) {
                     documentElement.addAttribute("DocIssueCountry", docIssueCountry);
                 }
-                if (StringUtil.isNotEmpty(docHolderNationality)) {
+                if (StringUtils.isNotEmpty(docHolderNationality)) {
                     documentElement.addAttribute("DocHolderNationality", docHolderNationality);
                 }
-                if (StringUtil.isNotEmpty(birthDate)) {
+                if (StringUtils.isNotEmpty(birthDate)) {
                     documentElement.addAttribute("BirthDate", birthDate);
                 }
-                if (StringUtil.isNotEmpty(gender)) {
+                if (StringUtils.isNotEmpty(gender)) {
                     documentElement.addAttribute("Gender", gender);
                 }
-                if (StringUtil.isNotEmpty(expireDate)) {
+                if (StringUtils.isNotEmpty(expireDate)) {
                     documentElement.addAttribute("ExpireDate", expireDate);
                 }
-                if (StringUtil.isNotEmpty(givenName)
-                        || StringUtil.isNotEmpty(surname)
-                        || StringUtil.isNotEmpty(middleName)) {
+                if (StringUtils.isNotEmpty(givenName)
+                        || StringUtils.isNotEmpty(surname)
+                        || StringUtils.isNotEmpty(middleName)) {
                     Element dhfnElement = documentElement.addElement("DocHolderFormattedName");
-                    if (StringUtil.isNotEmpty(givenName)) {
+                    if (StringUtils.isNotEmpty(givenName)) {
                         Element gnElement = dhfnElement.addElement("GivenName");
                         gnElement.addText(givenName);
                     }
-                    if (StringUtil.isNotEmpty(middleName)) {
+                    if (StringUtils.isNotEmpty(middleName)) {
                         Element mnElement = dhfnElement.addElement("MiddleName");
                         mnElement.addText(middleName);
                     } else {
                         dhfnElement.addElement("MiddleName");
                     }
-                    if (StringUtil.isNotEmpty(surname)) {
+                    if (StringUtils.isNotEmpty(surname)) {
                         Element surnameElement = dhfnElement.addElement("Surname");
                         surnameElement.addText(surname);
                     }
@@ -316,12 +316,12 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
 
                 Element pnElement = tiElement.addElement("PersonName");
 
-                if (StringUtil.isNotEmpty(languageType)) {
+                if (StringUtils.isNotEmpty(languageType)) {
                     pnElement.addAttribute("LanguageType", languageType);
                 } else {
                     pnElement.addAttribute("LanguageType", "ZH");
                 }
-                if (StringUtil.isNotEmpty(surname)) {
+                if (StringUtils.isNotEmpty(surname)) {
                     Element surnameElement = pnElement.addElement("Surname");
                     surnameElement.addText(surname);
                 }
@@ -336,10 +336,10 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 String trnInfantTravelerRPH = trnItem.getInfantTravelerRPH();
 
                 Element trnElement = tiElement.addElement("TravelerRefNumber");
-                if (StringUtil.isNotEmpty(trnRph)) {
+                if (StringUtils.isNotEmpty(trnRph)) {
                     trnElement.addAttribute("RPH", trnRph);
                 }
-                if (StringUtil.isNotEmpty(trnInfantTravelerRPH)) {
+                if (StringUtils.isNotEmpty(trnInfantTravelerRPH)) {
                     trnElement.addAttribute("InfantTravelerRPH", trnInfantTravelerRPH);
                 }
             }
@@ -351,14 +351,14 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
             String documentRPH = dfb.getDocumentRPH();
             String flightSegmentRPH = dfb.getFlightSegmentRPH();
 
-            if (StringUtil.isNotEmpty(documentRPH) || StringUtil.isNotEmpty(flightSegmentRPH)) {
+            if (StringUtils.isNotEmpty(documentRPH) || StringUtils.isNotEmpty(flightSegmentRPH)) {
                 Element dfbElement = atElement.addElement("DocumentFlightBinding");
 
-                if (StringUtil.isNotEmpty(documentRPH)) {
+                if (StringUtils.isNotEmpty(documentRPH)) {
                     Element documentRphElement = dfbElement.addElement("DocumentRPH");
                     documentRphElement.addText(documentRPH);
                 }
-                if (StringUtil.isNotEmpty(flightSegmentRPH)) {
+                if (StringUtils.isNotEmpty(flightSegmentRPH)) {
                     Element fsRphElement = dfbElement.addElement("FlightSegmentRPH");
                     fsRphElement.addText(flightSegmentRPH);
                 }
@@ -374,11 +374,11 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 Element afbElement = atElement.addElement("AddressFlightBinding");
                 String addressRPH = item.getAddressRPH();
                 String flightSegmentRPH = item.getFlightSegmentRPH();
-                if (StringUtil.isNotEmpty(addressRPH)) {
+                if (StringUtils.isNotEmpty(addressRPH)) {
                     Element arElement = afbElement.addElement("AddressRPH");
                     arElement.addText(addressRPH);
                 }
-                if (StringUtil.isNotEmpty(flightSegmentRPH)) {
+                if (StringUtils.isNotEmpty(flightSegmentRPH)) {
                     Element fsrElement = afbElement.addElement("FlightSegmentRPH");
                     fsrElement.addText(flightSegmentRPH);
                 }
@@ -398,29 +398,29 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 String cityName = item.getCityName();
                 String addressLine = item.getAddressLine();
                 String postalCode = item.getPostalCode();
-                if (StringUtil.isNotEmpty(rph)) {
+                if (StringUtils.isNotEmpty(rph)) {
                     addressElement.addAttribute("RPH", rph);
                 }
-                if (StringUtil.isNotEmpty(type)) {
+                if (StringUtils.isNotEmpty(type)) {
                     addressElement.addAttribute("Type", type);
                 }
-                if (StringUtil.isNotEmpty(countryName)) {
+                if (StringUtils.isNotEmpty(countryName)) {
                     Element cnElement = addressElement.addElement("CountryName");
                     cnElement.addAttribute("Code", countryName);
                 }
-                if (StringUtil.isNotEmpty(stateProv)) {
+                if (StringUtils.isNotEmpty(stateProv)) {
                     Element spElement = addressElement.addElement("StateProv");
                     spElement.addAttribute("StateCode", stateProv);
                 }
-                if (StringUtil.isNotEmpty(cityName)) {
+                if (StringUtils.isNotEmpty(cityName)) {
                     Element cnElement = addressElement.addElement("CityName");
                     cnElement.addText(cityName);
                 }
-                if (StringUtil.isNotEmpty(addressLine)) {
+                if (StringUtils.isNotEmpty(addressLine)) {
                     Element alElement = addressElement.addElement("AddressLine");
                     alElement.addText(addressLine);
                 }
-                if (StringUtil.isNotEmpty(postalCode)) {
+                if (StringUtils.isNotEmpty(postalCode)) {
                     Element pcElement = addressElement.addElement("PostalCode");
                     pcElement.addText(postalCode);
                 }
@@ -471,35 +471,35 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 String ssrRph = item.getRph();
                 Element ssrElement = ssrsElement.addElement("SpecialServiceRequest");
 
-                if (StringUtil.isNotEmpty(ssrCode)) {
+                if (StringUtils.isNotEmpty(ssrCode)) {
                     ssrElement.addAttribute("SSRCode", ssrCode);
                 }
 
-                if (StringUtil.isNotEmpty(serviceQuantity)) {
+                if (StringUtils.isNotEmpty(serviceQuantity)) {
                     ssrElement.addAttribute("ServiceQuantity", serviceQuantity);
                 }
 
-                if (StringUtil.isNotEmpty(ssrRph)) {
+                if (StringUtils.isNotEmpty(ssrRph)) {
                     ssrElement.addAttribute("RPH", ssrRph);
                 }
 
-                if (StringUtil.isNotEmpty(status)) {
+                if (StringUtils.isNotEmpty(status)) {
                     ssrElement.addAttribute("Status", status);
                 }
 
-                if (StringUtil.isNotEmpty(airlineCode)) {
+                if (StringUtils.isNotEmpty(airlineCode)) {
                     Element airlineElement = ssrElement.addElement("Airline");
                     airlineElement.addAttribute("Code", airlineCode);
                 }
-                if (StringUtil.isNotEmpty(frnRph)) {
+                if (StringUtils.isNotEmpty(frnRph)) {
                     Element frnElement = ssrElement.addElement("FlightRefNumber");
                     frnElement.addAttribute("RPH", frnRph);
                 }
-                if (StringUtil.isNotEmpty(trnRph)) {
+                if (StringUtils.isNotEmpty(trnRph)) {
                     Element trnElement = ssrElement.addElement("TravelerRefNumber");
                     trnElement.addAttribute("RPH", trnRph);
                 }
-                if (StringUtil.isNotEmpty(text)) {
+                if (StringUtils.isNotEmpty(text)) {
                     Element textElement = ssrElement.addElement("Text");
                     textElement.addText(text);
                 }
@@ -518,18 +518,18 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 String trnRph = item.getTravelerRefNumberRPH();
 
                 Element osiElement = osisElement.addElement("OtherServiceInformation");
-                if (StringUtil.isNotEmpty(osiCode)) {
+                if (StringUtils.isNotEmpty(osiCode)) {
                     osiElement.addAttribute("Code", osiCode);
                 }
-                if (StringUtil.isNotEmpty(trnRph)) {
+                if (StringUtils.isNotEmpty(trnRph)) {
                     Element trnElement = osiElement.addElement("TravelerRefNumber");
                     trnElement.addAttribute("RPH", trnRph);
                 }
-                if (StringUtil.isNotEmpty(airlineCode)) {
+                if (StringUtils.isNotEmpty(airlineCode)) {
                     Element airlineElement = osiElement.addElement("Airline");
                     airlineElement.addAttribute("Code", airlineCode);
                 }
-                if (StringUtil.isNotEmpty(text)) {
+                if (StringUtils.isNotEmpty(text)) {
                     Element textElement = osiElement.addElement("Text");
                     textElement.addText(text);
                 }
@@ -548,19 +548,19 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 String airlineCode = item.getAirlineCode();
 
                 Element srElement = srsElement.addElement("SpecialRemark");
-                if (StringUtil.isNotEmpty(frnRph)) {
+                if (StringUtils.isNotEmpty(frnRph)) {
                     Element frnElement = srElement.addElement("FlightRefNumber");
                     frnElement.addAttribute("RPH", frnRph);
                 }
-                if (StringUtil.isNotEmpty(trnRph)) {
+                if (StringUtils.isNotEmpty(trnRph)) {
                     Element trnElement = srElement.addElement("TravelerRefNumber");
                     trnElement.addAttribute("RPH", trnRph);
                 }
-                if (StringUtil.isNotEmpty(text)) {
+                if (StringUtils.isNotEmpty(text)) {
                     Element textElement = srElement.addElement("Text");
                     textElement.addText(text);
                 }
-                if (StringUtil.isNotEmpty(airlineCode)) {
+                if (StringUtils.isNotEmpty(airlineCode)) {
                     Element airlineElement = srElement.addElement("Airline");
                     airlineElement.addAttribute("Code", airlineCode);
                 }
@@ -580,11 +580,11 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 ciElement.addText(contactInfo);
             }
         }
-        if (StringUtil.isNotEmpty(envelopType)) {
+        if (StringUtils.isNotEmpty(envelopType)) {
             Element etElement = teElement.addElement("EnvelopType");
             etElement.addText(envelopType);
         }
-        if (StringUtil.isNotEmpty(envelopDelay)) {
+        if (StringUtils.isNotEmpty(envelopDelay)) {
             Element edElement = teElement.addElement("EnvelopDelay");
             edElement.addText(envelopDelay);
         }

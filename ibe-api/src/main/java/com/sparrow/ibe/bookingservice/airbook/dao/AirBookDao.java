@@ -1,15 +1,28 @@
 package com.sparrow.ibe.bookingservice.airbook.dao;
 
+import com.sparrow.app.config.IBEApiConfig;
 import com.sparrow.ibe.bookingservice.airbook.model.AirBookRequest;
 import com.sparrow.ibe.bookingservice.airbook.model.AirBookResponse;
+import com.sparrow.ibe.bookingservice.airbook.model.AirReservation;
+import com.sparrow.ibe.bookingservice.airbook.request.builder.AirBookRequestBuilder;
+import com.sparrow.ibe.enums.IBEError;
+import com.sparrow.ibe.model.DefaultError;
+import com.sparrow.ibe.model.DefaultWarning;
 import com.sparrow.integration.dao.IntegrationDao;
 import com.sparrow.integration.exception.IntegrationException;
 import com.sparrow.integration.handler.ValidationHandler;
+import com.sparrow.utils.StringUtils;
+import com.sparrow.utils.XMLUtils;
+import org.dom4j.Document;
+import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 接口类别：预订服务
@@ -26,6 +39,10 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 	@Autowired
 	@Qualifier("airBookValidationHandler")
 	private ValidationHandler<AirBookRequest> validationHandler;
+	@Autowired
+	private AirBookRequestBuilder airBookRequestBuilder;
+	@Autowired
+	private IBEApiConfig integrationUrlConfig;
 
 	@Override
 	public Serializable execute(String userId, String password, AirBookRequest request)
@@ -37,29 +54,27 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 		}
 	}
 
-	private AirBookResponse parseResponseResult(AirBookRequest request)
-			throws IntegrationException {
+	private AirBookResponse parseResponseResult(AirBookRequest request) throws IntegrationException {
 		AirBookResponse result = null;
-		/*Document document = XMLUtil.getInstance().readXMLFile(
-				getResponseResult(request));
+		Document document = XMLUtils.getInstance().readXMLFile(getResponseResult(request));
 		if (document != null) {
 			result = buildResponseObject(document.getRootElement());
 		} else {
 			result = new AirBookResponse();
 			List<DefaultError> errorList = new ArrayList<DefaultError>();
 			DefaultError error = new DefaultError();
-			CommonErrorEnum errorEnum = CommonErrorEnum.ERROR_001;
+			IBEError errorEnum = IBEError.SYSTEM_ERROR_001;
 			error.setCode(errorEnum.getErrorCode());
 			error.setShortText(errorEnum.getEnMessage());
 			error.setCnMessage(errorEnum.getCnMessage());
 			
 			errorList.add(error);
 			result.setErrorList(errorList);
-		}*/
+		}
 		return result;
 	}
 
-	/*private List<DefaultError> buildErrorObject(Element rootElement) {
+	private List<DefaultError> buildErrorObject(Element rootElement) {
 		List<DefaultError> result = new ArrayList<DefaultError>();
 		List<Element> errorList = rootElement.selectNodes("Errors/Error");
 		for (Element element : errorList) {
@@ -68,7 +83,7 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 			error.setCode(code);
 			error.setType(element.attributeValue("Type"));
 			error.setShortText(element.attributeValue("ShortText"));
-			error.setCnMessage(StringUtil.ibeMessage(code));
+			error.setCnMessage(StringUtils.ibeMessage(code));
 
 			result.add(error);
 		}
@@ -85,7 +100,7 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 			error.setCode(code);
 			error.setType(element.attributeValue("Type"));
 			error.setShortText(element.attributeValue("ShortText"));
-			error.setCnMessage(StringUtil.ibeMessage(code));
+			error.setCnMessage(StringUtils.ibeMessage(code));
 
 			result.add(error);
 		}
@@ -98,14 +113,14 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 
 		List<AirReservation> airRerservationList = new ArrayList<AirReservation>();
 		List<Element> arList = rootElement.selectNodes("/OTA_AirBookRS/AirReservation");
-		for (Element element : arList) {
+		/*for (Element element : arList) {
 			AirReservation airReservation = new AirReservation();
 			airReservation.setFlightSegmentList(buildFlightSegmentObject(element));
 			airReservation.setTravelerNameList(getTravelerNameList(element));
 			airReservation.setBookingReferenceIDList(buildBookingReferenceIDObject(element));
 			airReservation.setCommentList(buildCommentObject(element));
 			airRerservationList.add(airReservation);
-		}
+		}*/
 		result.setAirReservationList(airRerservationList);
 		result.setErrorList(buildErrorObject(rootElement));
 		result.setWarningList(buildWarningObject(rootElement));
@@ -113,7 +128,7 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 		return result;
 	}
 
-	private List<String> buildCommentObject(Element arElement) {
+	/*private List<String> buildCommentObject(Element arElement) {
 		List<String> commentList = new ArrayList<String>();
 		List<Element> commentElements = arElement.elements("Comment");
 		for (Element e : commentElements) {
@@ -133,7 +148,7 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 							.attributeValue("DepartureDateTime"));
 			fs.setFlightNumber(element.attributeValue("FlightNumber"));
 			String numberInParty = element.attributeValue("NumberInParty");
-			if (StringUtil.isNotEmpty(numberInParty)) {
+			if (StringUtils.isNotEmpty(numberInParty)) {
 				fs.setNumberInParty(numberInParty);
 			}
 			fs.setArrivalDateTime(element.attributeValue("ArrivalDateTime"));
@@ -207,41 +222,41 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 //		String serviceUrl = URLConstants.IBE_AIR_BOOK;
 //		
 //		String currentDateTime = DateUtil.getDateFormat(new Date(), "yyyyMMddHHmmss");
-//		FileUtilForTestJP.saveIBEFileForUAT(IBEInterfaceEnum.JP021, serviceUrl, requestXML, 
+//		FileUtilForTestJP.saveIBEFileForUAT(IBEInterface.JP021, serviceUrl, requestXML,
 //				null, currentDateTime);
 //		
 //		String responseResult = CommonHttpClientUtil.getInstance().executeHttpRequest(
 //				IBEUtil.getUserName(), IBEUtil.getPassword(), serviceUrl, requestXML);
 //		
-//		FileUtilForTestJP.saveIBEFileForUAT(IBEInterfaceEnum.JP021, serviceUrl, null, 
+//		FileUtilForTestJP.saveIBEFileForUAT(IBEInterface.JP021, serviceUrl, null,
 //				responseResult, currentDateTime);
 //
 //		return responseResult;
 //	}
 	
-	/*private String getResponseResult(AirBookRequest request)
+	private String getResponseResult(AirBookRequest request)
 			throws IntegrationException {
 		String responseResult = "";
 		String requestXML = "";
 		File requestFile = null;
 		File responseFile = null;
-		try {
-			requestXML = AirBookRequestBuilder.getInstance().buildRequestXML(request);
-			String serviceUrl = URLConstants.IBE_AIR_BOOK;
-			String currentDateTime = DateUtil.getDateFormat(new Date(), "yyyyMMddHHmmss");
-			IBEInterfaceEnum interfaceEnum = IBEInterfaceEnum.JP021;
+		/*try {
+			requestXML = airBookRequestBuilder.buildRequestXML(request);
+			String serviceUrl = integrationUrlConfig.getAirBook();
+			String currentDateTime = DateUtils.formatDate(DateUtils.currentDate(), DateUtils.DATE_SECOND_FORMAT_2);
+			IBEInterface interfaceEnum = IBEInterface.JP021;
 			
 			StringBuilder requestFileName = new StringBuilder();
-			requestFileName.append(interfaceEnum.getInterfaceID()).append("_")
-				.append(interfaceEnum.getInterfaceName()).append("_RQ_")
+			requestFileName.append(interfaceEnum.getId()).append("_")
+				.append(interfaceEnum.getDescription()).append("_RQ_")
 				.append(currentDateTime).append(".xml");
 			
 			StringBuilder responseFileName = new StringBuilder();
-			responseFileName.append(interfaceEnum.getInterfaceID()).append("_")
-				.append(interfaceEnum.getInterfaceName()).append("_RS_")
+			responseFileName.append(interfaceEnum.getId()).append("_")
+				.append(interfaceEnum.getDescription()).append("_RS_")
 				.append(currentDateTime).append(".xml");
 			
-			String filePath = StringUtil.getIBEUATFilePath();
+			String filePath = StringUtils.getIBEUATFilePath();
 			String requestFilePath = filePath+requestFileName;
 			String responseFilePath = filePath+responseFileName;
 			
@@ -249,7 +264,7 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 			responseFile = new File(responseFilePath);
 			try {
 				if(requestFile.exists()){
-					String uuid = StringUtil.randomUUID();
+					String uuid = StringUtils.randomUUID();
 					String newRequestFilePath = requestFilePath.substring(0, requestFilePath.lastIndexOf("."))+"_"+uuid+".xml";
 					requestFile = new File(newRequestFilePath);
 					
@@ -272,9 +287,9 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 		} finally {
 			FileUtilForTestJP.saveFile(requestFile, FileUtilForTestJP.formatXml(requestXML));
 			FileUtilForTestJP.saveFile(responseFile, FileUtilForTestJP.formatXml(responseResult));
-		}
+		}*/
 		
 		return responseResult;
-	}*/
+	}
 
 }

@@ -35,7 +35,7 @@ public class AirBookValidationHandler implements ValidationHandler<AirBookReques
 
         //验证office代码是否为空、office代码格式是否正确
         String pseudoCityCode = request.getPseudoCityCode();
-        if (StringUtil.isEmpty(pseudoCityCode)) {
+        if (StringUtils.isEmpty(pseudoCityCode)) {
             DefaultError defaultError = new DefaultError();
             defaultError.setCode("-500");
             defaultError.setCnMessage("office代码为空");

@@ -1,0 +1,170 @@
+package com.sparrow.utils;
+
+import org.dom4j.*;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * XML 操作工具类
+ *
+ * @author wangjianchun
+ * @date 2018-7-4
+ */
+public class XMLUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(XMLUtils.class);
+
+    private static class XMLUtilHolder {
+        private static final XMLUtils instance = new XMLUtils();
+    }
+
+    public static XMLUtils getInstance() {
+        return XMLUtilHolder.instance;
+    }
+
+    private XMLUtils() {
+    }
+
+    /**
+     * 功能：将字符串格式化为xml格式
+     *
+     * @author sunyj
+     * @date 2014-8-1
+     */
+    public String formatXML(String str) {
+        XMLWriter writer = null;
+        StringWriter sw = new StringWriter();
+        try {
+            Document doc = readXMLFile(str);
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            writer = new XMLWriter(sw, format);
+            writer.write(doc);
+        } catch (IOException e) {
+            logger.error("IOException", e);
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace(System.err);
+            }
+        }
+        return sw.toString();
+    }
+
+
+    public Document readXMLFile(File file) {
+        Document document = null;
+        try {
+            if (file.length() > 0) {
+                document = new SAXReader().read(file);
+            }
+        } catch (DocumentException e) {
+            logger.error("DocumentException", e);
+        } catch (Exception e) {
+            logger.error("Exception", e);
+        }
+        return document;
+    }
+
+    public Document readXMLFile(InputStream is) {
+        Document document = null;
+        try {
+            document = new SAXReader().read(is);
+        } catch (DocumentException e) {
+            logger.error("DocumentException", e);
+        } catch (Exception e) {
+            logger.error("Exception", e);
+        }
+        return document;
+    }
+
+    public Document readXMLFile(String content) {
+        Document document = null;
+        try {
+            if (StringUtils.isNotEmpty(content) && !content.toUpperCase().startsWith("<HTML>")) {
+                document = DocumentHelper.parseText(content);
+            }
+        } catch (DocumentException e) {
+            logger.error("DocumentException", e);
+        } catch (Exception e) {
+            logger.error("Exception", e);
+        }
+        return document;
+    }
+
+    public String elementText(Element element, String subElementName) {
+        return StringUtils.defaultValueIfNull(element.elementText(subElementName));
+    }
+
+    // 获取单节点带有命名空间的节点
+    public Element getDestElement(Map<String, String> xmlMap, Document doc, String id) {
+        XPath xpath = doc.createXPath(id); // 要获取哪个节点，改这里就可以了
+        xpath.setNamespaceURIs(xmlMap);
+        return (Element) xpath.selectSingleNode(doc);
+    }
+
+    /**
+     * 功能：获取单节点带有命名空间的节点
+     *
+     * @author wangjc
+     * @date 2014-8-24
+     */
+    public Element getDestElement(Map<String, String> nsMap, Element element, String id) {
+        // 要获取哪个节点，改这里就可以了
+        XPath xpath = element.createXPath(id);
+        xpath.setNamespaceURIs(nsMap);
+        return (Element) xpath.selectSingleNode(element);
+    }
+
+    // 获取多节点带有命名空间的节点
+    public List<Element> getDestElements(Map<String, String> xmlMap, Document doc, String id) {
+        // 要获取哪个节点，改这里就可以了
+        XPath xpath = doc.createXPath(id);
+        xpath.setNamespaceURIs(xmlMap);
+        return xpath.selectNodes(doc);
+    }
+
+    /**
+     * 功能：获取多节点带有命名空间的节点
+     *
+     * @author wangjc
+     * @date 2014-8-24
+     */
+    public List<Element> getDestElements(Map<String, String> nsMap, Element element, String id) {
+        // 要获取哪个节点，改这里就可以了
+        XPath xpath = element.createXPath(id);
+        xpath.setNamespaceURIs(nsMap);
+        return xpath.selectNodes(element);
+    }
+
+    /**
+     * 功能：转换XML文件中的转义字符
+     *
+     * @author wangjc
+     * @date 2014-07-16
+     */
+    public String decode(String content) {
+        if (content == null) {
+            return "";
+        } else {
+            String result = content.replace("&lt;", "<")
+                    .replace("&gt;", ">").replace("&amp;", "&")
+                    .replace("&apos;", "'").replace("&quot;", "\"\"");
+
+            return result;
+        }
+    }
+
+}
