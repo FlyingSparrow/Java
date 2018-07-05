@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookRQ AutoARNKInd="false">
+	<POS>
+		<Source PseudoCityCode="BJS180"/>
+	</POS>
+	<AirItinerary>
+		<OriginDestinationOptions>
+			<OriginDestinationOption>
+				<FlightSegment RPH="1" DepartureDateTime="2014-07-29T07:00:00" ArrivalDateTime="2014-07-29T09:10:00" CodeshareInd="false" FlightNumber="5183" Status="NN" SegmentType="NORMAL">
+					<OperatingAirline Code="MU" FlightNumber="5183"/>
+					<DepartureAirport LocationCode="PEK"/>
+					<ArrivalAirport LocationCode="SHA"/>
+					<Equipment AirEquipType="332"/>
+					<MarketingAirline Code="MU"/>
+					<BookingClassAvail ResBookDesigCode="Y"/>
+				</FlightSegment>
+				<FlightSegment RPH="1" DepartureDateTime="2014-07-29T07:00:00" ArrivalDateTime="2014-07-29T09:10:00" CodeshareInd="false" FlightNumber="5183" Status="NN" SegmentType="NORMAL">
+					<OperatingAirline Code="MU" FlightNumber="5183"/>
+					<DepartureAirport LocationCode="PEK"/>
+					<ArrivalAirport LocationCode="SHA"/>
+					<Equipment AirEquipType="332"/>
+					<MarketingAirline Code="MU"/>
+					<BookingClassAvail ResBookDesigCode="Y"/>
+				</FlightSegment>
+			</OriginDestinationOption>
+			<OriginDestinationOption>
+				<FlightSegment RPH="1" DepartureDateTime="2014-07-29T07:00:00" ArrivalDateTime="2014-07-29T09:10:00" CodeshareInd="false" FlightNumber="5183" Status="NN" SegmentType="NORMAL">
+					<OperatingAirline Code="MU" FlightNumber="5183"/>
+					<DepartureAirport LocationCode="PEK"/>
+					<ArrivalAirport LocationCode="SHA"/>
+					<Equipment AirEquipType="332"/>
+					<MarketingAirline Code="MU"/>
+					<BookingClassAvail ResBookDesigCode="Y"/>
+				</FlightSegment>
+				<FlightSegment RPH="1" DepartureDateTime="2014-07-29T07:00:00" ArrivalDateTime="2014-07-29T09:10:00" CodeshareInd="false" FlightNumber="5183" Status="NN" SegmentType="NORMAL">
+					<OperatingAirline Code="MU" FlightNumber="5183"/>
+					<DepartureAirport LocationCode="PEK"/>
+					<ArrivalAirport LocationCode="SHA"/>
+					<Equipment AirEquipType="332"/>
+					<MarketingAirline Code="MU"/>
+					<BookingClassAvail ResBookDesigCode="Y"/>
+				</FlightSegment>
+			</OriginDestinationOption>
+		</OriginDestinationOptions>
+	</AirItinerary>
+	<TravelerInfo>
+		<AirTraveler Gender="MALE" PassengerTypeCode="ADT">
+			<PersonName LanguageType="ZH">
+				<Surname>张学友</Surname>
+			</PersonName>
+			<PersonName LanguageType="ZH">
+				<Surname>张学友</Surname>
+			</PersonName>
+			<Document DocType="NI" DocID="120221197001011150" DocTypeDetail="AA" DocIssueCountry="CN" DocHolderNationality="CN" BirthDate="1989-10-17" Gender="MALE" ExpireDate="2030-10-20" RPH="1">
+				<DocHolderFormattedName>
+					<GivenName>xueyou</GivenName>
+					<Surname>Zhang</Surname>
+					<MiddleName>Jerry</MiddleName>
+				</DocHolderFormattedName>
+			</Document>
+			<TravelerRefNumber RPH="1" InfantTravelerRPH="1"/>
+			<FlightSegmentRPHs>
+				<FlightSegmentRPH>1</FlightSegmentRPH>
+				<FlightSegmentRPH>2</FlightSegmentRPH>
+			</FlightSegmentRPHs>
+			<DocumentFlightBinding>
+				<DocumentRPH>1</DocumentRPH>
+				<FlightSegmentRPH>2</FlightSegmentRPH>
+			</DocumentFlightBinding>
+			<Comment>HK</Comment>
+		</AirTraveler>
+		<SpecialReqDetails>
+			<SpecialServiceRequests>
+				<SpecialServiceRequest SSRCode="SPML" Status="NN">
+					<Airline Code="CA"/>
+					<FlightRefNumber RPH="1"/>
+					<TravelerRefNumber RPH="1"/>
+					<Text>NOSOLT</Text>
+				</SpecialServiceRequest>
+				<SpecialServiceRequest SSRCode="SPML" Status="NN">
+					<Airline Code="CA"/>
+					<FlightRefNumber RPH="1"/>
+					<TravelerRefNumber RPH="1"/>
+					<Text>NOSOLT</Text>
+				</SpecialServiceRequest>
+			</SpecialServiceRequests>
+			<OtherServiceInformations>
+				<OtherServiceInformation Code="OTHS">
+					<Airline Code="MU"/>
+					<Text>CTCM1366666666</Text>
+					<TravelerRefNumber RPH="1"/>
+				</OtherServiceInformation>
+				<OtherServiceInformation Code="OTHS">
+					<Airline Code="MU"/>
+					<Text>CTCM1366666666</Text>
+					<TravelerRefNumber RPH="1"/>
+				</OtherServiceInformation>
+			</OtherServiceInformations>
+			<SpecialRemarks>
+				<SpecialRemark>
+					<FlightRefNumber RPH="1"/>
+					<TravelerRefNumber RPH="1"/>
+					<Text>特殊备注组信息</Text>
+					<Airline Code="MU"/>
+				</SpecialRemark>
+				<SpecialRemark>
+					<FlightRefNumber RPH="1"/>
+					<TravelerRefNumber RPH="1"/>
+					<Text>特殊备注组信息</Text>
+					<Airline Code="MU"/>
+				</SpecialRemark>
+			</SpecialRemarks>
+		</SpecialReqDetails>
+	</TravelerInfo>
+	<Ticketing TicketTimeLimit="2014-07-29T00:01:00"/>
+	<TPA_Extensions>
+		<ContactInfo>023-57651234</ContactInfo>
+		<ContactInfo>023-57651234</ContactInfo>
+		<EnvelopType>KI</EnvelopType>
+		<EnvelopDelay>true</EnvelopDelay>
+	</TPA_Extensions>
+</OTA_AirBookRQ>

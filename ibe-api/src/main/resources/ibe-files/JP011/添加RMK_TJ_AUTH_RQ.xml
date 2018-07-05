@@ -1,0 +1,64 @@
+<OTA_AirBookRQ>
+    <POS>
+        <Source PseudoCityCode="bjs187" />
+    </POS>
+    <AirItinerary>
+        <OriginDestinationOptions>
+            <OriginDestinationOption>
+                <FlightSegment RPH="1" DepartureDateTime="2014-05-16T00:00:00" ArrivalDateTime="2014-05-16T00:00:00" CodeshareInd="true" FlightNumber="5145" NumberInParty="12" Status="NN" SegmentType="NORMAL" InterSegment="false">
+                    <OperatingAirline Code="MU" FlightNumber="5145" />
+                    <DepartureAirport LocationCode="SHA" />
+                    <ArrivalAirport LocationCode="PEK" />
+                    <Equipment AirEquipType="76A" />
+                    <MarketingAirline Code="MU" />
+                    <BookingClassAvail ResBookDesigCode="Y" />
+                </FlightSegment>
+            </OriginDestinationOption>
+        </OriginDestinationOptions>
+    </AirItinerary>
+    <TravelerInfo>
+        <AirTraveler Gender="MALE" PassengerTypeCode="ADT">
+            <PersonName LanguageType="ZH">
+                <Surname>zhou/xiao</Surname>
+            </PersonName>
+            <Document DocType="PP" DocTypeDetail="P" DocID="G30470505" DocIssueCountry="CN" DocHolderNationality="CN" BirthDate="2005-01-01" Gender="MALE" ExpireDate="2018-08-05" RPH="1">
+                <DocHolderFormattedName>
+                    <GivenName>xiao</GivenName>
+                    <MiddleName />
+                    <Surname>zhou</Surname>
+                </DocHolderFormattedName>
+            </Document>
+            <TravelerRefNumber RPH="1" />
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+            <DocumentFlightBinding>
+                <DocumentRPH>1</DocumentRPH>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </DocumentFlightBinding>
+            <Comment>HK</Comment>
+        </AirTraveler>
+        <SpecialReqDetails>
+            <SpecialRemarks>
+                <SpecialRemark>
+                    <!--RMK TJ 信息 最多加两项-->
+                    <Text>TJ AUTH PEK123</Text>
+                </SpecialRemark>
+                <SpecialRemark>
+                    <!--RMK TJ 信息-->
+                    <Text>TJ AUTH PEK099</Text>
+                </SpecialRemark>
+                <SpecialRemark>
+                    <!--RMK 自由文本 信息-->
+                    <Text>备注信息</Text>
+                </SpecialRemark>
+            </SpecialRemarks>
+        </SpecialReqDetails>
+    </TravelerInfo>
+    <Ticketing TicketTimeLimit="2014-05-10T00:01:00" />
+    <TPA_Extensions>
+        <ContactInfo>1234445565t6</ContactInfo>
+        <ContactInfo>123349847849</ContactInfo>
+        <EnvelopType>KI</EnvelopType>
+    </TPA_Extensions>
+</OTA_AirBookRQ>

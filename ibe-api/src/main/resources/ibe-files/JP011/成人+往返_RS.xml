@@ -1,0 +1,36 @@
+<OTA_AirBookRS>
+	<AirReservation>
+		<AirItinerary>
+			<FlightSegments>
+				<FlightSegment DepartureDateTime="2013-05-16T08:30:00" CodeshareInd="false" FlightNumber="5145"
+				NumberInParty="1" Status="DK" SegmentType="NORMAL">
+					<OperatingAirline/>
+					<DepartureAirport LocationCode="SHA"/>
+					<ArrivalAirport LocationCode="PEK"/>
+					<MarketingAirline Code="MU"/>
+					<BookingClassAvail ResBookDesigCode="Y"/>
+				</FlightSegment>
+				<FlightSegment DepartureDateTime="2013-05-17T07:00:00" CodeshareInd="false" FlightNumber="5138"
+				NumberInParty="1" Status="DK" SegmentType="NORMAL">
+					<OperatingAirline/>
+					<DepartureAirport LocationCode="PEK"/>
+					<ArrivalAirport LocationCode="SHA"/>
+					<MarketingAirline Code="MU"/>
+					<BookingClassAvail ResBookDesigCode="Y"/>
+				</FlightSegment>
+			</FlightSegments>
+		</AirItinerary>
+		<TravelerInfo>
+			<AirTraveler>
+				<PersonName>
+					<Surname>zhou/xiao</Surname>
+				</PersonName>
+			</AirTraveler>
+		</TravelerInfo>
+		<BookingReferenceID ID="HQRK2P" ID_Context="PNR"/>
+		<BookingReferenceID ID="130321173708e682fdx" ID_Context="ORDER"/>
+		<Comment>EOT SUCCESSFUL, BUT ASR UNUSED FOR 1 OR MORE SEGMENTS</Comment>
+		<Comment>航空公司使用自动出票时限，请检查PNR</Comment>
+		<Comment>*** 预订酒店指令HC，详情  >HC:HELP ***</Comment>
+	</AirReservation>
+</OTA_AirBookRS>

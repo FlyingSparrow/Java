@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OTA_AirBookRQ>
+  <POS>
+    <Source PseudoCityCode="BJS180"/>
+  </POS>
+  <AirItinerary>
+    <OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment RPH="1" DepartureDateTime="2014-08-29T07:30:00" ArrivalDateTime="2014-08-29T09:40:00" CodeshareInd="false" FlightNumber="CA1831" Status="NN" SegmentType="NORMAL">
+          <DepartureAirport LocationCode="PEK"/>
+          <ArrivalAirport LocationCode="SHA"/>
+          <Equipment AirEquipType="333"/>
+          <MarketingAirline Code="CA"/>
+          <BookingClassAvail ResBookDesigCode="Y"/>
+        </FlightSegment>
+      </OriginDestinationOption>
+    </OriginDestinationOptions>
+  </AirItinerary>
+  <TravelerInfo>
+    <AirTraveler Gender="MALE" PassengerTypeCode="ADT">
+      <PersonName LanguageType="ZH">
+        <Surname>高明</Surname>
+      </PersonName>
+      <Document DocType="NI" DocID="120221197001011150"/>
+      <TravelerRefNumber RPH="1"/>
+      <Comment>HK</Comment>
+    </AirTraveler>
+    <SpecialReqDetails>
+      <OtherServiceInformations>
+        <OtherServiceInformation Code="OTHS">
+          <Airline Code="CA"/>
+          <Text>CTCT13666666666</Text>
+        </OtherServiceInformation>
+        <OtherServiceInformation Code="OTHS">
+          <Airline Code="CA"/>
+          <Text>CTCM1366666666</Text>
+          <TravelerRefNumber RPH="1"/>
+        </OtherServiceInformation>
+      </OtherServiceInformations>
+    </SpecialReqDetails>
+  </TravelerInfo>
+  <Ticketing TicketTimeLimit="2014-08-26T00:01:00"/>
+  <TPA_Extensions>
+    <ContactInfo>010-12345678</ContactInfo>
+    <ContactInfo>023-57651234</ContactInfo>
+    <ContactInfo>022-29681234</ContactInfo>
+    <EnvelopType>KI</EnvelopType>
+  </TPA_Extensions>
+</OTA_AirBookRQ>

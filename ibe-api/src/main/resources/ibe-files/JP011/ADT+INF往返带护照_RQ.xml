@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookRQ>
+    <POS>
+        <Source PseudoCityCode="PEK099" />
+    </POS>
+    <AirItinerary>
+        <OriginDestinationOptions>
+            <OriginDestinationOption>
+                <FlightSegment RPH="1" DepartureDateTime="2014-07-29T07:00:00" ArrivalDateTime="2014-05-29T09:10:00" CodeshareInd="false" FlightNumber="5138" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="PEK" />
+                    <ArrivalAirport LocationCode="SHA" />
+                    <Equipment AirEquipType="733" />
+                    <MarketingAirline Code="MU" />
+                    <BookingClassAvail ResBookDesigCode="Y" />
+                </FlightSegment>
+                <FlightSegment RPH="2" DepartureDateTime="2014-07-30T11:30:00" ArrivalDateTime="2014-05-30T14:05:00" CodeshareInd="false" FlightNumber="5139" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="SHA" />
+                    <ArrivalAirport LocationCode="PEK" />
+                    <Equipment AirEquipType="733" />
+                    <MarketingAirline Code="MU" />
+                    <BookingClassAvail ResBookDesigCode="Y" />
+                </FlightSegment>
+            </OriginDestinationOption>
+        </OriginDestinationOptions>
+    </AirItinerary>
+    <TravelerInfo>
+        <AirTraveler Gender="MALE" PassengerTypeCode="ADT" AccompaniedByInfant="true">
+            <PersonName LanguageType="ZH">
+                <Surname>张学友</Surname>
+            </PersonName>
+            <PersonName LanguageType="EN">
+                <Surname>ZHANG/XUEYOU</Surname>
+            </PersonName>
+            <Document DocType="PP" DocTypeDetail="P" DocID="G30470505" DocIssueCountry="CN" DocHolderNationality="CN" BirthDate="1970-01-01" Gender="MALE" ExpireDate="2018-08-05" RPH="1">
+                <DocHolderFormattedName>
+                    <GivenName>ZHANG</GivenName>
+                    <MiddleName />
+                    <Surname>XUEYOU</Surname>
+                </DocHolderFormattedName>
+            </Document>
+            <DocumentFlightBinding>
+                <DocumentRPH>1</DocumentRPH>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </DocumentFlightBinding>
+            <TravelerRefNumber RPH="1" InfantTravelerRPH="2" />
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+                <FlightSegmentRPH>2</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+            <Comment>HK</Comment>
+        </AirTraveler>
+        <AirTraveler Gender="MALE" PassengerTypeCode="INF" BirthDate="2014-01-01">
+            <PersonName LanguageType="EN">
+                <Surname>ZHOU/XIAO</Surname>
+            </PersonName>
+            <Document DocType="PP" DocTypeDetail="P" DocID="G30470505" DocIssueCountry="CN" DocHolderNationality="CN" BirthDate="2014-01-01" Gender="MALE" ExpireDate="2018-08-05" RPH="2">
+                <DocHolderFormattedName>
+                    <GivenName>ZHOU</GivenName>
+                    <MiddleName />
+                    <Surname>XIAO</Surname>
+                </DocHolderFormattedName>
+            </Document>
+            <TravelerRefNumber RPH="2" />
+            <DocumentFlightBinding>
+                <DocumentRPH>2</DocumentRPH>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </DocumentFlightBinding>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+                <FlightSegmentRPH>2</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+            <Comment>HK</Comment>
+        </AirTraveler>
+        <SpecialReqDetails>
+            <OtherServiceInformations>
+                <!--OSI信息-->
+                <OtherServiceInformation Code="OTHS">
+                    <Airline Code="MU" />
+                    <Text>CTCT13666666666</Text>
+                    <!--CTCT项不需要关联对应旅客，属于非PNR中旅客联系方式，CTCT后数字部分最多30位-->
+                </OtherServiceInformation>
+                <OtherServiceInformation Code="OTHS">
+                    <FlightSegmentRPHs>
+                        <FlightSegmentRPH>1</FlightSegmentRPH>
+                    </FlightSegmentRPHs>
+                    <Airline Code="MU" />
+                    <Text>CTCM1366666666</Text>
+                    <!--CTCM必须关联旅客，CTCM后数字部分最多30位-->
+                    <TravelerRefNumber RPH="1" />
+                </OtherServiceInformation>
+            </OtherServiceInformations>
+        </SpecialReqDetails>
+    </TravelerInfo>
+    <Ticketing TicketTimeLimit="2014-05-29T00:01:00" />
+    <TPA_Extensions>
+        <ContactInfo>023-57651234</ContactInfo>
+        <EnvelopType>KI</EnvelopType>
+    </TPA_Extensions>
+</OTA_AirBookRQ>
