@@ -3,9 +3,7 @@ package com.sparrow.ibe.bookingservice.airbook.dao;
 import com.sparrow.app.config.IBEConfig;
 import com.sparrow.app.init.IBEApi;
 import com.sparrow.app.init.IBEApiConfig;
-import com.sparrow.ibe.bookingservice.airbook.model.AirBookRequest;
-import com.sparrow.ibe.bookingservice.airbook.model.AirBookResponse;
-import com.sparrow.ibe.bookingservice.airbook.model.AirReservation;
+import com.sparrow.ibe.bookingservice.airbook.model.*;
 import com.sparrow.ibe.bookingservice.airbook.request.builder.AirBookRequestBuilder;
 import com.sparrow.ibe.enums.IBEError;
 import com.sparrow.ibe.enums.IBEInterface;
@@ -14,18 +12,15 @@ import com.sparrow.ibe.model.DefaultWarning;
 import com.sparrow.integration.dao.IntegrationDao;
 import com.sparrow.integration.exception.IntegrationException;
 import com.sparrow.integration.handler.ValidationHandler;
-import com.sparrow.utils.HttpClientUtils;
-import com.sparrow.utils.DateUtils;
-import com.sparrow.utils.StringUtils;
-import com.sparrow.utils.XMLUtils;
+import com.sparrow.utils.*;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,109 +30,181 @@ import java.util.List;
  * 接口名称：自动预订服务
  * 接口ID：JP011
  * 自动预订服务的数据访问类，用于处理请求，并解析接口的返回结果
- * 
+ *
  * @author wangjc
  * @date 2014-7-3
  */
 @Component
 public class AirBookDao implements IntegrationDao<AirBookRequest> {
 
-	@Autowired
-	@Qualifier("airBookValidationHandler")
-	private ValidationHandler<AirBookRequest> validationHandler;
-	@Autowired
-	private AirBookRequestBuilder airBookRequestBuilder;
-	@Autowired
-	private IBEApiConfig ibeApiConfig;
-	@Autowired
-	private IBEConfig ibeConfig;
+    private static final Logger logger = LoggerFactory.getLogger(AirBookDao.class);
 
-	@Override
-	public Serializable execute(String userId, String password, AirBookRequest request)
-			throws IntegrationException {
-		if (validationHandler.validate(userId, password, request)) {
-			return parseResponseResult(request);
-		} else {
-			return validationHandler.getValidationResult();
-		}
-	}
+    @Autowired
+    @Qualifier("airBookValidationHandler")
+    private ValidationHandler<AirBookRequest> validationHandler;
+    @Autowired
+    private AirBookRequestBuilder airBookRequestBuilder;
+    @Autowired
+    private IBEApiConfig ibeApiConfig;
+    @Autowired
+    private IBEConfig ibeConfig;
 
-	private AirBookResponse parseResponseResult(AirBookRequest request) throws IntegrationException {
-		AirBookResponse result = null;
-		Document document = XMLUtils.getInstance().readXMLFile(getResponseResult(request));
-		if (document != null) {
-			result = buildResponseObject(document.getRootElement());
-		} else {
-			result = new AirBookResponse();
-			List<DefaultError> errorList = new ArrayList<DefaultError>();
-			DefaultError error = new DefaultError();
-			IBEError errorEnum = IBEError.SYSTEM_ERROR_001;
-			error.setCode(errorEnum.getErrorCode());
-			error.setShortText(errorEnum.getEnMessage());
-			error.setCnMessage(errorEnum.getCnMessage());
-			
-			errorList.add(error);
-			result.setErrorList(errorList);
-		}
-		return result;
-	}
+    @Override
+    public Serializable execute(String userId, String password, AirBookRequest request) {
+        if (validationHandler.validate(userId, password, request)) {
+            return parseResponseResult(request);
+        } else {
+            return validationHandler.getValidationResult();
+        }
+    }
 
-	private List<DefaultError> buildErrorObject(Element rootElement) {
-		List<DefaultError> result = new ArrayList<DefaultError>();
-		List<Element> errorList = rootElement.selectNodes("Errors/Error");
-		for (Element element : errorList) {
-			DefaultError error = new DefaultError();
-			String code = element.attributeValue("Code");
-			error.setCode(code);
-			error.setType(element.attributeValue("Type"));
-			error.setShortText(element.attributeValue("ShortText"));
-			error.setCnMessage(StringUtils.ibeMessage(code));
+    private AirBookResponse parseResponseResult(AirBookRequest request) {
+        AirBookResponse result = null;
+        Document document = XMLUtils.getInstance().readXMLFile(getResponseResult(request));
+        if (document != null) {
+            result = buildResponseObject(document.getRootElement());
+        } else {
+            result = new AirBookResponse();
+            List<DefaultError> errorList = new ArrayList<DefaultError>();
+            DefaultError error = new DefaultError();
+            IBEError errorEnum = IBEError.SYSTEM_ERROR_001;
+            error.setCode(errorEnum.getErrorCode());
+            error.setShortText(errorEnum.getEnMessage());
+            error.setCnMessage(errorEnum.getCnMessage());
 
-			result.add(error);
-		}
+            errorList.add(error);
+            result.setErrorList(errorList);
+        }
+        return result;
+    }
 
-		return result;
-	}
+    private List<DefaultError> buildErrorObject(Element rootElement) {
+        List<DefaultError> result = new ArrayList<DefaultError>();
+        List<Element> errorList = rootElement.selectNodes("Errors/Error");
+        for (Element element : errorList) {
+            DefaultError error = new DefaultError();
+            String code = element.attributeValue("Code");
+            error.setCode(code);
+            error.setType(element.attributeValue("Type"));
+            error.setShortText(element.attributeValue("ShortText"));
+            error.setCnMessage(StringUtils.ibeMessage(code));
 
-	private List<DefaultWarning> buildWarningObject(Element rootElement) {
-		List<DefaultWarning> result = new ArrayList<DefaultWarning>();
-		List<Element> warningList = rootElement.selectNodes("Warnings/Warning");
-		for (Element element : warningList) {
-			DefaultWarning error = new DefaultWarning();
-			String code = element.attributeValue("Code");
-			error.setCode(code);
-			error.setType(element.attributeValue("Type"));
-			error.setShortText(element.attributeValue("ShortText"));
-			error.setCnMessage(StringUtils.ibeMessage(code));
+            result.add(error);
+        }
 
-			result.add(error);
-		}
+        return result;
+    }
 
-		return result;
-	}
+    private List<DefaultWarning> buildWarningObject(Element rootElement) {
+        List<DefaultWarning> result = new ArrayList<DefaultWarning>();
+        List<Element> warningList = rootElement.selectNodes("Warnings/Warning");
+        for (Element element : warningList) {
+            DefaultWarning error = new DefaultWarning();
+            String code = element.attributeValue("Code");
+            error.setCode(code);
+            error.setType(element.attributeValue("Type"));
+            error.setShortText(element.attributeValue("ShortText"));
+            error.setCnMessage(StringUtils.ibeMessage(code));
 
-	private AirBookResponse buildResponseObject(Element rootElement) {
-		AirBookResponse result = new AirBookResponse();
+            result.add(error);
+        }
 
-		List<AirReservation> airRerservationList = new ArrayList<AirReservation>();
-		List<Element> arList = rootElement.selectNodes("/OTA_AirBookRS/AirReservation");
-		/*for (Element element : arList) {
-			AirReservation airReservation = new AirReservation();
-			airReservation.setFlightSegmentList(buildFlightSegmentObject(element));
+        return result;
+    }
+
+    private AirBookResponse buildResponseObject(Element rootElement) {
+        AirBookResponse result = new AirBookResponse();
+
+        List<AirReservation> airRerservationList = new ArrayList<AirReservation>();
+        List<Element> arList = rootElement.selectNodes("/OTA_AirBookRS/AirReservation");
+        for (Element element : arList) {
+            AirReservation airReservation = new AirReservation();
+            airReservation.setFlightSegmentList(buildFlightSegmentObject(element));
 			airReservation.setTravelerNameList(getTravelerNameList(element));
 			airReservation.setBookingReferenceIDList(buildBookingReferenceIDObject(element));
 			airReservation.setCommentList(buildCommentObject(element));
-			airRerservationList.add(airReservation);
-		}*/
-		result.setAirReservationList(airRerservationList);
-		result.setErrorList(buildErrorObject(rootElement));
-		result.setWarningList(buildWarningObject(rootElement));
+            airRerservationList.add(airReservation);
+        }
+        result.setAirReservationList(airRerservationList);
+        result.setErrorList(buildErrorObject(rootElement));
+        result.setWarningList(buildWarningObject(rootElement));
 
-		return result;
-	}
+        return result;
+    }
 
-	/*private List<String> buildCommentObject(Element arElement) {
-		List<String> commentList = new ArrayList<String>();
+    private List<FlightSegment> buildFlightSegmentObject(Element arElement) {
+        List<FlightSegment> result = new ArrayList<FlightSegment>();
+
+        List<Element> fsList = arElement.selectNodes("AirItinerary/FlightSegments/FlightSegment");
+        for (Element element : fsList) {
+            FlightSegment fs = new FlightSegment();
+            fs.setDepartureDateTime(element.attributeValue("DepartureDateTime"));
+            fs.setFlightNumber(element.attributeValue("FlightNumber"));
+            String numberInParty = element.attributeValue("NumberInParty");
+            if (StringUtils.isNotEmpty(numberInParty)) {
+                fs.setNumberInParty(numberInParty);
+            }
+            fs.setArrivalDateTime(element.attributeValue("ArrivalDateTime"));
+            fs.setCodeshareInd(element.attributeValue("CodeshareInd"));
+            fs.setStatus(element.attributeValue("Status"));
+            fs.setSegmentType(element.attributeValue("SegmentType"));
+
+            Element operatingAirlineEle = element.element("OperatingAirline");
+            if (operatingAirlineEle != null) {
+                fs.setOperatingAirline(operatingAirlineEle.attributeValue("Code"));
+                fs.setFlightNumberOfOperatingAirline(operatingAirlineEle.attributeValue("FlightNumber"));
+            }
+
+            Element departureAirportEle = element.element("DepartureAirport");
+            if (departureAirportEle != null) {
+                fs.setDepartureAirport(departureAirportEle.attributeValue("LocationCode"));
+            }
+
+            Element arrivalAirportEle = element.element("ArrivalAirport");
+            if (arrivalAirportEle != null) {
+                fs.setArrivalAirport(arrivalAirportEle.attributeValue("LocationCode"));
+            }
+
+            Element marketingAirlineEle = element.element("MarketingAirline");
+            if (marketingAirlineEle != null) {
+                fs.setMarketingAirline(marketingAirlineEle.attributeValue("Code"));
+            }
+
+            Element bookingClassAvailEle = element.element("BookingClassAvail");
+            if (bookingClassAvailEle != null) {
+                fs.setResBookDesigCode(bookingClassAvailEle.attributeValue("ResBookDesigCode"));
+            }
+
+            result.add(fs);
+        }
+
+        return result;
+    }
+
+    private List<String> getTravelerNameList(Element arElement) {
+        List<String> result = new ArrayList<String>();
+        List<Element> fsList = arElement.selectNodes("TravelerInfo/AirTraveler");
+        for (Element element : fsList) {
+            String travelerName = element.selectSingleNode("PersonName/Surname").getText();
+            result.add(travelerName);
+        }
+        return result;
+    }
+
+    private List<BookingReferenceID> buildBookingReferenceIDObject(Element arElement) {
+        List<BookingReferenceID> result = new ArrayList<BookingReferenceID>();
+        List<Element> fsList = arElement.selectNodes("BookingReferenceID");
+        for (Element element : fsList) {
+            BookingReferenceID br = new BookingReferenceID();
+            br.setId(element.attributeValue("ID"));
+            br.setIdContext(element.attributeValue("ID_Context"));
+            result.add(br);
+        }
+        return result;
+    }
+
+	private List<String> buildCommentObject(Element arElement) {
+        List<String> commentList = new ArrayList<String>();
 		List<Element> commentElements = arElement.elements("Comment");
 		for (Element e : commentElements) {
 			commentList.add(e.getText());
@@ -145,158 +212,42 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 		return commentList;
 	}
 
-	private List<FlightSegment> buildFlightSegmentObject(Element arElement) {
-		List<FlightSegment> result = new ArrayList<FlightSegment>();
-		List<Element> fsList = arElement
-				.selectNodes("AirItinerary/FlightSegments/FlightSegment");
-		for (Element element : fsList) {
-			FlightSegment fs = new FlightSegment();
-			fs
-					.setDepartureDateTime(element
-							.attributeValue("DepartureDateTime"));
-			fs.setFlightNumber(element.attributeValue("FlightNumber"));
-			String numberInParty = element.attributeValue("NumberInParty");
-			if (StringUtils.isNotEmpty(numberInParty)) {
-				fs.setNumberInParty(numberInParty);
-			}
-			fs.setArrivalDateTime(element.attributeValue("ArrivalDateTime"));
-			fs.setCodeshareInd(element.attributeValue("CodeshareInd"));
-			fs.setStatus(element.attributeValue("Status"));
-			fs.setSegmentType(element.attributeValue("SegmentType"));
-			
-			Element operatingAirlineEle = element.element("OperatingAirline");
-			if (operatingAirlineEle != null) {
-				fs.setOperatingAirline(operatingAirlineEle.attributeValue("Code"));
-				fs.setFlightNumberOfOperatingAirline(operatingAirlineEle.attributeValue("FlightNumber"));
-			}
-			
-			Element departureAirportEle = element.element("DepartureAirport");
-			if(departureAirportEle != null){
-				fs.setDepartureAirport(departureAirportEle
-						.attributeValue("LocationCode"));
-			}
-			
-			Element arrivalAirportEle = element.element("ArrivalAirport");
-			if(arrivalAirportEle != null){
-				fs.setArrivalAirport(arrivalAirportEle
-						.attributeValue("LocationCode"));
-			}
+    private String getResponseResult(AirBookRequest request) {
+        String responseResult = "";
+        String requestXML = "";
+        String requestFilePath = null;
+        String responseFilePath = null;
+        try {
+            requestXML = airBookRequestBuilder.buildRequestXML(request);
+            IBEApi airBook = ibeApiConfig.getIbeApi(IBEInterface.JP011.getId());
+            String currentDateTime = DateUtils.formatDate(DateUtils.currentDate(), DateUtils.DATE_SECOND_FORMAT_2);
 
-			Element marketingAirlineEle = element.element("MarketingAirline");
-			if(marketingAirlineEle != null){
-				fs.setMarketingAirline(marketingAirlineEle.attributeValue("Code"));
-			}
+            String uuid = StringUtils.randomUUID(10);
+            StringBuilder requestFileName = new StringBuilder();
+            requestFileName.append(airBook.getId()).append("_")
+                    .append(airBook.getDescription()).append("_RQ_")
+                    .append(currentDateTime).append(uuid).append(".xml");
 
-			Element bookingClassAvailEle = element.element("BookingClassAvail");
-			if(bookingClassAvailEle != null){
-				fs.setResBookDesigCode(bookingClassAvailEle
-						.attributeValue("ResBookDesigCode"));
-			}
+            StringBuilder responseFileName = new StringBuilder();
+            responseFileName.append(airBook.getId()).append("_")
+                    .append(airBook.getDescription()).append("_RS_")
+                    .append(currentDateTime).append(uuid).append(".xml");
 
-			result.add(fs);
-		}
+            String filePath = ibeConfig.getUatDir();
+            requestFilePath = filePath + "/" + requestFileName;
+            responseFilePath = filePath + "/" + responseFileName;
 
-		return result;
-	}
+            responseResult = HttpClientUtils.getInstance().httpPost(ibeConfig.getUsername(),
+                    ibeConfig.getPassword(), airBook.getUrl(), requestXML);
+        } catch (IntegrationException e) {
+            logger.error("IntegrationException", e);
+            throw e;
+        } finally {
+            FileUtils.writeFile(requestFilePath, XMLUtils.getInstance().formatXml(requestXML));
+            FileUtils.writeFile(responseFilePath, XMLUtils.getInstance().formatXml(responseResult));
+        }
 
-	private List<String> getTravelerNameList(Element arElement) {
-		List<String> result = new ArrayList<String>();
-		List<Element> fsList = arElement
-				.selectNodes("TravelerInfo/AirTraveler");
-		for (Element element : fsList) {
-			String travelerName = element
-					.selectSingleNode("PersonName/Surname").getText();
-			result.add(travelerName);
-		}
-		return result;
-	}
-
-	private List<BookingReferenceID> buildBookingReferenceIDObject(
-			Element arElement) {
-		List<BookingReferenceID> result = new ArrayList<BookingReferenceID>();
-		List<Element> fsList = arElement.selectNodes("BookingReferenceID");
-		for (Element element : fsList) {
-			BookingReferenceID br = new BookingReferenceID();
-			br.setId(element.attributeValue("ID"));
-			br.setIdContext(element.attributeValue("ID_Context"));
-			result.add(br);
-		}
-		return result;
-	}*/
-	
-//	private String getResponseResult(AirBookRequest request)
-//			throws IntegrationException {
-//		String requestXML = AirBookRequestBuilder.getInstance().buildRequestXML(request);
-//		String serviceUrl = URLConstants.IBE_AIR_BOOK;
-//		
-//		String currentDateTime = DateUtil.getDateFormat(new Date(), "yyyyMMddHHmmss");
-//		FileUtilForTestJP.saveIBEFileForUAT(IBEInterface.JP021, serviceUrl, requestXML,
-//				null, currentDateTime);
-//		
-//		String responseResult = HttpClientUtils.getInstance().httpPost(
-//				IBEUtils.getUserName(), IBEUtils.getPassword(), serviceUrl, requestXML);
-//		
-//		FileUtilForTestJP.saveIBEFileForUAT(IBEInterface.JP021, serviceUrl, null,
-//				responseResult, currentDateTime);
-//
-//		return responseResult;
-//	}
-	
-	private String getResponseResult(AirBookRequest request)
-			throws IntegrationException {
-		String responseResult = "";
-		String requestXML = "";
-		File requestFile = null;
-		File responseFile = null;
-		try {
-			requestXML = airBookRequestBuilder.buildRequestXML(request);
-			IBEApi airBook = ibeApiConfig.getIbeApi(IBEInterface.JP011.getId());
-			String currentDateTime = DateUtils.formatDate(DateUtils.currentDate(), DateUtils.DATE_SECOND_FORMAT_2);
-
-			StringBuilder requestFileName = new StringBuilder();
-			requestFileName.append(airBook.getId()).append("_")
-				.append(airBook.getDescription()).append("_RQ_")
-				.append(currentDateTime).append(".xml");
-			
-			StringBuilder responseFileName = new StringBuilder();
-			responseFileName.append(airBook.getId()).append("_")
-				.append(airBook.getDescription()).append("_RS_")
-				.append(currentDateTime).append(".xml");
-			
-			String filePath = ibeConfig.getUatDir();
-			String requestFilePath = filePath+requestFileName;
-			String responseFilePath = filePath+responseFileName;
-			
-			requestFile = new File(requestFilePath);
-			responseFile = new File(responseFilePath);
-			try {
-				if(requestFile.exists()){
-					String uuid = StringUtils.randomUUID();
-					String newRequestFilePath = requestFilePath.substring(0, requestFilePath.lastIndexOf("."))+"_"+uuid+".xml";
-					requestFile = new File(newRequestFilePath);
-					
-					String newResponseFilePath = responseFilePath.substring(0, responseFilePath.lastIndexOf("."))+"_"+uuid+".xml";
-					responseFile = new File(newResponseFilePath);
-				}
-				
-				if(!requestFile.getParentFile().exists()){
-					requestFile.getParentFile().mkdirs();
-				}
-				requestFile.createNewFile();
-				responseFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace(System.err);
-			}
-			responseResult = HttpClientUtils.getInstance().httpPost(
-					ibeConfig.getUsername(), ibeConfig.getPassword(), airBook.getUrl(), requestXML);
-		} catch (IntegrationException e) {
-			throw e;
-		} finally {
-//			FileUtilForTestJP.saveFile(requestFile, FileUtilForTestJP.formatXml(requestXML));
-//			FileUtilForTestJP.saveFile(responseFile, FileUtilForTestJP.formatXml(responseResult));
-		}
-		
-		return responseResult;
-	}
+        return responseResult;
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.sparrow.utils;
 
+import com.sparrow.constants.SysConst;
 import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -41,12 +42,13 @@ public class XMLUtils {
      * @author sunyj
      * @date 2014-8-1
      */
-    public String formatXML(String str) {
+    public String formatXml(String str) {
         XMLWriter writer = null;
         StringWriter sw = new StringWriter();
         try {
             Document doc = readXMLFile(str);
             OutputFormat format = OutputFormat.createPrettyPrint();
+            format.setEncoding(SysConst.ENCODING_UTF_8);
             writer = new XMLWriter(sw, format);
             writer.write(doc);
         } catch (IOException e) {
@@ -57,7 +59,7 @@ public class XMLUtils {
                     writer.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace(System.err);
+                logger.error("IOException", e);
             }
         }
         return sw.toString();

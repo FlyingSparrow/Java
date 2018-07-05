@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
  */
 public class IBEUtils {
 
-	private static final String IBE_TEST_ENV_USERNAME = "sparrow";//ibe机票接口测试环境用户名
-	private static final String IBE_TEST_ENV_PWD = "123456";//ibe机票接口测试环境密码
 	private static final Pattern TICKET_REGEX = Pattern.compile("([0-9]{3}-[0-9]{10}[\\s\\S^\n]{57})");
 
 	

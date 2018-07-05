@@ -24,40 +24,64 @@ public class StringUtils {
         return !isEmpty(arg);
     }
 
-    public static String defaultValueIfNull(String arg){
+    public static String defaultValueIfNull(String arg) {
         return (arg == null ? "" : arg);
     }
 
-    public static String defaultValueIfNull(String arg, String defaultValue){
+    public static String defaultValueIfNull(String arg, String defaultValue) {
         return (arg == null || "".equals(arg.trim()) ? defaultValue : arg);
     }
 
     /**
      * 根据机票接口的错误代码获取中文格式的错误信息
+     *
      * @param code
      * @return
      */
-    public static String ibeMessage(String code){
+    public static String ibeMessage(String code) {
         IBEError errorEnum = IBEConstants.IBE_ERROR_MAP.get(code);
-        if(errorEnum != null){
+        if (errorEnum != null) {
             return errorEnum.getCnMessage();
-        }else{
-            return "no chinese error message for the error code: "+code;
+        } else {
+            return "no chinese error message for the error code: " + code;
         }
     }
 
     /**
      * 返回32位长的随机字符串
+     *
+     * @return
      * @author wangjc
      * @date 2014-11-19
-     * @return
      */
-    public static String randomUUID(){
+    public static String randomUUID() {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
     /**
+     * 返回指定长度的随机字符串
+     *
+     * @param length 字符串长度
+     * @return
+     * @author wangjc
+     * @date 2014-11-19
+     */
+    public static String randomUUID(int length) {
+        String result = "";
+        if(length <= 0){
+            return result;
+        }
+
+        result = randomUUID();
+        if(length > result.length()){
+            return result;
+        }
+        return result.substring(0, length);
+    }
+
+    /**
      * 判断当前系统是否是windows系统
+     *
      * @return
      */
     public static boolean isWindows() {

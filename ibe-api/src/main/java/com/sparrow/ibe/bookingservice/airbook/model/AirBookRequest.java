@@ -3,7 +3,6 @@ package com.sparrow.ibe.bookingservice.airbook.model;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,27 +41,27 @@ public class AirBookRequest implements Serializable {
 	/**
 	 * 出发到达信息集合，required，1..n，最少一个
 	 */
-	private List<OriginDestinationOption> originDestinationOptionList = new ArrayList<OriginDestinationOption>();
+	private List<OriginDestinationOption> originDestinationOptionList;
 
 	/**
 	 * 旅客信息集合，1..n
 	 */
-	private List<AirTraveler> airTravelerList = new ArrayList<AirTraveler>();
+	private List<AirTraveler> airTravelerList;
 
 	/**
 	 * 其他服务信息集合，0..n，OSI信息
 	 */
-	private List<OtherServiceInformation> osiList = new ArrayList<OtherServiceInformation>();
+	private List<OtherServiceInformation> osiList;
 
 	/**
 	 * 特殊服务信息，0..n
 	 */
-	private List<SpecialServiceRequest> ssrList = new ArrayList<SpecialServiceRequest>();
+	private List<SpecialServiceRequest> ssrList;
 
 	/**
 	 * 特殊备注信息，0..n
 	 */
-	private List<SpecialRemark> rmkList = new ArrayList<SpecialRemark>();
+	private List<SpecialRemark> rmkList;
 
 	/**
 	 * 出票时限，required
@@ -72,7 +71,7 @@ public class AirBookRequest implements Serializable {
 	/**
 	 * 联系方式，0..n
 	 */
-	private List<String> contactInfoList = new ArrayList<String>();
+	private List<String> contactInfoList;
 
 	/**
 	 * 封口方式，0..1，建议输入KI

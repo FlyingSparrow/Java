@@ -3,7 +3,6 @@ package com.sparrow.ibe.bookingservice.airbook.model;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +42,7 @@ public class AirTraveler implements Serializable {
      */
     private PassengerTypeQuantity passengerTypeQuantity;
 
-    private List<String> flightSegmentRPHList = new ArrayList<String>();
+    private List<String> flightSegmentRPHList;
     /**
      * 旅客姓名项
      */
@@ -55,7 +54,7 @@ public class AirTraveler implements Serializable {
     /**
      * 旅客序号
      */
-    private List<TravelerRefNumber> travelerRefNumberList = new ArrayList<TravelerRefNumber>();
+    private List<TravelerRefNumber> travelerRefNumberList;
     /**
      * 旅客序号，与航段等信息关联
      */

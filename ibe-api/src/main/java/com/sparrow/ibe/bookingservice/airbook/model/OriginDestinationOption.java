@@ -3,7 +3,6 @@ package com.sparrow.ibe.bookingservice.airbook.model;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ public class OriginDestinationOption implements Serializable {
     /**
      * 航段信息集合，1..n，往返或多段可以设置多个FlightSegment
      */
-    private List<FlightSegment> flightSegmentList = new ArrayList<FlightSegment>();
+    private List<FlightSegment> flightSegmentList;
 
     public String getRph() {
         return rph;

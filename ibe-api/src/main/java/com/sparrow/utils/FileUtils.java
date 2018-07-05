@@ -19,10 +19,19 @@ public class FileUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
-    public static synchronized void writeContentToFile(String filePath, String content) {
+    public static void writeFile(String filePath, String content) {
+        writeFile(new File(filePath), content);
+    }
+
+    public static void writeFile(File file, String content){
         BufferedWriter bw = null;
         try {
-            File file = new File(filePath);
+            if(StringUtils.isEmpty(content)){
+                return;
+            }
+            if(!file.getParentFile().exists()){
+                file.getParentFile().mkdirs();
+            }
             if (!file.exists()) {
                 file.setWritable(true, false);
                 file.setReadable(true, false);
