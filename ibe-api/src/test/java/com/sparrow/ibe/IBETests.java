@@ -1,8 +1,8 @@
 package com.sparrow.ibe;
 
 import com.sparrow.BaseTests;
-import com.sparrow.app.config.IBEApi;
-import com.sparrow.app.config.IBEApiConfig;
+import com.sparrow.app.init.IBEApi;
+import com.sparrow.app.init.IBEApiConfig;
 import com.sparrow.ibe.enums.IBEInterface;
 import org.junit.Assert;
 import org.junit.Test;

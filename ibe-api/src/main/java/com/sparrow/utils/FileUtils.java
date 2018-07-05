@@ -173,7 +173,7 @@ public class FileUtils {
         return result.toString();
     }
 
-    private static void close(BufferedReader br){
+    public static void close(Reader br){
         try {
             if(br != null){
                 br.close();
@@ -183,7 +183,7 @@ public class FileUtils {
         }
     }
 
-    private static void close(BufferedOutputStream bos) {
+    public static void close(OutputStream bos) {
         try {
             if (bos != null) {
                 bos.close();
@@ -193,7 +193,7 @@ public class FileUtils {
         }
     }
 
-    private static void close(BufferedInputStream bis) {
+    public static void close(InputStream bis) {
         try {
             if (bis != null) {
                 bis.close();
@@ -203,7 +203,7 @@ public class FileUtils {
         }
     }
 
-    private static void close(BufferedWriter bw) {
+    public static void close(Writer bw) {
         try {
             if (bw != null) {
                 bw.close();

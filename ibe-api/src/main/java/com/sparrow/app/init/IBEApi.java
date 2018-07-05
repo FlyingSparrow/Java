@@ -1,9 +1,10 @@
-package com.sparrow.app.config;
+package com.sparrow.app.init;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * IBE 接口实体类
+ *
  * @author wangjianchun
  * @create 2018/7/4
  */
@@ -16,7 +17,7 @@ public class IBEApi {
     private String url;
     private String description;
 
-    public IBEApi(String type, Boolean enable, String id, String name, String url, String description){
+    public IBEApi(String type, Boolean enable, String id, String name, String url, String description) {
         this.type = type;
         this.enable = enable;
         this.id = id;

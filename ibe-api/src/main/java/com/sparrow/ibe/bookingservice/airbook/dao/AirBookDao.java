@@ -1,16 +1,21 @@
 package com.sparrow.ibe.bookingservice.airbook.dao;
 
-import com.sparrow.app.config.IBEApiConfig;
+import com.sparrow.app.config.IBEConfig;
+import com.sparrow.app.init.IBEApi;
+import com.sparrow.app.init.IBEApiConfig;
 import com.sparrow.ibe.bookingservice.airbook.model.AirBookRequest;
 import com.sparrow.ibe.bookingservice.airbook.model.AirBookResponse;
 import com.sparrow.ibe.bookingservice.airbook.model.AirReservation;
 import com.sparrow.ibe.bookingservice.airbook.request.builder.AirBookRequestBuilder;
 import com.sparrow.ibe.enums.IBEError;
+import com.sparrow.ibe.enums.IBEInterface;
 import com.sparrow.ibe.model.DefaultError;
 import com.sparrow.ibe.model.DefaultWarning;
 import com.sparrow.integration.dao.IntegrationDao;
 import com.sparrow.integration.exception.IntegrationException;
 import com.sparrow.integration.handler.ValidationHandler;
+import com.sparrow.utils.HttpClientUtils;
+import com.sparrow.utils.DateUtils;
 import com.sparrow.utils.StringUtils;
 import com.sparrow.utils.XMLUtils;
 import org.dom4j.Document;
@@ -20,6 +25,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +48,9 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 	@Autowired
 	private AirBookRequestBuilder airBookRequestBuilder;
 	@Autowired
-	private IBEApiConfig integrationUrlConfig;
+	private IBEApiConfig ibeApiConfig;
+	@Autowired
+	private IBEConfig ibeConfig;
 
 	@Override
 	public Serializable execute(String userId, String password, AirBookRequest request)
@@ -225,8 +233,8 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 //		FileUtilForTestJP.saveIBEFileForUAT(IBEInterface.JP021, serviceUrl, requestXML,
 //				null, currentDateTime);
 //		
-//		String responseResult = CommonHttpClientUtil.getInstance().executeHttpRequest(
-//				IBEUtil.getUserName(), IBEUtil.getPassword(), serviceUrl, requestXML);
+//		String responseResult = HttpClientUtils.getInstance().httpPost(
+//				IBEUtils.getUserName(), IBEUtils.getPassword(), serviceUrl, requestXML);
 //		
 //		FileUtilForTestJP.saveIBEFileForUAT(IBEInterface.JP021, serviceUrl, null,
 //				responseResult, currentDateTime);
@@ -240,23 +248,22 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 		String requestXML = "";
 		File requestFile = null;
 		File responseFile = null;
-		/*try {
+		try {
 			requestXML = airBookRequestBuilder.buildRequestXML(request);
-			String serviceUrl = integrationUrlConfig.getAirBook();
+			IBEApi airBook = ibeApiConfig.getIbeApi(IBEInterface.JP011.getId());
 			String currentDateTime = DateUtils.formatDate(DateUtils.currentDate(), DateUtils.DATE_SECOND_FORMAT_2);
-			IBEInterface interfaceEnum = IBEInterface.JP021;
-			
+
 			StringBuilder requestFileName = new StringBuilder();
-			requestFileName.append(interfaceEnum.getId()).append("_")
-				.append(interfaceEnum.getDescription()).append("_RQ_")
+			requestFileName.append(airBook.getId()).append("_")
+				.append(airBook.getDescription()).append("_RQ_")
 				.append(currentDateTime).append(".xml");
 			
 			StringBuilder responseFileName = new StringBuilder();
-			responseFileName.append(interfaceEnum.getId()).append("_")
-				.append(interfaceEnum.getDescription()).append("_RS_")
+			responseFileName.append(airBook.getId()).append("_")
+				.append(airBook.getDescription()).append("_RS_")
 				.append(currentDateTime).append(".xml");
 			
-			String filePath = StringUtils.getIBEUATFilePath();
+			String filePath = ibeConfig.getUatDir();
 			String requestFilePath = filePath+requestFileName;
 			String responseFilePath = filePath+responseFileName;
 			
@@ -280,14 +287,14 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 			} catch (IOException e) {
 				e.printStackTrace(System.err);
 			}
-			responseResult = CommonHttpClientUtil.getInstance().executeHttpRequest(
-					IBEUtil.getUserName(), IBEUtil.getPassword(), serviceUrl, requestXML);
+			responseResult = HttpClientUtils.getInstance().httpPost(
+					ibeConfig.getUsername(), ibeConfig.getPassword(), airBook.getUrl(), requestXML);
 		} catch (IntegrationException e) {
 			throw e;
 		} finally {
-			FileUtilForTestJP.saveFile(requestFile, FileUtilForTestJP.formatXml(requestXML));
-			FileUtilForTestJP.saveFile(responseFile, FileUtilForTestJP.formatXml(responseResult));
-		}*/
+//			FileUtilForTestJP.saveFile(requestFile, FileUtilForTestJP.formatXml(requestXML));
+//			FileUtilForTestJP.saveFile(responseFile, FileUtilForTestJP.formatXml(responseResult));
+		}
 		
 		return responseResult;
 	}
