@@ -1,6 +1,7 @@
 package com.sparrow.ibe.bookingservice.airbook;
 
 import com.sparrow.ibe.bookingservice.airbook.model.*;
+import com.sparrow.ibe.constants.IBEConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,15 +68,14 @@ public class AirBookRequestBuilder {
 
     /**
      * 场景：国内航班+单个成人+单程
+     * 说明：
+     * 必填信息：1.POS信息（必填） 2.行程信息AirItinerary（必填）  3.旅客信息（必填） 4.客票信息 5.扩展信息（必填） 6.预定信息  7.价格信息
+     * 旅客信息说明：3.旅客信息（3.1 旅客基本信息  3.2  旅客其他请求信息）
      *
      * @author wanglw
      * @date 2014-8-29
      */
     public AirBookRequest buildRequest01() {
-        //输入参数结构(7大信息)
-        //1.POS信息（必填） 2.行程信息AirItinerary（必填）  3.旅客信息（必填） 4.客票信息 5.扩展信息（必填） 6.预定信息  7.价格信息
-        //3.旅客信息（3.1 旅客基本信息  3.2  旅客其他请求信息）
-
         AirBookRequest request = new AirBookRequest();
 
         //1.POS信息
@@ -87,16 +87,14 @@ public class AirBookRequestBuilder {
         List<FlightSegment> fsList = new ArrayList<FlightSegment>();
         FlightSegment fs = new FlightSegment();
         fs.setRph("1");
-        //fs.setDepartureDateTime("2014-09-17T07:00:00");
-        //fs.setArrivalDateTime("2014-09-17T09:10:00");
         fs.setDepartureDateTime("2015-12-17T07:00:00");
         fs.setArrivalDateTime("2015-12-18T09:10:00");
         fs.setCodeshareInd("false");
-        fs.setFlightNumber("5138");   //MU5138
+        fs.setFlightNumber("5138");
         fs.setStatus("NN");
         fs.setSegmentType("NORMAL");
         fs.setDepartureAirport("PEK");
-        fs.setArrivalAirport("SHA");    //SHA HKG
+        fs.setArrivalAirport("SHA");
         fs.setAirEquipType("733");
         fs.setMarketingAirline("MU");
         fs.setResBookDesigCode("Y");
@@ -108,18 +106,18 @@ public class AirBookRequestBuilder {
         //3.1旅客信息
         List<AirTraveler> airTravelerList = new ArrayList<AirTraveler>();
         AirTraveler airTraveler = new AirTraveler();
-        airTraveler.setGender("MALE");
-        airTraveler.setPassengerTypeCode("ADT");
+        airTraveler.setGender(IBEConst.Gender.MALE.getCode());
+        airTraveler.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
 
         List<PersonName> personNameList = new ArrayList<PersonName>();
         PersonName personName = new PersonName();
-        personName.setLanguageType("ZH");
+        personName.setLanguageType(IBEConst.LanguageType.ZH.getCode());
         personName.setSurname("高明");
         personNameList.add(personName);
 
         List<Document> documentList = new ArrayList<Document>();
         Document document = new Document();
-        document.setDocType("NI");
+        document.setDocType(IBEConst.DocumentType.ID.getCode());
         document.setDocId("120221197001011150");
         documentList.add(document);
 
@@ -1424,7 +1422,7 @@ public class AirBookRequestBuilder {
 
         /***旅客年龄***/
             /*	PassengerTypeQuantity ptq = new PassengerTypeQuantity();
-				ptq.setAge("10");
+                ptq.setAge("10");
 				airTraveler.setPassengerTypeQuantity(ptq);*/
 
         /***旅客序号***/
