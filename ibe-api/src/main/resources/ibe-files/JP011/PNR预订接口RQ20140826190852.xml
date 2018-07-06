@@ -2,7 +2,7 @@
 
 <OTA_AirBookRQ>
   <POS>
-    <Source PseudoCityCode="BJS180"/>
+    <Source PseudoCityCode="sparrow"/>
   </POS>
   <AirItinerary>
     <OriginDestinationOptions>
