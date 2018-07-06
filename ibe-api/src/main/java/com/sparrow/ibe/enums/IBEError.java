@@ -115,18 +115,18 @@ public enum IBEError {
     BUSINESS_ERROR_PLUS_459("459", "fare DB is busy, please retry later", "运价数据库繁忙，请稍后重试"),;
 
 
-    IBEError(String errorCode, String enMessage, String cnMessage) {
-        this.errorCode = errorCode;
+    IBEError(String code, String enMessage, String cnMessage) {
+        this.code = code;
         this.enMessage = enMessage;
         this.cnMessage = cnMessage;
     }
 
-    private String errorCode;
+    private String code;
     private String enMessage;
     private String cnMessage;
 
-    public String getErrorCode() {
-        return errorCode;
+    public String getCode() {
+        return code;
     }
 
     public String getEnMessage() {

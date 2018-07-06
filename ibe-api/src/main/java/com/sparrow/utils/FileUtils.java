@@ -20,16 +20,20 @@ public class FileUtils {
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     public static void writeFile(String filePath, String content) {
+        if (StringUtils.isEmpty(filePath)) {
+            logger.info("filePath is null or filePath is empty");
+            return;
+        }
         writeFile(new File(filePath), content);
     }
 
-    public static void writeFile(File file, String content){
+    public static void writeFile(File file, String content) {
         BufferedWriter bw = null;
         try {
-            if(StringUtils.isEmpty(content)){
+            if (file == null || StringUtils.isEmpty(content)) {
                 return;
             }
-            if(!file.getParentFile().exists()){
+            if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
             if (!file.exists()) {
@@ -52,7 +56,7 @@ public class FileUtils {
         }
     }
 
-    public static void copyFile(InputStream source, File target){
+    public static void copyFile(InputStream source, File target) {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
@@ -108,25 +112,25 @@ public class FileUtils {
         return sd.toString();
     }
 
-    public static void deleteFiles(File directory){
-        if(directory != null && directory.isDirectory()){
+    public static void deleteFiles(File directory) {
+        if (directory != null && directory.isDirectory()) {
             File[] files = directory.listFiles();
-            if(files == null){
+            if (files == null) {
                 return;
             }
-            for(File file : files){
+            for (File file : files) {
                 file.delete();
             }
         }
     }
 
-    public static void modifyFilePermission(File file){
-        if(!file.exists()){
+    public static void modifyFilePermission(File file) {
+        if (!file.exists()) {
             file.mkdirs();
-            if(!com.sparrow.utils.StringUtils.isWindows()){
+            if (!com.sparrow.utils.StringUtils.isWindows()) {
                 //如果不是windows系统，需要修改文件权限
                 try {
-                    Runtime.getRuntime().exec("sudo chmod 777 "+file.getAbsolutePath());
+                    Runtime.getRuntime().exec("sudo chmod 777 " + file.getAbsolutePath());
                 } catch (IOException e) {
                     logger.error("修改文件权限出错", e);
                 }
@@ -136,6 +140,7 @@ public class FileUtils {
 
     /**
      * 从 classpath 路径下按行读取指定文件的内容
+     *
      * @param fileName
      * @return 按行读取的内容列表
      */
@@ -144,7 +149,7 @@ public class FileUtils {
 
         BufferedReader br = null;
         try {
-            InputStream inputStream = FileUtils.class.getResource("/"+fileName).openStream();
+            InputStream inputStream = FileUtils.class.getResource("/" + fileName).openStream();
             br = new BufferedReader(new InputStreamReader(inputStream, SysConst.ENCODING_UTF_8));
             String line;
             while ((line = br.readLine()) != null) {
@@ -160,6 +165,7 @@ public class FileUtils {
 
     /**
      * 从 classpath 路径下按行读取指定文件的内容
+     *
      * @param fileName
      * @return 按行读取的内容列表
      */
@@ -168,7 +174,7 @@ public class FileUtils {
 
         BufferedReader br = null;
         try {
-            InputStream inputStream = FileUtils.class.getResource("/"+fileName).openStream();
+            InputStream inputStream = FileUtils.class.getResource("/" + fileName).openStream();
             br = new BufferedReader(new InputStreamReader(inputStream, SysConst.ENCODING_UTF_8));
             String line;
             while ((line = br.readLine()) != null) {
@@ -182,9 +188,9 @@ public class FileUtils {
         return result.toString();
     }
 
-    public static void close(Reader br){
+    public static void close(Reader br) {
         try {
-            if(br != null){
+            if (br != null) {
                 br.close();
             }
         } catch (Exception e) {

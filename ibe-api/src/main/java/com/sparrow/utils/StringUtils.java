@@ -39,9 +39,9 @@ public class StringUtils {
      * @return
      */
     public static String ibeMessage(String code) {
-        IBEError errorEnum = IBEConstants.IBE_ERROR_MAP.get(code);
-        if (errorEnum != null) {
-            return errorEnum.getCnMessage();
+        IBEError error = IBEConstants.IBE_ERROR_MAP.get(code);
+        if (error != null) {
+            return error.getCnMessage();
         } else {
             return "no chinese error message for the error code: " + code;
         }

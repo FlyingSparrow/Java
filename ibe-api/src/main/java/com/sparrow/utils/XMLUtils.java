@@ -26,11 +26,11 @@ public class XMLUtils {
     private static final Logger logger = LoggerFactory.getLogger(XMLUtils.class);
 
     private static class XMLUtilHolder {
-        private static final XMLUtils instance = new XMLUtils();
+        private static final XMLUtils INSTANCE = new XMLUtils();
     }
 
     public static XMLUtils getInstance() {
-        return XMLUtilHolder.instance;
+        return XMLUtilHolder.INSTANCE;
     }
 
     private XMLUtils() {
@@ -110,9 +110,15 @@ public class XMLUtils {
         return StringUtils.defaultValueIfNull(element.elementText(subElementName));
     }
 
-    // 获取单节点带有命名空间的节点
+    /**
+     * 功能：获取单节点带有命名空间的节点
+     *
+     * @author wangjc
+     * @date 2014-8-24
+     */
     public Element getDestElement(Map<String, String> xmlMap, Document doc, String id) {
-        XPath xpath = doc.createXPath(id); // 要获取哪个节点，改这里就可以了
+        // 要获取哪个节点，改这里就可以了
+        XPath xpath = doc.createXPath(id);
         xpath.setNamespaceURIs(xmlMap);
         return (Element) xpath.selectSingleNode(doc);
     }
@@ -130,7 +136,14 @@ public class XMLUtils {
         return (Element) xpath.selectSingleNode(element);
     }
 
-    // 获取多节点带有命名空间的节点
+    /**
+     * 获取多节点带有命名空间的节点
+     *
+     * @param xmlMap
+     * @param doc
+     * @param id
+     * @return
+     */
     public List<Element> getDestElements(Map<String, String> xmlMap, Document doc, String id) {
         // 要获取哪个节点，改这里就可以了
         XPath xpath = doc.createXPath(id);

@@ -12,16 +12,17 @@ public interface ValidationHandler<E extends Serializable> {
     /**
      * 功能：验证请求
      *
-     * @param password
      * @param userId
-     * @author wangjc
-     * @date 2014-08-11
+     * @param password
+     * @param request
+     * @return
      */
     boolean validate(String userId, String password, E request);
 
     /**
      * 功能：设置验证结果
      *
+     * @param validationResult
      * @author wangjc
      * @date 2014-08-11
      */
@@ -29,9 +30,7 @@ public interface ValidationHandler<E extends Serializable> {
 
     /**
      * 功能：获取验证结果
-     *
-     * @author wangjc
-     * @date 2014-08-11
+     * @return
      */
     Serializable getValidationResult();
 

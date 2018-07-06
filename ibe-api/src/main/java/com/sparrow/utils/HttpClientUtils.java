@@ -37,14 +37,20 @@ public class HttpClientUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
 
-    private static final HttpClientUtils instance = new HttpClientUtils();
+    private static final HttpClientUtils INSTANCE = new HttpClientUtils();
 
-    private static final RequestConfig requestConfig = RequestConfig
+    /**
+     * setConnectTimeout 设置连接超时时间
+     * setConnectionRequestTimeout 设置请求超时时间
+     * setSocketTimeout 设置读数据超时时间(单位毫秒)
+     * setRedirectsEnabled 默认允许自动重定向
+     */
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig
             .custom()
-            .setConnectTimeout(10000) // 设置连接超时时间
-            .setConnectionRequestTimeout(30000) // 设置请求超时时间
-            .setSocketTimeout(10000)// 设置读数据超时时间(单位毫秒)
-            .setRedirectsEnabled(true)// 默认允许自动重定向
+            .setConnectTimeout(10000)
+            .setConnectionRequestTimeout(30000)
+            .setSocketTimeout(10000)
+            .setRedirectsEnabled(true)
             .build();
     /**
      * 最大尝试次数
@@ -55,7 +61,7 @@ public class HttpClientUtils {
     }
 
     public static HttpClientUtils getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     public String httpPost(String username, String pwd, String url, String requestXML) {
@@ -71,7 +77,7 @@ public class HttpClientUtils {
         try {
             httpClient = getCustomHttpClient();
             HttpPost httpPost = new HttpPost(url);
-            httpPost.setConfig(requestConfig);
+            httpPost.setConfig(REQUEST_CONFIG);
             httpPost.setHeader(new BasicHeader("Content-Type", "text/html;charset=UTF-8"));
             httpPost.setHeader(new BasicHeader("accept-encoding", "gzip"));
             httpPost.setHeader(new BasicHeader("content-encoding", "gzip"));
@@ -132,9 +138,13 @@ public class HttpClientUtils {
             logger.info("responseXml: {}", result);
 
             out.flush();
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error("执行 Http 请求出错", e);
-        } finally {
+            throw new RuntimeException(e);
+        } catch (Exception e){
+            logger.error("执行 Http 请求出错", e);
+            throw new RuntimeException(e);
+        }finally {
             FileUtils.close(out);
             FileUtils.close(is);
             FileUtils.close(br);
@@ -148,14 +158,14 @@ public class HttpClientUtils {
     public String httpPost(String url) {
         logger.info("url: {}", url);
 
-        String result = new String();
+        String result = "";
 
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
         try {
             httpClient = getCustomHttpClient();
             HttpPost httpPost = new HttpPost(url);
-            httpPost.setConfig(requestConfig);
+            httpPost.setConfig(REQUEST_CONFIG);
             httpPost.setHeader(new BasicHeader("Content-Type", "text/html;charset=UTF-8"));
 
             try {
@@ -202,7 +212,7 @@ public class HttpClientUtils {
             }
         }
         parameters.add(new BasicNameValuePair("livedCode", String.valueOf(System.currentTimeMillis())));
-        return _httpPost(url, parameters, charset, 0);
+        return post(url, parameters, charset, 0);
     }
 
     /**
@@ -214,14 +224,14 @@ public class HttpClientUtils {
      * @param reTry
      * @return
      */
-    private String _httpPost(String url, List<BasicNameValuePair> parameters, String charset, int reTry) {
+    private String post(String url, List<BasicNameValuePair> parameters, String charset, int reTry) {
         String result = "";
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
         try {
             httpClient = getHttpClient();
             HttpPost httpPost = new HttpPost(url);
-            httpPost.setConfig(requestConfig);
+            httpPost.setConfig(REQUEST_CONFIG);
             httpPost.setHeader(new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=" + charset));
             HttpEntity paramEntity = new UrlEncodedFormEntity(parameters, charset);
             httpPost.setEntity(paramEntity);
@@ -242,7 +252,7 @@ public class HttpClientUtils {
             if (reTry < MAX_RETRY) {
                 reTry++;
                 logger.error("请求失败，尝试再次请求：{},Request URL：{}, params：{}", reTry, url, parameters.toString());
-                return _httpPost(url, parameters, charset, reTry);
+                return post(url, parameters, charset, reTry);
             } else {
                 logger.error("请求异常，已超出最大尝试次数：{}，Request URL：{}, params：{},Exceptipn:{}", MAX_RETRY, url, parameters.toString(), e);
             }

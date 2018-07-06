@@ -271,8 +271,6 @@ public class IBEConstants {
 
 		FARE_REFERENCE_MAP.put("CYS", "运价参考信息(FareReference)");
 
-//		RES_BOOK_DESIG_CODE_MAP.put("C", "RBD代码(ResBookDesigCode)");
-
 		CHANGED_INDICATOR_MAP.put("Blank", "指定条件下允许变更且没有次数限制");
 		CHANGED_INDICATOR_MAP.put("1", "允许客票变更次数1次");
 		CHANGED_INDICATOR_MAP.put("2", "允许客票变更次数2次");
@@ -307,10 +305,9 @@ public class IBEConstants {
 		
 		SSR_CODE_MAP.put("FQTV", "特殊服务信息服务类型");
 
-		List<IBEError> airTicketErrorList = Arrays.asList(IBEError
-				.values());
+		List<IBEError> airTicketErrorList = Arrays.asList(IBEError.values());
 		for (IBEError item : airTicketErrorList) {
-			IBE_ERROR_MAP.put(item.getErrorCode(), item);
+			IBE_ERROR_MAP.put(item.getCode(), item);
 		}
 	}
 

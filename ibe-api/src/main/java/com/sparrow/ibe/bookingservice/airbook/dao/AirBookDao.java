@@ -68,7 +68,7 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
             List<DefaultError> errorList = new ArrayList<DefaultError>();
             DefaultError error = new DefaultError();
             IBEError errorEnum = IBEError.SYSTEM_ERROR_001;
-            error.setCode(errorEnum.getErrorCode());
+            error.setCode(errorEnum.getCode());
             error.setShortText(errorEnum.getEnMessage());
             error.setCnMessage(errorEnum.getCnMessage());
 
