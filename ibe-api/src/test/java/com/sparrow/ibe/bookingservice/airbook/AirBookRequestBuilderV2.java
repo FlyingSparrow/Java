@@ -32,6 +32,14 @@ public class AirBookRequestBuilderV2 {
         if (type == 1) {
             //场景1
             request = buildRequest01();
+        }else if(type == 2){
+            request = buildRequest02();
+        }else if(type == 3){
+            request = buildRequest03();
+        }else if(type == 4){
+            request = buildRequest04();
+        }else if(type == 5){
+            request = buildRequest04();
         }
         return request;
     }
@@ -75,6 +83,160 @@ public class AirBookRequestBuilderV2 {
     }
 
     /**
+     * 场景：国内航班+单个成人+单程+OSI
+     * 说明：
+     * 必填信息：1.POS信息（必填） 2.行程信息AirItinerary（必填）  3.旅客信息（必填） 4.客票信息 5.扩展信息（必填） 6.预定信息  7.价格信息
+     * 旅客信息说明：3.旅客信息（3.1 旅客基本信息  3.2  旅客其他请求信息）
+     *
+     * @author wanglw
+     * @date 2014-8-29
+     */
+    public AirBookRequest buildRequest02() {
+        AirBookVO airBookVO = new AirBookVO();
+        airBookVO.setDepartureDateTime("2015-12-17T07:00:00");
+        airBookVO.setArrivalDateTime("2015-12-18T09:10:00");
+        airBookVO.setFlightNumber("5138");
+        airBookVO.setDepartureAirport("PEK");
+        airBookVO.setArrivalAirport("SHA");
+        airBookVO.setMarketingAirline("MU");
+        if (StringUtils.isEmpty(airBookVO.getResBookDesigCode())) {
+            //如果用户没有设置舱位等级，那么默认为经济舱
+            airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
+        }
+        airBookVO.setContactNumber("010-12345678");
+        airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
+
+        List<AirTravelerVO> airTravelerList = Lists.newArrayList();
+        AirTravelerVO airTravelerVO = new AirTravelerVO();
+        airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
+        airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
+        airTravelerVO.setLanguageType(IBEConst.LanguageType.ZH.getCode());
+        airTravelerVO.setSurname("高明");
+        airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
+        airTravelerVO.setDocId("120221197001011150");
+        airTravelerList.add(airTravelerVO);
+        airBookVO.setAirTravelerList(airTravelerList);
+
+        List<String> osiList = new ArrayList<>();
+        osiList.add("CTCT13666666666");
+        osiList.add("CTCM1366666666");
+        airBookVO.setOsiList(osiList);
+
+        return buildAirBookRequest(airBookVO);
+    }
+
+    /**
+     * 场景：国内航班+单个成人+单程+OSI+RMK
+     * 说明：
+     * 必填信息：1.POS信息（必填） 2.行程信息AirItinerary（必填）  3.旅客信息（必填） 4.客票信息 5.扩展信息（必填） 6.预定信息  7.价格信息
+     * 旅客信息说明：3.旅客信息（3.1 旅客基本信息  3.2  旅客其他请求信息）
+     *
+     * @author wanglw
+     * @date 2014-8-29
+     */
+    public AirBookRequest buildRequest03() {
+        AirBookVO airBookVO = new AirBookVO();
+        airBookVO.setDepartureDateTime("2015-12-17T07:00:00");
+        airBookVO.setArrivalDateTime("2015-12-18T09:10:00");
+        airBookVO.setFlightNumber("5138");
+        airBookVO.setDepartureAirport("PEK");
+        airBookVO.setArrivalAirport("SHA");
+        airBookVO.setMarketingAirline("MU");
+        if (StringUtils.isEmpty(airBookVO.getResBookDesigCode())) {
+            //如果用户没有设置舱位等级，那么默认为经济舱
+            airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
+        }
+        airBookVO.setContactNumber("010-12345678");
+        airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
+
+        List<AirTravelerVO> airTravelerList = Lists.newArrayList();
+        AirTravelerVO airTravelerVO = new AirTravelerVO();
+        airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
+        airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
+        airTravelerVO.setLanguageType(IBEConst.LanguageType.ZH.getCode());
+        airTravelerVO.setSurname("高明");
+        airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
+        airTravelerVO.setDocId("120221197001011150");
+        airTravelerList.add(airTravelerVO);
+        airBookVO.setAirTravelerList(airTravelerList);
+
+        List<String> osiList = new ArrayList<>();
+        osiList.add("CTCT13666666666");
+        osiList.add("CTCM1366666666");
+        airBookVO.setOsiList(osiList);
+
+        List<String> remarkList = new ArrayList<>();
+        remarkList.add("特殊备注组信息");
+        remarkList.add("特殊备注组信息2");
+        airBookVO.setRemarkList(remarkList);
+
+        return buildAirBookRequest(airBookVO);
+    }
+
+    /**
+     * 场景：国内航班+单个成人+单程+OSI+SSR
+     * 说明：
+     * 必填信息：1.POS信息（必填） 2.行程信息AirItinerary（必填）  3.旅客信息（必填） 4.客票信息 5.扩展信息（必填） 6.预定信息  7.价格信息
+     * 旅客信息说明：3.旅客信息（3.1 旅客基本信息  3.2  旅客其他请求信息）
+     *
+     * @author wanglw
+     * @date 2014-8-29
+     */
+    public AirBookRequest buildRequest04() {
+        AirBookVO airBookVO = new AirBookVO();
+        airBookVO.setDepartureDateTime("2015-12-17T07:00:00");
+        airBookVO.setArrivalDateTime("2015-12-18T09:10:00");
+        airBookVO.setFlightNumber("5138");
+        airBookVO.setDepartureAirport("PEK");
+        airBookVO.setArrivalAirport("SHA");
+        airBookVO.setMarketingAirline("MU");
+        if (StringUtils.isEmpty(airBookVO.getResBookDesigCode())) {
+            //如果用户没有设置舱位等级，那么默认为经济舱
+            airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
+        }
+        airBookVO.setContactNumber("010-12345678");
+        airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
+
+        List<AirTravelerVO> airTravelerList = Lists.newArrayList();
+        AirTravelerVO airTravelerVO = new AirTravelerVO();
+        airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
+        airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
+        airTravelerVO.setLanguageType(IBEConst.LanguageType.ZH.getCode());
+        airTravelerVO.setSurname("高明");
+        airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
+        airTravelerVO.setDocId("120221197001011150");
+        airTravelerList.add(airTravelerVO);
+        airBookVO.setAirTravelerList(airTravelerList);
+
+        List<String> osiList = new ArrayList<>();
+        osiList.add("CTCT13666666666");
+        osiList.add("CTCM1366666666");
+        airBookVO.setOsiList(osiList);
+
+        List<SpecialServiceRequestVO> ssrList = new ArrayList<>();
+        SpecialServiceRequestVO ssr = new SpecialServiceRequestVO();
+        ssr.setSsrCode("OTHS");
+        ssr.setAirline("MU");
+        ssr.setTravelerRefNumber("1");
+        ssr.setText("ADULT PNR IS HAHAHA");
+        ssrList.add(ssr);
+
+        ssr = new SpecialServiceRequestVO();
+        //特殊餐食申请
+        ssr.setSsrCode("SPML");
+        ssr.setStatus("NN");
+        ssr.setAirline("MU");
+        ssr.setFlightRefNumber("1");
+        ssr.setTravelerRefNumber("1");
+        ssr.setText("NOSOLT");
+        ssrList.add(ssr);
+
+        airBookVO.setSsrList(ssrList);
+
+        return buildAirBookRequest(airBookVO);
+    }
+
+    /**
      * 根据用户的预定请求构造自动预订服务的请求对象
      *
      * @param airBookVO
@@ -93,6 +255,13 @@ public class AirBookRequestBuilderV2 {
 
         //4.客票信息(出票时间)
         request.setTicketTimeLimit(airBookVO.getTicketTimeLimit());
+
+        //填充 OSI 信息
+        fillOtherServiceInformation(request, airBookVO);
+        //填充特殊备注信息
+        fillSpecialRemark(request, airBookVO);
+        //填充特殊服务请求信息
+        fillSpecialServiceRequest(request, airBookVO.getSsrList());
 
         //5.扩展信息
         List<String> ctList = new ArrayList<String>();
@@ -181,23 +350,65 @@ public class AirBookRequestBuilderV2 {
      * 填充旅客预定的服务信息 OSI
      *
      * @param request
+     * @param airBookVO
      */
-    private void fillOtherServiceInformation(AirBookRequest request) {
-        List<OtherServiceInformation> osiList = new ArrayList<OtherServiceInformation>();
-        OtherServiceInformation osi = new OtherServiceInformation();
-        osi.setOsiCode("OTHS");
-        osi.setAirlineCode("MU");
-        osi.setText("CTCT13666666666");
-        osiList.add(osi);
+    private void fillOtherServiceInformation(AirBookRequest request, AirBookVO airBookVO) {
+        List<String> list = airBookVO.getOsiList();
+        if(list != null && list.size() > 0){
+            List<OtherServiceInformation> otherServiceInformationList = new ArrayList<OtherServiceInformation>();
+            for(String item : list){
+                OtherServiceInformation osi = new OtherServiceInformation();
+                osi.setOsiCode("OTHS");
+                osi.setAirlineCode(airBookVO.getMarketingAirline());
+                if(item.startsWith("CTCM")){
+                    osi.setTravelerRefNumberRPH("1");
+                }
+                osi.setText(item);
+                otherServiceInformationList.add(osi);
+            }
+            request.setOsiList(otherServiceInformationList);
+        }
+    }
 
-        osi = new OtherServiceInformation();
-        osi.setOsiCode("OTHS");
-        osi.setAirlineCode("MU");
-        osi.setText("CTCM1366666666");
-        osi.setTravelerRefNumberRPH("1");
-        osiList.add(osi);
+    /**
+     * 填充特殊备注信息
+     *
+     * @param request
+     * @param airBookVO
+     */
+    private void fillSpecialRemark(AirBookRequest request, AirBookVO airBookVO) {
+        List<String> list = airBookVO.getRemarkList();
+        if(list != null && list.size() > 0){
+            List<SpecialRemark> specialRemarkList = new ArrayList<SpecialRemark>();
+            for(String item : list){
+                SpecialRemark remark = new SpecialRemark();
+                remark.setText(item);
+                specialRemarkList.add(remark);
+            }
+            request.setRmkList(specialRemarkList);
+        }
+    }
 
-        request.setOsiList(osiList);
+    /**
+     * 填充特殊服务请求信息
+     *  @param request
+     * @param list
+     */
+    private void fillSpecialServiceRequest(AirBookRequest request, List<SpecialServiceRequestVO> list) {
+        if(list != null && list.size() > 0){
+            List<SpecialServiceRequest> ssrList = new ArrayList<SpecialServiceRequest>();
+            for(SpecialServiceRequestVO item : list){
+                SpecialServiceRequest ssr = new SpecialServiceRequest();
+                ssr.setSsrCode(item.getSsrCode());
+                ssr.setStatus(item.getStatus());
+                ssr.setAirlineCode(item.getAirline());
+                ssr.setFlightRefNumberRPH(item.getFlightRefNumber());
+                ssr.setTravelerRefNumberRPH(item.getTravelerRefNumber());
+                ssr.setText(item.getText());
+                ssrList.add(ssr);
+            }
+            request.setSsrList(ssrList);
+        }
     }
 
 }

@@ -26,14 +26,16 @@ public class AirBookTests extends BaseTests {
 
     @Autowired
     private IBEConfig ibeConfig;
+    @Autowired
+    private com.sparrow.ibe.bookingservice.airbook.builder.AirBookRequestBuilder airBookRequestBuilder;
 
     /**
      * 测试场景：国内航班+单个成人+单程
      */
     @Test
-    public void testAirBook1() {
+    public void testAirBook01() {
         int type = 1;
-        AirBookRequest request = new AirBookRequestBuilder().buildRequest(type);
+        AirBookRequest request = new AirBookRequestBuilderV2().buildRequest(type);
         AirBookDao dao = new AirBookDao();
         AirBookResponse response = (AirBookResponse) dao.execute(ibeConfig.getUsername(), ibeConfig.getPassword(), request);
 
@@ -51,6 +53,66 @@ public class AirBookTests extends BaseTests {
             logger.info("errorCode: {}", error.getCode());
             logger.info("error.getCnMessage(): {}", error.getCnMessage());
         }
+    }
+
+    /**
+     * 测试场景1：国内航班+单个成人+单程
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook01RequestXml(){
+        int type = 1;
+        AirBookRequest request = new AirBookRequestBuilderV2().buildRequest(type);
+        String requestXml = airBookRequestBuilder.buildRequestXML(request);
+        logger.info("requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景2：国内航班+单个成人+单程+OSI
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook02RequestXml(){
+        int type = 2;
+        AirBookRequest request = new AirBookRequestBuilderV2().buildRequest(type);
+        String requestXml = airBookRequestBuilder.buildRequestXML(request);
+        logger.info("requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景3：国内航班+单个成人+单程+OSI+RMK
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook03RequestXml(){
+        int type = 3;
+        AirBookRequest request = new AirBookRequestBuilderV2().buildRequest(type);
+        String requestXml = airBookRequestBuilder.buildRequestXML(request);
+        logger.info("requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景4：国内航班+单个成人+单程+OSI+SSR
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook04RequestXml(){
+        int type = 4;
+        AirBookRequest request = new AirBookRequestBuilderV2().buildRequest(type);
+        String requestXml = airBookRequestBuilder.buildRequestXML(request);
+        logger.info("requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景5：国内航班+单个成人+单程+婴儿
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook05RequestXml(){
+        int type = 5;
+        AirBookRequest request = new AirBookRequestBuilderV2().buildRequest(type);
+        String requestXml = airBookRequestBuilder.buildRequestXML(request);
+        logger.info("requestXml: {}", requestXml);
     }
 
 }

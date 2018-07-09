@@ -4,7 +4,7 @@ import com.sparrow.app.config.IBEConfig;
 import com.sparrow.app.init.IBEApi;
 import com.sparrow.app.init.IBEApiConfig;
 import com.sparrow.ibe.bookingservice.airbook.model.*;
-import com.sparrow.ibe.bookingservice.airbook.request.builder.AirBookRequestBuilder;
+import com.sparrow.ibe.bookingservice.airbook.builder.AirBookRequestBuilder;
 import com.sparrow.ibe.enums.IBEError;
 import com.sparrow.ibe.enums.IBEInterface;
 import com.sparrow.ibe.model.DefaultError;

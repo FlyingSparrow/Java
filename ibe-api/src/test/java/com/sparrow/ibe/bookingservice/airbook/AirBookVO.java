@@ -61,6 +61,18 @@ public class AirBookVO {
      * 旅客信息列表
      */
     private List<AirTravelerVO> airTravelerList;
+    /**
+     * OSI（其他服务信息）信息列表
+     */
+    private List<String> osiList;
+    /**
+     * 备注信息列表
+     */
+    private List<String> remarkList;
+    /**
+     * 特殊服务请求信息列表
+     */
+    private List<SpecialServiceRequestVO> ssrList;
 
     public String getDepartureDateTime() {
         return departureDateTime;
@@ -140,6 +152,30 @@ public class AirBookVO {
 
     public void setAirTravelerList(List<AirTravelerVO> airTravelerList) {
         this.airTravelerList = airTravelerList;
+    }
+
+    public List<String> getOsiList() {
+        return osiList;
+    }
+
+    public void setOsiList(List<String> osiList) {
+        this.osiList = osiList;
+    }
+
+    public List<String> getRemarkList() {
+        return remarkList;
+    }
+
+    public void setRemarkList(List<String> remarkList) {
+        this.remarkList = remarkList;
+    }
+
+    public List<SpecialServiceRequestVO> getSsrList() {
+        return ssrList;
+    }
+
+    public void setSsrList(List<SpecialServiceRequestVO> ssrList) {
+        this.ssrList = ssrList;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.sparrow.ibe.bookingservice.airbook.request.builder;
+package com.sparrow.ibe.bookingservice.airbook.builder;
 
 import com.sparrow.ibe.bookingservice.airbook.model.*;
 import com.sparrow.integration.builder.RequestBuilder;
