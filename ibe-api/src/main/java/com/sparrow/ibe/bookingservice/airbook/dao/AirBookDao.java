@@ -218,7 +218,7 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
         String requestFilePath = null;
         String responseFilePath = null;
         try {
-            requestXML = airBookRequestBuilder.buildRequestXML(request);
+            requestXML = airBookRequestBuilder.buildRequestXml(request);
             IBEApi airBook = ibeApiConfig.getIbeApi(IBEInterface.JP011.getId());
             String currentDateTime = DateUtils.formatDate(DateUtils.currentDate(), DateUtils.DATE_SECOND_FORMAT_2);
 

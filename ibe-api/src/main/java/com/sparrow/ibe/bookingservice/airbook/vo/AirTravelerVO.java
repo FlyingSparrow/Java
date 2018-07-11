@@ -1,4 +1,4 @@
-package com.sparrow.ibe.bookingservice.airbook;
+package com.sparrow.ibe.bookingservice.airbook.vo;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

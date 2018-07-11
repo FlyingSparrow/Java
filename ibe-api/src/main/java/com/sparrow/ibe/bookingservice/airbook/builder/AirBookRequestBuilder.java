@@ -30,7 +30,7 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
      * @date 2014-7-11
      */
     @Override
-    public String buildRequestXML(AirBookRequest request)
+    public String buildRequestXml(AirBookRequest request)
             throws IntegrationException {
         if (request == null) {
             throw new IntegrationException("the request is null in the class" + getClass().getCanonicalName()
@@ -183,6 +183,7 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
             for (AirTraveler item : list) {
                 String gender = item.getGender();
                 String passengerTypeCode = item.getPassengerTypeCode();
+                String accompaniedByInfant = item.getAccompaniedByInfant();
                 List<String> flightSegmentRPHList = item.getFlightSegmentRPHList();
                 String comment = item.getComment();
                 String birthDate = item.getBirthDate();
@@ -196,6 +197,12 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                 }
                 if (StringUtils.isNotEmpty(passengerTypeCode)) {
                     atElement.addAttribute("PassengerTypeCode", passengerTypeCode);
+                }
+                if (StringUtils.isNotEmpty(passengerTypeCode)) {
+                    atElement.addAttribute("PassengerTypeCode", passengerTypeCode);
+                }
+                if (StringUtils.isNotEmpty(accompaniedByInfant)) {
+                    atElement.addAttribute("AccompaniedByInfant", accompaniedByInfant);
                 }
 
                 buildPersonNameElement(item.getPersonNameList(), atElement);

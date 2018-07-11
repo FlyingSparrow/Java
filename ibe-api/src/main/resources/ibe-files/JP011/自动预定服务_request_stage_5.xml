@@ -17,11 +17,11 @@
         </OriginDestinationOptions>
     </AirItinerary>
     <TravelerInfo>
-        <AirTraveler Gender="MALE" PassengerTypeCode="ADT">
+        <AirTraveler Gender="MALE" PassengerTypeCode="ADT" AccompaniedByInfant="true">
             <PersonName LanguageType="ZH">
                 <Surname>李雷</Surname>
             </PersonName>
-            <Document DocType="NI" DocID="1234567890" DocHolderNationality="CN" BirthDate="1985-05-09" Gender="MALE"
+            <Document DocType="NI" DocID="1234567890" DocHolderNationality="CN" BirthDate="1985-05-09"
                       ExpireDate="2031-01-01"/>
             <PassengerTypeQuantity Age="33"/>
             <TravelerRefNumber RPH="1" InfantTravelerRPH="2"/>

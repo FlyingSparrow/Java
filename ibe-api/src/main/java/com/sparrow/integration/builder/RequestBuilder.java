@@ -20,6 +20,6 @@ public interface RequestBuilder<E extends Serializable> {
      * @return
      * @throws IntegrationException
      */
-    String buildRequestXML(E request) throws IntegrationException;
+    String buildRequestXml(E request) throws IntegrationException;
 
 }

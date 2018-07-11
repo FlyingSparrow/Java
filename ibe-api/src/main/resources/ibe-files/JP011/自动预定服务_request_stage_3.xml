@@ -21,12 +21,9 @@
             <PersonName LanguageType="ZH">
                 <Surname>高明</Surname>
             </PersonName>
-            <Document DocType="NI" DocID="120221197001011150" Gender="MALE"/>
+            <Document DocType="NI" DocID="120221197001011150"/>
             <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="1"/>
-            <FlightSegmentRPHs>
-                <FlightSegmentRPH>1</FlightSegmentRPH>
-            </FlightSegmentRPHs>
             <Comment>HK</Comment>
         </AirTraveler>
         <SpecialReqDetails>
