@@ -1,18 +1,15 @@
-package com.sparrow.ibe.bookingservice.airbook.model;
+package com.sparrow.ibe.bookingservice.airbook;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.io.Serializable;
-
 /**
- * 旅客姓名项:旅客姓名项,当婴儿票预订时,可以输入两组(中文和英文各一组)
+ * 旅客姓名项: 当婴儿票预订时,可以输入两组(中文和英文各一组)
  *
- * @author gengbl
- * @date 2014-10-10
+ * @author wangjianchun
+ * @create 2018/7/11
  */
-public class PersonName implements Serializable {
+public class PersonNameVO {
 
-    private static final long serialVersionUID = 4208798770615061429L;
     /**
      * 旅客姓名语种，0..1，姓名的输入语言，中文 - ZH；英文 - EN，
      * 婴儿票输入护照信息前，需要输入英文姓名
@@ -22,10 +19,6 @@ public class PersonName implements Serializable {
      * 旅客姓名，格式如：中文：张三；英文：Zhang/san
      */
     private String surname;
-    /**
-     * 旅客姓名PNR
-     */
-    private String namePnr;
 
     public String getLanguageType() {
         return languageType;
@@ -41,14 +34,6 @@ public class PersonName implements Serializable {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public String getNamePnr() {
-        return namePnr;
-    }
-
-    public void setNamePnr(String namePnr) {
-        this.namePnr = namePnr;
     }
 
     @Override

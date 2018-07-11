@@ -1,13 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <OTA_AirBookRQ>
     <POS>
-        <Source PseudoCityCode="BJS187"/>
+        <Source PseudoCityCode="sparrow"/>
     </POS>
     <AirItinerary>
         <OriginDestinationOptions>
             <OriginDestinationOption>
                 <FlightSegment RPH="1" DepartureDateTime="2013-11-26T07:30:00" ArrivalDateTime="2013-11-26T09:40:00"
-                               FlightNumber="1831" NumberInParty="2" Status="NN" SegmentType="NORMAL">
-                    <OperatingAirline Code="CA" FlightNumber="1831"/>
+                               FlightNumber="1831" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="PEK"/>
                     <ArrivalAirport LocationCode="SHA"/>
                     <MarketingAirline Code="CA"/>
@@ -17,19 +17,13 @@
         </OriginDestinationOptions>
     </AirItinerary>
     <TravelerInfo>
-        <AirTraveler PassengerTypeCode="ADT" AccompaniedByInfant="true">
+        <AirTraveler Gender="MALE" PassengerTypeCode="ADT">
             <PersonName LanguageType="ZH">
                 <Surname>李雷</Surname>
             </PersonName>
-            <Document DocType="NI" DocTypeDetail="" DocID="1234567890" DocHolderNationality="CN" BirthDate="1985-05-09"
-                      Gender="MALE" ExpireDate="2031-01-01">
-                <DocHolderFormattedName>
-                    <GivenName/>
-                    <MiddleName/>
-                    <Surname>李雷</Surname>
-                </DocHolderFormattedName>
-            </Document>
-            <PassengerTypeQuantity Age="28"/>
+            <Document DocType="NI" DocID="1234567890" DocHolderNationality="CN" BirthDate="1985-05-09" Gender="MALE"
+                      ExpireDate="2031-01-01"/>
+            <PassengerTypeQuantity Age="33"/>
             <TravelerRefNumber RPH="1" InfantTravelerRPH="2"/>
             <FlightSegmentRPHs>
                 <FlightSegmentRPH>1</FlightSegmentRPH>
@@ -42,7 +36,7 @@
             <PersonName LanguageType="EN">
                 <Surname>LI/XIAOLEI</Surname>
             </PersonName>
-            <PassengerTypeQuantity Age="1"/>
+            <PassengerTypeQuantity Age="6"/>
             <TravelerRefNumber RPH="2"/>
             <FlightSegmentRPHs>
                 <FlightSegmentRPH>1</FlightSegmentRPH>
@@ -50,11 +44,12 @@
         </AirTraveler>
         <SpecialReqDetails>
             <OtherServiceInformations>
-                <OtherServiceInformation>
+                <OtherServiceInformation Code="OTHS">
                     <Airline Code="CA"/>
                     <Text>CTCT13801035768</Text>
                 </OtherServiceInformation>
-                <OtherServiceInformation>
+                <OtherServiceInformation Code="OTHS">
+                    <TravelerRefNumber RPH="1"/>
                     <Airline Code="CA"/>
                     <Text>CTCM13801035768/P1</Text>
                 </OtherServiceInformation>
@@ -66,7 +61,7 @@
             </SpecialRemarks>
         </SpecialReqDetails>
     </TravelerInfo>
-    <Ticketing TicketTimeLimit="2013-11-26T05:32:20.6578052+08:00"/>
+    <Ticketing TicketTimeLimit="2013-11-26T05:32:20"/>
     <TPA_Extensions>
         <ContactInfo>0512-82274023</ContactInfo>
         <EnvelopType>KI</EnvelopType>

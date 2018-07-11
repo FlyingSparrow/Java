@@ -41,6 +41,10 @@ public class AirBookVO {
      */
     private String arrivalAirport;
     /**
+     * 是否共享航班，true/false
+     */
+    private String codeShareInd;
+    /**
      * 市场方航空公司，航空公司两字码
      */
     private String marketingAirline;
@@ -49,6 +53,10 @@ public class AirBookVO {
      * 说明：舱位代码（F：头等舱；C：公务舱；Y：经济舱，默认为Y，也就是经济舱）
      */
     private String resBookDesigCode;
+    /**
+     * 航段预订旅客数(预留)/航段包括人数
+     */
+    private String numberInParty;
     /**
      * 出票时限，格式如：2015-12-16T00:01:00
      */
@@ -73,6 +81,10 @@ public class AirBookVO {
      * 特殊服务请求信息列表
      */
     private List<SpecialServiceRequestVO> ssrList;
+    /**
+     * 封口延迟，0..1，default true，若需一次封口，请设置为false
+     */
+    private String envelopDelay;
 
     public String getDepartureDateTime() {
         return departureDateTime;
@@ -114,6 +126,14 @@ public class AirBookVO {
         this.arrivalAirport = arrivalAirport;
     }
 
+    public String getCodeShareInd() {
+        return codeShareInd;
+    }
+
+    public void setCodeShareInd(String codeShareInd) {
+        this.codeShareInd = codeShareInd;
+    }
+
     public String getMarketingAirline() {
         return marketingAirline;
     }
@@ -128,6 +148,14 @@ public class AirBookVO {
 
     public void setResBookDesigCode(String resBookDesigCode) {
         this.resBookDesigCode = resBookDesigCode;
+    }
+
+    public String getNumberInParty() {
+        return numberInParty;
+    }
+
+    public void setNumberInParty(String numberInParty) {
+        this.numberInParty = numberInParty;
     }
 
     public String getTicketTimeLimit() {
@@ -176,6 +204,14 @@ public class AirBookVO {
 
     public void setSsrList(List<SpecialServiceRequestVO> ssrList) {
         this.ssrList = ssrList;
+    }
+
+    public String getEnvelopDelay() {
+        return envelopDelay;
+    }
+
+    public void setEnvelopDelay(String envelopDelay) {
+        this.envelopDelay = envelopDelay;
     }
 
     @Override

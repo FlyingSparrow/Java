@@ -33,6 +33,10 @@ public class AirTraveler implements Serializable {
      */
     private String passengerTypeCode;
     /**
+     * 是否有婴儿陪伴，true/false
+     */
+    private String accompaniedByInfant;
+    /**
      * 出生日期
      */
     private String birthDate;
@@ -85,6 +89,14 @@ public class AirTraveler implements Serializable {
 
     public void setPassengerTypeCode(String passengerTypeCode) {
         this.passengerTypeCode = passengerTypeCode;
+    }
+
+    public String getAccompaniedByInfant() {
+        return accompaniedByInfant;
+    }
+
+    public void setAccompaniedByInfant(String accompaniedByInfant) {
+        this.accompaniedByInfant = accompaniedByInfant;
     }
 
     public String getBirthDate() {

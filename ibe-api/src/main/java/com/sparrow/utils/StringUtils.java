@@ -3,6 +3,7 @@ package com.sparrow.utils;
 import com.sparrow.ibe.constants.IBEConstants;
 import com.sparrow.ibe.enums.IBEError;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -91,6 +92,21 @@ public class StringUtils {
             flag = true;
         }
         return flag;
+    }
+
+    /**
+     * 计算年龄
+     * @param birthDate
+     * @return
+     */
+    public static int calculateAge(Date birthDate){
+        if(birthDate == null){
+            return 0;
+        }
+        int currentYear = DateUtils.getYearOfDate(DateUtils.currentDate());
+        int yearOfBirthDate = DateUtils.getYearOfDate(birthDate);
+
+        return (currentYear - yearOfBirthDate);
     }
 
 }

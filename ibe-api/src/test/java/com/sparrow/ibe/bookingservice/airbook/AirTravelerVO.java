@@ -2,6 +2,8 @@ package com.sparrow.ibe.bookingservice.airbook;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.List;
+
 /**
  * 旅客信息
  * @author wangjianchun
@@ -20,14 +22,9 @@ public class AirTravelerVO {
      */
     private String passengerTypeCode;
     /**
-     * 拼写语言，0..1，姓名的输入语言，中文 - ZH；英文 - EN，
-     * 婴儿票输入护照信息前，需要输入英文姓名
+     * 是否有婴儿陪伴，true/false
      */
-    private String languageType;
-    /**
-     * 旅客姓名，格式如：中文：张三；英文：Zhang/san
-     */
-    private String surname;
+    private String accompaniedByInfant;
     /**
      * 证件类型，PP - 护照；NI - 身份证
      */
@@ -36,6 +33,54 @@ public class AirTravelerVO {
      * 证件号
      */
     private String docId;
+    /**
+     * 证件类型描述，在证件类型为PP时，提供具体护照类型，如：F、P、AC等
+     */
+    private String docTypeDetail;
+    /**
+     * 发证国家
+     */
+    private String docIssueCountry;
+    /**
+     * 证件持有人国籍
+     */
+    private String docHolderNationality;
+    /**
+     * 出生日期
+     */
+    private String birthDate;
+    /**
+     * 证件有效期截止日期，证件类型为PP时，需要指定到期时间
+     */
+    private String expireDate;
+    /**
+     * 证件持有人姓名的名，若填写护照，需要填写此项，姓名为zhang/san时，这里是"san"
+     */
+    private String docHolderGivenName;
+    /**
+     * 证件持有人姓名的姓，若填写护照，需要填写此项，姓名为zhang/san时，这里是"zhang"
+     */
+    private String docHolderSurname;
+    /**
+     * 证件持有人中间名
+     */
+    private String docHolderMiddleName;
+    /**
+     * 年龄
+     */
+    private String age;
+    /**
+     * 旅客所携带的婴儿rph,数字,比如:1,2,3
+     */
+    private String infantTravelerRph;
+    /**
+     * 旅客姓名项，当婴儿票预订时，可以输入两组（中文和英文各一组）
+     */
+    private List<PersonNameVO> personNameList;
+    /**
+     * 说明信息
+     */
+    private String comment;
 
     public String getGender() {
         return gender;
@@ -53,20 +98,12 @@ public class AirTravelerVO {
         this.passengerTypeCode = passengerTypeCode;
     }
 
-    public String getLanguageType() {
-        return languageType;
+    public String getAccompaniedByInfant() {
+        return accompaniedByInfant;
     }
 
-    public void setLanguageType(String languageType) {
-        this.languageType = languageType;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setAccompaniedByInfant(String accompaniedByInfant) {
+        this.accompaniedByInfant = accompaniedByInfant;
     }
 
     public String getDocType() {
@@ -83,6 +120,102 @@ public class AirTravelerVO {
 
     public void setDocId(String docId) {
         this.docId = docId;
+    }
+
+    public String getDocTypeDetail() {
+        return docTypeDetail;
+    }
+
+    public void setDocTypeDetail(String docTypeDetail) {
+        this.docTypeDetail = docTypeDetail;
+    }
+
+    public String getDocIssueCountry() {
+        return docIssueCountry;
+    }
+
+    public void setDocIssueCountry(String docIssueCountry) {
+        this.docIssueCountry = docIssueCountry;
+    }
+
+    public String getDocHolderNationality() {
+        return docHolderNationality;
+    }
+
+    public void setDocHolderNationality(String docHolderNationality) {
+        this.docHolderNationality = docHolderNationality;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(String expireDate) {
+        this.expireDate = expireDate;
+    }
+
+    public String getDocHolderGivenName() {
+        return docHolderGivenName;
+    }
+
+    public void setDocHolderGivenName(String docHolderGivenName) {
+        this.docHolderGivenName = docHolderGivenName;
+    }
+
+    public String getDocHolderSurname() {
+        return docHolderSurname;
+    }
+
+    public void setDocHolderSurname(String docHolderSurname) {
+        this.docHolderSurname = docHolderSurname;
+    }
+
+    public String getDocHolderMiddleName() {
+        return docHolderMiddleName;
+    }
+
+    public void setDocHolderMiddleName(String docHolderMiddleName) {
+        this.docHolderMiddleName = docHolderMiddleName;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getInfantTravelerRph() {
+        return infantTravelerRph;
+    }
+
+    public void setInfantTravelerRph(String infantTravelerRph) {
+        this.infantTravelerRph = infantTravelerRph;
+    }
+
+    public List<PersonNameVO> getPersonNameList() {
+        return personNameList;
+    }
+
+    public void setPersonNameList(List<PersonNameVO> personNameList) {
+        this.personNameList = personNameList;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Override
