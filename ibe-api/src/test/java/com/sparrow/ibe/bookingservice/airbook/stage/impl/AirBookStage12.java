@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 场景11：国内航班+单个成人+往返
+ * 场景12：国内航班+单个成人+儿童+往返
  * 说明：
  * 必填信息：1.POS信息（必填） 2.行程信息AirItinerary（必填）  3.旅客信息（必填） 4.客票信息 5.扩展信息（必填） 6.预定信息  7.价格信息
  * 旅客信息说明：3.旅客信息（3.1 旅客基本信息  3.2  旅客其他请求信息）
@@ -25,8 +25,8 @@ import java.util.List;
  * @author wangjianchun
  * @create 2018/7/11
  */
-@Component("airBookStage11")
-public class AirBookStage11 implements AirBookStage {
+@Component("airBookStage12")
+public class AirBookStage12 implements AirBookStage {
 
     @Autowired
     private AirBookRequestTransformer airBookRequestTransformer;
@@ -64,7 +64,7 @@ public class AirBookStage11 implements AirBookStage {
         //去程航段
         FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
         flightSegmentVO.setDepartureDateTime("2014-07-29T07:00:00");
-        flightSegmentVO.setArrivalDateTime("2014-05-29T09:10:00");
+        flightSegmentVO.setArrivalDateTime("2014-07-29T09:10:00");
         flightSegmentVO.setFlightNumber("5138");
         flightSegmentVO.setDepartureAirport("PEK");
         flightSegmentVO.setArrivalAirport("SHA");
@@ -79,7 +79,7 @@ public class AirBookStage11 implements AirBookStage {
         //返程航段
         flightSegmentVO = new FlightSegmentVO();
         flightSegmentVO.setDepartureDateTime("2014-07-30T11:30:00");
-        flightSegmentVO.setArrivalDateTime("2014-05-30T14:05:00");
+        flightSegmentVO.setArrivalDateTime("2014-07-30T14:05:00");
         flightSegmentVO.setFlightNumber("5139");
         flightSegmentVO.setDepartureAirport("SHA");
         flightSegmentVO.setArrivalAirport("PEK");
@@ -101,6 +101,8 @@ public class AirBookStage11 implements AirBookStage {
      */
     private void fillAirTraveler(AirBookVO airBookVO) {
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
+
+        //第一个旅客的信息
         AirTravelerVO airTravelerVO = new AirTravelerVO();
         airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
         airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
@@ -114,6 +116,25 @@ public class AirBookStage11 implements AirBookStage {
 
         airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
         airTravelerVO.setDocId("120221197001011150");
+        airTravelerVO.setComment("HK");
+        airTravelerList.add(airTravelerVO);
+        airBookVO.setAirTravelerList(airTravelerList);
+
+
+        //第二个旅客的信息
+        airTravelerVO = new AirTravelerVO();
+        airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
+        airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.CHILD.getCode());
+
+        personNameVOList = new ArrayList<>();
+        PersonNameVO personNameVO2 = new PersonNameVO();
+        personNameVO2.setLanguageType(IBEConst.LanguageType.ZH.getCode());
+        personNameVO2.setSurname("张小孩");
+        personNameVOList.add(personNameVO2);
+        airTravelerVO.setPersonNameList(personNameVOList);
+
+        airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
+        airTravelerVO.setDocId("120221200801011150");
         airTravelerVO.setComment("HK");
         airTravelerList.add(airTravelerVO);
         airBookVO.setAirTravelerList(airTravelerList);

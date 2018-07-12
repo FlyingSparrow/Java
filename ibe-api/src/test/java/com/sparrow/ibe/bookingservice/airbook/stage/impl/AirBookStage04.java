@@ -3,10 +3,7 @@ package com.sparrow.ibe.bookingservice.airbook.stage.impl;
 import com.sparrow.ibe.bookingservice.airbook.model.AirBookRequest;
 import com.sparrow.ibe.bookingservice.airbook.stage.AirBookStage;
 import com.sparrow.ibe.bookingservice.airbook.transformer.AirBookRequestTransformer;
-import com.sparrow.ibe.bookingservice.airbook.vo.AirBookVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.AirTravelerVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.PersonNameVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.SpecialServiceRequestVO;
+import com.sparrow.ibe.bookingservice.airbook.vo.*;
 import com.sparrow.ibe.constants.IBEConst;
 import com.sparrow.utils.StringUtils;
 import org.assertj.core.util.Lists;
@@ -80,17 +77,21 @@ public class AirBookStage04 implements AirBookStage {
      * @param airBookVO
      */
     private void fillItinerary(AirBookVO airBookVO) {
-        airBookVO.setDepartureDateTime("2015-12-17T07:00:00");
-        airBookVO.setArrivalDateTime("2015-12-18T09:10:00");
-        airBookVO.setFlightNumber("5138");
-        airBookVO.setDepartureAirport("PEK");
-        airBookVO.setArrivalAirport("SHA");
-        airBookVO.setCodeShareInd("false");
-        airBookVO.setMarketingAirline("MU");
-        if (StringUtils.isEmpty(airBookVO.getResBookDesigCode())) {
+        List<FlightSegmentVO> flightSegmentList = Lists.newArrayList();
+        FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
+        flightSegmentVO.setDepartureDateTime("2015-12-17T07:00:00");
+        flightSegmentVO.setArrivalDateTime("2015-12-18T09:10:00");
+        flightSegmentVO.setFlightNumber("5138");
+        flightSegmentVO.setDepartureAirport("PEK");
+        flightSegmentVO.setArrivalAirport("SHA");
+        flightSegmentVO.setCodeShareInd("false");
+        flightSegmentVO.setMarketingAirline("MU");
+        if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {
             //如果用户没有设置舱位等级，那么默认为经济舱
-            airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
+            flightSegmentVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
         }
+        flightSegmentList.add(flightSegmentVO);
+        airBookVO.setFlightSegmentList(flightSegmentList);
     }
 
     /**

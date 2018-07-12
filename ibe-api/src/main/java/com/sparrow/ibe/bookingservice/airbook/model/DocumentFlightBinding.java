@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.Serializable;
 
 /**
+ * 护照航段等信息与旅客的关联关系
  *
  * @author wangjc
  * @date 2014-7-11
@@ -16,7 +17,7 @@ public class DocumentFlightBinding implements Serializable {
      */
     private static final long serialVersionUID = -7802599680524260605L;
     /**
-     * 证件序列号
+     * 护照序号
      */
     private String documentRPH;
     /**

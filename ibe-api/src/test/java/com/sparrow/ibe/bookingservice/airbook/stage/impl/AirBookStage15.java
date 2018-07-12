@@ -8,6 +8,7 @@ import com.sparrow.ibe.bookingservice.airbook.vo.AirTravelerVO;
 import com.sparrow.ibe.bookingservice.airbook.vo.FlightSegmentVO;
 import com.sparrow.ibe.bookingservice.airbook.vo.PersonNameVO;
 import com.sparrow.ibe.constants.IBEConst;
+import com.sparrow.utils.DateUtils;
 import com.sparrow.utils.StringUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 场景11：国内航班+单个成人+往返
+ * 场景15：国际航班+单个成人+单程+婴儿
  * 说明：
  * 必填信息：1.POS信息（必填） 2.行程信息AirItinerary（必填）  3.旅客信息（必填） 4.客票信息 5.扩展信息（必填） 6.预定信息  7.价格信息
  * 旅客信息说明：3.旅客信息（3.1 旅客基本信息  3.2  旅客其他请求信息）
@@ -25,8 +26,8 @@ import java.util.List;
  * @author wangjianchun
  * @create 2018/7/11
  */
-@Component("airBookStage11")
-public class AirBookStage11 implements AirBookStage {
+@Component("airBookStage15")
+public class AirBookStage15 implements AirBookStage {
 
     @Autowired
     private AirBookRequestTransformer airBookRequestTransformer;
@@ -43,12 +44,18 @@ public class AirBookStage11 implements AirBookStage {
 
         //OSI（其他服务信息）信息
         List<String> osiList = new ArrayList<>();
-        osiList.add("CTCT13666666666");
-        osiList.add("CTCM1366666666");
+        osiList.add("CTCT13444444444");
+        osiList.add("CTCM13444444444/P1");
         airBookVO.setOsiList(osiList);
 
-        airBookVO.setContactNumber("023-57651234");
-        airBookVO.setTicketTimeLimit("2014-05-29T00:01:00");
+        //备注信息
+        List<String> remarkList = Lists.newArrayList();
+        remarkList.add("TJ AUTH SZV122");
+        airBookVO.setRemarkList(remarkList);
+
+        airBookVO.setContactNumber("0512-82274045TCBOOK");
+        airBookVO.setTicketTimeLimit("2014-12-30T07:00:00");
+        airBookVO.setEnvelopDelay("false");
 
         return airBookRequestTransformer.transform(airBookVO);
     }
@@ -60,37 +67,20 @@ public class AirBookStage11 implements AirBookStage {
      */
     private void fillItinerary(AirBookVO airBookVO) {
         List<FlightSegmentVO> flightSegmentList = Lists.newArrayList();
-
-        //去程航段
         FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
-        flightSegmentVO.setDepartureDateTime("2014-07-29T07:00:00");
-        flightSegmentVO.setArrivalDateTime("2014-05-29T09:10:00");
-        flightSegmentVO.setFlightNumber("5138");
-        flightSegmentVO.setDepartureAirport("PEK");
-        flightSegmentVO.setArrivalAirport("SHA");
+        flightSegmentVO.setDepartureDateTime("2014-12-30T09:00:00");
+        flightSegmentVO.setArrivalDateTime("2014-12-30T11:30:00");
+        flightSegmentVO.setFlightNumber("501");
+        flightSegmentVO.setDepartureAirport("PVG");
+        flightSegmentVO.setArrivalAirport("HKG");
         flightSegmentVO.setCodeShareInd("false");
         flightSegmentVO.setMarketingAirline("MU");
+        flightSegmentVO.setNumberInParty("2");
         if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {
             //如果用户没有设置舱位等级，那么默认为经济舱
             flightSegmentVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
         }
         flightSegmentList.add(flightSegmentVO);
-
-        //返程航段
-        flightSegmentVO = new FlightSegmentVO();
-        flightSegmentVO.setDepartureDateTime("2014-07-30T11:30:00");
-        flightSegmentVO.setArrivalDateTime("2014-05-30T14:05:00");
-        flightSegmentVO.setFlightNumber("5139");
-        flightSegmentVO.setDepartureAirport("SHA");
-        flightSegmentVO.setArrivalAirport("PEK");
-        flightSegmentVO.setCodeShareInd("false");
-        flightSegmentVO.setMarketingAirline("MU");
-        if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {
-            //如果用户没有设置舱位等级，那么默认为经济舱
-            flightSegmentVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
-        }
-        flightSegmentList.add(flightSegmentVO);
-
         airBookVO.setFlightSegmentList(flightSegmentList);
     }
 
@@ -101,20 +91,51 @@ public class AirBookStage11 implements AirBookStage {
      */
     private void fillAirTraveler(AirBookVO airBookVO) {
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
+
+        //第一个旅客的信息
         AirTravelerVO airTravelerVO = new AirTravelerVO();
         airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
         airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
+        airTravelerVO.setAccompaniedByInfant("true");
 
         List<PersonNameVO> personNameVOList = new ArrayList<>();
         PersonNameVO personNameVO = new PersonNameVO();
-        personNameVO.setLanguageType(IBEConst.LanguageType.ZH.getCode());
-        personNameVO.setSurname("张学友");
+        personNameVO.setLanguageType(IBEConst.LanguageType.EN.getCode());
+        personNameVO.setSurname("RUAN/WENCHAO MR");
         personNameVOList.add(personNameVO);
         airTravelerVO.setPersonNameList(personNameVOList);
 
-        airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
-        airTravelerVO.setDocId("120221197001011150");
-        airTravelerVO.setComment("HK");
+        String birthDate = "1999-09-04";
+        airTravelerVO.setDocType(IBEConst.DocumentType.PASSPORT.getCode());
+        airTravelerVO.setDocTypeDetail("P");
+        airTravelerVO.setDocId("G446164");
+        airTravelerVO.setDocHolderNationality("CN");
+        airTravelerVO.setDocIssueCountry("CN");
+        airTravelerVO.setBirthDate(birthDate);
+        airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
+        airTravelerVO.setExpireDate("2031-05-19");
+        airTravelerVO.setDocHolderGivenName("WENCHAO");
+        airTravelerVO.setDocHolderSurname("RUAN");
+        airTravelerVO.setAge(StringUtils.calculateAge(DateUtils.parseDate(birthDate, DateUtils.DATE_FORMAT))+"");
+        airTravelerList.add(airTravelerVO);
+        airBookVO.setAirTravelerList(airTravelerList);
+
+
+        //第二个旅客的信息
+        String birthDateOfInfant = "2012-03-04";
+        airTravelerVO = new AirTravelerVO();
+        airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
+        airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.INFANT.getCode());
+        airTravelerVO.setBirthDate(birthDateOfInfant);
+
+        personNameVOList = new ArrayList<>();
+        PersonNameVO personNameVO2 = new PersonNameVO();
+        personNameVO2.setLanguageType(IBEConst.LanguageType.EN.getCode());
+        personNameVO2.setSurname("RUAN/XIAOPANG");
+        personNameVOList.add(personNameVO2);
+        airTravelerVO.setPersonNameList(personNameVOList);
+
+        airTravelerVO.setAge(StringUtils.calculateAge(DateUtils.parseDate(birthDateOfInfant, DateUtils.DATE_FORMAT))+"");
         airTravelerList.add(airTravelerVO);
         airBookVO.setAirTravelerList(airTravelerList);
     }

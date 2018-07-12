@@ -5,7 +5,6 @@ import com.sparrow.ibe.bookingservice.airbook.model.AirBookRequest;
 import com.sparrow.ibe.bookingservice.airbook.stage.AirBookStage;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * 接口类别：预订服务
@@ -20,50 +19,36 @@ public class AirBookTests extends BaseTests {
 
     @Autowired
     private com.sparrow.ibe.bookingservice.airbook.builder.AirBookRequestBuilder airBookRequestBuilder;
-
     @Autowired
-    @Qualifier("airBookStage01")
     private AirBookStage airBookStage01;
-
     @Autowired
-    @Qualifier("airBookStage02")
     private AirBookStage airBookStage02;
-
     @Autowired
-    @Qualifier("airBookStage03")
     private AirBookStage airBookStage03;
-
     @Autowired
-    @Qualifier("airBookStage04")
     private AirBookStage airBookStage04;
-
     @Autowired
-    @Qualifier("airBookStage05")
     private AirBookStage airBookStage05;
-
     @Autowired
-    @Qualifier("airBookStage06")
     private AirBookStage airBookStage06;
-
     @Autowired
-    @Qualifier("airBookStage07")
     private AirBookStage airBookStage07;
-
     @Autowired
-    @Qualifier("airBookStage08")
     private AirBookStage airBookStage08;
-
     @Autowired
-    @Qualifier("airBookStage09")
     private AirBookStage airBookStage09;
-
     @Autowired
-    @Qualifier("airBookStage10")
     private AirBookStage airBookStage10;
-
     @Autowired
-    @Qualifier("airBookStage11")
     private AirBookStage airBookStage11;
+    @Autowired
+    private AirBookStage airBookStage12;
+    @Autowired
+    private AirBookStage airBookStage13;
+    @Autowired
+    private AirBookStage airBookStage14;
+    @Autowired
+    private AirBookStage airBookStage15;
 
     /**
      * 测试场景1：国内航班+单个成人+单程
@@ -184,6 +169,50 @@ public class AirBookTests extends BaseTests {
         AirBookRequest request = airBookStage11.buildRequest();
         String requestXml = airBookRequestBuilder.buildRequestXml(request);
         logger.info("测试场景11：国内航班+单个成人+往返, requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景12：国内航班+单个成人+儿童+往返
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook12RequestXml(){
+        AirBookRequest request = airBookStage12.buildRequest();
+        String requestXml = airBookRequestBuilder.buildRequestXml(request);
+        logger.info("测试场景12：国内航班+单个成人+儿童+往返, requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景13：国际航班+单个成人+单程
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook13RequestXml(){
+        AirBookRequest request = airBookStage13.buildRequest();
+        String requestXml = airBookRequestBuilder.buildRequestXml(request);
+        logger.info("测试场景13：国际航班+单个成人+单程, requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景14：国际航班+单个成人+单程+儿童
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook14RequestXml(){
+        AirBookRequest request = airBookStage14.buildRequest();
+        String requestXml = airBookRequestBuilder.buildRequestXml(request);
+        logger.info("测试场景14：国际航班+单个成人+单程+儿童, requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景15：国际航班+单个成人+单程+婴儿
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook15RequestXml(){
+        AirBookRequest request = airBookStage15.buildRequest();
+        String requestXml = airBookRequestBuilder.buildRequestXml(request);
+        logger.info("测试场景15：国际航班+单个成人+单程+婴儿, requestXml: {}", requestXml);
     }
 
 }

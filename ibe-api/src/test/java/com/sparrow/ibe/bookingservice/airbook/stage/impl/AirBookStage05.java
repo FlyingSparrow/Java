@@ -5,6 +5,7 @@ import com.sparrow.ibe.bookingservice.airbook.stage.AirBookStage;
 import com.sparrow.ibe.bookingservice.airbook.transformer.AirBookRequestTransformer;
 import com.sparrow.ibe.bookingservice.airbook.vo.AirBookVO;
 import com.sparrow.ibe.bookingservice.airbook.vo.AirTravelerVO;
+import com.sparrow.ibe.bookingservice.airbook.vo.FlightSegmentVO;
 import com.sparrow.ibe.bookingservice.airbook.vo.PersonNameVO;
 import com.sparrow.ibe.constants.IBEConst;
 import com.sparrow.utils.DateUtils;
@@ -65,16 +66,20 @@ public class AirBookStage05 implements AirBookStage {
      * @param airBookVO
      */
     private void fillItinerary(AirBookVO airBookVO) {
-        airBookVO.setDepartureDateTime("2013-11-26T07:30:00");
-        airBookVO.setArrivalDateTime("2013-11-26T09:40:00");
-        airBookVO.setFlightNumber("1831");
-        airBookVO.setDepartureAirport("PEK");
-        airBookVO.setArrivalAirport("SHA");
-        airBookVO.setMarketingAirline("CA");
-        if (StringUtils.isEmpty(airBookVO.getResBookDesigCode())) {
+        List<FlightSegmentVO> flightSegmentList = Lists.newArrayList();
+        FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
+        flightSegmentVO.setDepartureDateTime("2013-11-26T07:30:00");
+        flightSegmentVO.setArrivalDateTime("2013-11-26T09:40:00");
+        flightSegmentVO.setFlightNumber("1831");
+        flightSegmentVO.setDepartureAirport("PEK");
+        flightSegmentVO.setArrivalAirport("SHA");
+        flightSegmentVO.setMarketingAirline("CA");
+        if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {
             //如果用户没有设置舱位等级，那么默认为经济舱
-            airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
+            flightSegmentVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
         }
+        flightSegmentList.add(flightSegmentVO);
+        airBookVO.setFlightSegmentList(flightSegmentList);
     }
 
     /**

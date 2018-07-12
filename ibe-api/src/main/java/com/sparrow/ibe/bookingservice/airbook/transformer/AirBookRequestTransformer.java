@@ -1,10 +1,7 @@
 package com.sparrow.ibe.bookingservice.airbook.transformer;
 
 import com.sparrow.ibe.bookingservice.airbook.model.*;
-import com.sparrow.ibe.bookingservice.airbook.vo.AirBookVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.AirTravelerVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.PersonNameVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.SpecialServiceRequestVO;
+import com.sparrow.ibe.bookingservice.airbook.vo.*;
 import com.sparrow.ibe.constants.IBEConst;
 import com.sparrow.utils.StringUtils;
 import org.springframework.stereotype.Component;
@@ -78,23 +75,29 @@ public class AirBookRequestTransformer {
         List<OriginDestinationOption> odList = new ArrayList<OriginDestinationOption>();
         OriginDestinationOption od = new OriginDestinationOption();
         List<FlightSegment> fsList = new ArrayList<FlightSegment>();
-        FlightSegment fs = new FlightSegment();
-        fs.setRph("1");
-        fs.setDepartureDateTime(airBookVO.getDepartureDateTime());
-        fs.setArrivalDateTime(airBookVO.getArrivalDateTime());
+        List<FlightSegmentVO> flightSegmentVOList = airBookVO.getFlightSegmentList();
+        int rph = 0;
+        for(FlightSegmentVO item : flightSegmentVOList){
+            rph++;
+            FlightSegment fs = new FlightSegment();
+            fs.setRph(rph+"");
+            fs.setDepartureDateTime(item.getDepartureDateTime());
+            fs.setArrivalDateTime(item.getArrivalDateTime());
 
-        if (StringUtils.isNotEmpty(airBookVO.getCodeShareInd())) {
-            fs.setCodeshareInd(airBookVO.getCodeShareInd());
+            if (StringUtils.isNotEmpty(item.getCodeShareInd())) {
+                fs.setCodeshareInd(item.getCodeShareInd());
+            }
+
+            fs.setFlightNumber(item.getFlightNumber());
+            fs.setStatus("NN");
+            fs.setSegmentType("NORMAL");
+            fs.setDepartureAirport(item.getDepartureAirport());
+            fs.setArrivalAirport(item.getArrivalAirport());
+            fs.setMarketingAirline(item.getMarketingAirline());
+            fs.setResBookDesigCode(item.getResBookDesigCode());
+            fsList.add(fs);
         }
 
-        fs.setFlightNumber(airBookVO.getFlightNumber());
-        fs.setStatus("NN");
-        fs.setSegmentType("NORMAL");
-        fs.setDepartureAirport(airBookVO.getDepartureAirport());
-        fs.setArrivalAirport(airBookVO.getArrivalAirport());
-        fs.setMarketingAirline(airBookVO.getMarketingAirline());
-        fs.setResBookDesigCode(airBookVO.getResBookDesigCode());
-        fsList.add(fs);
         od.setFlightSegmentList(fsList);
         odList.add(od);
 
@@ -168,6 +171,15 @@ public class AirBookRequestTransformer {
                     airTraveler.setComment(item.getComment());
                 }
                 airTraveler.setTravelerRefNumberList(travelerRefNumberList);
+
+
+                if(isPassport(item)){
+                    DocumentFlightBinding documentFlightBinding = new DocumentFlightBinding();
+                    documentFlightBinding.setDocumentRPH("1");
+                    documentFlightBinding.setFlightSegmentRPH("1");
+                    airTraveler.setDocumentFlightBinding(documentFlightBinding);
+                }
+
                 airTravelerList.add(airTraveler);
             }
             request.setAirTravelerList(airTravelerList);
@@ -207,6 +219,7 @@ public class AirBookRequestTransformer {
 
         List<Document> documentList = new ArrayList<Document>();
         Document document = new Document();
+        document.setRph("1");
         if (StringUtils.isNotEmpty(item.getDocType())) {
             document.setDocType(item.getDocType());
         }
@@ -215,6 +228,9 @@ public class AirBookRequestTransformer {
         }
         if (StringUtils.isNotEmpty(item.getDocHolderNationality())) {
             document.setDocHolderNationality(item.getDocHolderNationality());
+        }
+        if (StringUtils.isNotEmpty(item.getDocIssueCountry())) {
+            document.setDocIssueCountry(item.getDocIssueCountry());
         }
         if (StringUtils.isNotEmpty(item.getBirthDate())
                 && !IBEConst.PassengerType.INFANT.getCode().equals(item.getPassengerTypeCode())) {
@@ -275,6 +291,16 @@ public class AirBookRequestTransformer {
     }
 
     /**
+     * 判断旅客的证件是否为护照
+     *
+     * @param airTravelerVO
+     * @return
+     */
+    private boolean isPassport(AirTravelerVO airTravelerVO){
+        return (IBEConst.DocumentType.PASSPORT.getCode().equals(airTravelerVO.getDocType()));
+    }
+
+    /**
      * 填充旅客预定的服务信息 OSI
      *
      * @param request
@@ -287,7 +313,7 @@ public class AirBookRequestTransformer {
             for (String item : list) {
                 OtherServiceInformation osi = new OtherServiceInformation();
                 osi.setOsiCode("OTHS");
-                osi.setAirlineCode(airBookVO.getMarketingAirline());
+                osi.setAirlineCode(airBookVO.getFlightSegmentList().get(0).getMarketingAirline());
                 if (item.startsWith("CTCM")) {
                     //CTCM必须关联旅客，CTCM后数字部分最多30位
                     osi.setTravelerRefNumberRPH("1");
