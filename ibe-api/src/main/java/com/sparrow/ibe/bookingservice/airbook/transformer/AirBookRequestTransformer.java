@@ -1,5 +1,6 @@
 package com.sparrow.ibe.bookingservice.airbook.transformer;
 
+import com.google.common.collect.Lists;
 import com.sparrow.ibe.bookingservice.airbook.model.*;
 import com.sparrow.ibe.bookingservice.airbook.vo.*;
 import com.sparrow.ibe.constants.IBEConst;
@@ -33,6 +34,11 @@ public class AirBookRequestTransformer {
      */
     public AirBookRequest transform(AirBookVO airBookVO) {
         AirBookRequest request = new AirBookRequest();
+
+        if(StringUtils.isNotEmpty(airBookVO.getAutoARNKInd())){
+            request.setAutoARNKInd(airBookVO.getAutoARNKInd());
+        }
+
         //1.POS信息
         request.setPseudoCityCode("sparrow");
 
@@ -53,9 +59,10 @@ public class AirBookRequestTransformer {
         fillSpecialServiceRequest(request, airBookVO.getSsrList());
 
         //5.扩展信息
-        List<String> ctList = new ArrayList<String>();
-        ctList.add(airBookVO.getContactNumber());
-        request.setContactInfoList(ctList);
+        List<String> contactInfoList = airBookVO.getContactInfoList();
+        if(contactInfoList != null && contactInfoList.size() > 0){
+            request.setContactInfoList(contactInfoList);
+        }
         //封口信息
         request.setEnvelopType("KI");
         if(StringUtils.isNotEmpty(airBookVO.getEnvelopDelay())){
@@ -113,6 +120,13 @@ public class AirBookRequestTransformer {
     private void fillAirTraveler(AirBookRequest request, AirBookVO airBookVO) {
         int rph = 0;
         List<AirTravelerVO> airTravelerVOList = airBookVO.getAirTravelerList();
+        List<String> flightSegmentRphList = Lists.newArrayList();
+        List<FlightSegmentVO> flightSegmentVOList = airBookVO.getFlightSegmentList();
+        int fsRph = 0;
+        for(int i=0; i<flightSegmentVOList.size(); i++){
+            fsRph++;
+            flightSegmentRphList.add(fsRph+"");
+        }
         if (airTravelerVOList != null && airTravelerVOList.size() > 0) {
             List<AirTraveler> airTravelerList = new ArrayList<AirTraveler>();
             for (AirTravelerVO item : airTravelerVOList) {
@@ -135,7 +149,7 @@ public class AirBookRequestTransformer {
                 fillPersonName(item, airTraveler);
 
                 //旅客证件信息
-                fillDocument(item, airTraveler);
+                fillDocument(item, airTraveler, rphStr);
 
                 if (StringUtils.isNotEmpty(item.getAge())) {
                     PassengerTypeQuantity ptq = new PassengerTypeQuantity();
@@ -160,9 +174,8 @@ public class AirBookRequestTransformer {
                 }
                 travelerRefNumberList.add(travelerRefNumber);
 
-                if (isAccompaniedByInfant(airTravelerVOList)) {
-                    List<String> flightSegmentRphList = new ArrayList<>();
-                    flightSegmentRphList.add("1");
+                if (isAccompaniedByInfant(airTravelerVOList)
+                        || flightSegmentRphList.size() > 1) {
                     airTraveler.setFlightSegmentRPHList(flightSegmentRphList);
                 }
 
@@ -208,18 +221,18 @@ public class AirBookRequestTransformer {
 
     /**
      * 填充旅客证件信息
-     *
-     * @param item
+     *  @param item
      * @param airTraveler
+     * @param rphStr
      */
-    private void fillDocument(AirTravelerVO item, AirTraveler airTraveler) {
+    private void fillDocument(AirTravelerVO item, AirTraveler airTraveler, String rphStr) {
         if(StringUtils.isEmpty(item.getDocId())){
             return;
         }
 
         List<Document> documentList = new ArrayList<Document>();
         Document document = new Document();
-        document.setRph("1");
+        document.setRph(rphStr);
         if (StringUtils.isNotEmpty(item.getDocType())) {
             document.setDocType(item.getDocType());
         }

@@ -47,7 +47,9 @@ public class AirBookStage02 implements AirBookStage {
         osiList.add("CTCM1366666666");
         airBookVO.setOsiList(osiList);
 
-        airBookVO.setContactNumber("010-12345678");
+        List<String> contactInfoList = Lists.newArrayList();
+        contactInfoList.add("010-12345678");
+        airBookVO.setContactInfoList(contactInfoList);
         airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
 
         return airBookRequestTransformer.transform(airBookVO);

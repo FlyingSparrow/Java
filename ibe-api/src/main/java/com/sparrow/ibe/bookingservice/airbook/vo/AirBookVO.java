@@ -18,6 +18,10 @@ import java.util.List;
 public class AirBookVO {
 
     /**
+     * 是否自动添加ARNK地面运输航段，true/false
+     */
+    private String autoARNKInd;
+    /**
      * 航段信息列表
      */
     private List<FlightSegmentVO> flightSegmentList;
@@ -26,9 +30,9 @@ public class AirBookVO {
      */
     private String ticketTimeLimit;
     /**
-     * 联系电话
+     * 联系信息
      */
-    private String contactNumber;
+    private List<String> contactInfoList;
     /**
      * 旅客信息列表
      */
@@ -50,6 +54,14 @@ public class AirBookVO {
      */
     private String envelopDelay;
 
+    public String getAutoARNKInd() {
+        return autoARNKInd;
+    }
+
+    public void setAutoARNKInd(String autoARNKInd) {
+        this.autoARNKInd = autoARNKInd;
+    }
+
     public List<FlightSegmentVO> getFlightSegmentList() {
         return flightSegmentList;
     }
@@ -66,12 +78,12 @@ public class AirBookVO {
         this.ticketTimeLimit = ticketTimeLimit;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
+    public List<String> getContactInfoList() {
+        return contactInfoList;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setContactInfoList(List<String> contactInfoList) {
+        this.contactInfoList = contactInfoList;
     }
 
     public List<AirTravelerVO> getAirTravelerList() {

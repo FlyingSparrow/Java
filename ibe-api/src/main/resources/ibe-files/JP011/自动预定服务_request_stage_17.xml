@@ -27,17 +27,6 @@
             <Comment>HK</Comment>
         </AirTraveler>
         <SpecialReqDetails>
-            <OtherServiceInformations>
-                <OtherServiceInformation Code="OTHS">
-                    <Airline Code="MU"/>
-                    <Text>CTCT13666666666</Text>
-                </OtherServiceInformation>
-                <OtherServiceInformation Code="OTHS">
-                    <TravelerRefNumber RPH="1"/>
-                    <Airline Code="MU"/>
-                    <Text>CTCM1366666666</Text>
-                </OtherServiceInformation>
-            </OtherServiceInformations>
             <SpecialRemarks>
                 <SpecialRemark>
                     <Text>特殊备注组信息</Text>

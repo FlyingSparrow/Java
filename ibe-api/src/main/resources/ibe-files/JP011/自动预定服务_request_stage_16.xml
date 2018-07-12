@@ -27,25 +27,19 @@
             <Comment>HK</Comment>
         </AirTraveler>
         <SpecialReqDetails>
-            <OtherServiceInformations>
-                <OtherServiceInformation Code="OTHS">
+            <SpecialServiceRequests>
+                <SpecialServiceRequest SSRCode="OTHS">
                     <Airline Code="MU"/>
-                    <Text>CTCT13666666666</Text>
-                </OtherServiceInformation>
-                <OtherServiceInformation Code="OTHS">
                     <TravelerRefNumber RPH="1"/>
+                    <Text>ADULT PNR IS HAHAHA</Text>
+                </SpecialServiceRequest>
+                <SpecialServiceRequest SSRCode="SPML" Status="NN">
                     <Airline Code="MU"/>
-                    <Text>CTCM1366666666</Text>
-                </OtherServiceInformation>
-            </OtherServiceInformations>
-            <SpecialRemarks>
-                <SpecialRemark>
-                    <Text>特殊备注组信息</Text>
-                </SpecialRemark>
-                <SpecialRemark>
-                    <Text>特殊备注组信息2</Text>
-                </SpecialRemark>
-            </SpecialRemarks>
+                    <FlightRefNumber RPH="1"/>
+                    <TravelerRefNumber RPH="1"/>
+                    <Text>NOSOLT</Text>
+                </SpecialServiceRequest>
+            </SpecialServiceRequests>
         </SpecialReqDetails>
     </TravelerInfo>
     <Ticketing TicketTimeLimit="2015-12-16T00:01:00"/>

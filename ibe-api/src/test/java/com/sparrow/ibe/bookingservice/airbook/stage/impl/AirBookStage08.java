@@ -46,7 +46,9 @@ public class AirBookStage08 implements AirBookStage {
         osiList.add("CTCT13666666666");
         osiList.add("CTCM1366666666");
 
-        airBookVO.setContactNumber("023-57651234");
+        List<String> contactInfoList = Lists.newArrayList();
+        contactInfoList.add("023-57651234");
+        airBookVO.setContactInfoList(contactInfoList);
 
         return airBookRequestTransformer.transform(airBookVO);
     }

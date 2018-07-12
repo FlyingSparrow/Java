@@ -3,18 +3,18 @@ package com.sparrow.ibe.bookingservice.airbook.stage.impl;
 import com.sparrow.ibe.bookingservice.airbook.model.AirBookRequest;
 import com.sparrow.ibe.bookingservice.airbook.stage.AirBookStage;
 import com.sparrow.ibe.bookingservice.airbook.transformer.AirBookRequestTransformer;
-import com.sparrow.ibe.bookingservice.airbook.vo.AirBookVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.AirTravelerVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.FlightSegmentVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.PersonNameVO;
+import com.sparrow.ibe.bookingservice.airbook.vo.*;
 import com.sparrow.ibe.constants.IBEConst;
+import com.sparrow.utils.DateUtils;
 import com.sparrow.utils.StringUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 场景10：国内航班+儿童+单程+SSR
@@ -41,6 +41,21 @@ public class AirBookStage10 implements AirBookStage {
         //旅客信息
         fillAirTraveler(airBookVO);
 
+        //旅客预定的服务信息:SSR
+        List<SpecialServiceRequestVO> ssrList = new ArrayList<SpecialServiceRequestVO>();
+        SpecialServiceRequestVO ssr = new SpecialServiceRequestVO();
+        //服务代码类别，例如FQTV
+        ssr.setSsrCode("CHLD");
+        //关键点！！！！！！！！！！
+        String birthDate = airBookVO.getAirTravelerList().get(0).getBirthDate();
+        Date tempBirthDate = DateUtils.parseDate(birthDate, DateUtils.DATE_FORMAT);
+        String formattedBirthDate = DateUtils.formatDate(tempBirthDate, DateUtils.DATE_FORMAT_2, Locale.ENGLISH);
+        ssr.setText(formattedBirthDate);
+        //行动代码，例如：HK
+        ssr.setStatus("HK");
+        ssrList.add(ssr);
+        airBookVO.setSsrList(ssrList);
+
         //OSI（其他服务信息）信息
         List<String> osiList = Lists.newArrayList();
         osiList.add("CTCT13666666666");
@@ -48,12 +63,9 @@ public class AirBookStage10 implements AirBookStage {
         osiList.add("CHLD 01JAN08");
         airBookVO.setOsiList(osiList);
 
-        //备注信息
-        List<String> remarkList = new ArrayList<>();
-        remarkList.add("特殊备注组信息");
-        airBookVO.setRemarkList(remarkList);
-
-        airBookVO.setContactNumber("023-57651234");
+        List<String> contactInfoList = Lists.newArrayList();
+        contactInfoList.add("023-57651234");
+        airBookVO.setContactInfoList(contactInfoList);
         airBookVO.setTicketTimeLimit("2014-05-29T00:01:00");
 
         return airBookRequestTransformer.transform(airBookVO);
@@ -67,8 +79,8 @@ public class AirBookStage10 implements AirBookStage {
     private void fillItinerary(AirBookVO airBookVO) {
         List<FlightSegmentVO> flightSegmentList = Lists.newArrayList();
         FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
-        flightSegmentVO.setDepartureDateTime("2014-05-29T07:00:00");
-        flightSegmentVO.setArrivalDateTime("2014-05-29T09:10:00");
+        flightSegmentVO.setDepartureDateTime("2014-09-29T07:00:00");
+        flightSegmentVO.setArrivalDateTime("2014-09-29T09:10:00");
         flightSegmentVO.setFlightNumber("5138");
         flightSegmentVO.setDepartureAirport("PEK");
         flightSegmentVO.setArrivalAirport("SHA");
@@ -89,9 +101,11 @@ public class AirBookStage10 implements AirBookStage {
      */
     private void fillAirTraveler(AirBookVO airBookVO) {
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
+        String birthDate = "2008-01-01";
         AirTravelerVO airTravelerVO = new AirTravelerVO();
         airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
         airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.CHILD.getCode());
+        airTravelerVO.setBirthDate(birthDate);
 
         List<PersonNameVO> personNameVOList = new ArrayList<>();
         PersonNameVO personNameVO = new PersonNameVO();
@@ -102,6 +116,7 @@ public class AirBookStage10 implements AirBookStage {
 
         airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
         airTravelerVO.setDocId("31010420080101573X");
+        airTravelerVO.setBirthDate("2008-01-01");
         airTravelerVO.setComment("HK");
         airTravelerList.add(airTravelerVO);
         airBookVO.setAirTravelerList(airTravelerList);

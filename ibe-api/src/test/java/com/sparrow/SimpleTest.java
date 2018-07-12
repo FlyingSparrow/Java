@@ -1,5 +1,6 @@
 package com.sparrow;
 
+import com.sparrow.utils.DateUtils;
 import com.sparrow.utils.FileUtils;
 import com.sparrow.utils.HttpClientUtils;
 import com.sparrow.utils.StringUtils;
@@ -7,6 +8,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author wangjianchun
@@ -44,6 +48,13 @@ public class SimpleTest {
         length = 36;
         String str4 = StringUtils.randomUUID(length);
         Assert.assertEquals(uuid.length(), str4.length());
+    }
+
+    @Test
+    public void testDate(){
+        Date currentDate = DateUtils.currentDate();
+        String formattedDate = DateUtils.formatDate(currentDate, DateUtils.DATE_FORMAT_2, Locale.ENGLISH);
+        logger.info("currentDate: {}", formattedDate);
     }
 
 }

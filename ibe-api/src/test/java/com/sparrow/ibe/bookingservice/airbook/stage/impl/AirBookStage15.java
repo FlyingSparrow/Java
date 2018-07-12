@@ -53,7 +53,9 @@ public class AirBookStage15 implements AirBookStage {
         remarkList.add("TJ AUTH SZV122");
         airBookVO.setRemarkList(remarkList);
 
-        airBookVO.setContactNumber("0512-82274045TCBOOK");
+        List<String> contactInfoList = Lists.newArrayList();
+        contactInfoList.add("0512-82274045TCBOOK");
+        airBookVO.setContactInfoList(contactInfoList);
         airBookVO.setTicketTimeLimit("2014-12-30T07:00:00");
         airBookVO.setEnvelopDelay("false");
 

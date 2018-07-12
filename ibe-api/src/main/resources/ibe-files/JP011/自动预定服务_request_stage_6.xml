@@ -21,7 +21,7 @@
             <PersonName LanguageType="ZH">
                 <Surname>张学友</Surname>
             </PersonName>
-            <Document DocType="NI" DocID="120221197001011150"/>
+            <Document RPH="1" DocType="NI" DocID="120221197001011150"/>
             <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="1"/>
             <Comment>HK</Comment>
@@ -30,7 +30,7 @@
             <PersonName LanguageType="ZH">
                 <Surname>张伟</Surname>
             </PersonName>
-            <Document DocType="NI" DocID="31010420080101573X"/>
+            <Document RPH="1" DocType="NI" DocID="31010420080101573X"/>
             <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="2"/>
             <Comment>HK</Comment>

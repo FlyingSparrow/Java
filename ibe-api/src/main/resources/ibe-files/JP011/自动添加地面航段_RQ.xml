@@ -1,25 +1,29 @@
 <OTA_AirBookRQ AutoARNKInd="true">
     <POS>
-        <Source PseudoCityCode="BJS187" />
+        <Source PseudoCityCode="BJS187"/>
     </POS>
     <AirItinerary>
         <OriginDestinationOptions>
             <OriginDestinationOption>
-                <FlightSegment RPH="1" DepartureDateTime="2014-05-16T00:00:00" ArrivalDateTime="2014-05-16T00:00:00" CodeshareInd="true" FlightNumber="5145" NumberInParty="12" Status="NN" SegmentType="NORMAL" InterSegment="false">
-                    <OperatingAirline Code="MU" FlightNumber="5145" />
-                    <DepartureAirport LocationCode="SHA" />
-                    <ArrivalAirport LocationCode="PEK" />
-                    <Equipment AirEquipType="76A" />
-                    <MarketingAirline Code="MU" />
-                    <BookingClassAvail ResBookDesigCode="Y" />
+                <FlightSegment RPH="1" DepartureDateTime="2014-05-16T00:00:00" ArrivalDateTime="2014-05-16T00:00:00"
+                               CodeshareInd="true" FlightNumber="5145" NumberInParty="12" Status="NN"
+                               SegmentType="NORMAL" InterSegment="false">
+                    <OperatingAirline Code="MU" FlightNumber="5145"/>
+                    <DepartureAirport LocationCode="SHA"/>
+                    <ArrivalAirport LocationCode="PEK"/>
+                    <Equipment AirEquipType="76A"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>
-                <FlightSegment RPH="2" DepartureDateTime="2014-05-18T00:00:00" ArrivalDateTime="2014-05-18T00:00:00" CodeshareInd="true" FlightNumber="5145" NumberInParty="12" Status="NN" SegmentType="NORMAL" InterSegment="false">
-                    <OperatingAirline Code="MU" FlightNumber="5145" />
-                    <DepartureAirport LocationCode="SHA" />
-                    <ArrivalAirport LocationCode="PEK" />
-                    <Equipment AirEquipType="76A" />
-                    <MarketingAirline Code="MU" />
-                    <BookingClassAvail ResBookDesigCode="Y" />
+                <FlightSegment RPH="2" DepartureDateTime="2014-05-18T00:00:00" ArrivalDateTime="2014-05-18T00:00:00"
+                               CodeshareInd="true" FlightNumber="5145" NumberInParty="12" Status="NN"
+                               SegmentType="NORMAL" InterSegment="false">
+                    <OperatingAirline Code="MU" FlightNumber="5145"/>
+                    <DepartureAirport LocationCode="SHA"/>
+                    <ArrivalAirport LocationCode="PEK"/>
+                    <Equipment AirEquipType="76A"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>
             </OriginDestinationOption>
         </OriginDestinationOptions>
@@ -29,14 +33,15 @@
             <PersonName LanguageType="ZH">
                 <Surname>zhou/xiao</Surname>
             </PersonName>
-            <Document DocType="PP" DocTypeDetail="P" DocID="G30470505" DocIssueCountry="CN" DocHolderNationality="CN" BirthDate="2005-01-01" Gender="MALE" ExpireDate="2018-08-05" RPH="1">
+            <Document DocType="PP" DocTypeDetail="P" DocID="G30470505" DocIssueCountry="CN" DocHolderNationality="CN"
+                      BirthDate="2005-01-01" Gender="MALE" ExpireDate="2018-08-05" RPH="1">
                 <DocHolderFormattedName>
                     <GivenName>xiao</GivenName>
-                    <MiddleName />
+                    <MiddleName/>
                     <Surname>zhou</Surname>
                 </DocHolderFormattedName>
             </Document>
-            <TravelerRefNumber RPH="1" />
+            <TravelerRefNumber RPH="1"/>
             <FlightSegmentRPHs>
                 <FlightSegmentRPH>1</FlightSegmentRPH>
                 <FlightSegmentRPH>2</FlightSegmentRPH>
@@ -50,17 +55,17 @@
         <SpecialReqDetails>
             <OtherServiceInformations>
                 <OtherServiceInformation Code="OTHS">
-                    <Airline Code="MU" CodeContext="MU" CompanyShortName="MU" />
+                    <Airline Code="MU" CodeContext="MU" CompanyShortName="MU"/>
                     <Text>I donnot known,neither</Text>
                 </OtherServiceInformation>
                 <OtherServiceInformation Code="OTHSES">
-                    <Airline Code="MU" CodeContext="MU" CompanyShortName="MU" />
+                    <Airline Code="MU" CodeContext="MU" CompanyShortName="MU"/>
                     <Text>Yes,I known</Text>
                 </OtherServiceInformation>
             </OtherServiceInformations>
         </SpecialReqDetails>
     </TravelerInfo>
-    <Ticketing TicketTimeLimit="2014-03-10T00:01:00" />
+    <Ticketing TicketTimeLimit="2014-03-10T00:01:00"/>
     <TPA_Extensions>
         <ContactInfo>1234445565t6</ContactInfo>
         <ContactInfo>123349847849</ContactInfo>

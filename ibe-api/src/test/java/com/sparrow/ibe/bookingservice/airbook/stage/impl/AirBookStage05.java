@@ -53,7 +53,9 @@ public class AirBookStage05 implements AirBookStage {
         remarkList.add("TJ AUTH SHA255");
         airBookVO.setRemarkList(remarkList);
 
-        airBookVO.setContactNumber("0512-82274023");
+        List<String> contactInfoList = Lists.newArrayList();
+        contactInfoList.add("0512-82274023");
+        airBookVO.setContactInfoList(contactInfoList);
         airBookVO.setTicketTimeLimit("2013-11-26T05:32:20");
         airBookVO.setEnvelopDelay("false");
 

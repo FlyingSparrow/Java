@@ -3,10 +3,7 @@ package com.sparrow.ibe.bookingservice.airbook.stage.impl;
 import com.sparrow.ibe.bookingservice.airbook.model.AirBookRequest;
 import com.sparrow.ibe.bookingservice.airbook.stage.AirBookStage;
 import com.sparrow.ibe.bookingservice.airbook.transformer.AirBookRequestTransformer;
-import com.sparrow.ibe.bookingservice.airbook.vo.AirBookVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.AirTravelerVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.FlightSegmentVO;
-import com.sparrow.ibe.bookingservice.airbook.vo.PersonNameVO;
+import com.sparrow.ibe.bookingservice.airbook.vo.*;
 import com.sparrow.ibe.constants.IBEConst;
 import com.sparrow.utils.StringUtils;
 import org.assertj.core.util.Lists;
@@ -17,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 场景14：国际航班+单个成人+单程+儿童
+ * 场景16：国内航班+单个成人+单程+SSR
  * 说明：
  * 必填信息：1.POS信息（必填） 2.行程信息AirItinerary（必填）  3.旅客信息（必填） 4.客票信息 5.扩展信息（必填） 6.预定信息  7.价格信息
  * 旅客信息说明：3.旅客信息（3.1 旅客基本信息  3.2  旅客其他请求信息）
@@ -25,8 +22,8 @@ import java.util.List;
  * @author wangjianchun
  * @create 2018/7/11
  */
-@Component("airBookStage14")
-public class AirBookStage14 implements AirBookStage {
+@Component("airBookStage16")
+public class AirBookStage16 implements AirBookStage {
 
     @Autowired
     private AirBookRequestTransformer airBookRequestTransformer;
@@ -41,10 +38,31 @@ public class AirBookStage14 implements AirBookStage {
         //旅客信息
         fillAirTraveler(airBookVO);
 
+        //特殊服务请求
+        List<SpecialServiceRequestVO> ssrList = new ArrayList<>();
+        SpecialServiceRequestVO ssr = new SpecialServiceRequestVO();
+        ssr.setSsrCode("OTHS");
+        ssr.setAirline("MU");
+        ssr.setTravelerRefNumber("1");
+        ssr.setText("ADULT PNR IS HAHAHA");
+        ssrList.add(ssr);
+
+        ssr = new SpecialServiceRequestVO();
+        //特殊餐食申请
+        ssr.setSsrCode("SPML");
+        ssr.setStatus("NN");
+        ssr.setAirline("MU");
+        ssr.setFlightRefNumber("1");
+        ssr.setTravelerRefNumber("1");
+        ssr.setText("NOSOLT");
+        ssrList.add(ssr);
+
+        airBookVO.setSsrList(ssrList);
+
         List<String> contactInfoList = Lists.newArrayList();
-        contactInfoList.add("023-57651234");
+        contactInfoList.add("010-12345678");
         airBookVO.setContactInfoList(contactInfoList);
-        airBookVO.setTicketTimeLimit("2014-05-29T00:01:00");
+        airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
 
         return airBookRequestTransformer.transform(airBookVO);
     }
@@ -57,13 +75,13 @@ public class AirBookStage14 implements AirBookStage {
     private void fillItinerary(AirBookVO airBookVO) {
         List<FlightSegmentVO> flightSegmentList = Lists.newArrayList();
         FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
-        flightSegmentVO.setDepartureDateTime("2014-05-29T07:00:00");
-        flightSegmentVO.setArrivalDateTime("2014-05-29T09:10:00");
-        flightSegmentVO.setFlightNumber("101");
+        flightSegmentVO.setDepartureDateTime("2015-12-17T07:00:00");
+        flightSegmentVO.setArrivalDateTime("2015-12-18T09:10:00");
+        flightSegmentVO.setFlightNumber("5138");
         flightSegmentVO.setDepartureAirport("PEK");
-        flightSegmentVO.setArrivalAirport("HKG");
+        flightSegmentVO.setArrivalAirport("SHA");
         flightSegmentVO.setCodeShareInd("false");
-        flightSegmentVO.setMarketingAirline("CA");
+        flightSegmentVO.setMarketingAirline("MU");
         if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {
             //如果用户没有设置舱位等级，那么默认为经济舱
             flightSegmentVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
@@ -79,8 +97,6 @@ public class AirBookStage14 implements AirBookStage {
      */
     private void fillAirTraveler(AirBookVO airBookVO) {
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
-
-        //第一个旅客的信息
         AirTravelerVO airTravelerVO = new AirTravelerVO();
         airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
         airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
@@ -88,31 +104,12 @@ public class AirBookStage14 implements AirBookStage {
         List<PersonNameVO> personNameVOList = new ArrayList<>();
         PersonNameVO personNameVO = new PersonNameVO();
         personNameVO.setLanguageType(IBEConst.LanguageType.ZH.getCode());
-        personNameVO.setSurname("张学友");
+        personNameVO.setSurname("高明");
         personNameVOList.add(personNameVO);
         airTravelerVO.setPersonNameList(personNameVOList);
 
         airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
         airTravelerVO.setDocId("120221197001011150");
-        airTravelerVO.setComment("HK");
-        airTravelerList.add(airTravelerVO);
-        airBookVO.setAirTravelerList(airTravelerList);
-
-
-        //第二个旅客的信息
-        airTravelerVO = new AirTravelerVO();
-        airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
-        airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.CHILD.getCode());
-
-        personNameVOList = new ArrayList<>();
-        PersonNameVO personNameVO2 = new PersonNameVO();
-        personNameVO2.setLanguageType(IBEConst.LanguageType.ZH.getCode());
-        personNameVO2.setSurname("张伟");
-        personNameVOList.add(personNameVO2);
-        airTravelerVO.setPersonNameList(personNameVOList);
-
-        airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
-        airTravelerVO.setDocId("31010420080101573X");
         airTravelerVO.setComment("HK");
         airTravelerList.add(airTravelerVO);
         airBookVO.setAirTravelerList(airTravelerList);

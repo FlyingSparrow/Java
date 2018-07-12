@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +24,7 @@ public class DateUtils {
 
     public static final String DATE_FORMAT_SIMPLE = "MM-dd HH:mm";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_FORMAT_2 = "ddMMMyy";
     public static final String DATE_SECOND_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_SECOND_FORMAT_2 = "yyyyMMddHHmmss";
     public static final String DATE_SECOND_FORMAT_3 = "yyyy/MM/dd  HH:mm:ss";
@@ -184,6 +186,27 @@ public class DateUtils {
             DateTimeFormatter format = DateTimeFormat.forPattern(dateFormat);
             DateTime dateTime = new DateTime(date.getTime());
             result = dateTime.toString(format);
+        }
+        return result;
+    }
+
+    /**
+     * <p>
+     * Description: 使用指定的格式格式化日期对象，返回格式化后的日期字符串
+     * </p>
+     *
+     * @param date
+     * @param dateFormat
+     * @param locale
+     * @return
+     * @author wjc
+     * @date 2016年12月30日
+     */
+    public static String formatDate(Date date, String dateFormat, Locale locale) {
+        String result = null;
+        if (date != null && StringUtils.isNotEmpty(dateFormat)) {
+            DateTime dateTime = new DateTime(date.getTime());
+            result = dateTime.toString(dateFormat, locale);
         }
         return result;
     }

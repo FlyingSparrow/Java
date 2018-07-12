@@ -65,7 +65,9 @@ public class AirBookStage04 implements AirBookStage {
 
         airBookVO.setSsrList(ssrList);
 
-        airBookVO.setContactNumber("010-12345678");
+        List<String> contactInfoList = Lists.newArrayList();
+        contactInfoList.add("010-12345678");
+        airBookVO.setContactInfoList(contactInfoList);
         airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
 
         return airBookRequestTransformer.transform(airBookVO);

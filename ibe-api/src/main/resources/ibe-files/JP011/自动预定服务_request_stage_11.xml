@@ -28,9 +28,13 @@
             <PersonName LanguageType="ZH">
                 <Surname>张学友</Surname>
             </PersonName>
-            <Document DocType="NI" DocID="120221197001011150"/>
+            <Document RPH="1" DocType="NI" DocID="120221197001011150"/>
             <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="1"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+                <FlightSegmentRPH>2</FlightSegmentRPH>
+            </FlightSegmentRPHs>
             <Comment>HK</Comment>
         </AirTraveler>
         <SpecialReqDetails>
