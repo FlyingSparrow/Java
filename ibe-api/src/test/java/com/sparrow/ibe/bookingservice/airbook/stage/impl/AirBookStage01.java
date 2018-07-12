@@ -35,6 +35,23 @@ public class AirBookStage01 implements AirBookStage {
         AirBookVO airBookVO = new AirBookVO();
 
         //行程信息
+        fillItinerary(airBookVO);
+
+        //旅客信息
+        fillAirTraveler(airBookVO);
+
+        airBookVO.setContactNumber("010-12345678");
+        airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
+
+        return airBookRequestTransformer.transform(airBookVO);
+    }
+
+    /**
+     * 填充行程信息
+     *
+     * @param airBookVO
+     */
+    private void fillItinerary(AirBookVO airBookVO) {
         airBookVO.setDepartureDateTime("2015-12-17T07:00:00");
         airBookVO.setArrivalDateTime("2015-12-18T09:10:00");
         airBookVO.setFlightNumber("5138");
@@ -46,8 +63,14 @@ public class AirBookStage01 implements AirBookStage {
             //如果用户没有设置舱位等级，那么默认为经济舱
             airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
         }
+    }
 
-        //旅客信息
+    /**
+     * 填充旅客信息
+     *
+     * @param airBookVO
+     */
+    private void fillAirTraveler(AirBookVO airBookVO) {
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
         AirTravelerVO airTravelerVO = new AirTravelerVO();
         airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
@@ -65,11 +88,6 @@ public class AirBookStage01 implements AirBookStage {
         airTravelerVO.setComment("HK");
         airTravelerList.add(airTravelerVO);
         airBookVO.setAirTravelerList(airTravelerList);
-
-        airBookVO.setContactNumber("010-12345678");
-        airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
-
-        return airBookRequestTransformer.transform(airBookVO);
     }
 
 }

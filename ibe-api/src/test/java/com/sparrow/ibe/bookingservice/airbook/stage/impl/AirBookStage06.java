@@ -35,6 +35,29 @@ public class AirBookStage06 implements AirBookStage {
         AirBookVO airBookVO = new AirBookVO();
 
         //行程信息
+        fillItinerary(airBookVO);
+
+        //旅客信息
+        fillAirTraveler(airBookVO);
+
+        //OSI（其他服务信息）信息
+        List<String> osiList = new ArrayList<>();
+        osiList.add("CTCT13666666666");
+        osiList.add("CTCM1366666666");
+        airBookVO.setOsiList(osiList);
+
+        airBookVO.setContactNumber("023-57651234");
+        airBookVO.setTicketTimeLimit("2014-05-29T00:01:00");
+
+        return airBookRequestTransformer.transform(airBookVO);
+    }
+
+    /**
+     * 填充行程信息
+     *
+     * @param airBookVO
+     */
+    private void fillItinerary(AirBookVO airBookVO) {
         airBookVO.setDepartureDateTime("2014-05-29T07:00:00");
         airBookVO.setArrivalDateTime("2014-05-29T09:10:00");
         airBookVO.setFlightNumber("5138");
@@ -46,8 +69,14 @@ public class AirBookStage06 implements AirBookStage {
             //如果用户没有设置舱位等级，那么默认为经济舱
             airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
         }
+    }
 
-        //旅客信息
+    /**
+     * 填充旅客信息
+     *
+     * @param airBookVO
+     */
+    private void fillAirTraveler(AirBookVO airBookVO) {
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
         AirTravelerVO airTravelerVO = new AirTravelerVO();
         airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
@@ -87,17 +116,6 @@ public class AirBookStage06 implements AirBookStage {
         airTravelerList.add(airTravelerVO);
 
         airBookVO.setAirTravelerList(airTravelerList);
-
-        //OSI（其他服务信息）信息
-        List<String> osiList = new ArrayList<>();
-        osiList.add("CTCT13666666666");
-        osiList.add("CTCM1366666666");
-        airBookVO.setOsiList(osiList);
-
-        airBookVO.setContactNumber("023-57651234");
-        airBookVO.setTicketTimeLimit("2014-05-29T00:01:00");
-
-        return airBookRequestTransformer.transform(airBookVO);
     }
 
 }

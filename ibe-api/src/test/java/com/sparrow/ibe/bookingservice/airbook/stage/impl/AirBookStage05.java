@@ -36,6 +36,35 @@ public class AirBookStage05 implements AirBookStage {
         AirBookVO airBookVO = new AirBookVO();
 
         //行程信息
+        fillItinerary(airBookVO);
+
+        //旅客信息
+        fillAirTraveler(airBookVO);
+
+        //OSI（其他服务信息）信息
+        List<String> osiList = new ArrayList<>();
+        osiList.add("CTCT13801035768");
+        osiList.add("CTCM13801035768/P1");
+        airBookVO.setOsiList(osiList);
+
+        //备注信息
+        List<String> remarkList = new ArrayList<>();
+        remarkList.add("TJ AUTH SHA255");
+        airBookVO.setRemarkList(remarkList);
+
+        airBookVO.setContactNumber("0512-82274023");
+        airBookVO.setTicketTimeLimit("2013-11-26T05:32:20");
+        airBookVO.setEnvelopDelay("false");
+
+        return airBookRequestTransformer.transform(airBookVO);
+    }
+
+    /**
+     * 填充行程信息
+     *
+     * @param airBookVO
+     */
+    private void fillItinerary(AirBookVO airBookVO) {
         airBookVO.setDepartureDateTime("2013-11-26T07:30:00");
         airBookVO.setArrivalDateTime("2013-11-26T09:40:00");
         airBookVO.setFlightNumber("1831");
@@ -46,8 +75,14 @@ public class AirBookStage05 implements AirBookStage {
             //如果用户没有设置舱位等级，那么默认为经济舱
             airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
         }
+    }
 
-        //旅客信息
+    /**
+     * 填充旅客信息
+     *
+     * @param airBookVO
+     */
+    private void fillAirTraveler(AirBookVO airBookVO) {
         String birthDate = "1985-05-09";
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
         AirTravelerVO airTravelerVO = new AirTravelerVO();
@@ -94,23 +129,6 @@ public class AirBookStage05 implements AirBookStage {
         airTravelerList.add(airTravelerVO);
 
         airBookVO.setAirTravelerList(airTravelerList);
-
-        //OSI（其他服务信息）信息
-        List<String> osiList = new ArrayList<>();
-        osiList.add("CTCT13801035768");
-        osiList.add("CTCM13801035768/P1");
-        airBookVO.setOsiList(osiList);
-
-        //备注信息
-        List<String> remarkList = new ArrayList<>();
-        remarkList.add("TJ AUTH SHA255");
-        airBookVO.setRemarkList(remarkList);
-
-        airBookVO.setContactNumber("0512-82274023");
-        airBookVO.setTicketTimeLimit("2013-11-26T05:32:20");
-        airBookVO.setEnvelopDelay("false");
-
-        return airBookRequestTransformer.transform(airBookVO);
     }
 
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 场景3：国内航班+单个成人+单程+OSI+RMK
+ * 场景11：国内航班+单个成人+往返
  * 说明：
  * 必填信息：1.POS信息（必填） 2.行程信息AirItinerary（必填）  3.旅客信息（必填） 4.客票信息 5.扩展信息（必填） 6.预定信息  7.价格信息
  * 旅客信息说明：3.旅客信息（3.1 旅客基本信息  3.2  旅客其他请求信息）
@@ -24,8 +24,8 @@ import java.util.List;
  * @author wangjianchun
  * @create 2018/7/11
  */
-@Component("airBookStage03")
-public class AirBookStage03 implements AirBookStage {
+@Component("airBookStage11")
+public class AirBookStage11 implements AirBookStage {
 
     @Autowired
     private AirBookRequestTransformer airBookRequestTransformer;
@@ -40,20 +40,8 @@ public class AirBookStage03 implements AirBookStage {
         //旅客信息
         fillAirTraveler(airBookVO);
 
-        //OSI（其他服务信息）信息
-        List<String> osiList = new ArrayList<>();
-        osiList.add("CTCT13666666666");
-        osiList.add("CTCM1366666666");
-        airBookVO.setOsiList(osiList);
-
-        //备注信息
-        List<String> remarkList = new ArrayList<>();
-        remarkList.add("特殊备注组信息");
-        remarkList.add("特殊备注组信息2");
-        airBookVO.setRemarkList(remarkList);
-
-        airBookVO.setContactNumber("010-12345678");
-        airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
+        airBookVO.setContactNumber("023-57651234");
+        airBookVO.setTicketTimeLimit("2014-05-29T00:01:00");
 
         return airBookRequestTransformer.transform(airBookVO);
     }

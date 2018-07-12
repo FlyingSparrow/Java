@@ -36,36 +36,10 @@ public class AirBookStage04 implements AirBookStage {
         AirBookVO airBookVO = new AirBookVO();
 
         //行程信息
-        airBookVO.setDepartureDateTime("2015-12-17T07:00:00");
-        airBookVO.setArrivalDateTime("2015-12-18T09:10:00");
-        airBookVO.setFlightNumber("5138");
-        airBookVO.setDepartureAirport("PEK");
-        airBookVO.setArrivalAirport("SHA");
-        airBookVO.setCodeShareInd("false");
-        airBookVO.setMarketingAirline("MU");
-        if (StringUtils.isEmpty(airBookVO.getResBookDesigCode())) {
-            //如果用户没有设置舱位等级，那么默认为经济舱
-            airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
-        }
+        fillItinerary(airBookVO);
 
         //旅客信息
-        List<AirTravelerVO> airTravelerList = Lists.newArrayList();
-        AirTravelerVO airTravelerVO = new AirTravelerVO();
-        airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
-        airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
-
-        List<PersonNameVO> personNameVOList = new ArrayList<>();
-        PersonNameVO personNameVO = new PersonNameVO();
-        personNameVO.setLanguageType(IBEConst.LanguageType.ZH.getCode());
-        personNameVO.setSurname("高明");
-        personNameVOList.add(personNameVO);
-        airTravelerVO.setPersonNameList(personNameVOList);
-
-        airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
-        airTravelerVO.setDocId("120221197001011150");
-        airTravelerVO.setComment("HK");
-        airTravelerList.add(airTravelerVO);
-        airBookVO.setAirTravelerList(airTravelerList);
+        fillAirTraveler(airBookVO);
 
         //OSI（其他服务信息）信息
         List<String> osiList = new ArrayList<>();
@@ -98,6 +72,50 @@ public class AirBookStage04 implements AirBookStage {
         airBookVO.setTicketTimeLimit("2015-12-16T00:01:00");
 
         return airBookRequestTransformer.transform(airBookVO);
+    }
+
+    /**
+     * 填充行程信息
+     *
+     * @param airBookVO
+     */
+    private void fillItinerary(AirBookVO airBookVO) {
+        airBookVO.setDepartureDateTime("2015-12-17T07:00:00");
+        airBookVO.setArrivalDateTime("2015-12-18T09:10:00");
+        airBookVO.setFlightNumber("5138");
+        airBookVO.setDepartureAirport("PEK");
+        airBookVO.setArrivalAirport("SHA");
+        airBookVO.setCodeShareInd("false");
+        airBookVO.setMarketingAirline("MU");
+        if (StringUtils.isEmpty(airBookVO.getResBookDesigCode())) {
+            //如果用户没有设置舱位等级，那么默认为经济舱
+            airBookVO.setResBookDesigCode(IBEConst.CabinClass.ECONOMY.getCode());
+        }
+    }
+
+    /**
+     * 填充旅客信息
+     *
+     * @param airBookVO
+     */
+    private void fillAirTraveler(AirBookVO airBookVO) {
+        List<AirTravelerVO> airTravelerList = Lists.newArrayList();
+        AirTravelerVO airTravelerVO = new AirTravelerVO();
+        airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
+        airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
+
+        List<PersonNameVO> personNameVOList = new ArrayList<>();
+        PersonNameVO personNameVO = new PersonNameVO();
+        personNameVO.setLanguageType(IBEConst.LanguageType.ZH.getCode());
+        personNameVO.setSurname("高明");
+        personNameVOList.add(personNameVO);
+        airTravelerVO.setPersonNameList(personNameVOList);
+
+        airTravelerVO.setDocType(IBEConst.DocumentType.ID.getCode());
+        airTravelerVO.setDocId("120221197001011150");
+        airTravelerVO.setComment("HK");
+        airTravelerList.add(airTravelerVO);
+        airBookVO.setAirTravelerList(airTravelerList);
     }
 
 }

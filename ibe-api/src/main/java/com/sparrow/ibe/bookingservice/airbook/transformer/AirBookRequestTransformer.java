@@ -143,11 +143,16 @@ public class AirBookRequestTransformer {
                 List<TravelerRefNumber> travelerRefNumberList = new ArrayList<TravelerRefNumber>();
                 TravelerRefNumber travelerRefNumber = new TravelerRefNumber();
                 travelerRefNumber.setRph(rphStr);
+
+                String rphOfInfant = findRphOfInfant(airTravelerVOList);
                 if (IBEConst.PassengerType.ADULT.getCode().equals(item.getPassengerTypeCode())) {
                     //如果大人携带了婴儿，那么需要在大人的 travelerRefNumber 中添加婴儿的 travelerRefNumber 中的 rph
-                    String rphOfInfant = findRphOfInfant(airTravelerVOList);
                     if (StringUtils.isNotEmpty(rphOfInfant)) {
                         travelerRefNumber.setInfantTravelerRPH(rphOfInfant);
+                    }
+                }else if(IBEConst.PassengerType.INFANT.getCode().equals(item.getPassengerTypeCode())){
+                    if (StringUtils.isNotEmpty(rphOfInfant)) {
+                        travelerRefNumber.setRph(rphOfInfant);
                     }
                 }
                 travelerRefNumberList.add(travelerRefNumber);
@@ -196,29 +201,36 @@ public class AirBookRequestTransformer {
      * @param airTraveler
      */
     private void fillDocument(AirTravelerVO item, AirTraveler airTraveler) {
-        if (!IBEConst.PassengerType.INFANT.getCode().equals(item.getPassengerTypeCode())) {
-            //说明：婴儿不需要填写证件信息，如果旅客类型不是婴儿，那么需要填写证件信息
-            List<Document> documentList = new ArrayList<Document>();
-            Document document = new Document();
-            document.setDocType(item.getDocType());
-            document.setDocId(item.getDocId());
-            if (StringUtils.isNotEmpty(item.getDocHolderNationality())) {
-                document.setDocHolderNationality(item.getDocHolderNationality());
-            }
-            if (StringUtils.isNotEmpty(item.getBirthDate())) {
-                document.setBirthDate(item.getBirthDate());
-            }
-            if (StringUtils.isNotEmpty(item.getGender())
-                    && IBEConst.DocumentType.PASSPORT.getCode().equals(item.getDocType())) {
-                //如果证件类型为护照，需要设置性别
-                document.setGender(item.getGender());
-            }
-            if (StringUtils.isNotEmpty(item.getExpireDate())) {
-                document.setExpireDate(item.getExpireDate());
-            }
-            documentList.add(document);
-            airTraveler.setDocumentList(documentList);
+        if(StringUtils.isEmpty(item.getDocId())){
+            return;
         }
+
+        List<Document> documentList = new ArrayList<Document>();
+        Document document = new Document();
+        if (StringUtils.isNotEmpty(item.getDocType())) {
+            document.setDocType(item.getDocType());
+        }
+        if (StringUtils.isNotEmpty(item.getDocId())) {
+            document.setDocId(item.getDocId());
+        }
+        if (StringUtils.isNotEmpty(item.getDocHolderNationality())) {
+            document.setDocHolderNationality(item.getDocHolderNationality());
+        }
+        if (StringUtils.isNotEmpty(item.getBirthDate())
+                && !IBEConst.PassengerType.INFANT.getCode().equals(item.getPassengerTypeCode())) {
+            //如果旅客类型不是婴儿，并且出生日期不为空，那么设置出生日期
+            document.setBirthDate(item.getBirthDate());
+        }
+        if (StringUtils.isNotEmpty(item.getGender())
+                && IBEConst.DocumentType.PASSPORT.getCode().equals(item.getDocType())) {
+            //如果证件类型为护照，需要设置性别
+            document.setGender(item.getGender());
+        }
+        if (StringUtils.isNotEmpty(item.getExpireDate())) {
+            document.setExpireDate(item.getExpireDate());
+        }
+        documentList.add(document);
+        airTraveler.setDocumentList(documentList);
     }
 
     /**
@@ -234,7 +246,11 @@ public class AirBookRequestTransformer {
         for (AirTravelerVO item : airTravelerVOList) {
             rph++;
             if (IBEConst.PassengerType.INFANT.getCode().equals(item.getPassengerTypeCode())) {
-                result = rph + "";
+                if(StringUtils.isNotEmpty(item.getInfantTravelerRph())){
+                    result = item.getInfantTravelerRph();
+                }else{
+                    result = rph + "";
+                }
                 break;
             }
         }
@@ -273,6 +289,7 @@ public class AirBookRequestTransformer {
                 osi.setOsiCode("OTHS");
                 osi.setAirlineCode(airBookVO.getMarketingAirline());
                 if (item.startsWith("CTCM")) {
+                    //CTCM必须关联旅客，CTCM后数字部分最多30位
                     osi.setTravelerRefNumberRPH("1");
                 }
                 osi.setText(item);
