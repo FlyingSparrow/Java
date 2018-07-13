@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookRQ>
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirItinerary>
+        <OriginDestinationOptions>
+            <OriginDestinationOption>
+                <FlightSegment RPH="1" DepartureDateTime="2014-09-29T07:00:00" ArrivalDateTime="2014-09-29T09:10:00"
+                               CodeshareInd="false" FlightNumber="5138" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="PEK"/>
+                    <ArrivalAirport LocationCode="SHA"/>
+                    <Equipment AirEquipType="733"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+            </OriginDestinationOption>
+        </OriginDestinationOptions>
+    </AirItinerary>
+    <TravelerInfo>
+        <AirTraveler BirthDate="2008-01-01" Gender="MALE" PassengerTypeCode="CHD">
+            <PersonName LanguageType="ZH">
+                <Surname>张学友</Surname>
+            </PersonName>
+            <Document RPH="1" DocType="NI" DocID="31010420080101573X" BirthDate="2008-01-01"/>
+            <TravelerRefNumber RPH="1"/>
+            <Comment>HK</Comment>
+        </AirTraveler>
+        <SpecialReqDetails>
+            <SpecialServiceRequests>
+                <SpecialServiceRequest SSRCode="CHLD" ServiceQuantity="1" Status="HK">
+                    <Airline Code="MU"/>
+                    <TravelerRefNumber RPH="1"/>
+                    <Text>01JAN08</Text>
+                </SpecialServiceRequest>
+            </SpecialServiceRequests>
+            <OtherServiceInformations>
+                <OtherServiceInformation Code="OTHS">
+                    <Airline Code="MU"/>
+                    <Text>CTCT13666666666</Text>
+                </OtherServiceInformation>
+                <OtherServiceInformation Code="OTHS">
+                    <TravelerRefNumber RPH="1"/>
+                    <Airline Code="MU"/>
+                    <Text>CTCM1366666666</Text>
+                </OtherServiceInformation>
+                <OtherServiceInformation Code="OTHS">
+                    <TravelerRefNumber RPH="1"/>
+                    <Airline Code="MU"/>
+                    <Text>CHLD 01JAN08</Text>
+                </OtherServiceInformation>
+            </OtherServiceInformations>
+        </SpecialReqDetails>
+    </TravelerInfo>
+    <Ticketing TicketTimeLimit="2014-05-29T00:01:00"/>
+    <TPA_Extensions>
+        <ContactInfo>023-57651234</ContactInfo>
+        <EnvelopType>KI</EnvelopType>
+    </TPA_Extensions>
+</OTA_AirBookRQ>

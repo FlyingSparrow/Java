@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookRQ>
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirItinerary>
+        <OriginDestinationOptions>
+            <OriginDestinationOption>
+                <FlightSegment RPH="1" DepartureDateTime="2014-08-29T13:55:00" ArrivalDateTime="2014-08-29T15:10:00"
+                               CodeshareInd="false" FlightNumber="5138" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="PEK"/>
+                    <ArrivalAirport LocationCode="SHA"/>
+                    <Equipment AirEquipType="733"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+            </OriginDestinationOption>
+        </OriginDestinationOptions>
+    </AirItinerary>
+    <TravelerInfo>
+        <AirTraveler Gender="MALE" PassengerTypeCode="ADT" AccompaniedByInfant="true">
+            <PersonName LanguageType="ZH">
+                <Surname>张学友</Surname>
+            </PersonName>
+            <Document RPH="1" DocType="NI" DocID="120221197001011150"/>
+            <TravelerRefNumber RPH="1" InfantTravelerRPH="9"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+            <Comment>HK</Comment>
+        </AirTraveler>
+        <AirTraveler Gender="FEMALE" PassengerTypeCode="CHD">
+            <PersonName LanguageType="ZH">
+                <Surname>张飞</Surname>
+            </PersonName>
+            <Document RPH="2" DocType="NI" DocID="310104200801015932"/>
+            <TravelerRefNumber RPH="2"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+            <Comment>HK</Comment>
+        </AirTraveler>
+        <AirTraveler BirthDate="2014-05-06" Gender="MALE" PassengerTypeCode="INF">
+            <PersonName LanguageType="EN">
+                <Surname>wang/wy</Surname>
+            </PersonName>
+            <Document RPH="3" DocType="NI" DocID="31010420080101573X"/>
+            <TravelerRefNumber RPH="9"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+            <Comment>HK</Comment>
+        </AirTraveler>
+    </TravelerInfo>
+    <TPA_Extensions>
+        <ContactInfo>023-57651234</ContactInfo>
+        <EnvelopType>KI</EnvelopType>
+    </TPA_Extensions>
+</OTA_AirBookRQ>

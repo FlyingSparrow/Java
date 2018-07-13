@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookRQ AutoARNKInd="true">
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirItinerary>
+        <OriginDestinationOptions>
+            <OriginDestinationOption>
+                <FlightSegment RPH="1" DepartureDateTime="2014-05-16T00:00:00" ArrivalDateTime="2014-05-16T00:00:00"
+                               CodeshareInd="true" FlightNumber="5145" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="SHA"/>
+                    <ArrivalAirport LocationCode="PEK"/>
+                    <Equipment AirEquipType="737"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment RPH="2" DepartureDateTime="2014-05-18T06:30:00" ArrivalDateTime="2014-05-18T09:50:00"
+                               CodeshareInd="true" FlightNumber="3576" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="PEK"/>
+                    <ArrivalAirport LocationCode="CAN"/>
+                    <Equipment AirEquipType="321"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+            </OriginDestinationOption>
+        </OriginDestinationOptions>
+    </AirItinerary>
+    <TravelerInfo>
+        <AirTraveler Gender="MALE" PassengerTypeCode="ADT">
+            <PersonName LanguageType="EN">
+                <Surname>zhou/xiao</Surname>
+            </PersonName>
+            <Document RPH="1" DocType="PP" DocID="G30470505" DocIssueCountry="CN" DocHolderNationality="CN"
+                      BirthDate="2005-01-01" Gender="MALE" ExpireDate="2018-08-05"/>
+            <TravelerRefNumber RPH="1"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+                <FlightSegmentRPH>2</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+            <DocumentFlightBinding>
+                <DocumentRPH>1</DocumentRPH>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </DocumentFlightBinding>
+            <Comment>HK</Comment>
+        </AirTraveler>
+        <SpecialReqDetails>
+            <OtherServiceInformations>
+                <OtherServiceInformation Code="OTHS">
+                    <Airline Code="MU"/>
+                    <Text>CTCT13666666666</Text>
+                </OtherServiceInformation>
+                <OtherServiceInformation Code="OTHS">
+                    <TravelerRefNumber RPH="1"/>
+                    <Airline Code="MU"/>
+                    <Text>CTCM1366666666</Text>
+                </OtherServiceInformation>
+            </OtherServiceInformations>
+        </SpecialReqDetails>
+    </TravelerInfo>
+    <Ticketing TicketTimeLimit="2014-03-10T00:01:00"/>
+    <TPA_Extensions>
+        <ContactInfo>1234445565t6</ContactInfo>
+        <ContactInfo>123349847849</ContactInfo>
+        <EnvelopType>KI</EnvelopType>
+    </TPA_Extensions>
+</OTA_AirBookRQ>

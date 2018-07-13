@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OTA_AirBookRQ>
+    <POS>
+        <Source PseudoCityCode="SHA258"/>
+    </POS>
+    <AirItinerary>
+        <OriginDestinationOptions>
+            <OriginDestinationOption>
+                <FlightSegment SegmentType="NORMAL" Status="NN" FlightNumber="935" CodeshareInd="false"
+                               ArrivalDateTime="2014-05-15T18:05:00.000+08:00"
+                               DepartureDateTime="2014-05-15T11:45:00.000+08:00" RPH="1">
+                    <OperatingAirline FlightNumber="935"/>
+                    <DepartureAirport LocationCode="PVG"/>
+                    <ArrivalAirport LocationCode="FRA"/>
+                    <Equipment AirEquipType="330"/>
+                    <MarketingAirline Code="CA"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+            </OriginDestinationOption>
+        </OriginDestinationOptions>
+    </AirItinerary>
+    <TravelerInfo>
+        <AirTraveler PassengerTypeCode="ADT" Gender="MALE" RPH="1">
+            <PersonName LanguageType="EN">
+                <Surname>zhang/xiao</Surname>
+            </PersonName>
+            <Document DocType="PP" DocTypeDetail="F" DocID="12312312" DocHolderNationality="CN" DocIssueCountry="CN"
+                      BirthDate="1990-01-01+08:00" Gender="MALE" ExpireDate="2018-08-08+08:00" RPH="1">
+                <DocHolderFormattedName>
+                    <GivenName>zhang</GivenName>
+                    <Surname>xiao</Surname>
+                </DocHolderFormattedName>
+            </Document>
+            <TravelerRefNumber RPH="1"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+            <DocumentFlightBinding>
+                <DocumentRPH>1</DocumentRPH>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </DocumentFlightBinding>
+        </AirTraveler>
+        <AirTraveler PassengerTypeCode="CHD" Gender="MALE" RPH="2">
+            <PersonName LanguageType="EN">
+                <Surname>zhang/ertong</Surname>
+            </PersonName>
+            <Document RPH="2" ExpireDate="2018-08-08+08:00" BirthDate="2010-01-01+08:00" DocHolderNationality="CN"
+                      DocIssueCountry="CN" DocID="12312312" DocTypeDetail="F" DocType="PP"/>
+            <TravelerRefNumber RPH="2"/>
+        </AirTraveler>
+        <SpecialReqDetails>
+            <SpecialServiceRequests/>
+            <OtherServiceInformations>
+                <!--OSI信息-->
+                <OtherServiceInformation>
+                    <!--CTCT项不需要关联对应旅客，属于非PNR中旅客联系方式，CTCT后数字部分最多30位-->
+                    <Airline Code="CA"/>
+                    <Text>CTCT13333333333</Text>
+                </OtherServiceInformation>
+            </OtherServiceInformations>
+            <SpecialRemarks/>
+        </SpecialReqDetails>
+    </TravelerInfo>
+    <Ticketing TicketTimeLimit="2014-05-14T12:00:00.000+08:00"/>
+</OTA_AirBookRQ>

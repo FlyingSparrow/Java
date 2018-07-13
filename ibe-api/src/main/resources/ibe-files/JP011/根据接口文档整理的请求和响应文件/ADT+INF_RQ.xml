@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OTA_AirBookRQ>
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirItinerary>
+        <OriginDestinationOptions>
+            <OriginDestinationOption>
+                <FlightSegment InterSegment="true" RPH="1" DepartureDateTime="2014-12-30T09:00:00"
+                               ArrivalDateTime="2014-12-30T11:30:00" FlightNumber="501" NumberInParty="2" Status="NN"
+                               SegmentType="NORMAL">
+                    <OperatingAirline Code="MU" FlightNumber="501"/>
+                    <DepartureAirport LocationCode="PVG"/>
+                    <ArrivalAirport LocationCode="HKG"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+            </OriginDestinationOption>
+        </OriginDestinationOptions>
+    </AirItinerary>
+    <TravelerInfo>
+        <AirTraveler PassengerTypeCode="ADT" Gender="MALE" AccompaniedByInfant="true">
+            <PersonName LanguageType="EN">
+                <Surname>RUAN/WENCHAO MR</Surname>
+            </PersonName>
+            <Document DocType="PP" DocTypeDetail="P" DocID="G446164" DocHolderNationality="CN" DocIssueCountry="CN"
+                      BirthDate="1999-09-04" Gender="MALE" ExpireDate="2031-05-19" RPH="1">
+                <DocHolderFormattedName>
+                    <GivenName>WENCHAO</GivenName>
+                    <Surname>RUAN</Surname>
+                </DocHolderFormattedName>
+            </Document>
+            <PassengerTypeQuantity Age="15"/>
+            <TravelerRefNumber RPH="1" InfantTravelerRPH="2"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+            <DocumentFlightBinding>
+                <DocumentRPH>1</DocumentRPH>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </DocumentFlightBinding>
+        </AirTraveler>
+        <AirTraveler PassengerTypeCode="INF" Gender="MALE" BirthDate="2012-03-04">
+            <PersonName LanguageType="EN">
+                <Surname>RUAN/XIAOPANG</Surname>
+            </PersonName>
+            <PassengerTypeQuantity Age="1"/>
+            <TravelerRefNumber RPH="2"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+            </FlightSegmentRPHs>
+        </AirTraveler>
+        <SpecialReqDetails>
+            <OtherServiceInformations>
+                <OtherServiceInformation>
+                    <Airline Code="MU"/>
+                    <Text>CTCT13444444444</Text>
+                </OtherServiceInformation>
+                <OtherServiceInformation>
+                    <Airline Code="MU"/>
+                    <Text>CTCM13444444444/P1</Text>
+                </OtherServiceInformation>
+            </OtherServiceInformations>
+            <SpecialRemarks>
+                <SpecialRemark>
+                    <Text>TJ AUTH SZV122</Text>
+                </SpecialRemark>
+            </SpecialRemarks>
+        </SpecialReqDetails>
+    </TravelerInfo>
+    <Ticketing TicketTimeLimit="2014-12-30T07:00:00"/>
+    <TPA_Extensions>
+        <ContactInfo>0512-82274045TCBOOK</ContactInfo>
+        <EnvelopType>KI</EnvelopType>
+        <EnvelopDelay>false</EnvelopDelay>
+    </TPA_Extensions>
+</OTA_AirBookRQ>
