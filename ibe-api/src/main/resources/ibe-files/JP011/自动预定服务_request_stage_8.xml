@@ -10,6 +10,7 @@
                                CodeshareInd="false" FlightNumber="5138" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="PEK"/>
                     <ArrivalAirport LocationCode="SHA"/>
+                    <Equipment AirEquipType="733"/>
                     <MarketingAirline Code="MU"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>
@@ -22,7 +23,6 @@
                 <Surname>张学友</Surname>
             </PersonName>
             <Document RPH="1" DocType="NI" DocID="120221197001011150"/>
-            <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="1" InfantTravelerRPH="9"/>
             <FlightSegmentRPHs>
                 <FlightSegmentRPH>1</FlightSegmentRPH>
@@ -34,19 +34,17 @@
                 <Surname>张飞</Surname>
             </PersonName>
             <Document RPH="2" DocType="NI" DocID="310104200801015932"/>
-            <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="2"/>
             <FlightSegmentRPHs>
                 <FlightSegmentRPH>1</FlightSegmentRPH>
             </FlightSegmentRPHs>
             <Comment>HK</Comment>
         </AirTraveler>
-        <AirTraveler BirthDate="2014-05-06 20:00:00" Gender="MALE" PassengerTypeCode="INF">
+        <AirTraveler BirthDate="2014-05-06" Gender="MALE" PassengerTypeCode="INF">
             <PersonName LanguageType="EN">
                 <Surname>wang/wy</Surname>
             </PersonName>
             <Document RPH="3" DocType="NI" DocID="31010420080101573X"/>
-            <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="9"/>
             <FlightSegmentRPHs>
                 <FlightSegmentRPH>1</FlightSegmentRPH>

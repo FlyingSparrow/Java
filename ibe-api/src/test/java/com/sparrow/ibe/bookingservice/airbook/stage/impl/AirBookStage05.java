@@ -75,6 +75,7 @@ public class AirBookStage05 implements AirBookStage {
         flightSegmentVO.setFlightNumber("1831");
         flightSegmentVO.setDepartureAirport("PEK");
         flightSegmentVO.setArrivalAirport("SHA");
+        flightSegmentVO.setAirEquipType("787");
         flightSegmentVO.setMarketingAirline("CA");
         if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {
             //如果用户没有设置舱位等级，那么默认为经济舱

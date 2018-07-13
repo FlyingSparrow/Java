@@ -6,10 +6,18 @@
     <AirItinerary>
         <OriginDestinationOptions>
             <OriginDestinationOption>
-                <FlightSegment RPH="1" DepartureDateTime="2014-05-29T07:00:00" ArrivalDateTime="2014-05-29T09:10:00"
+                <FlightSegment RPH="1" DepartureDateTime="2014-08-29T07:00:00" ArrivalDateTime="2014-08-29T09:10:00"
                                CodeshareInd="false" FlightNumber="5138" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="PEK"/>
                     <ArrivalAirport LocationCode="SHA"/>
+                    <Equipment AirEquipType="733"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment RPH="2" DepartureDateTime="2014-08-30T11:30:00" ArrivalDateTime="2014-08-30T14:05:00"
+                               CodeshareInd="false" FlightNumber="5139" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="SHA"/>
+                    <ArrivalAirport LocationCode="PEK"/>
                     <Equipment AirEquipType="733"/>
                     <MarketingAirline Code="MU"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
@@ -18,20 +26,28 @@
         </OriginDestinationOptions>
     </AirItinerary>
     <TravelerInfo>
-        <AirTraveler Gender="MALE" PassengerTypeCode="ADT">
+        <AirTraveler Gender="MALE" PassengerTypeCode="ADT" AccompaniedByInfant="true">
             <PersonName LanguageType="ZH">
-                <Surname>张学友</Surname>
+                <Surname>高明</Surname>
             </PersonName>
             <Document RPH="1" DocType="NI" DocID="120221197001011150"/>
-            <TravelerRefNumber RPH="1"/>
+            <TravelerRefNumber RPH="1" InfantTravelerRPH="2"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+                <FlightSegmentRPH>2</FlightSegmentRPH>
+            </FlightSegmentRPHs>
             <Comment>HK</Comment>
         </AirTraveler>
-        <AirTraveler Gender="MALE" PassengerTypeCode="CHD">
+        <AirTraveler Gender="MALE" PassengerTypeCode="INF">
             <PersonName LanguageType="ZH">
-                <Surname>张伟</Surname>
+                <Surname>高一</Surname>
             </PersonName>
-            <Document RPH="2" DocType="NI" DocID="31010420080101573X"/>
+            <Document RPH="2" DocType="NI" DocID="120221200701011150"/>
             <TravelerRefNumber RPH="2"/>
+            <FlightSegmentRPHs>
+                <FlightSegmentRPH>1</FlightSegmentRPH>
+                <FlightSegmentRPH>2</FlightSegmentRPH>
+            </FlightSegmentRPHs>
             <Comment>HK</Comment>
         </AirTraveler>
         <SpecialReqDetails>
@@ -48,9 +64,11 @@
             </OtherServiceInformations>
         </SpecialReqDetails>
     </TravelerInfo>
-    <Ticketing TicketTimeLimit="2014-05-29T00:01:00"/>
+    <Ticketing TicketTimeLimit="2014-08-26T00:01:00"/>
     <TPA_Extensions>
+        <ContactInfo>010-12345678</ContactInfo>
         <ContactInfo>023-57651234</ContactInfo>
+        <ContactInfo>022-29681234</ContactInfo>
         <EnvelopType>KI</EnvelopType>
     </TPA_Extensions>
 </OTA_AirBookRQ>

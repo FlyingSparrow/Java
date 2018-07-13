@@ -41,20 +41,8 @@ public class AirBookStage10 implements AirBookStage {
         //旅客信息
         fillAirTraveler(airBookVO);
 
-        //旅客预定的服务信息:SSR
-        List<SpecialServiceRequestVO> ssrList = new ArrayList<SpecialServiceRequestVO>();
-        SpecialServiceRequestVO ssr = new SpecialServiceRequestVO();
-        //服务代码类别，例如FQTV
-        ssr.setSsrCode("CHLD");
-        //关键点！！！！！！！！！！
-        String birthDate = airBookVO.getAirTravelerList().get(0).getBirthDate();
-        Date tempBirthDate = DateUtils.parseDate(birthDate, DateUtils.DATE_FORMAT);
-        String formattedBirthDate = DateUtils.formatDate(tempBirthDate, DateUtils.DATE_FORMAT_2, Locale.ENGLISH);
-        ssr.setText(formattedBirthDate);
-        //行动代码，例如：HK
-        ssr.setStatus("HK");
-        ssrList.add(ssr);
-        airBookVO.setSsrList(ssrList);
+        //SSR（特殊服务请求）
+        fillSpecialServiceRequest(airBookVO);
 
         //OSI（其他服务信息）信息
         List<String> osiList = Lists.newArrayList();
@@ -84,6 +72,7 @@ public class AirBookStage10 implements AirBookStage {
         flightSegmentVO.setFlightNumber("5138");
         flightSegmentVO.setDepartureAirport("PEK");
         flightSegmentVO.setArrivalAirport("SHA");
+        flightSegmentVO.setAirEquipType("733");
         flightSegmentVO.setCodeShareInd("false");
         flightSegmentVO.setMarketingAirline("MU");
         if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {
@@ -120,6 +109,25 @@ public class AirBookStage10 implements AirBookStage {
         airTravelerVO.setComment("HK");
         airTravelerList.add(airTravelerVO);
         airBookVO.setAirTravelerList(airTravelerList);
+    }
+
+    private void fillSpecialServiceRequest(AirBookVO airBookVO){
+        List<SpecialServiceRequestVO> ssrList = new ArrayList<SpecialServiceRequestVO>();
+        SpecialServiceRequestVO ssr = new SpecialServiceRequestVO();
+        //服务代码类别，例如FQTV
+        ssr.setSsrCode("CHLD");
+        //说明：如果 SSRCode 是 CHLD，那么必须设置 TravelerRefNumber 和 Airline
+        ssr.setTravelerRefNumber("1");
+        ssr.setAirline(airBookVO.getFlightSegmentList().get(0).getMarketingAirline());
+        //关键点！！！！！！！！！！
+        String birthDate = airBookVO.getAirTravelerList().get(0).getBirthDate();
+        Date tempBirthDate = DateUtils.parseDate(birthDate, DateUtils.DATE_FORMAT);
+        String formattedBirthDate = DateUtils.formatDate(tempBirthDate, DateUtils.DATE_FORMAT_2, Locale.ENGLISH);
+        ssr.setText(formattedBirthDate.toUpperCase());
+        //行动代码，例如：HK
+        ssr.setStatus("HK");
+        ssrList.add(ssr);
+        airBookVO.setSsrList(ssrList);
     }
 
 }

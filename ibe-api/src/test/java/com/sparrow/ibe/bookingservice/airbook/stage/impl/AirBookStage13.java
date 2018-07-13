@@ -68,6 +68,7 @@ public class AirBookStage13 implements AirBookStage {
         flightSegmentVO.setFlightNumber("101");
         flightSegmentVO.setDepartureAirport("PEK");
         flightSegmentVO.setArrivalAirport("HKG");
+        flightSegmentVO.setAirEquipType("321");
         flightSegmentVO.setCodeShareInd("false");
         flightSegmentVO.setMarketingAirline("CA");
         if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {

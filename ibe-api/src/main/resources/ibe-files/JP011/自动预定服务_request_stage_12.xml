@@ -10,6 +10,7 @@
                                CodeshareInd="false" FlightNumber="5138" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="PEK"/>
                     <ArrivalAirport LocationCode="SHA"/>
+                    <Equipment AirEquipType="733"/>
                     <MarketingAirline Code="MU"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>
@@ -17,6 +18,7 @@
                                CodeshareInd="false" FlightNumber="5139" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="SHA"/>
                     <ArrivalAirport LocationCode="PEK"/>
+                    <Equipment AirEquipType="733"/>
                     <MarketingAirline Code="MU"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>
@@ -29,7 +31,6 @@
                 <Surname>张学友</Surname>
             </PersonName>
             <Document RPH="1" DocType="NI" DocID="120221197001011150"/>
-            <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="1"/>
             <FlightSegmentRPHs>
                 <FlightSegmentRPH>1</FlightSegmentRPH>
@@ -42,7 +43,6 @@
                 <Surname>张小孩</Surname>
             </PersonName>
             <Document RPH="2" DocType="NI" DocID="120221200801011150"/>
-            <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="2"/>
             <FlightSegmentRPHs>
                 <FlightSegmentRPH>1</FlightSegmentRPH>

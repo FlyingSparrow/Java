@@ -10,6 +10,7 @@
                                FlightNumber="1831" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="PEK"/>
                     <ArrivalAirport LocationCode="SHA"/>
+                    <Equipment AirEquipType="787"/>
                     <MarketingAirline Code="CA"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>

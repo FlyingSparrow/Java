@@ -66,6 +66,7 @@ public class AirBookStage08 implements AirBookStage {
         flightSegmentVO.setFlightNumber("5138");
         flightSegmentVO.setDepartureAirport("PEK");
         flightSegmentVO.setArrivalAirport("SHA");
+        flightSegmentVO.setAirEquipType("733");
         flightSegmentVO.setCodeShareInd("false");
         flightSegmentVO.setMarketingAirline("MU");
         if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {
@@ -128,7 +129,7 @@ public class AirBookStage08 implements AirBookStage {
         airTravelerVO = new AirTravelerVO();
         airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());
         airTravelerVO.setPassengerTypeCode(IBEConst.PassengerType.INFANT.getCode());
-        airTravelerVO.setBirthDate("2014-05-06 20:00:00");
+        airTravelerVO.setBirthDate("2014-05-06");
 
         personNameVOList = new ArrayList<>();
         PersonNameVO personNameVO3 = new PersonNameVO();

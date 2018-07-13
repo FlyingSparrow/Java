@@ -10,6 +10,7 @@
                                CodeshareInd="false" FlightNumber="501" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="PVG"/>
                     <ArrivalAirport LocationCode="HKG"/>
+                    <Equipment AirEquipType="330"/>
                     <MarketingAirline Code="MU"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>

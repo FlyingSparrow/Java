@@ -214,8 +214,6 @@ public class AirBookRequestBuilder implements RequestBuilder<AirBookRequest> {
                         Element ptqElement = atElement.addElement("PassengerTypeQuantity");
                         ptqElement.addAttribute("Age", age);
                     }
-                } else {
-                    atElement.addElement("PassengerTypeQuantity");
                 }
 
                 buildTravelerRefNumberElement(item.getTravelerRefNumberList(), atElement);

@@ -34,6 +34,10 @@ public class FlightSegmentVO {
      */
     private String arrivalAirport;
     /**
+     * 机型，例如：773(填写真实机型，机型不同会影响运价结果)
+     */
+    private String airEquipType;
+    /**
      * 是否共享航班，true/false
      */
     private String codeShareInd;
@@ -89,6 +93,14 @@ public class FlightSegmentVO {
 
     public void setArrivalAirport(String arrivalAirport) {
         this.arrivalAirport = arrivalAirport;
+    }
+
+    public String getAirEquipType() {
+        return airEquipType;
+    }
+
+    public void setAirEquipType(String airEquipType) {
+        this.airEquipType = airEquipType;
     }
 
     public String getCodeShareInd() {

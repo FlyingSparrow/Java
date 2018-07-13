@@ -10,6 +10,7 @@
                                CodeshareInd="false" FlightNumber="5138" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="PEK"/>
                     <ArrivalAirport LocationCode="SHA"/>
+                    <Equipment AirEquipType="733"/>
                     <MarketingAirline Code="MU"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>
@@ -22,7 +23,6 @@
                 <Surname>高明</Surname>
             </PersonName>
             <Document RPH="1" DocType="NI" DocID="120221197001011150"/>
-            <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="1"/>
             <Comment>HK</Comment>
         </AirTraveler>

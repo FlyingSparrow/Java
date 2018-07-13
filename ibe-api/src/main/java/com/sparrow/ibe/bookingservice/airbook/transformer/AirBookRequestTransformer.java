@@ -35,6 +35,9 @@ public class AirBookRequestTransformer {
     public AirBookRequest transform(AirBookVO airBookVO) {
         AirBookRequest request = new AirBookRequest();
 
+        if(StringUtils.isNotEmpty(airBookVO.getSegmentCheckInd())){
+            request.setSegmentCheckInd(airBookVO.getSegmentCheckInd());
+        }
         if(StringUtils.isNotEmpty(airBookVO.getAutoARNKInd())){
             request.setAutoARNKInd(airBookVO.getAutoARNKInd());
         }
@@ -100,6 +103,7 @@ public class AirBookRequestTransformer {
             fs.setSegmentType("NORMAL");
             fs.setDepartureAirport(item.getDepartureAirport());
             fs.setArrivalAirport(item.getArrivalAirport());
+            fs.setAirEquipType(item.getAirEquipType());
             fs.setMarketingAirline(item.getMarketingAirline());
             fs.setResBookDesigCode(item.getResBookDesigCode());
             fsList.add(fs);
@@ -134,8 +138,9 @@ public class AirBookRequestTransformer {
                 String rphStr = rph + "";
 
                 AirTraveler airTraveler = new AirTraveler();
-                if (IBEConst.PassengerType.INFANT.getCode().equals(item.getPassengerTypeCode())) {
-                    //如果旅客类型为婴儿，那么设置出生日期
+                if (IBEConst.PassengerType.INFANT.getCode().equals(item.getPassengerTypeCode())
+                        || IBEConst.PassengerType.CHILD.getCode().equals(item.getPassengerTypeCode())) {
+                    //如果旅客类型为婴儿或者儿童，那么设置出生日期
                     airTraveler.setBirthDate(item.getBirthDate());
                 }
 
@@ -327,8 +332,8 @@ public class AirBookRequestTransformer {
                 OtherServiceInformation osi = new OtherServiceInformation();
                 osi.setOsiCode("OTHS");
                 osi.setAirlineCode(airBookVO.getFlightSegmentList().get(0).getMarketingAirline());
-                if (item.startsWith("CTCM")) {
-                    //CTCM必须关联旅客，CTCM后数字部分最多30位
+                if (item.startsWith("CTCM") || item.startsWith("CHLD")) {
+                    //CTCM必须关联旅客，CTCM后数字部分最多30位；CHLD表示儿童
                     osi.setTravelerRefNumberRPH("1");
                 }
                 osi.setText(item);
@@ -371,6 +376,9 @@ public class AirBookRequestTransformer {
                 ssr.setSsrCode(item.getSsrCode());
                 ssr.setStatus(item.getStatus());
                 ssr.setAirlineCode(item.getAirline());
+                if("CHLD".equals(item.getSsrCode())){
+                    ssr.setServiceQuantity("1");
+                }
                 ssr.setFlightRefNumberRPH(item.getFlightRefNumber());
                 ssr.setTravelerRefNumberRPH(item.getTravelerRefNumber());
                 ssr.setText(item.getText());

@@ -75,6 +75,7 @@ public class AirBookStage15 implements AirBookStage {
         flightSegmentVO.setFlightNumber("501");
         flightSegmentVO.setDepartureAirport("PVG");
         flightSegmentVO.setArrivalAirport("HKG");
+        flightSegmentVO.setAirEquipType("330");
         flightSegmentVO.setCodeShareInd("false");
         flightSegmentVO.setMarketingAirline("MU");
         flightSegmentVO.setNumberInParty("2");

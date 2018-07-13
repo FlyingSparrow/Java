@@ -10,6 +10,7 @@
                                CodeshareInd="false" FlightNumber="5138" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="PEK"/>
                     <ArrivalAirport LocationCode="SHA"/>
+                    <Equipment AirEquipType="733"/>
                     <MarketingAirline Code="MU"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>
@@ -17,19 +18,20 @@
         </OriginDestinationOptions>
     </AirItinerary>
     <TravelerInfo>
-        <AirTraveler Gender="MALE" PassengerTypeCode="CHD">
+        <AirTraveler BirthDate="2008-01-01" Gender="MALE" PassengerTypeCode="CHD">
             <PersonName LanguageType="ZH">
                 <Surname>张学友</Surname>
             </PersonName>
             <Document RPH="1" DocType="NI" DocID="31010420080101573X" BirthDate="2008-01-01"/>
-            <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="1"/>
             <Comment>HK</Comment>
         </AirTraveler>
         <SpecialReqDetails>
             <SpecialServiceRequests>
-                <SpecialServiceRequest SSRCode="CHLD" Status="HK">
-                    <Text>01Jan08</Text>
+                <SpecialServiceRequest SSRCode="CHLD" ServiceQuantity="1" Status="HK">
+                    <Airline Code="MU"/>
+                    <TravelerRefNumber RPH="1"/>
+                    <Text>01JAN08</Text>
                 </SpecialServiceRequest>
             </SpecialServiceRequests>
             <OtherServiceInformations>
@@ -43,6 +45,7 @@
                     <Text>CTCM1366666666</Text>
                 </OtherServiceInformation>
                 <OtherServiceInformation Code="OTHS">
+                    <TravelerRefNumber RPH="1"/>
                     <Airline Code="MU"/>
                     <Text>CHLD 01JAN08</Text>
                 </OtherServiceInformation>

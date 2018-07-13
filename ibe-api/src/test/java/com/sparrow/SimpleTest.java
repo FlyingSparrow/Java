@@ -54,7 +54,7 @@ public class SimpleTest {
     public void testDate(){
         Date currentDate = DateUtils.currentDate();
         String formattedDate = DateUtils.formatDate(currentDate, DateUtils.DATE_FORMAT_2, Locale.ENGLISH);
-        logger.info("currentDate: {}", formattedDate);
+        logger.info("currentDate: {}", formattedDate.toUpperCase());
     }
 
 }

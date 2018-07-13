@@ -18,11 +18,15 @@ import java.util.List;
 public class AirBookVO {
 
     /**
+     * 是否验证航段状态，true/false
+     */
+    private String segmentCheckInd;
+    /**
      * 是否自动添加ARNK地面运输航段，true/false
      */
     private String autoARNKInd;
     /**
-     * 航段信息列表
+     * 航段信息列表，1个或多个
      */
     private List<FlightSegmentVO> flightSegmentList;
     /**
@@ -34,7 +38,7 @@ public class AirBookVO {
      */
     private List<String> contactInfoList;
     /**
-     * 旅客信息列表
+     * 旅客信息列表，1个或多个
      */
     private List<AirTravelerVO> airTravelerList;
     /**
@@ -53,6 +57,14 @@ public class AirBookVO {
      * 封口延迟，0..1，default true，若需一次封口，请设置为false
      */
     private String envelopDelay;
+
+    public String getSegmentCheckInd() {
+        return segmentCheckInd;
+    }
+
+    public void setSegmentCheckInd(String segmentCheckInd) {
+        this.segmentCheckInd = segmentCheckInd;
+    }
 
     public String getAutoARNKInd() {
         return autoARNKInd;

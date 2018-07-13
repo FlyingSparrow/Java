@@ -43,6 +43,7 @@ public class AirBookStage18 implements AirBookStage {
         //旅客信息
         fillAirTraveler(airBookVO);
 
+        //OSI（其他服务信息）信息
         List<String> osiList = Lists.newArrayList();
         osiList.add("CTCT13666666666");
         osiList.add("CTCM1366666666");
@@ -64,12 +65,15 @@ public class AirBookStage18 implements AirBookStage {
      */
     private void fillItinerary(AirBookVO airBookVO) {
         List<FlightSegmentVO> flightSegmentList = Lists.newArrayList();
+
+        //第一个航段的信息
         FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
         flightSegmentVO.setDepartureDateTime("2014-05-16T00:00:00");
         flightSegmentVO.setArrivalDateTime("2014-05-16T00:00:00");
         flightSegmentVO.setFlightNumber("5145");
         flightSegmentVO.setDepartureAirport("SHA");
         flightSegmentVO.setArrivalAirport("PEK");
+        flightSegmentVO.setAirEquipType("737");
         flightSegmentVO.setCodeShareInd("true");
         flightSegmentVO.setMarketingAirline("MU");
         flightSegmentVO.setNumberInParty("12");
@@ -79,12 +83,15 @@ public class AirBookStage18 implements AirBookStage {
         }
         flightSegmentList.add(flightSegmentVO);
 
+
+        //第二个航段的信息
         flightSegmentVO = new FlightSegmentVO();
         flightSegmentVO.setDepartureDateTime("2014-05-18T06:30:00");
         flightSegmentVO.setArrivalDateTime("2014-05-18T09:50:00");
         flightSegmentVO.setFlightNumber("3576");
         flightSegmentVO.setDepartureAirport("PEK");
         flightSegmentVO.setArrivalAirport("CAN");
+        flightSegmentVO.setAirEquipType("321");
         flightSegmentVO.setCodeShareInd("true");
         flightSegmentVO.setMarketingAirline("MU");
         if (StringUtils.isEmpty(flightSegmentVO.getResBookDesigCode())) {

@@ -10,6 +10,7 @@
                                CodeshareInd="true" FlightNumber="5145" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="SHA"/>
                     <ArrivalAirport LocationCode="PEK"/>
+                    <Equipment AirEquipType="737"/>
                     <MarketingAirline Code="MU"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>
@@ -17,6 +18,7 @@
                                CodeshareInd="true" FlightNumber="3576" Status="NN" SegmentType="NORMAL">
                     <DepartureAirport LocationCode="PEK"/>
                     <ArrivalAirport LocationCode="CAN"/>
+                    <Equipment AirEquipType="321"/>
                     <MarketingAirline Code="MU"/>
                     <BookingClassAvail ResBookDesigCode="Y"/>
                 </FlightSegment>
@@ -30,7 +32,6 @@
             </PersonName>
             <Document RPH="1" DocType="PP" DocID="G30470505" DocIssueCountry="CN" DocHolderNationality="CN"
                       BirthDate="2005-01-01" Gender="MALE" ExpireDate="2018-08-05"/>
-            <PassengerTypeQuantity/>
             <TravelerRefNumber RPH="1"/>
             <FlightSegmentRPHs>
                 <FlightSegmentRPH>1</FlightSegmentRPH>
