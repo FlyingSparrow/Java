@@ -164,22 +164,4 @@ public class XMLUtils {
         return xpath.selectNodes(element);
     }
 
-    /**
-     * 功能：转换XML文件中的转义字符
-     *
-     * @author wangjc
-     * @date 2014-07-16
-     */
-    public String decode(String content) {
-        if (content == null) {
-            return "";
-        } else {
-            String result = content.replace("&lt;", "<")
-                    .replace("&gt;", ">").replace("&amp;", "&")
-                    .replace("&apos;", "'").replace("&quot;", "\"\"");
-
-            return result;
-        }
-    }
-
 }
