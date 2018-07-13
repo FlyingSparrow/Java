@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 接口类别：预订服务
  * 接口名称：自动预订服务
  * 接口ID：JP011
- * 自动预订服务的单元测试类
+ * 自动预订服务的请求单元测试类，用于测试根据不同的场景构造请求的xml文件
  *
  * @author wangjianchun
  * @create 2018/7/4
  */
-public class AirBookTests extends BaseTests {
+public class AirBookRequestTests extends BaseTests {
 
     @Autowired
     private com.sparrow.ibe.bookingservice.airbook.builder.AirBookRequestBuilder airBookRequestBuilder;
