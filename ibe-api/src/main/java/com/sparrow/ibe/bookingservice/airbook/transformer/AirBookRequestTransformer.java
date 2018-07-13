@@ -32,7 +32,7 @@ public class AirBookRequestTransformer {
      * @param airBookVO
      * @return
      */
-    public AirBookRequest transform(AirBookVO airBookVO) {
+    public AirBookRequest transform(AirBookRequestVO airBookVO) {
         AirBookRequest request = new AirBookRequest();
 
         if(StringUtils.isNotEmpty(airBookVO.getSegmentCheckInd())){
@@ -81,7 +81,7 @@ public class AirBookRequestTransformer {
      * @param airBookVO
      * @return
      */
-    private void fillItinerary(AirBookRequest request, AirBookVO airBookVO) {
+    private void fillItinerary(AirBookRequest request, AirBookRequestVO airBookVO) {
         List<OriginDestinationOption> odList = new ArrayList<OriginDestinationOption>();
         OriginDestinationOption od = new OriginDestinationOption();
         List<FlightSegment> fsList = new ArrayList<FlightSegment>();
@@ -121,7 +121,7 @@ public class AirBookRequestTransformer {
      * @param request
      * @param airBookVO
      */
-    private void fillAirTraveler(AirBookRequest request, AirBookVO airBookVO) {
+    private void fillAirTraveler(AirBookRequest request, AirBookRequestVO airBookVO) {
         int rph = 0;
         List<AirTravelerVO> airTravelerVOList = airBookVO.getAirTravelerList();
         List<String> flightSegmentRphList = Lists.newArrayList();
@@ -324,7 +324,7 @@ public class AirBookRequestTransformer {
      * @param request
      * @param airBookVO
      */
-    private void fillOtherServiceInformation(AirBookRequest request, AirBookVO airBookVO) {
+    private void fillOtherServiceInformation(AirBookRequest request, AirBookRequestVO airBookVO) {
         List<String> list = airBookVO.getOsiList();
         if (list != null && list.size() > 0) {
             List<OtherServiceInformation> otherServiceInformationList = new ArrayList<OtherServiceInformation>();
@@ -349,7 +349,7 @@ public class AirBookRequestTransformer {
      * @param request
      * @param airBookVO
      */
-    private void fillSpecialRemark(AirBookRequest request, AirBookVO airBookVO) {
+    private void fillSpecialRemark(AirBookRequest request, AirBookRequestVO airBookVO) {
         List<String> list = airBookVO.getRemarkList();
         if (list != null && list.size() > 0) {
             List<SpecialRemark> specialRemarkList = new ArrayList<SpecialRemark>();

@@ -54,6 +54,16 @@ public class FlightSegmentVO {
      * 航段预订旅客数(预留)/航段包括人数
      */
     private String numberInParty;
+    /**
+     * 航段行动代码，即航段状态，如：HK/航班状态：提供航段的状态信息，如26
+     */
+    private String status;
+    /**
+     * 航段类别，NORMAL - 普通航段；OPEN -
+     * 不定期航段；ARRIVAL_UNKOWN_ARNK - 信息航段。
+     * 一般只写NORMAL
+     */
+    private String segmentType;
 
     public String getDepartureDateTime() {
         return departureDateTime;
@@ -133,6 +143,22 @@ public class FlightSegmentVO {
 
     public void setNumberInParty(String numberInParty) {
         this.numberInParty = numberInParty;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getSegmentType() {
+        return segmentType;
+    }
+
+    public void setSegmentType(String segmentType) {
+        this.segmentType = segmentType;
     }
 
     @Override

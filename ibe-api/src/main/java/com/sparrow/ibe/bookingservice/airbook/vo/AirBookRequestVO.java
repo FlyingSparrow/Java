@@ -15,7 +15,7 @@ import java.util.List;
  * @author wangjianchun
  * @create 2018/7/4
  */
-public class AirBookVO {
+public class AirBookRequestVO {
 
     /**
      * 是否验证航段状态，true/false

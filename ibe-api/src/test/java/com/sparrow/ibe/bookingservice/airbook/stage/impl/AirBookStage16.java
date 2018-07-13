@@ -30,7 +30,7 @@ public class AirBookStage16 implements AirBookStage {
 
     @Override
     public AirBookRequest buildRequest() {
-        AirBookVO airBookVO = new AirBookVO();
+        AirBookRequestVO airBookVO = new AirBookRequestVO();
 
         //行程信息
         fillItinerary(airBookVO);
@@ -72,7 +72,7 @@ public class AirBookStage16 implements AirBookStage {
      *
      * @param airBookVO
      */
-    private void fillItinerary(AirBookVO airBookVO) {
+    private void fillItinerary(AirBookRequestVO airBookVO) {
         List<FlightSegmentVO> flightSegmentList = Lists.newArrayList();
         FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
         flightSegmentVO.setDepartureDateTime("2015-12-17T07:00:00");
@@ -96,7 +96,7 @@ public class AirBookStage16 implements AirBookStage {
      *
      * @param airBookVO
      */
-    private void fillAirTraveler(AirBookVO airBookVO) {
+    private void fillAirTraveler(AirBookRequestVO airBookVO) {
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
         AirTravelerVO airTravelerVO = new AirTravelerVO();
         airTravelerVO.setGender(IBEConst.Gender.MALE.getCode());

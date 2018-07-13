@@ -33,7 +33,7 @@ public class AirBookStage10 implements AirBookStage {
 
     @Override
     public AirBookRequest buildRequest() {
-        AirBookVO airBookVO = new AirBookVO();
+        AirBookRequestVO airBookVO = new AirBookRequestVO();
 
         //行程信息
         fillItinerary(airBookVO);
@@ -64,7 +64,7 @@ public class AirBookStage10 implements AirBookStage {
      *
      * @param airBookVO
      */
-    private void fillItinerary(AirBookVO airBookVO) {
+    private void fillItinerary(AirBookRequestVO airBookVO) {
         List<FlightSegmentVO> flightSegmentList = Lists.newArrayList();
         FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
         flightSegmentVO.setDepartureDateTime("2014-09-29T07:00:00");
@@ -88,7 +88,7 @@ public class AirBookStage10 implements AirBookStage {
      *
      * @param airBookVO
      */
-    private void fillAirTraveler(AirBookVO airBookVO) {
+    private void fillAirTraveler(AirBookRequestVO airBookVO) {
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
         String birthDate = "2008-01-01";
         AirTravelerVO airTravelerVO = new AirTravelerVO();
@@ -111,7 +111,7 @@ public class AirBookStage10 implements AirBookStage {
         airBookVO.setAirTravelerList(airTravelerList);
     }
 
-    private void fillSpecialServiceRequest(AirBookVO airBookVO){
+    private void fillSpecialServiceRequest(AirBookRequestVO airBookVO){
         List<SpecialServiceRequestVO> ssrList = new ArrayList<SpecialServiceRequestVO>();
         SpecialServiceRequestVO ssr = new SpecialServiceRequestVO();
         //服务代码类别，例如FQTV

@@ -3,7 +3,7 @@ package com.sparrow.ibe.bookingservice.airbook.stage.impl;
 import com.sparrow.ibe.bookingservice.airbook.model.AirBookRequest;
 import com.sparrow.ibe.bookingservice.airbook.stage.AirBookStage;
 import com.sparrow.ibe.bookingservice.airbook.transformer.AirBookRequestTransformer;
-import com.sparrow.ibe.bookingservice.airbook.vo.AirBookVO;
+import com.sparrow.ibe.bookingservice.airbook.vo.AirBookRequestVO;
 import com.sparrow.ibe.bookingservice.airbook.vo.AirTravelerVO;
 import com.sparrow.ibe.bookingservice.airbook.vo.FlightSegmentVO;
 import com.sparrow.ibe.bookingservice.airbook.vo.PersonNameVO;
@@ -33,7 +33,7 @@ public class AirBookStage20 implements AirBookStage {
 
     @Override
     public AirBookRequest buildRequest() {
-        AirBookVO airBookVO = new AirBookVO();
+        AirBookRequestVO airBookVO = new AirBookRequestVO();
 
         //行程信息
         fillItinerary(airBookVO);
@@ -62,7 +62,7 @@ public class AirBookStage20 implements AirBookStage {
      *
      * @param airBookVO
      */
-    private void fillItinerary(AirBookVO airBookVO) {
+    private void fillItinerary(AirBookRequestVO airBookVO) {
         List<FlightSegmentVO> flightSegmentList = Lists.newArrayList();
 
         //去程
@@ -106,7 +106,7 @@ public class AirBookStage20 implements AirBookStage {
      *
      * @param airBookVO
      */
-    private void fillAirTraveler(AirBookVO airBookVO) {
+    private void fillAirTraveler(AirBookRequestVO airBookVO) {
         List<AirTravelerVO> airTravelerList = Lists.newArrayList();
 
         //第一个旅客的信息
