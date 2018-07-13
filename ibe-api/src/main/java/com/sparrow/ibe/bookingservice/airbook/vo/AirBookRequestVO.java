@@ -18,11 +18,19 @@ import java.util.List;
 public class AirBookRequestVO {
 
     /**
-     * 是否验证航段状态，true/false
+     * 是否验证航段状态，true/false，默认 false
      */
     private String segmentCheckInd;
     /**
-     * 是否自动添加ARNK地面运输航段，true/false
+     * 是否同类型旅客预定在同一 PNR，默认 true
+     */
+    private String ptcBindInd;
+    /**
+     * 是否作 RT
+     */
+    private String displayResInd;
+    /**
+     * 是否自动添加ARNK地面运输航段，true/false，默认 false
      */
     private String autoARNKInd;
     /**
@@ -64,6 +72,22 @@ public class AirBookRequestVO {
 
     public void setSegmentCheckInd(String segmentCheckInd) {
         this.segmentCheckInd = segmentCheckInd;
+    }
+
+    public String getPtcBindInd() {
+        return ptcBindInd;
+    }
+
+    public void setPtcBindInd(String ptcBindInd) {
+        this.ptcBindInd = ptcBindInd;
+    }
+
+    public String getDisplayResInd() {
+        return displayResInd;
+    }
+
+    public void setDisplayResInd(String displayResInd) {
+        this.displayResInd = displayResInd;
     }
 
     public String getAutoARNKInd() {

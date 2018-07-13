@@ -38,6 +38,12 @@ public class AirBookRequestTransformer {
         if(StringUtils.isNotEmpty(airBookVO.getSegmentCheckInd())){
             request.setSegmentCheckInd(airBookVO.getSegmentCheckInd());
         }
+        if(StringUtils.isNotEmpty(airBookVO.getPtcBindInd())){
+            request.setPtcBindInd(airBookVO.getPtcBindInd());
+        }
+        if(StringUtils.isNotEmpty(airBookVO.getDisplayResInd())){
+            request.setDisplayResInd(airBookVO.getDisplayResInd());
+        }
         if(StringUtils.isNotEmpty(airBookVO.getAutoARNKInd())){
             request.setAutoARNKInd(airBookVO.getAutoARNKInd());
         }
@@ -193,7 +199,7 @@ public class AirBookRequestTransformer {
 
                 if(isPassport(item)){
                     DocumentFlightBinding documentFlightBinding = new DocumentFlightBinding();
-                    documentFlightBinding.setDocumentRPH("1");
+                    documentFlightBinding.setDocumentRPH(rphStr);
                     documentFlightBinding.setFlightSegmentRPH("1");
                     airTraveler.setDocumentFlightBinding(documentFlightBinding);
                 }
@@ -240,6 +246,9 @@ public class AirBookRequestTransformer {
         document.setRph(rphStr);
         if (StringUtils.isNotEmpty(item.getDocType())) {
             document.setDocType(item.getDocType());
+        }
+        if (StringUtils.isNotEmpty(item.getDocTypeDetail())) {
+            document.setDocTypeDetail(item.getDocTypeDetail());
         }
         if (StringUtils.isNotEmpty(item.getDocId())) {
             document.setDocId(item.getDocId());

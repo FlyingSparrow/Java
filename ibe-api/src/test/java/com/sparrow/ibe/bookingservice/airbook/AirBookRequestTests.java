@@ -61,6 +61,8 @@ public class AirBookRequestTests extends BaseTests {
     private AirBookStage airBookStage20;
     @Autowired
     private AirBookStage airBookStage21;
+    @Autowired
+    private AirBookStage airBookStage22;
 
     /**
      * 测试场景1：国内航班+单个成人+单程
@@ -291,6 +293,17 @@ public class AirBookRequestTests extends BaseTests {
         AirBookRequest request = airBookStage21.buildRequest();
         String requestXml = airBookRequestBuilder.buildRequestXml(request);
         logger.info("测试场景21：国内航班+一个成人+单程+不验证航段状态, requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景22：国际航班+一个成人+儿童+多个航段+往返
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook22RequestXml(){
+        AirBookRequest request = airBookStage22.buildRequest();
+        String requestXml = airBookRequestBuilder.buildRequestXml(request);
+        logger.info("测试场景22：国际航班+一个成人+儿童+多个航段+往返, requestXml: {}", requestXml);
     }
 
 }
