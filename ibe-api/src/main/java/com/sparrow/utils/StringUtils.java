@@ -25,12 +25,23 @@ public class StringUtils {
         return !isEmpty(arg);
     }
 
-    public static String defaultValueIfNull(String arg) {
-        return (arg == null ? "" : arg);
+    /**
+     * 如果 arg 为null，返回空字符串
+     * @param arg
+     * @return
+     */
+    public static String defaultValue(String arg) {
+        return org.apache.commons.lang3.StringUtils.defaultString(arg);
     }
 
-    public static String defaultValueIfNull(String arg, String defaultValue) {
-        return (arg == null || "".equals(arg.trim()) ? defaultValue : arg);
+    /**
+     * 如果 arg 为null，返回用户指定的默认值 defaultValue
+     * @param arg
+     * @param defaultValue
+     * @return
+     */
+    public static String defaultValue(String arg, String defaultValue) {
+        return org.apache.commons.lang3.StringUtils.defaultString(arg, defaultValue);
     }
 
     /**

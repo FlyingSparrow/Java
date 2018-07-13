@@ -33,7 +33,7 @@ public class IBEApiConfig implements CommandLineRunner {
         long startTime = System.currentTimeMillis();
 
         String xmlContent = FileUtils.readContentFromClassPath("ibe-api.xml");
-        Document document = XMLUtils.getInstance().readXMLFile(xmlContent);
+        Document document = XMLUtils.getInstance().readXmlFile(xmlContent);
         List<Element> apiList = document.getRootElement().selectNodes("apis/api");
         if(apiList != null){
             for(Element item : apiList){

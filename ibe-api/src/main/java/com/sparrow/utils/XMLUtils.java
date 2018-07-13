@@ -46,7 +46,7 @@ public class XMLUtils {
         XMLWriter writer = null;
         StringWriter sw = new StringWriter();
         try {
-            Document doc = readXMLFile(str);
+            Document doc = readXmlFile(str);
             OutputFormat format = OutputFormat.createPrettyPrint();
             format.setEncoding(SysConst.ENCODING_UTF_8);
             writer = new XMLWriter(sw, format);
@@ -66,7 +66,7 @@ public class XMLUtils {
     }
 
 
-    public Document readXMLFile(File file) {
+    public Document readXmlFile(File file) {
         Document document = null;
         try {
             if (file.length() > 0) {
@@ -80,7 +80,7 @@ public class XMLUtils {
         return document;
     }
 
-    public Document readXMLFile(InputStream is) {
+    public Document readXmlFile(InputStream is) {
         Document document = null;
         try {
             document = new SAXReader().read(is);
@@ -92,7 +92,7 @@ public class XMLUtils {
         return document;
     }
 
-    public Document readXMLFile(String content) {
+    public Document readXmlFile(String content) {
         Document document = null;
         try {
             if (StringUtils.isNotEmpty(content) && !content.toUpperCase().startsWith("<HTML>")) {
@@ -107,7 +107,7 @@ public class XMLUtils {
     }
 
     public String elementText(Element element, String subElementName) {
-        return StringUtils.defaultValueIfNull(element.elementText(subElementName));
+        return StringUtils.defaultValue(element.elementText(subElementName));
     }
 
     /**

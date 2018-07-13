@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <OTA_AirBookRS>
-  <AirReservation>
-    <AirItinerary>
-      <FlightSegments>
-        <FlightSegment DepartureDateTime="2015-04-17T10:55:00" ArrivalDateTime="2015-04-17T13:50:00" CodeshareInd="false" FlightNumber="3365" NumberInParty="2" Status="DK" SegmentType="NORMAL">
-          <OperatingAirline/>
-          <DepartureAirport LocationCode="PEK"/>
-          <ArrivalAirport LocationCode="GMP"/>
-          <MarketingAirline Code="OZ"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-        <FlightSegment DepartureDateTime="2015-04-17T15:50:00" ArrivalDateTime="2015-04-17T17:55:00" CodeshareInd="false" FlightNumber="1045" NumberInParty="2" Status="DK" SegmentType="NORMAL">
-          <OperatingAirline/>
-          <DepartureAirport LocationCode="GMP"/>
-          <ArrivalAirport LocationCode="HND"/>
-          <MarketingAirline Code="OZ"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-        <FlightSegment DepartureDateTime="2015-04-20T10:00:00" ArrivalDateTime="2015-04-20T12:20:00" CodeshareInd="false" FlightNumber="1055" NumberInParty="2" Status="DK" SegmentType="NORMAL">
-          <OperatingAirline/>
-          <DepartureAirport LocationCode="HND"/>
-          <ArrivalAirport LocationCode="GMP"/>
-          <MarketingAirline Code="OZ"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-        <FlightSegment DepartureDateTime="2015-04-21T08:40:00" ArrivalDateTime="2015-04-21T09:45:00" CodeshareInd="false" FlightNumber="3355" NumberInParty="2" Status="DK" SegmentType="NORMAL">
-          <OperatingAirline/>
-          <DepartureAirport LocationCode="GMP"/>
-          <ArrivalAirport LocationCode="PEK"/>
-          <MarketingAirline Code="OZ"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-      </FlightSegments>
-    </AirItinerary>
-    <BookingReferenceID ID="HQEZMC"/>
-    <Comment>*** 预订酒店指令HC, 详情 &gt;HC:HELP ***</Comment>
-    <Comment>OZ3365 Y FR17APR PEKGMP DK2 1055 1350</Comment>
-    <Comment>OZ1045 Y FR17APR GMPHND DK2 1550 1755</Comment>
-    <Comment>OZ1055 Y MO20APR HNDGMP DK2 1000 1220</Comment>
-    <Comment>OZ3355 Y TU21APR GMPPEK DK2 0840 0945</Comment>
-  </AirReservation>
+    <AirReservation>
+        <AirItinerary>
+            <FlightSegments>
+                <FlightSegment DepartureDateTime="2015-04-17T10:55:00" ArrivalDateTime="2015-04-17T13:50:00"
+                               CodeshareInd="false" FlightNumber="3365" NumberInParty="2" Status="DK"
+                               SegmentType="NORMAL">
+                    <OperatingAirline/>
+                    <DepartureAirport LocationCode="PEK"/>
+                    <ArrivalAirport LocationCode="GMP"/>
+                    <MarketingAirline Code="OZ"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment DepartureDateTime="2015-04-17T15:50:00" ArrivalDateTime="2015-04-17T17:55:00"
+                               CodeshareInd="false" FlightNumber="1045" NumberInParty="2" Status="DK"
+                               SegmentType="NORMAL">
+                    <OperatingAirline/>
+                    <DepartureAirport LocationCode="GMP"/>
+                    <ArrivalAirport LocationCode="HND"/>
+                    <MarketingAirline Code="OZ"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment DepartureDateTime="2015-04-20T10:00:00" ArrivalDateTime="2015-04-20T12:20:00"
+                               CodeshareInd="false" FlightNumber="1055" NumberInParty="2" Status="DK"
+                               SegmentType="NORMAL">
+                    <OperatingAirline/>
+                    <DepartureAirport LocationCode="HND"/>
+                    <ArrivalAirport LocationCode="GMP"/>
+                    <MarketingAirline Code="OZ"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment DepartureDateTime="2015-04-21T08:40:00" ArrivalDateTime="2015-04-21T09:45:00"
+                               CodeshareInd="false" FlightNumber="3355" NumberInParty="2" Status="DK"
+                               SegmentType="NORMAL">
+                    <OperatingAirline/>
+                    <DepartureAirport LocationCode="GMP"/>
+                    <ArrivalAirport LocationCode="PEK"/>
+                    <MarketingAirline Code="OZ"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+            </FlightSegments>
+        </AirItinerary>
+        <BookingReferenceID ID="HQEZMC"/>
+        <Comment>*** 预订酒店指令HC, 详情 &gt;HC:HELP ***</Comment>
+        <Comment>OZ3365 Y FR17APR PEKGMP DK2 1055 1350</Comment>
+        <Comment>OZ1045 Y FR17APR GMPHND DK2 1550 1755</Comment>
+        <Comment>OZ1055 Y MO20APR HNDGMP DK2 1000 1220</Comment>
+        <Comment>OZ3355 Y TU21APR GMPPEK DK2 0840 0945</Comment>
+    </AirReservation>
 </OTA_AirBookRS>

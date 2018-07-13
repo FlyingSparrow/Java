@@ -1,46 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <OTA_AirBookRS>
-  <AirReservation>
-    <AirItinerary>
-      <FlightSegments>
-        <FlightSegment DepartureDateTime="2015-04-17T07:25:00" ArrivalDateTime="2015-04-17T09:55:00" CodeshareInd="false" FlightNumber="5183" NumberInParty="2" Status="DK" SegmentType="NORMAL">
-          <OperatingAirline/>
-          <DepartureAirport LocationCode="PEK"/>
-          <ArrivalAirport LocationCode="PVG"/>
-          <MarketingAirline Code="MU"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-        <FlightSegment DepartureDateTime="2015-04-17T13:00:00" ArrivalDateTime="2015-04-17T10:05:00" CodeshareInd="false" FlightNumber="583" NumberInParty="2" Status="DK" SegmentType="NORMAL">
-          <OperatingAirline/>
-          <DepartureAirport LocationCode="PVG"/>
-          <ArrivalAirport LocationCode="LAX"/>
-          <MarketingAirline Code="MU"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-        <FlightSegment DepartureDateTime="2015-04-20T12:30:00" ArrivalDateTime="2015-04-21T17:30:00" CodeshareInd="false" FlightNumber="586" NumberInParty="2" Status="DK" SegmentType="NORMAL">
-          <OperatingAirline/>
-          <DepartureAirport LocationCode="LAX"/>
-          <ArrivalAirport LocationCode="PVG"/>
-          <MarketingAirline Code="MU"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-        <FlightSegment DepartureDateTime="2015-04-21T21:05:00" ArrivalDateTime="2015-04-21T23:40:00" CodeshareInd="false" FlightNumber="5186" NumberInParty="2" Status="DK" SegmentType="NORMAL">
-          <OperatingAirline/>
-          <DepartureAirport LocationCode="PVG"/>
-          <ArrivalAirport LocationCode="PEK"/>
-          <MarketingAirline Code="MU"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-      </FlightSegments>
-    </AirItinerary>
-    <BookingReferenceID ID="KZ512D"/>
-    <Comment>EOT SUCCESSFUL, BUT ASR UNUSED FOR 1 OR MORE SEGMENTS</Comment>
-    <Comment>航空公司使用自动出票时限, 请检查PNR</Comment>
-    <Comment>*** 预订酒店指令HC, 详情 &gt;HC:HELP ***</Comment>
-    <Comment>MU5183 Y FR17APR PEKPVG DK2 0725 0955</Comment>
-    <Comment>MU 583 Y FR17APR PVGLAX DK2 1300 1005</Comment>
-    <Comment>MU 586 Y MO20APR LAXPVG DK2 1230 1730+1</Comment>
-    <Comment>MU5186 Y TU21APR PVGPEK DK2 2105 2340</Comment>
-  </AirReservation>
+    <AirReservation>
+        <AirItinerary>
+            <FlightSegments>
+                <FlightSegment DepartureDateTime="2015-04-17T07:25:00" ArrivalDateTime="2015-04-17T09:55:00"
+                               CodeshareInd="false" FlightNumber="5183" NumberInParty="2" Status="DK"
+                               SegmentType="NORMAL">
+                    <OperatingAirline/>
+                    <DepartureAirport LocationCode="PEK"/>
+                    <ArrivalAirport LocationCode="PVG"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment DepartureDateTime="2015-04-17T13:00:00" ArrivalDateTime="2015-04-17T10:05:00"
+                               CodeshareInd="false" FlightNumber="583" NumberInParty="2" Status="DK"
+                               SegmentType="NORMAL">
+                    <OperatingAirline/>
+                    <DepartureAirport LocationCode="PVG"/>
+                    <ArrivalAirport LocationCode="LAX"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment DepartureDateTime="2015-04-20T12:30:00" ArrivalDateTime="2015-04-21T17:30:00"
+                               CodeshareInd="false" FlightNumber="586" NumberInParty="2" Status="DK"
+                               SegmentType="NORMAL">
+                    <OperatingAirline/>
+                    <DepartureAirport LocationCode="LAX"/>
+                    <ArrivalAirport LocationCode="PVG"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment DepartureDateTime="2015-04-21T21:05:00" ArrivalDateTime="2015-04-21T23:40:00"
+                               CodeshareInd="false" FlightNumber="5186" NumberInParty="2" Status="DK"
+                               SegmentType="NORMAL">
+                    <OperatingAirline/>
+                    <DepartureAirport LocationCode="PVG"/>
+                    <ArrivalAirport LocationCode="PEK"/>
+                    <MarketingAirline Code="MU"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+            </FlightSegments>
+        </AirItinerary>
+        <BookingReferenceID ID="KZ512D"/>
+        <Comment>EOT SUCCESSFUL, BUT ASR UNUSED FOR 1 OR MORE SEGMENTS</Comment>
+        <Comment>航空公司使用自动出票时限, 请检查PNR</Comment>
+        <Comment>*** 预订酒店指令HC, 详情 &gt;HC:HELP ***</Comment>
+        <Comment>MU5183 Y FR17APR PEKPVG DK2 0725 0955</Comment>
+        <Comment>MU 583 Y FR17APR PVGLAX DK2 1300 1005</Comment>
+        <Comment>MU 586 Y MO20APR LAXPVG DK2 1230 1730+1</Comment>
+        <Comment>MU5186 Y TU21APR PVGPEK DK2 2105 2340</Comment>
+    </AirReservation>
 </OTA_AirBookRS>

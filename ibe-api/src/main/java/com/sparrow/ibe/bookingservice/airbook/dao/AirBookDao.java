@@ -60,7 +60,7 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 
     private AirBookResponse parseResponseResult(AirBookRequest request) {
         AirBookResponse result = null;
-        Document document = XMLUtils.getInstance().readXMLFile(getResponseResult(request));
+        Document document = XMLUtils.getInstance().readXmlFile(getResponseResult(request));
         if (document != null) {
             result = buildResponseObject(document.getRootElement());
         } else {

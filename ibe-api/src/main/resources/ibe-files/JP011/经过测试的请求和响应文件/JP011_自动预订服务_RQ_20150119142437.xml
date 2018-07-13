@@ -1,93 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <OTA_AirBookRQ DisplayResInd="false" PTCBindInd="false" SegmentCheckInd="false">
-  <POS>
-    <Source PseudoCityCode="sparrow"/>
-  </POS>
-  <AirItinerary>
-    <OriginDestinationOptions>
-      <OriginDestinationOption>
-        <FlightSegment RPH="1" DepartureDateTime="2015-04-17T10:55:00" ArrivalDateTime="2015-04-17T13:50:00" CodeshareInd="false" FlightNumber="3365" Status="NN" SegmentType="NORMAL">
-          <DepartureAirport LocationCode="PEK"/>
-          <ArrivalAirport LocationCode="GMP"/>
-          <Equipment AirEquipType="333"/>
-          <MarketingAirline Code="OZ"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-        <FlightSegment RPH="2" DepartureDateTime="2015-04-17T15:50:00" ArrivalDateTime="2015-04-17T17:55:00" CodeshareInd="false" FlightNumber="1045" Status="NN" SegmentType="NORMAL">
-          <DepartureAirport LocationCode="GMP"/>
-          <ArrivalAirport LocationCode="HND"/>
-          <Equipment AirEquipType="333"/>
-          <MarketingAirline Code="OZ"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-        <FlightSegment RPH="3" DepartureDateTime="2015-04-20T10:00:00" ArrivalDateTime="2015-04-20T12:20:00" CodeshareInd="false" FlightNumber="1055" Status="NN" SegmentType="NORMAL">
-          <DepartureAirport LocationCode="HND"/>
-          <ArrivalAirport LocationCode="GMP"/>
-          <Equipment AirEquipType="333"/>
-          <MarketingAirline Code="OZ"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-        <FlightSegment RPH="4" DepartureDateTime="2015-04-21T08:40:00" ArrivalDateTime="2015-04-21T09:45:00" CodeshareInd="false" FlightNumber="3355" Status="NN" SegmentType="NORMAL">
-          <DepartureAirport LocationCode="GMP"/>
-          <ArrivalAirport LocationCode="PEK"/>
-          <Equipment AirEquipType="333"/>
-          <MarketingAirline Code="OZ"/>
-          <BookingClassAvail ResBookDesigCode="Y"/>
-        </FlightSegment>
-      </OriginDestinationOption>
-    </OriginDestinationOptions>
-  </AirItinerary>
-  <TravelerInfo>
-    <AirTraveler Gender="MALE" PassengerTypeCode="ADT">
-      <PersonName LanguageType="EN">
-        <Surname>LI/LEI</Surname>
-      </PersonName>
-      <Document RPH="1" DocType="PP" DocID="G7897987978" DocTypeDetail="P" DocIssueCountry="CN" DocHolderNationality="CN" BirthDate="1980-10-10" Gender="MALE" ExpireDate="2015-10-10">
-        <DocHolderFormattedName>
-          <GivenName>LEI</GivenName>
-          <MiddleName/>
-          <Surname>LI</Surname>
-        </DocHolderFormattedName>
-      </Document>
-      <PassengerTypeQuantity/>
-      <TravelerRefNumber RPH="1"/>
-      <Comment>HK</Comment>
-    </AirTraveler>
-    <AirTraveler Gender="MALE" PassengerTypeCode="CHD">
-      <PersonName LanguageType="EN">
-        <Surname>LI/MING</Surname>
-      </PersonName>
-      <Document RPH="2" DocType="PP" DocID="G7897987998" DocTypeDetail="P" DocIssueCountry="CN" DocHolderNationality="CN" BirthDate="2003-10-10" Gender="MALE" ExpireDate="2015-10-10">
-        <DocHolderFormattedName>
-          <GivenName>MING</GivenName>
-          <MiddleName/>
-          <Surname>LI</Surname>
-        </DocHolderFormattedName>
-      </Document>
-      <PassengerTypeQuantity/>
-      <TravelerRefNumber RPH="2"/>
-      <Comment>HK</Comment>
-    </AirTraveler>
-    <SpecialReqDetails>
-      <OtherServiceInformations>
-        <OtherServiceInformation Code="OTHS">
-          <Airline Code="OZ"/>
-          <Text>CTCT13666666666</Text>
-        </OtherServiceInformation>
-        <OtherServiceInformation Code="OTHS">
-          <TravelerRefNumber RPH="1"/>
-          <Airline Code="OZ"/>
-          <Text>CTCM1366666666</Text>
-        </OtherServiceInformation>
-      </OtherServiceInformations>
-    </SpecialReqDetails>
-  </TravelerInfo>
-  <Ticketing TicketTimeLimit="2015-04-16T00:01:00"/>
-  <TPA_Extensions>
-    <ContactInfo>010-12345678</ContactInfo>
-    <ContactInfo>023-57651234</ContactInfo>
-    <ContactInfo>022-29681234</ContactInfo>
-    <EnvelopType>KI</EnvelopType>
-  </TPA_Extensions>
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirItinerary>
+        <OriginDestinationOptions>
+            <OriginDestinationOption>
+                <FlightSegment RPH="1" DepartureDateTime="2015-04-17T10:55:00" ArrivalDateTime="2015-04-17T13:50:00"
+                               CodeshareInd="false" FlightNumber="3365" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="PEK"/>
+                    <ArrivalAirport LocationCode="GMP"/>
+                    <Equipment AirEquipType="333"/>
+                    <MarketingAirline Code="OZ"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment RPH="2" DepartureDateTime="2015-04-17T15:50:00" ArrivalDateTime="2015-04-17T17:55:00"
+                               CodeshareInd="false" FlightNumber="1045" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="GMP"/>
+                    <ArrivalAirport LocationCode="HND"/>
+                    <Equipment AirEquipType="333"/>
+                    <MarketingAirline Code="OZ"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment RPH="3" DepartureDateTime="2015-04-20T10:00:00" ArrivalDateTime="2015-04-20T12:20:00"
+                               CodeshareInd="false" FlightNumber="1055" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="HND"/>
+                    <ArrivalAirport LocationCode="GMP"/>
+                    <Equipment AirEquipType="333"/>
+                    <MarketingAirline Code="OZ"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+                <FlightSegment RPH="4" DepartureDateTime="2015-04-21T08:40:00" ArrivalDateTime="2015-04-21T09:45:00"
+                               CodeshareInd="false" FlightNumber="3355" Status="NN" SegmentType="NORMAL">
+                    <DepartureAirport LocationCode="GMP"/>
+                    <ArrivalAirport LocationCode="PEK"/>
+                    <Equipment AirEquipType="333"/>
+                    <MarketingAirline Code="OZ"/>
+                    <BookingClassAvail ResBookDesigCode="Y"/>
+                </FlightSegment>
+            </OriginDestinationOption>
+        </OriginDestinationOptions>
+    </AirItinerary>
+    <TravelerInfo>
+        <AirTraveler Gender="MALE" PassengerTypeCode="ADT">
+            <PersonName LanguageType="EN">
+                <Surname>LI/LEI</Surname>
+            </PersonName>
+            <Document RPH="1" DocType="PP" DocID="G7897987978" DocTypeDetail="P" DocIssueCountry="CN"
+                      DocHolderNationality="CN" BirthDate="1980-10-10" Gender="MALE" ExpireDate="2015-10-10">
+                <DocHolderFormattedName>
+                    <GivenName>LEI</GivenName>
+                    <MiddleName/>
+                    <Surname>LI</Surname>
+                </DocHolderFormattedName>
+            </Document>
+            <PassengerTypeQuantity/>
+            <TravelerRefNumber RPH="1"/>
+            <Comment>HK</Comment>
+        </AirTraveler>
+        <AirTraveler Gender="MALE" PassengerTypeCode="CHD">
+            <PersonName LanguageType="EN">
+                <Surname>LI/MING</Surname>
+            </PersonName>
+            <Document RPH="2" DocType="PP" DocID="G7897987998" DocTypeDetail="P" DocIssueCountry="CN"
+                      DocHolderNationality="CN" BirthDate="2003-10-10" Gender="MALE" ExpireDate="2015-10-10">
+                <DocHolderFormattedName>
+                    <GivenName>MING</GivenName>
+                    <MiddleName/>
+                    <Surname>LI</Surname>
+                </DocHolderFormattedName>
+            </Document>
+            <PassengerTypeQuantity/>
+            <TravelerRefNumber RPH="2"/>
+            <Comment>HK</Comment>
+        </AirTraveler>
+        <SpecialReqDetails>
+            <OtherServiceInformations>
+                <OtherServiceInformation Code="OTHS">
+                    <Airline Code="OZ"/>
+                    <Text>CTCT13666666666</Text>
+                </OtherServiceInformation>
+                <OtherServiceInformation Code="OTHS">
+                    <TravelerRefNumber RPH="1"/>
+                    <Airline Code="OZ"/>
+                    <Text>CTCM1366666666</Text>
+                </OtherServiceInformation>
+            </OtherServiceInformations>
+        </SpecialReqDetails>
+    </TravelerInfo>
+    <Ticketing TicketTimeLimit="2015-04-16T00:01:00"/>
+    <TPA_Extensions>
+        <ContactInfo>010-12345678</ContactInfo>
+        <ContactInfo>023-57651234</ContactInfo>
+        <ContactInfo>022-29681234</ContactInfo>
+        <EnvelopType>KI</EnvelopType>
+    </TPA_Extensions>
 </OTA_AirBookRQ>
