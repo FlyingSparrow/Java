@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OTA_AirBookModifyRQ>
+  <POS>
+    <Source PseudoCityCode="sparrow"/>
+  </POS>
+  <AirBookModifyRQ ModificationType="PASSENGER_FOID_MODIFY">
+    <AirReservation>
+      <TravelerInfo>
+        <AirTraveler PassengerTypeCode="ADT" AccompaniedByInfant="false">
+          <PersonName LanguageType="ZH">
+            <Surname>高明</Surname>
+          </PersonName>
+          <Document DocType="NI" DocID="220204195901192717"/>
+          <TravelerRefNumber RPH="1"/>
+        </AirTraveler>
+      </TravelerInfo>
+    </AirReservation>
+  </AirBookModifyRQ>
+  <AirReservation>
+    <BookingReferenceID ID="HPJW8T"/>
+  </AirReservation>
+</OTA_AirBookModifyRQ>
