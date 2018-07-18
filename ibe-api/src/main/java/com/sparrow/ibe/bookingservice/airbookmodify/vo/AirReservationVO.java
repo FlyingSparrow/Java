@@ -1,23 +1,19 @@
-package com.sparrow.ibe.bookingservice.airbook.model;
+package com.sparrow.ibe.bookingservice.airbookmodify.vo;
 
+import com.sparrow.ibe.bookingservice.airbook.model.FlightSegment;
+import com.sparrow.ibe.bookingservice.airbook.model.OriginDestinationOption;
 import com.sparrow.ibe.bookingservice.airbookmodify.model.TravelerInfo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
- * 成功响应结果，一个AirReservation可对应一个订单号或一个PNR的信息
+ * 修改前的预定信息
  *
- * @author wangjc
- * @date 2014-7-7
+ * @author wangjianchun
+ * @create 2018/7/18
  */
-public class AirReservation implements Serializable {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = -1660447976100578437L;
+public class AirReservationVO {
 
     /**
      * 航段信息集合，1..n，往返或多段可以设置多个FlightSegment
@@ -28,9 +24,9 @@ public class AirReservation implements Serializable {
      */
     private List<String> travelerNameList;
     /**
-     * PNR号和订单号，0..1，显示订单号或PNR号信息
+     * PNR号
      */
-    private List<BookingReferenceID> bookingReferenceIDList;
+    private String pnr;
     /**
      * 备注信息集合，0..n
      */
@@ -66,12 +62,12 @@ public class AirReservation implements Serializable {
         this.travelerNameList = travelerNameList;
     }
 
-    public List<BookingReferenceID> getBookingReferenceIDList() {
-        return bookingReferenceIDList;
+    public String getPnr() {
+        return pnr;
     }
 
-    public void setBookingReferenceIDList(List<BookingReferenceID> bookingReferenceIDList) {
-        this.bookingReferenceIDList = bookingReferenceIDList;
+    public void setPnr(String pnr) {
+        this.pnr = pnr;
     }
 
     public List<String> getCommentList() {

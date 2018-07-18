@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookModifyRQ>
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirBookModifyRQ ModificationType="EI_ADD">
+        <AirReservation>
+            <Ticketing>
+                <TicketItemInfo Endorsement="不得签转"/>
+            </Ticketing>
+        </AirReservation>
+    </AirBookModifyRQ>
+    <AirReservation>
+        <BookingReferenceID ID="HTTD1H"/>
+    </AirReservation>
+</OTA_AirBookModifyRQ>

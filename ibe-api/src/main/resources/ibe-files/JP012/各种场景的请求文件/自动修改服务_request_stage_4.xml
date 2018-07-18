@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookModifyRQ>
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirBookModifyRQ ModificationType="REMARK_ADD">
+        <AirReservation>
+            <TravelerInfo>
+                <SpecialReqDetails>
+                    <SpecialRemarks>
+                        <SpecialRemark>
+                            <TravelerRefNumber RPH="1"/>
+                            <FlightRefNumber RPH="1"/>
+                            <Text>测试添加RMK</Text>
+                        </SpecialRemark>
+                    </SpecialRemarks>
+                </SpecialReqDetails>
+            </TravelerInfo>
+        </AirReservation>
+    </AirBookModifyRQ>
+    <AirReservation>
+        <BookingReferenceID ID="JG6R08"/>
+    </AirReservation>
+</OTA_AirBookModifyRQ>

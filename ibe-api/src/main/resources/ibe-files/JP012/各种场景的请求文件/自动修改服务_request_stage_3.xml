@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookModifyRQ>
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirBookModifyRQ ModificationType="OSI_ADD">
+        <AirReservation>
+            <TravelerInfo>
+                <SpecialReqDetails>
+                    <OtherServiceInformations>
+                        <OtherServiceInformation Code="OTHS">
+                            <TravelerRefNumber RPH="1"/>
+                            <Airline Code="MU"/>
+                            <Text>OSI</Text>
+                        </OtherServiceInformation>
+                    </OtherServiceInformations>
+                </SpecialReqDetails>
+            </TravelerInfo>
+        </AirReservation>
+    </AirBookModifyRQ>
+    <AirReservation>
+        <TravelerInfo>
+            <AirTraveler PassengerTypeCode="ADT">
+                <PersonName LanguageType="ZH">
+                    <Surname>高明</Surname>
+                </PersonName>
+                <Document DocType="NI" DocID="120221197001011150"/>
+                <TravelerRefNumber RPH="1"/>
+            </AirTraveler>
+        </TravelerInfo>
+        <BookingReferenceID ID="HTTD1H"/>
+    </AirReservation>
+</OTA_AirBookModifyRQ>

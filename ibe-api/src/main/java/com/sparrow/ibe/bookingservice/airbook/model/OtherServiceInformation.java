@@ -14,6 +14,13 @@ public class OtherServiceInformation implements Serializable {
 
     private static final long serialVersionUID = 8922218748680630696L;
 
+    /**
+     * 序号
+     */
+    private String rph;
+    /**
+     * OSICode
+     */
     private String osiCode = "OTHS";
     /**
      * 航空公司两字码，OSI需要指定航空公司,例如：CA
@@ -27,6 +34,14 @@ public class OtherServiceInformation implements Serializable {
      * 指定旅客编号
      */
     private String travelerRefNumberRPH;
+
+    public String getRph() {
+        return rph;
+    }
+
+    public void setRph(String rph) {
+        this.rph = rph;
+    }
 
     public String getOsiCode() {
         return osiCode;

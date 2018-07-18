@@ -167,6 +167,39 @@ public class IBEConst {
 		}
 	}
 
+	/**
+	 * <p>Title: ModificationType</p>
+	 * <p>Description: 修改类型枚举类</p>
+	 *
+	 * @author Wangjianchun
+	 * @date 2017年7月5日
+	 */
+	public enum ModificationType {
+
+
+		REMARK_ADD("REMARK_ADD", "备注信息添加"),
+		OSI_ADD("OSI_ADD", "其它服务信息添加"),
+		EI_ADD("EI_ADD", "EI项添加"),
+		SEGMENT_CONFIRM("SEGMENT_CONFIRM", "航段确认"),
+		PASSENGER_FOID_MODIFY("PASSENGER_FOID_MODIFY", "旅客证件号修改");
+
+		private String code;
+		private String name;
+
+		ModificationType(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
 	private IBEConst() {
 	}
 

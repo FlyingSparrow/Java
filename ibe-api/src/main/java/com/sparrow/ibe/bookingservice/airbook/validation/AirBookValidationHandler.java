@@ -78,7 +78,7 @@ public class AirBookValidationHandler implements ValidationHandler<AirBookReques
         validationResult.setErrorList(errorList);
         setValidationResult(validationResult);
 
-        if (errorList.size() < 1) {
+        if (errorList.isEmpty()) {
             flag = true;
         }
 

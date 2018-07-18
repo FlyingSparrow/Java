@@ -214,11 +214,11 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 
     private String getResponseResult(AirBookRequest request) {
         String responseResult = "";
-        String requestXML = "";
+        String requestXml = "";
         String requestFilePath = null;
         String responseFilePath = null;
         try {
-            requestXML = airBookRequestBuilder.buildRequestXml(request);
+            requestXml = airBookRequestBuilder.buildRequestXml(request);
             IBEApi airBook = ibeApiConfig.getIbeApi(IBEInterface.JP011.getId());
             String currentDateTime = DateUtils.formatDate(DateUtils.currentDate(), DateUtils.DATE_SECOND_FORMAT_2);
 
@@ -238,12 +238,12 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
             responseFilePath = filePath + "/" + responseFileName;
 
             responseResult = HttpClientUtils.getInstance().httpPost(ibeConfig.getUsername(),
-                    ibeConfig.getPassword(), airBook.getUrl(), requestXML);
+                    ibeConfig.getPassword(), airBook.getUrl(), requestXml);
         } catch (IntegrationException e) {
             logger.error("IntegrationException", e);
             throw e;
         } finally {
-            FileUtils.writeFile(requestFilePath, XMLUtils.getInstance().formatXml(requestXML));
+            FileUtils.writeFile(requestFilePath, XMLUtils.getInstance().formatXml(requestXml));
             FileUtils.writeFile(responseFilePath, XMLUtils.getInstance().formatXml(responseResult));
         }
 

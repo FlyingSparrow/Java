@@ -29,53 +29,53 @@ public class AirBookRequestTransformer {
     /**
      * 将用户的预定请求转换为自动预订服务的请求对象
      *
-     * @param airBookVO
+     * @param requestVO
      * @return
      */
-    public AirBookRequest transform(AirBookRequestVO airBookVO) {
+    public AirBookRequest transform(AirBookRequestVO requestVO) {
         AirBookRequest request = new AirBookRequest();
 
-        if(StringUtils.isNotEmpty(airBookVO.getSegmentCheckInd())){
-            request.setSegmentCheckInd(airBookVO.getSegmentCheckInd());
+        if(StringUtils.isNotEmpty(requestVO.getSegmentCheckInd())){
+            request.setSegmentCheckInd(requestVO.getSegmentCheckInd());
         }
-        if(StringUtils.isNotEmpty(airBookVO.getPtcBindInd())){
-            request.setPtcBindInd(airBookVO.getPtcBindInd());
+        if(StringUtils.isNotEmpty(requestVO.getPtcBindInd())){
+            request.setPtcBindInd(requestVO.getPtcBindInd());
         }
-        if(StringUtils.isNotEmpty(airBookVO.getDisplayResInd())){
-            request.setDisplayResInd(airBookVO.getDisplayResInd());
+        if(StringUtils.isNotEmpty(requestVO.getDisplayResInd())){
+            request.setDisplayResInd(requestVO.getDisplayResInd());
         }
-        if(StringUtils.isNotEmpty(airBookVO.getAutoARNKInd())){
-            request.setAutoARNKInd(airBookVO.getAutoARNKInd());
+        if(StringUtils.isNotEmpty(requestVO.getAutoARNKInd())){
+            request.setAutoARNKInd(requestVO.getAutoARNKInd());
         }
 
         //1.POS信息
         request.setPseudoCityCode("sparrow");
 
         //2.行程信息
-        fillItinerary(request, airBookVO);
+        fillItinerary(request, requestVO);
 
         //3.1旅客信息
-        fillAirTraveler(request, airBookVO);
+        fillAirTraveler(request, requestVO);
 
         //4.客票信息(出票时间)
-        request.setTicketTimeLimit(airBookVO.getTicketTimeLimit());
+        request.setTicketTimeLimit(requestVO.getTicketTimeLimit());
 
         //填充 OSI 信息
-        fillOtherServiceInformation(request, airBookVO);
+        fillOtherServiceInformation(request, requestVO);
         //填充特殊备注信息
-        fillSpecialRemark(request, airBookVO);
+        fillSpecialRemark(request, requestVO);
         //填充特殊服务请求信息
-        fillSpecialServiceRequest(request, airBookVO.getSsrList());
+        fillSpecialServiceRequest(request, requestVO.getSsrList());
 
         //5.扩展信息
-        List<String> contactInfoList = airBookVO.getContactInfoList();
+        List<String> contactInfoList = requestVO.getContactInfoList();
         if(contactInfoList != null && contactInfoList.size() > 0){
             request.setContactInfoList(contactInfoList);
         }
         //封口信息
         request.setEnvelopType("KI");
-        if(StringUtils.isNotEmpty(airBookVO.getEnvelopDelay())){
-            request.setEnvelopDelay(airBookVO.getEnvelopDelay());
+        if(StringUtils.isNotEmpty(requestVO.getEnvelopDelay())){
+            request.setEnvelopDelay(requestVO.getEnvelopDelay());
         }
 
         return request;
