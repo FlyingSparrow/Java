@@ -43,7 +43,10 @@ public class AirBookModifyRequestBuilder implements RequestBuilder<AirBookModify
             Element sourceElement = posElement.addElement("Source");
             sourceElement.addAttribute("PseudoCityCode", request.getPseudoCityCode());
 
+            //修改后的预定信息
             buildAirBookModifyRQElement(request.getAirBookModifyRQ(), rootElement);
+
+            //修改前的预定信息
             buildAirReservationElement(request.getAirReservation(), rootElement);
 
             return document.asXML();
@@ -131,10 +134,14 @@ public class AirBookModifyRequestBuilder implements RequestBuilder<AirBookModify
     private void buildAirTravelerElement(List<AirTraveler> list, Element tiElement) {
         if (list != null && list.size() > 0) {
             for (AirTraveler item : list) {
+                String rph = item.getRph();
                 String passengerTypeCode = item.getPassengerTypeCode();
                 String accompaniedByInfant = item.getAccompaniedByInfant();
 
                 Element atElement = tiElement.addElement("AirTraveler");
+                if (StringUtils.isNotEmpty(rph)) {
+                    atElement.addAttribute("RPH", rph);
+                }
                 if (StringUtils.isNotEmpty(passengerTypeCode)) {
                     atElement.addAttribute("PassengerTypeCode", passengerTypeCode);
                 }
@@ -384,6 +391,7 @@ public class AirBookModifyRequestBuilder implements RequestBuilder<AirBookModify
                     for (FlightSegment fsItem : fsList) {
                         String rph = fsItem.getRph();
                         String departureDateTime = fsItem.getDepartureDateTime();
+                        String arrivalDateTime = fsItem.getArrivalDateTime();
                         String flightNumber = fsItem.getFlightNumber();
                         String numberInParty = fsItem.getNumberInParty();
                         String status = fsItem.getStatus();
@@ -394,6 +402,8 @@ public class AirBookModifyRequestBuilder implements RequestBuilder<AirBookModify
                         String arrivalAirport = fsItem.getArrivalAirport();
                         String marketingAirline = fsItem.getMarketingAirline();
                         String resBookDesigCode = fsItem.getResBookDesigCode();
+                        String codeshareInd = fsItem.getCodeshareInd();
+                        String airEquipType = fsItem.getAirEquipType();
 
                         Element fsElement = odoElement.addElement("FlightSegment");
                         if (StringUtils.isNotEmpty(rph)) {
@@ -401,6 +411,9 @@ public class AirBookModifyRequestBuilder implements RequestBuilder<AirBookModify
                         }
                         if (StringUtils.isNotEmpty(departureDateTime)) {
                             fsElement.addAttribute("DepartureDateTime", departureDateTime);
+                        }
+                        if (StringUtils.isNotEmpty(arrivalDateTime)) {
+                            fsElement.addAttribute("ArrivalDateTime", arrivalDateTime);
                         }
                         if (StringUtils.isNotEmpty(flightNumber)) {
                             fsElement.addAttribute("FlightNumber", flightNumber);
@@ -413,6 +426,12 @@ public class AirBookModifyRequestBuilder implements RequestBuilder<AirBookModify
                         }
                         if (StringUtils.isNotEmpty(segmentType)) {
                             fsElement.addAttribute("SegmentType", segmentType);
+                        }
+                        if (StringUtils.isNotEmpty(codeshareInd)) {
+                            fsElement.addAttribute("CodeshareInd", codeshareInd);
+                        }
+                        if (StringUtils.isNotEmpty(airEquipType)) {
+                            fsElement.addAttribute("AirEquipType", airEquipType);
                         }
 
                         if (StringUtils.isNotEmpty(operatingAirline)
@@ -454,6 +473,10 @@ public class AirBookModifyRequestBuilder implements RequestBuilder<AirBookModify
             buildTravelerInfoElement(airReservation.getTravelerInfoList(), arElement);
             buildBookingReferenceIDElement(airReservation.getBookingReferenceIDList(), arElement);
         }
+    }
+
+    private void buildFlightSegmentElement(List<FlightSegment> flightSegmentList, Element arElement) {
+
     }
 
 }

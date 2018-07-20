@@ -3,17 +3,16 @@
     <POS>
         <Source PseudoCityCode="sparrow"/>
     </POS>
-    <AirBookModifyRQ ModificationType="REMARK_ADD">
+    <AirBookModifyRQ ModificationType="SSR_ADD">
         <AirReservation>
             <TravelerInfo>
                 <SpecialReqDetails>
-                    <SpecialRemarks>
-                        <SpecialRemark>
-                            <TravelerRefNumber RPH="1"/>
+                    <SpecialServiceRequests>
+                        <SpecialServiceRequest SSRCode="CHLD" Status="HK">
                             <FlightRefNumber RPH="1"/>
-                            <Text>测试添加RMK</Text>
-                        </SpecialRemark>
-                    </SpecialRemarks>
+                            <TravelerRefNumber RPH="2"/>
+                        </SpecialServiceRequest>
+                    </SpecialServiceRequests>
                 </SpecialReqDetails>
             </TravelerInfo>
         </AirReservation>
@@ -22,9 +21,9 @@
         <AirItinerary>
             <OriginDestinationOptions>
                 <OriginDestinationOption>
-                    <FlightSegment RPH="1" DepartureDateTime="2014-08-26T07:00:00" ArrivalDateTime="2014-08-26T09:10:00"
-                                   FlightNumber="MU5138" Status="NN" SegmentType="NORMAL" CodeshareInd="false"
-                                   AirEquipType="733">
+                    <FlightSegment RPH="1" DepartureDateTime="2014-08-26T07:00:00" FlightNumber="MU5138"
+                                   NumberInParty="1" Status="NN" SegmentType="NORMAL" AirEquipType="733">
+                        <OperatingAirline Code="MU" FlightNumber="MU5138"/>
                         <DepartureAirport LocationCode="PEK"/>
                         <ArrivalAirport LocationCode="SHA"/>
                         <MarketingAirline Code="MU"/>
@@ -34,14 +33,14 @@
             </OriginDestinationOptions>
         </AirItinerary>
         <TravelerInfo>
-            <AirTraveler RPH="1" PassengerTypeCode="ADT">
+            <AirTraveler RPH="2" PassengerTypeCode="ADT">
                 <PersonName LanguageType="ZH">
-                    <Surname>高明</Surname>
+                    <Surname>高一</Surname>
                 </PersonName>
-                <Document DocType="NI" DocID="120221197001011150"/>
-                <TravelerRefNumber RPH="1"/>
+                <Document DocType="NI" DocID="120221200805011150" BirthDate="2008-05-01"/>
+                <TravelerRefNumber RPH="2"/>
             </AirTraveler>
         </TravelerInfo>
-        <BookingReferenceID ID="JG6R08"/>
+        <BookingReferenceID ID="JG6R1Y"/>
     </AirReservation>
 </OTA_AirBookModifyRQ>

@@ -30,7 +30,7 @@ public class AirBookModifyStage02 implements AirBookModifyStage {
     public AirBookModifyRequest buildRequest() {
         AirBookModifyRequestVO airBookModifyRequestVO = new AirBookModifyRequestVO();
 
-        //需要修改或者添加的信息
+        //修改后的预定信息
         fillAirReservationInfoAfterModify(airBookModifyRequestVO);
 
         //修改前的预定信息

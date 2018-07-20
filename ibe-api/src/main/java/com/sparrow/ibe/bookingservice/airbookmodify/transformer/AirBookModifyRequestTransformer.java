@@ -3,6 +3,8 @@ package com.sparrow.ibe.bookingservice.airbookmodify.transformer;
 import com.google.common.collect.Lists;
 import com.sparrow.ibe.bookingservice.airbook.model.AirReservation;
 import com.sparrow.ibe.bookingservice.airbook.model.BookingReferenceID;
+import com.sparrow.ibe.bookingservice.airbook.model.FlightSegment;
+import com.sparrow.ibe.bookingservice.airbook.model.OriginDestinationOption;
 import com.sparrow.ibe.bookingservice.airbookmodify.model.AbmAirReservation;
 import com.sparrow.ibe.bookingservice.airbookmodify.model.AirBookModifyRQ;
 import com.sparrow.ibe.bookingservice.airbookmodify.model.AirBookModifyRequest;
@@ -84,18 +86,30 @@ public class AirBookModifyRequestTransformer {
     private void fillAirReservationInfoBeforeModify(AirBookModifyRequest request, AirBookModifyRequestVO requestVO){
         AirReservation airReservation = new AirReservation();
         AirReservationVO airReservationVO = requestVO.getAirReservationVO();
-        //PNR号信息
-        List<BookingReferenceID> bookingReferenceIDList = new ArrayList<BookingReferenceID>();
-        BookingReferenceID bookID = new BookingReferenceID();
-        bookID.setId(airReservationVO.getPnr());
-        bookingReferenceIDList.add(bookID);
-        airReservation.setBookingReferenceIDList(bookingReferenceIDList);
+
+
+        //航段信息
+        List<FlightSegment> flightSegmentList = airReservationVO.getFlightSegmentList();
+        if(flightSegmentList != null && flightSegmentList.size() > 0){
+            List<OriginDestinationOption> originDestinationList = Lists.newArrayList();
+            OriginDestinationOption originDestinationOption = new OriginDestinationOption();
+            originDestinationOption.setFlightSegmentList(flightSegmentList);
+            originDestinationList.add(originDestinationOption);
+            airReservation.setOriginDestinationList(originDestinationList);
+        }
 
         //旅客信息
         List<TravelerInfo> travelerInfoList = airReservationVO.getTravelerInfoList();
         if(travelerInfoList != null && travelerInfoList.size() > 0){
             airReservation.setTravelerInfoList(travelerInfoList);
         }
+
+        //PNR号信息
+        List<BookingReferenceID> bookingReferenceIDList = new ArrayList<BookingReferenceID>();
+        BookingReferenceID bookID = new BookingReferenceID();
+        bookID.setId(airReservationVO.getPnr());
+        bookingReferenceIDList.add(bookID);
+        airReservation.setBookingReferenceIDList(bookingReferenceIDList);
 
         request.setAirReservation(airReservation);
     }

@@ -1,7 +1,6 @@
 package com.sparrow.ibe.bookingservice.airbookmodify.vo;
 
 import com.sparrow.ibe.bookingservice.airbook.model.FlightSegment;
-import com.sparrow.ibe.bookingservice.airbook.model.OriginDestinationOption;
 import com.sparrow.ibe.bookingservice.airbookmodify.model.TravelerInfo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -35,10 +34,6 @@ public class AirReservationVO {
      * TC项
      */
     private String tourCode;
-    /**
-     * 出发到达地信息集合
-     */
-    private List<OriginDestinationOption> originDestinationList;
     /**
      * 签注信息
      */
@@ -84,14 +79,6 @@ public class AirReservationVO {
 
     public void setTourCode(String tourCode) {
         this.tourCode = tourCode;
-    }
-
-    public List<OriginDestinationOption> getOriginDestinationList() {
-        return originDestinationList;
-    }
-
-    public void setOriginDestinationList(List<OriginDestinationOption> originDestinationList) {
-        this.originDestinationList = originDestinationList;
     }
 
     public String getEndorsement() {

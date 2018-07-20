@@ -176,7 +176,7 @@ public class IBEConst {
 	 */
 	public enum ModificationType {
 
-
+		SSR_ADD("SSR_ADD", "特殊服务请求添加"),
 		REMARK_ADD("REMARK_ADD", "备注信息添加"),
 		OSI_ADD("OSI_ADD", "其它服务信息添加"),
 		EI_ADD("EI_ADD", "EI项添加"),
