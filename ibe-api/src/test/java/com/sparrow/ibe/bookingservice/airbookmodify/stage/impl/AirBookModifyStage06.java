@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 场景5：添加 SSR-CHLD
+ * 场景6：添加SSR-DOCS
  * <p>
  * 说明：输入参数结构（3大信息）
  * 1.POS信息  2.修改后的预定信息  3.修改前的预定信息
@@ -25,8 +25,8 @@ import java.util.List;
  * @author wangjianchun
  * @create 2018/7/16
  */
-@Component("airBookModifyStage05")
-public class AirBookModifyStage05 implements AirBookModifyStage {
+@Component("airBookModifyStage06")
+public class AirBookModifyStage06 implements AirBookModifyStage {
 
     @Autowired
     private AirBookModifyRequestTransformer airBookModifyRequestTransformer;
@@ -56,16 +56,19 @@ public class AirBookModifyStage05 implements AirBookModifyStage {
         AbmAirReservation abmAirReservation = new AbmAirReservation();
         List<TravelerInfo> travelerInfoList = new ArrayList<TravelerInfo>();
         TravelerInfo travelerInfo = new TravelerInfo();
-        //SSR（特殊服务请求）信息
+
+        //SSR-DOCS信息
         List<SpecialServiceRequest> ssrList = new ArrayList<SpecialServiceRequest>();
         SpecialServiceRequest ssr = new SpecialServiceRequest();
-        ssr.setSsrCode(IBEConst.SSRCode.CHLD.getCode());
-        ssr.setStatus("HK");
-        ssr.setFlightRefNumberRPH("1");
-        ssr.setTravelerRefNumberRPH("2");
+        ssr.setSsrCode(IBEConst.SSRCode.DOCS.getCode());
+        ssr.setServiceQuantity("1");
+        ssr.setStatus("NN");
+        ssr.setRph("1");
+        ssr.setAirlineCode("CA");
+        ssr.setTravelerRefNumberRPH("1");
         ssrList.add(ssr);
-        travelerInfo.setSsrList(ssrList);
 
+        travelerInfo.setSsrList(ssrList);
         travelerInfoList.add(travelerInfo);
         abmAirReservation.setTravelerInfoList(travelerInfoList);
         abmRequestVO.setAbmAirReservation(abmAirReservation);
@@ -81,53 +84,13 @@ public class AirBookModifyStage05 implements AirBookModifyStage {
     private void fillAirReservationInfoBeforeModify(AirBookModifyRequestVO airBookModifyRequestVO) {
         AirReservationVO airReservationVO = new AirReservationVO();
 
-        //航段信息
-        fillFlightSegment(airReservationVO);
         //旅客信息
-        fillTravelerInfo(airReservationVO);
-
-        airReservationVO.setPnr("JG6R1Y");
-        airBookModifyRequestVO.setAirReservationVO(airReservationVO);
-    }
-
-    /**
-     * 填充航段信息
-     *
-     * @param airReservationVO
-     */
-    private void fillFlightSegment(AirReservationVO airReservationVO) {
-        List<FlightSegment> flightSegmentList = new ArrayList<FlightSegment>();
-        FlightSegment flightSegment = new FlightSegment();
-        flightSegment.setRph("1");
-        flightSegment.setDepartureDateTime("2014-08-26T07:00:00");
-        flightSegment.setFlightNumber("MU5138");
-        flightSegment.setNumberInParty("1");
-        flightSegment.setStatus("NN");
-        flightSegment.setSegmentType("NORMAL");
-        flightSegment.setOperatingAirline("MU");
-        flightSegment.setFlightNumberOfOperatingAirline("MU5138");
-        flightSegment.setDepartureAirport("PEK");
-        flightSegment.setArrivalAirport("SHA");
-        flightSegment.setAirEquipType("733");
-        flightSegment.setMarketingAirline("MU");
-        flightSegment.setResBookDesigCode("Y");
-        flightSegmentList.add(flightSegment);
-        airReservationVO.setFlightSegmentList(flightSegmentList);
-    }
-
-    /**
-     * 填充旅客信息
-     *
-     * @param airReservationVO
-     */
-    private void fillTravelerInfo(AirReservationVO airReservationVO){
         List<TravelerInfo> travelerInfoList = new ArrayList<TravelerInfo>();
         TravelerInfo travelerInfo = new TravelerInfo();
         List<AirTraveler> airTravelerList = new ArrayList<AirTraveler>();
         AirTraveler airTraveler = new AirTraveler();
         airTraveler.setPassengerTypeCode(IBEConst.PassengerType.ADULT.getCode());
-        airTraveler.setRph("2");
-        airTraveler.setBirthDate("2008-05-01");
+        airTraveler.setRph("1");
 
         //旅客姓名
         fillPersonName(airTraveler);
@@ -142,6 +105,9 @@ public class AirBookModifyStage05 implements AirBookModifyStage {
         travelerInfo.setAirTravelerList(airTravelerList);
         travelerInfoList.add(travelerInfo);
         airReservationVO.setTravelerInfoList(travelerInfoList);
+
+        airReservationVO.setPnr("JG6R08");
+        airBookModifyRequestVO.setAirReservationVO(airReservationVO);
     }
 
     /**
@@ -152,13 +118,13 @@ public class AirBookModifyStage05 implements AirBookModifyStage {
     private void fillTravelerRefNumber(AirTraveler airTraveler) {
         List<TravelerRefNumber> travelerRefNumberList = new ArrayList<TravelerRefNumber>();
         TravelerRefNumber travelerRefNumber = new TravelerRefNumber();
-        travelerRefNumber.setRph("2");
+        travelerRefNumber.setRph("1");
         travelerRefNumberList.add(travelerRefNumber);
         airTraveler.setTravelerRefNumberList(travelerRefNumberList);
     }
 
     /**
-     * 填充旅客姓名信息
+     * 填充旅客姓名
      *
      * @param airTraveler
      */
@@ -166,7 +132,7 @@ public class AirBookModifyStage05 implements AirBookModifyStage {
         List<PersonName> personNameList = new ArrayList<PersonName>();
         PersonName personName = new PersonName();
         personName.setLanguageType(IBEConst.LanguageType.ZH.getCode());
-        personName.setSurname("高一");
+        personName.setSurname("高明");
         personNameList.add(personName);
         airTraveler.setPersonNameList(personNameList);
     }
@@ -179,9 +145,28 @@ public class AirBookModifyStage05 implements AirBookModifyStage {
     private void fillDocument(AirTraveler airTraveler) {
         List<Document> documentList = new ArrayList<Document>();
         Document document = new Document();
-        document.setDocType(IBEConst.DocumentType.ID.getCode());
-        document.setDocId("120221200805011150");
-        document.setBirthDate("2008-05-01");
+        //证件类型，PP - 护照；NI - 身份证
+        document.setDocType(IBEConst.DocumentType.PASSPORT.getCode());
+        //证件类型描述，在证件类型为PP时，提供具体护照类型，如：F、P、AC等
+        document.setDocTypeDetail("P");
+        //证件号
+        document.setDocId("G446164");
+        //证件持有人国籍
+        document.setDocHolderNationality("CN");
+        //发证国家
+        document.setDocIssueCountry("CN");
+        //出生日期
+        document.setBirthDate("1984-09-04");
+        //证件持有人性别，证件类型为PP时，需要指定性别
+        document.setGender(IBEConst.Gender.MALE.getCode());
+        //证件有效期截止日期，证件类型为PP时，需要指定到期时间
+        document.setExpireDate("2031-12-19");
+        //证件编号，若多个证件编号，输入不同编号，都写入主机
+        document.setRph("1");
+        //证件持有人姓名的名，若填写护照，需要填写此项，姓名为zhang/san时，这里是san
+        document.setDocHolderGivenName("DANA");
+        //证件持有人姓名的姓，若填写护照，需要填写此项，姓名为zhang/san时，这里是zhang
+        document.setDocHolderSurname("WANG");
         documentList.add(document);
         airTraveler.setDocumentList(documentList);
     }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookModifyRQ>
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirBookModifyRQ ModificationType="SSR_ADD">
+        <AirReservation>
+            <TravelerInfo>
+                <SpecialReqDetails>
+                    <SpecialServiceRequests>
+                        <SpecialServiceRequest SSRCode="DOCS" ServiceQuantity="1" Status="NN" RPH="1">
+                            <Airline Code="CA"/>
+                            <TravelerRefNumber RPH="1"/>
+                        </SpecialServiceRequest>
+                    </SpecialServiceRequests>
+                </SpecialReqDetails>
+            </TravelerInfo>
+        </AirReservation>
+    </AirBookModifyRQ>
+    <AirReservation>
+        <TravelerInfo>
+            <AirTraveler RPH="1" PassengerTypeCode="ADT">
+                <PersonName LanguageType="ZH">
+                    <Surname>高明</Surname>
+                </PersonName>
+                <Document DocType="PP" DocTypeDetail="P" DocID="G446164" DocIssueCountry="CN" DocHolderNationality="CN"
+                          BirthDate="1984-09-04" Gender="MALE" ExpireDate="2031-12-19" RPH="1">
+                    <DocHolderFormattedName>
+                        <GivenName>DANA</GivenName>
+                        <Surname>WANG</Surname>
+                    </DocHolderFormattedName>
+                </Document>
+                <TravelerRefNumber RPH="1"/>
+            </AirTraveler>
+        </TravelerInfo>
+        <BookingReferenceID ID="JG6R08"/>
+    </AirReservation>
+</OTA_AirBookModifyRQ>

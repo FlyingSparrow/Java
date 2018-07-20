@@ -30,6 +30,10 @@ public class AirBookModifyRequestTests extends BaseTests {
     private AirBookModifyStage airBookModifyStage04;
     @Autowired
     private AirBookModifyStage airBookModifyStage05;
+    @Autowired
+    private AirBookModifyStage airBookModifyStage06;
+    @Autowired
+    private AirBookModifyStage airBookModifyStage07;
 
     /**
      * 测试场景1：K位信息确认
@@ -84,6 +88,28 @@ public class AirBookModifyRequestTests extends BaseTests {
         AirBookModifyRequest request = airBookModifyStage05.buildRequest();
         String requestXml = airBookModifyRequestBuilder.buildRequestXml(request);
         logger.info("测试场景5：添加 SSR-CHLD, requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景6：添加SSR-DOCS
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook06RequestXml(){
+        AirBookModifyRequest request = airBookModifyStage06.buildRequest();
+        String requestXml = airBookModifyRequestBuilder.buildRequestXml(request);
+        logger.info("测试场景6：添加SSR-DOCS, requestXml: {}", requestXml);
+    }
+
+    /**
+     * 测试场景7：添加 SSR-FQTV
+     * 说明：测试构造请求文件
+     */
+    @Test
+    public void testBuildAirBook07RequestXml(){
+        AirBookModifyRequest request = airBookModifyStage07.buildRequest();
+        String requestXml = airBookModifyRequestBuilder.buildRequestXml(request);
+        logger.info("测试场景7：添加 SSR-FQTV, requestXml: {}", requestXml);
     }
 
 }

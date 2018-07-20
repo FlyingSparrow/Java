@@ -139,17 +139,26 @@ public class AirBookModifyStage04 implements AirBookModifyStage {
         fillPersonName(airTraveler);
         //证件信息
         fillDocument(airTraveler);
-
-        List<TravelerRefNumber> travelerRefNumberList = new ArrayList<TravelerRefNumber>();
-        TravelerRefNumber travelerRefNumber = new TravelerRefNumber();
-        travelerRefNumber.setRph("1");
-        travelerRefNumberList.add(travelerRefNumber);
-        airTraveler.setTravelerRefNumberList(travelerRefNumberList);
+        //旅客序号
+        fillTravelerRefNumber(airTraveler);
 
         airTravelerList.add(airTraveler);
         travelerInfo.setAirTravelerList(airTravelerList);
         travelerInfoList.add(travelerInfo);
         airReservationVO.setTravelerInfoList(travelerInfoList);
+    }
+
+    /**
+     * 填充旅客序号
+     *
+     * @param airTraveler
+     */
+    private void fillTravelerRefNumber(AirTraveler airTraveler) {
+        List<TravelerRefNumber> travelerRefNumberList = new ArrayList<TravelerRefNumber>();
+        TravelerRefNumber travelerRefNumber = new TravelerRefNumber();
+        travelerRefNumber.setRph("1");
+        travelerRefNumberList.add(travelerRefNumber);
+        airTraveler.setTravelerRefNumberList(travelerRefNumberList);
     }
 
     /**

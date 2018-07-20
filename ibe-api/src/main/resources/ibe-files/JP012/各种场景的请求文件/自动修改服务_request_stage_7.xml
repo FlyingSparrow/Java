@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirBookModifyRQ>
+    <POS>
+        <Source PseudoCityCode="sparrow"/>
+    </POS>
+    <AirBookModifyRQ ModificationType="SSR_ADD">
+        <AirReservation>
+            <TravelerInfo>
+                <SpecialReqDetails>
+                    <SpecialServiceRequests>
+                        <SpecialServiceRequest SSRCode="FQTV" Status="HK">
+                            <Airline Code="CA"/>
+                            <Text>CA185336034</Text>
+                            <TravelerRefNumber RPH="1"/>
+                        </SpecialServiceRequest>
+                    </SpecialServiceRequests>
+                </SpecialReqDetails>
+            </TravelerInfo>
+        </AirReservation>
+    </AirBookModifyRQ>
+    <AirReservation>
+        <TravelerInfo>
+            <AirTraveler RPH="1" PassengerTypeCode="ADT">
+                <PersonName LanguageType="ZH">
+                    <Surname>高明</Surname>
+                </PersonName>
+                <TravelerRefNumber RPH="1"/>
+            </AirTraveler>
+        </TravelerInfo>
+        <BookingReferenceID ID="HPJW2Q"/>
+    </AirReservation>
+</OTA_AirBookModifyRQ>

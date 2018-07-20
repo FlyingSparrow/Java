@@ -200,6 +200,44 @@ public class IBEConst {
 		}
 	}
 
+	/**
+	 * <p>Title: SSRCode</p>
+	 * <p>Description: 特殊服务请求代码枚举类</p>
+	 *
+	 * @author Wangjianchun
+	 * @date 2017年7月5日
+	 */
+	public enum SSRCode {
+
+		CHLD("CHLD", "Child", "儿童标识"),
+		DOCS("DOCS", "Documents", "证件标识"),
+		FQTV("FQTV", "Frequent Traveler", "常旅客计划"),
+		SPML("SPML", "Special Meal", "特殊餐食"),
+		UMNR("UMNR", "Unaccompanied Minor", "无成人陪伴儿童");
+
+		private String code;
+		private String name;
+		private String remark;
+
+		SSRCode(String code, String name, String remark) {
+			this.code = code;
+			this.name = name;
+			this.remark = remark;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getRemark() {
+			return remark;
+		}
+	}
+
 	private IBEConst() {
 	}
 
