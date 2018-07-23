@@ -1,11 +1,11 @@
 package com.sparrow.weatherstation;
 
 import com.sparrow.observer.DisplayElement;
-import com.sparrow.observer.Observer;
-import com.sparrow.observer.Subject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * @author wangjianchun
@@ -17,18 +17,21 @@ public class StatisticsDisplay implements Observer, DisplayElement {
     private float min;
     private float avg;
     private List<Float> temperatureList = new ArrayList<>();
-    private Subject weatherData;
+    private Observable observable;
 
-    public StatisticsDisplay(Subject weatherData) {
-        this.weatherData = weatherData;
-        this.weatherData.registerObserver(this);
+    public StatisticsDisplay(Observable observable) {
+        this.observable = observable;
+        this.observable.addObserver(this);
     }
 
     @Override
-    public void update(float temperature, float humidity, float pressure) {
-        temperatureList.add(temperature);
-        calculateTemperature();
-        display();
+    public void update(Observable o, Object arg) {
+        if(o instanceof WeatherData){
+            WeatherData weatherData = (WeatherData) o;
+            temperatureList.add(weatherData.getTemperature());
+            calculateTemperature();
+            display();
+        }
     }
 
     @Override

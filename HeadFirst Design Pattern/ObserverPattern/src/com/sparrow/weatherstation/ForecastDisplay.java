@@ -1,11 +1,11 @@
 package com.sparrow.weatherstation;
 
 import com.sparrow.observer.DisplayElement;
-import com.sparrow.observer.Observer;
-import com.sparrow.observer.Subject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * @author wangjianchun
@@ -17,18 +17,20 @@ public class ForecastDisplay implements Observer, DisplayElement {
     private float currentPressure;
     private float previousPressure;
     private List<Float> pressureList = new ArrayList<>();
-    private Subject weatherData;
+    private Observable observable;
 
-    public ForecastDisplay(Subject weatherData) {
-        this.weatherData = weatherData;
-        this.weatherData.registerObserver(this);
+    public ForecastDisplay(Observable observable) {
+        this.observable = observable;
+        this.observable.addObserver(this);
     }
 
     @Override
-    public void update(float temperature, float humidity, float pressure) {
-        pressureList.add(pressure);
-        forecast();
-        display();
+    public void update(Observable o, Object arg) {
+        if(o instanceof WeatherData){
+            WeatherData weatherData = (WeatherData) o;
+            pressureList.add(weatherData.getPressure());
+            display();
+        }
     }
 
     @Override
@@ -50,9 +52,5 @@ public class ForecastDisplay implements Observer, DisplayElement {
                 System.out.println("Forecast: More of the same");
             }
         }
-    }
-
-    private void forecast(){
-
     }
 }
