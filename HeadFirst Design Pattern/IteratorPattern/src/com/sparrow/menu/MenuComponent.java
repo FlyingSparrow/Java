@@ -1,5 +1,7 @@
 package com.sparrow.menu;
 
+import java.util.Iterator;
+
 /**
  * @author wangjianchun
  * @create 2018/7/30
@@ -37,4 +39,6 @@ public abstract class MenuComponent {
     public void print(){
         throw new UnsupportedOperationException();
     }
+
+    public abstract Iterator createIterator();
 }

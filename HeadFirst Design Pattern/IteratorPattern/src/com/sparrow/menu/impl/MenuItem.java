@@ -50,6 +50,7 @@ public class MenuItem extends MenuComponent {
         System.out.println("    -- "+getDescription());
     }
 
+    @Override
     public Iterator createIterator(){
         return new NullIterator();
     }

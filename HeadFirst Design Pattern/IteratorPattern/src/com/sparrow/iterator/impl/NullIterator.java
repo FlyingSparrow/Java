@@ -10,11 +10,11 @@ public class NullIterator implements Iterator {
 
     @Override
     public boolean hasNext() {
-        throw new UnsupportedOperationException();
+        return false;
     }
 
     @Override
     public Object next() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 }
