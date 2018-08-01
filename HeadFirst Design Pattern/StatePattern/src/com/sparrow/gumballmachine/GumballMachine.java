@@ -37,8 +37,9 @@ public class GumballMachine {
     }
 
     public void turnCrank(){
-        state.turnCrank();
-        dispense();
+        if(state.turnCrank()){
+            dispense();
+        }
     }
 
     public void dispense() {
@@ -47,6 +48,7 @@ public class GumballMachine {
 
     public void refill(int fillCount){
         this.count = this.count + fillCount;
+        state = noQuarterState;
     }
 
     @Override
@@ -93,5 +95,7 @@ public class GumballMachine {
     }
 
     public void releaseBall() {
+        System.out.println("A gumball comes rolling out the slot");
+        count = count -1;
     }
 }

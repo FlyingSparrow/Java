@@ -25,16 +25,15 @@ public class SoldState implements State {
     }
 
     @Override
-    public void turnCrank() {
+    public boolean turnCrank() {
         System.out.println("Turning twice doesn't get you another gumball!");
+        return false;
     }
 
     @Override
     public void dispense() {
-        System.out.println("A gumball comes rolling out the slot");
-        int gumballCount = gumballMachine.getCount() -1;
-        gumballMachine.setCount(gumballCount);
-        if(gumballCount == 0){
+        gumballMachine.releaseBall();
+        if(gumballMachine.getCount() == 0){
             System.out.println("Oops, out of gumballs!");
             gumballMachine.setState(gumballMachine.getSoldOutState());
         }else{

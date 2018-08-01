@@ -25,8 +25,9 @@ public class WinnerState implements State {
     }
 
     @Override
-    public void turnCrank() {
+    public boolean turnCrank() {
         System.out.println("Turning twice doesn't get you another gumball!");
+        return false;
     }
 
     @Override
@@ -36,7 +37,6 @@ public class WinnerState implements State {
         if(gumballMachine.getCount() == 0){
             gumballMachine.setState(gumballMachine.getSoldOutState());
         }else{
-            gumballMachine.releaseBall();
             if(gumballMachine.getCount() > 0){
                 gumballMachine.releaseBall();
                 gumballMachine.setState(gumballMachine.getNoQuarterState());
