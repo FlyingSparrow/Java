@@ -1,6 +1,6 @@
 package com.sparrow.simulator;
 
-import com.sparrow.Goose;
+import com.sparrow.quack.adapter.Goose;
 import com.sparrow.quack.Quackable;
 import com.sparrow.quack.adapter.GooseAdapter;
 import com.sparrow.quack.composition.Flock;

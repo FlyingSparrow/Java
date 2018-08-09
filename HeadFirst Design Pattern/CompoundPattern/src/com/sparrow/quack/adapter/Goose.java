@@ -1,4 +1,4 @@
-package com.sparrow;
+package com.sparrow.quack.adapter;
 
 /**
  * @author wangjianchun

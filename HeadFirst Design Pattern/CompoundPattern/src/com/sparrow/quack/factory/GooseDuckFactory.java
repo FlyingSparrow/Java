@@ -1,6 +1,6 @@
 package com.sparrow.quack.factory;
 
-import com.sparrow.Goose;
+import com.sparrow.quack.adapter.Goose;
 import com.sparrow.quack.Quackable;
 
 /**

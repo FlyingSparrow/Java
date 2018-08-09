@@ -1,6 +1,5 @@
 package com.sparrow.quack.adapter;
 
-import com.sparrow.Goose;
 import com.sparrow.quack.Quackable;
 import com.sparrow.quack.observer.Observer;
 import com.sparrow.quack.observer.impl.Observable;
