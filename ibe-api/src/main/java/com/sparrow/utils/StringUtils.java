@@ -1,8 +1,10 @@
 package com.sparrow.utils;
 
+import com.alibaba.fastjson.JSONArray;
 import com.sparrow.ibe.constants.IBEConstants;
 import com.sparrow.ibe.enums.IBEError;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.UUID;
 
@@ -23,25 +25,6 @@ public class StringUtils {
 
     public static boolean isNotEmpty(String arg) {
         return !isEmpty(arg);
-    }
-
-    /**
-     * 如果 arg 为null，返回空字符串
-     * @param arg
-     * @return
-     */
-    public static String defaultValue(String arg) {
-        return org.apache.commons.lang3.StringUtils.defaultString(arg);
-    }
-
-    /**
-     * 如果 arg 为null，返回用户指定的默认值 defaultValue
-     * @param arg
-     * @param defaultValue
-     * @return
-     */
-    public static String defaultValue(String arg, String defaultValue) {
-        return org.apache.commons.lang3.StringUtils.defaultString(arg, defaultValue);
     }
 
     /**
@@ -136,6 +119,79 @@ public class StringUtils {
 
             return result;
         }
+    }
+
+    /**
+     * 判断是否是火狐浏览器
+     *
+     * @param request
+     * @return
+     */
+    public static boolean isFirefox(HttpServletRequest request){
+        return (request.getHeader("User-Agent").toUpperCase().indexOf("FIREFOX") != -1);
+    }
+
+    /**
+     * 判断是否是谷歌chrome浏览器
+     *
+     * @param request
+     * @return
+     */
+    public static boolean isChrome(HttpServletRequest request){
+        return (request.getHeader("User-Agent").toUpperCase().indexOf("CHROME") != -1);
+    }
+
+    /**
+     * 判断是否是IE浏览器
+     *
+     * @param request
+     * @return
+     */
+    public static boolean isIE(HttpServletRequest request){
+        String userAgent = request.getHeader("User-Agent").toUpperCase();
+        if(userAgent.indexOf("MSIE") != -1){
+            return true;
+        }else if(userAgent.indexOf("GECKO") != -1 && userAgent.indexOf("RV:11") != -1){
+            //IE11 浏览器
+            return true;
+        }else if(userAgent.indexOf("EDGE") != -1){
+            //微软的EDGE浏览器
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * 根据给定正则表达式的匹配拆分此字符串
+     * @param string 要拆分的额字符串
+     * @param regex 正则表达式
+     * @return
+     */
+    public static JSONArray split(String string, String regex){
+        JSONArray result = new JSONArray();
+        if(org.apache.commons.lang3.StringUtils.isEmpty(string)){
+            return result;
+        }
+        String[] array = string.split(regex);
+        for(String item : array){
+            if(org.apache.commons.lang3.StringUtils.isNotEmpty(item)){
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    public static String replace(String str, String replacement, String... targetList){
+        if(org.apache.commons.lang3.StringUtils.isEmpty(str)){
+            return str;
+        }
+        String result = str;
+        for(String target : targetList){
+            result = result.replace(target, replacement);
+        }
+
+        return result;
     }
 
 }

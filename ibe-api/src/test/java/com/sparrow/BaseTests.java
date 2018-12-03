@@ -2,7 +2,6 @@ package com.sparrow;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparrow.app.Application;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

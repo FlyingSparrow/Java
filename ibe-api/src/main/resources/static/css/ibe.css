@@ -1,0 +1,121 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*请修改此处以改变表单标题样式*/
+.title {
+    color: #333333;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.cols_2_td1 {
+    border: 1px solid black;
+    vertical-align: middle;
+    text-align: right;
+    font-family: "宋体";
+    font-size: 14px;
+    padding-right: 3px;
+    width: 18%;
+}
+
+.cols_2_td2 {
+    border: 1px solid black;
+    vertical-align: middle;
+    text-align: left;
+    font-family: "宋体";
+    font-size: 14px;
+    padding-left: 3px;
+    width: 82%;
+}
+
+.cols_4_td1 {
+    border: 1px solid black;
+    height: 30px;
+    vertical-align: middle;
+    text-align: right;
+    font-family: "宋体";
+    font-size: 14px;
+    padding-right: 3px;
+    width: 15%;
+}
+
+.cols_4_td2 {
+    border: 1px solid black;
+    vertical-align: middle;
+    text-align: left;
+    font-family: "宋体";
+    font-size: 14px;
+    padding-left: 3px;
+    width: 35%;
+}
+
+.cols_4_td3 {
+    border: 1px solid black;
+    vertical-align: middle;
+    text-align: left;
+    font-family: "宋体";
+    font-size: 14px;
+    padding-left: 3px;
+}
+
+.cols_8_td5 {
+    border: 1px solid black;
+    height: 30px;
+    vertical-align: middle;
+    text-align: left;
+    font-family: "宋体";
+    font-size: 14px;
+    padding-left: 3px;
+}
+
+.cols_12_td5 {
+    border: 1px solid black;
+    height: 30px;
+    vertical-align: middle;
+    text-align: left;
+    font-family: "宋体";
+    font-size: 14px;
+    padding-left: 3px;
+}
+
+/*请修改此处设置单行的样式*/
+.tr1 {
+    background-color: #ffffff;
+    height: 28px;
+}
+
+/*请修改此处设置双行的样式*/
+.tr2 {
+    background-color: #EAEEFD;
+    height: 28px;
+}
+
+.table1 {
+    border-width: 0px;
+    width: 900px;
+    margin: auto;
+}
+
+.table2 {
+    width: 90%;
+    border-collapse: collapse;
+}
+
+.opinion_content {
+    width: 900px;
+}
+
+.fieldset {
+    width: 880px;
+    margin: auto;
+}
+
+.invoice_number {
+    width: 880px;
+    text-align: right;
+    margin: auto;
+    padding-right: 40px;
+    font-family: 宋体;
+    font-size: 14px;
+}

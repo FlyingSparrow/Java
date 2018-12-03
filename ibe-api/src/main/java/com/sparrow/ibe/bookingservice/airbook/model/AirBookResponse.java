@@ -18,6 +18,10 @@ public class AirBookResponse implements Serializable {
     private static final long serialVersionUID = -4903131714783791605L;
 
     /**
+     * 请求id
+     */
+    private String requestId;
+    /**
      * 成功响应结果，0..n，一个AirReservation可对应一个订单号或一个PNR的信息
      */
     private List<AirReservation> airReservationList;
@@ -31,6 +35,14 @@ public class AirBookResponse implements Serializable {
      * 警告信息集合，0..n
      */
     private List<DefaultWarning> warningList;
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
 
     public List<AirReservation> getAirReservationList() {
         return airReservationList;

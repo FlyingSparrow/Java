@@ -35,6 +35,8 @@ public class AirBookRequestTransformer {
     public AirBookRequest transform(AirBookRequestVO requestVO) {
         AirBookRequest request = new AirBookRequest();
 
+        request.setRequestId(StringUtils.randomUUID());
+        request.setCreatedTime(System.currentTimeMillis());
         if(StringUtils.isNotEmpty(requestVO.getSegmentCheckInd())){
             request.setSegmentCheckInd(requestVO.getSegmentCheckInd());
         }

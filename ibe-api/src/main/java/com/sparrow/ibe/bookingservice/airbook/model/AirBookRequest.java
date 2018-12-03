@@ -14,6 +14,14 @@ import java.util.List;
 public class AirBookRequest implements Serializable {
 
 	/**
+	 * 请求id
+	 */
+	private String requestId;
+	/**
+	 * 请求创建时间
+	 */
+	private Long createdTime;
+	/**
 	 * 是否验证航段状态
 	 */
 	private String segmentCheckInd;
@@ -82,6 +90,22 @@ public class AirBookRequest implements Serializable {
 	 * 封口延迟，0..1，default true，若需一次封口，请设置为false
 	 */
 	private String envelopDelay;
+
+	public String getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
+	}
+
+	public Long getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Long createdTime) {
+		this.createdTime = createdTime;
+	}
 
 	public String getSegmentCheckInd() {
 		return segmentCheckInd;

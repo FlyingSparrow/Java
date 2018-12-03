@@ -16,6 +16,7 @@ import com.sparrow.integration.handler.ValidationHandler;
 import com.sparrow.utils.*;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,17 +81,18 @@ public class AirBookModifyDao implements IntegrationDao<AirBookModifyRequest> {
 	@SuppressWarnings("unchecked")
 	private List<DefaultError> buildErrorObject(Element rootElement){
 		List<DefaultError> result = new ArrayList<DefaultError>();
-		List<Element> errorList = rootElement.selectNodes("Errors/Error");
-		for(Element element : errorList){
+		List<Node> errorList = rootElement.selectNodes("Errors/Error");
+		errorList.forEach(item ->{
+			Element element = (Element) item;
 			DefaultError error = new DefaultError();
 			String code = element.attributeValue("Code");
 			error.setCode(code);
 			error.setType(element.attributeValue("Type"));
 			error.setShortText(element.attributeValue("ShortText"));
 			error.setCnMessage(StringUtils.ibeMessage(code));
-			
+
 			result.add(error);
-		}
+		});
 		
 		return result;
 	}
@@ -98,17 +100,18 @@ public class AirBookModifyDao implements IntegrationDao<AirBookModifyRequest> {
 	@SuppressWarnings("unchecked")
 	private List<DefaultWarning> buildWarningObject(Element rootElement){
 		List<DefaultWarning> result = new ArrayList<DefaultWarning>();
-		List<Element> warningList = rootElement.selectNodes("Warnings/Warning");
-		for(Element element : warningList){
+		List<Node> warningList = rootElement.selectNodes("Warnings/Warning");
+		warningList.forEach(item ->{
+			Element element = (Element) item;
 			DefaultWarning warning = new DefaultWarning();
 			String code = element.attributeValue("Code");
 			warning.setCode(code);
 			warning.setType(element.attributeValue("Type"));
 			warning.setShortText(element.attributeValue("ShortText"));
 			warning.setCnMessage(StringUtils.ibeMessage(code));
-			
+
 			result.add(warning);
-		}
+		});
 		
 		return result;
 	}
@@ -125,11 +128,12 @@ public class AirBookModifyDao implements IntegrationDao<AirBookModifyRequest> {
 			result.setBookingReferenceIDContext(brIDElement.attributeValue("ID_Context"));
 		}
 		
-		List<Element> arList = rootElement.selectNodes("/OTA_AirBookRS/AirReservation/Comment");
+		List<Node> arList = rootElement.selectNodes("/OTA_AirBookRS/AirReservation/Comment");
 		List<String> commentList = new ArrayList<String>();
-		for(Element element : arList){
+		arList.forEach(item ->{
+			Element element = (Element) item;
 			commentList.add(element.getText());
-		}
+		});
 		result.setCommentList(commentList);
 		
 		return result;

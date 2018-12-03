@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <apis>
+        <!--运价服务 start-->
+        <api type="运价服务" enable="true">
+            <id>JP001</id>
+            <name>fareFlightShop</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirFareFlightShop/I]]></url>
+            <description><![CDATA[国际 Shopping(AirFareFlightShop)服务]]></description>
+        </api>
+        <api type="运价服务" enable="true">
+            <id>JP002</id>
+            <name>fareFlightByPNR</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirFarePriceByPNR/I]]></url>
+            <description><![CDATA[国际按 PNR 运价计算服务]]></description>
+        </api>
+        <api type="运价服务" enable="true">
+            <id>JP003</id>
+            <name>airFarePrice</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirFarePrice/I]]></url>
+            <description><![CDATA[国际运价计算(AirFarePrice)服务]]></description>
+        </api>
+        <api type="运价服务" enable="true">
+            <id>JP004</id>
+            <name>airFareRules</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirFareRules/I]]></url>
+            <description><![CDATA[国际退改签规则查询服务]]></description>
+        </api>
+        <api type="运价服务" enable="true">
+            <id>JP005</id>
+            <name>domesticAirFlightShop</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirFlightShop/D]]></url>
+            <description><![CDATA[国内 shopping 查询服务]]></description>
+        </api>
+        <api type="运价服务" enable="true">
+            <id>JP006</id>
+            <name>domesticAirPriceByPNR</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirPrice/D]]></url>
+            <description><![CDATA[国内按 PNR 的运价计算服务]]></description>
+        </api>
+        <api type="运价服务" enable="true">
+            <id>JP007</id>
+            <name>domesticAirReprice</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirReprice/D]]></url>
+            <description><![CDATA[国内变更计算服务]]></description>
+        </api>
+        <api type="运价服务" enable="true">
+            <id>JP008</id>
+            <name>domesticAirFareDisplay</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirFareDisplay/D]]></url>
+            <description><![CDATA[国内公布运价查询服务]]></description>
+        </api>
+        <api type="运价服务" enable="true">
+            <id>JP009</id>
+            <name>domesticAirPriceBySEG</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirPriceBySeg/D]]></url>
+            <description><![CDATA[国内航段运价计算(AirPriceBySeg)服务]]></description>
+        </api>
+        <api type="运价服务" enable="true">
+            <id>JP010</id>
+            <name>domesticAirRule</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirRuleDisplay/D]]></url>
+            <description><![CDATA[国内退改签规则查询服务]]></description>
+        </api>
+        <!--运价服务 end-->
+
+
+        <!--预订服务 start-->
+        <api type="预订服务" enable="true">
+            <id>JP011</id>
+            <name>airBook</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirBook]]></url>
+            <description><![CDATA[自动预订服务]]></description>
+        </api>
+        <api type="预订服务" enable="true">
+            <id>JP012</id>
+            <name>airBookModify</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirBookModify]]></url>
+            <description><![CDATA[自动修改服务]]></description>
+        </api>
+        <api type="预订服务" enable="true">
+            <id>JP013</id>
+            <name>retrievePNRResult</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirResRet]]></url>
+            <description><![CDATA[PNR结构化信息提取服务]]></description>
+        </api>
+        <!--预订服务 end-->
+
+
+        <!--客票服务 start-->
+        <api type="客票服务" enable="true">
+            <id>JP014</id>
+            <name>intlAutoTicket</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirFareAutoTicket/I]]></url>
+            <description><![CDATA[国际自动出票服务]]></description>
+        </api>
+        <api type="客票服务" enable="true">
+            <id>JP015</id>
+            <name>domesticAutoTicket</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirDemandTicket]]></url>
+            <description><![CDATA[国内自动出票服务]]></description>
+        </api>
+        <api type="客票服务" enable="true">
+            <id>JP016</id>
+            <name>domesticRefundTicket</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirTicketRefund]]></url>
+            <description><![CDATA[国内自动退票服务]]></description>
+        </api>
+        <api type="客票服务" enable="true">
+            <id>JP017</id>
+            <name>retrieveTicketResult</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirTicketRet]]></url>
+            <description><![CDATA[票面信息提取服务]]></description>
+        </api>
+        <!--客票服务 end-->
+
+
+        <!--智能服务 start-->
+        <api type="智能服务" enable="true">
+            <id>JP018</id>
+            <name>ticketStatusSearch</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/TicketStatusSearch]]></url>
+            <description><![CDATA[客票状态查询服务]]></description>
+        </api>
+        <api type="智能服务" enable="true">
+            <id>JP019</id>
+            <name>airSchedule</name>
+            <url><![CDATA[http://espeed.travelsky.com/develop/xml/AirSchedule]]></url>
+            <description><![CDATA[航班班期查询服务]]></description>
+        </api>
+        <!--智能服务 end-->
+    </apis>
+</root>

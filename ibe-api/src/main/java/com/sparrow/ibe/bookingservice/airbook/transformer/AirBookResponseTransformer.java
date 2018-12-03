@@ -6,6 +6,7 @@ import com.sparrow.ibe.bookingservice.airbook.vo.FlightSegmentVO;
 import com.sparrow.utils.XMLUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -52,10 +53,11 @@ public class AirBookResponseTransformer {
      */
     private Element parseFlightSegment(Element rootElement, AirBookResponseVO airBookResponseVO) {
         String xpath = "AirReservation/AirItinerary/FlightSegments/FlightSegment";
-        List<Element> list = rootElement.selectNodes(xpath);
+        List<Node> list = rootElement.selectNodes(xpath);
         if (list != null) {
             List<FlightSegmentVO> flightSegmentVOList = Lists.newArrayList();
-            for (Element element : list) {
+            list.parallelStream().forEach(item ->{
+                Element element = (Element) item;
                 FlightSegmentVO flightSegmentVO = new FlightSegmentVO();
                 flightSegmentVO.setDepartureDateTime(element.attributeValue("DepartureDateTime"));
                 flightSegmentVO.setArrivalDateTime(element.attributeValue("ArrivalDateTime"));
@@ -69,7 +71,7 @@ public class AirBookResponseTransformer {
                 flightSegmentVO.setMarketingAirline(element.element("MarketingAirline").attributeValue("Code"));
                 flightSegmentVO.setResBookDesigCode(element.element("BookingClassAvail").attributeValue("ResBookDesigCode"));
                 flightSegmentVOList.add(flightSegmentVO);
-            }
+            });
             airBookResponseVO.setFlightSegmentList(flightSegmentVOList);
         }
         return rootElement;

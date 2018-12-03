@@ -15,6 +15,7 @@ import com.sparrow.integration.handler.ValidationHandler;
 import com.sparrow.utils.*;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,12 +60,13 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
     }
 
     private AirBookResponse parseResponseResult(AirBookRequest request) {
-        AirBookResponse result = null;
+        AirBookResponse result = new AirBookResponse();
+        result.setRequestId(request.getRequestId());
+
         Document document = XMLUtils.getInstance().readXmlFile(getResponseResult(request));
         if (document != null) {
             result = buildResponseObject(document.getRootElement());
         } else {
-            result = new AirBookResponse();
             List<DefaultError> errorList = new ArrayList<DefaultError>();
             DefaultError error = new DefaultError();
             IBEError errorEnum = IBEError.SYSTEM_ERROR_001;
@@ -80,8 +82,9 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
 
     private List<DefaultError> buildErrorObject(Element rootElement) {
         List<DefaultError> result = new ArrayList<DefaultError>();
-        List<Element> errorList = rootElement.selectNodes("Errors/Error");
-        for (Element element : errorList) {
+        List<Node> errorList = rootElement.selectNodes("Errors/Error");
+        errorList.forEach(item ->{
+            Element element = (Element) item;
             DefaultError error = new DefaultError();
             String code = element.attributeValue("Code");
             error.setCode(code);
@@ -90,15 +93,16 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
             error.setCnMessage(StringUtils.ibeMessage(code));
 
             result.add(error);
-        }
+        });
 
         return result;
     }
 
     private List<DefaultWarning> buildWarningObject(Element rootElement) {
         List<DefaultWarning> result = new ArrayList<DefaultWarning>();
-        List<Element> warningList = rootElement.selectNodes("Warnings/Warning");
-        for (Element element : warningList) {
+        List<Node> warningList = rootElement.selectNodes("Warnings/Warning");
+        warningList.forEach(item ->{
+            Element element = (Element) item;
             DefaultWarning error = new DefaultWarning();
             String code = element.attributeValue("Code");
             error.setCode(code);
@@ -107,7 +111,7 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
             error.setCnMessage(StringUtils.ibeMessage(code));
 
             result.add(error);
-        }
+        });
 
         return result;
     }
@@ -116,15 +120,17 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
         AirBookResponse result = new AirBookResponse();
 
         List<AirReservation> airRerservationList = new ArrayList<AirReservation>();
-        List<Element> arList = rootElement.selectNodes("/OTA_AirBookRS/AirReservation");
-        for (Element element : arList) {
+        List<Node> arList = rootElement.selectNodes("/OTA_AirBookRS/AirReservation");
+        arList.forEach(item ->{
+            Element element = (Element) item;
             AirReservation airReservation = new AirReservation();
             airReservation.setFlightSegmentList(buildFlightSegmentObject(element));
-			airReservation.setTravelerNameList(getTravelerNameList(element));
-			airReservation.setBookingReferenceIDList(buildBookingReferenceIDObject(element));
-			airReservation.setCommentList(buildCommentObject(element));
+            airReservation.setTravelerNameList(getTravelerNameList(element));
+            airReservation.setBookingReferenceIDList(buildBookingReferenceIDObject(element));
+            airReservation.setCommentList(buildCommentObject(element));
             airRerservationList.add(airReservation);
-        }
+        });
+
         result.setAirReservationList(airRerservationList);
         result.setErrorList(buildErrorObject(rootElement));
         result.setWarningList(buildWarningObject(rootElement));
@@ -135,8 +141,9 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
     private List<FlightSegment> buildFlightSegmentObject(Element arElement) {
         List<FlightSegment> result = new ArrayList<FlightSegment>();
 
-        List<Element> fsList = arElement.selectNodes("AirItinerary/FlightSegments/FlightSegment");
-        for (Element element : fsList) {
+        List<Node> fsList = arElement.selectNodes("AirItinerary/FlightSegments/FlightSegment");
+        fsList.forEach(item ->{
+            Element element = (Element) item;
             FlightSegment fs = new FlightSegment();
             fs.setDepartureDateTime(element.attributeValue("DepartureDateTime"));
             fs.setFlightNumber(element.attributeValue("FlightNumber"));
@@ -176,30 +183,34 @@ public class AirBookDao implements IntegrationDao<AirBookRequest> {
             }
 
             result.add(fs);
-        }
+        });
 
         return result;
     }
 
     private List<String> getTravelerNameList(Element arElement) {
         List<String> result = new ArrayList<String>();
-        List<Element> fsList = arElement.selectNodes("TravelerInfo/AirTraveler");
-        for (Element element : fsList) {
+        List<Node> fsList = arElement.selectNodes("TravelerInfo/AirTraveler");
+        fsList.forEach(item -> {
+            Element element = (Element) item;
             String travelerName = element.selectSingleNode("PersonName/Surname").getText();
             result.add(travelerName);
-        }
+        });
+
         return result;
     }
 
     private List<BookingReferenceID> buildBookingReferenceIDObject(Element arElement) {
         List<BookingReferenceID> result = new ArrayList<BookingReferenceID>();
-        List<Element> fsList = arElement.selectNodes("BookingReferenceID");
-        for (Element element : fsList) {
+        List<Node> fsList = arElement.selectNodes("BookingReferenceID");
+        fsList.forEach(item ->{
+            Element element = (Element) item;
             BookingReferenceID br = new BookingReferenceID();
             br.setId(element.attributeValue("ID"));
             br.setIdContext(element.attributeValue("ID_Context"));
             result.add(br);
-        }
+        });
+
         return result;
     }
 

@@ -107,7 +107,7 @@ public class XMLUtils {
     }
 
     public String elementText(Element element, String subElementName) {
-        return StringUtils.defaultValue(element.elementText(subElementName));
+        return org.apache.commons.lang3.StringUtils.defaultString(element.elementText(subElementName));
     }
 
     /**
@@ -144,7 +144,7 @@ public class XMLUtils {
      * @param id
      * @return
      */
-    public List<Element> getDestElements(Map<String, String> xmlMap, Document doc, String id) {
+    public List<Node> getDestElements(Map<String, String> xmlMap, Document doc, String id) {
         // 要获取哪个节点，改这里就可以了
         XPath xpath = doc.createXPath(id);
         xpath.setNamespaceURIs(xmlMap);
@@ -157,7 +157,7 @@ public class XMLUtils {
      * @author wangjc
      * @date 2014-8-24
      */
-    public List<Element> getDestElements(Map<String, String> nsMap, Element element, String id) {
+    public List<Node> getDestElements(Map<String, String> nsMap, Element element, String id) {
         // 要获取哪个节点，改这里就可以了
         XPath xpath = element.createXPath(id);
         xpath.setNamespaceURIs(nsMap);
