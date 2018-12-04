@@ -1,6 +1,7 @@
 package com.sparrow.stockgarden.mysql.model;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,14 +14,17 @@ import java.util.Date;
  *         date: 2018/11/06 17:27
  *         description:
  */
+@Data
+@EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(name = "t_briefing_customized_file")
-public class BriefingCustomizedFile {
+public class BriefingCustomizedFile extends Entitys {
+
     /**
      *
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * 文件夹id
@@ -63,10 +67,6 @@ public class BriefingCustomizedFile {
      */
     private String suffixName;
     /**
-     * 创建时间
-     */
-    private Date createdTime;
-    /**
      * 删除状态：1已删除 0未删除
      */
     private Integer deleteState;
@@ -74,131 +74,16 @@ public class BriefingCustomizedFile {
      * 创建人id
      */
     private Long creatorId;
+    /**
+     * 创建时间
+     */
+    @Column(nullable = false)
+    private Date createdDate;
+    /**
+     * 修改时间
+     */
+    @Column(nullable = false)
+    private Date modifiedDate;
     @Transient
     private String creator;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getFolderId() {
-        return folderId;
-    }
-
-    public void setFolderId(Long folderId) {
-        this.folderId = folderId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Date getBriefingDate() {
-        return briefingDate;
-    }
-
-    public void setBriefingDate(Date briefingDate) {
-        this.briefingDate = briefingDate;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
-    public Double getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(Double fileSize) {
-        this.fileSize = fileSize;
-    }
-
-    public String getFileMd5() {
-        return fileMd5;
-    }
-
-    public void setFileMd5(String fileMd5) {
-        this.fileMd5 = fileMd5;
-    }
-
-    public String getFullFileName() {
-        return fullFileName;
-    }
-
-    public void setFullFileName(String fullFileName) {
-        this.fullFileName = fullFileName;
-    }
-
-    public String getOriginalFileName() {
-        return originalFileName;
-    }
-
-    public void setOriginalFileName(String originalFileName) {
-        this.originalFileName = originalFileName;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getSuffixName() {
-        return suffixName;
-    }
-
-    public void setSuffixName(String suffixName) {
-        this.suffixName = suffixName;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public Integer getDeleteState() {
-        return deleteState;
-    }
-
-    public void setDeleteState(Integer deleteState) {
-        this.deleteState = deleteState;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 }
