@@ -7,7 +7,11 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 
 /**
- * @author wangjianchun
+ * <p>Title: MyImplicitNamingStrategy</p>
+ * <p>Description: </p>
+ *
+ * @author wjc
+ * @date 2018/12/5
  */
 public class MyImplicitNamingStrategy extends ImplicitNamingStrategyJpaCompliantImpl implements ImplicitNamingStrategy {
     /**

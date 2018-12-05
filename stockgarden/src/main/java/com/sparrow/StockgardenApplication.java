@@ -8,6 +8,13 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * <p>Title: StockgardenApplication</p>
+ * <p>Description: 项目启动类</p>
+ *
+ * @author wjc
+ * @date 2018/12/5
+ */
 @SpringBootApplication
 @EnableScheduling
 @EnableTransactionManagement

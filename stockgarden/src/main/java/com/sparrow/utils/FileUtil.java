@@ -22,14 +22,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 文件操作工具类
+ * <p>Title: FileUtil</p>
+ * <p>Description: 文件操作工具类</p>
  *
- * @author wangjianchun
- * @date 2018-7-4
+ * @author wjc
+ * @date 2018/12/5
  */
-public class FileUtils {
+public class FileUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     public static void writeFile(String filePath, String content) {
         if (StringUtils.isEmpty(filePath)) {
@@ -135,7 +136,7 @@ public class FileUtils {
     public static void modifyFilePermission(File file) {
         if (!file.exists()) {
             file.mkdirs();
-            if (!com.sparrow.utils.StringUtils.isWindows()) {
+            if (!com.sparrow.utils.StringUtil.isWindows()) {
                 //如果不是windows系统，需要修改文件权限
                 try {
                     Runtime.getRuntime().exec("sudo chmod 777 " + file.getAbsolutePath());
@@ -157,7 +158,7 @@ public class FileUtils {
 
         BufferedReader br = null;
         try {
-            InputStream inputStream = FileUtils.class.getResource("/" + fileName).openStream();
+            InputStream inputStream = FileUtil.class.getResource("/" + fileName).openStream();
             br = new BufferedReader(new InputStreamReader(inputStream, SysConst.ENCODING_UTF_8));
             String line;
             while ((line = br.readLine()) != null) {
@@ -182,7 +183,7 @@ public class FileUtils {
 
         BufferedReader br = null;
         try {
-            InputStream inputStream = FileUtils.class.getResource("/" + fileName).openStream();
+            InputStream inputStream = FileUtil.class.getResource("/" + fileName).openStream();
             br = new BufferedReader(new InputStreamReader(inputStream, SysConst.ENCODING_UTF_8));
             String line;
             while ((line = br.readLine()) != null) {
@@ -456,7 +457,7 @@ public class FileUtils {
             }
 
             String encodedFileName = new String(fileName.getBytes(), SysConst.ENCODING_ISO_8859_1);
-            if (com.sparrow.utils.StringUtils.isIE(request)) {
+            if (com.sparrow.utils.StringUtil.isIE(request)) {
                 encodedFileName = URLEncoder.encode(fileName, SysConst.ENCODING_UTF_8);
             }
 
@@ -474,10 +475,10 @@ public class FileUtils {
             bos.flush();
 
             logger.info("文件下载完毕！");
-        }catch (IOException e){
+        } catch (IOException e) {
             logger.error("下载文件出错", e);
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             close(bis);
             close(bos);
         }

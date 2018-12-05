@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created with IntelliJ IDEA.
+ * <p>Title: UserServiceImpl</p>
+ * <p>Description: </p>
  *
- * @author zhang tong
- * date: 2018/11/06 17:27
- * description:
+ * @author wjc
+ * @date 2018/12/5
  */
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
@@ -24,5 +24,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).get();
+    }
+
+    @Override
+    public User getByName(String username) {
+        return null;
     }
 }

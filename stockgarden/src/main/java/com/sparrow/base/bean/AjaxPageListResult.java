@@ -1,15 +1,14 @@
 package com.sparrow.base.bean;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 /**
- * @author wangjianchun
+ * <p>Title: AjaxPageListResult</p>
+ * <p>Description: </p>
+ *
+ * @author wjc
+ * @date 2018/12/5
  */
 public class AjaxPageListResult extends BaseAjaxResult {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -7921353326639739527L;
     private int pageNumber;
     private int pageSize;
@@ -86,11 +85,6 @@ public class AjaxPageListResult extends BaseAjaxResult {
         } else {
             return 0;
         }
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
 }

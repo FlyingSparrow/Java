@@ -14,13 +14,13 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * <p>Title: DateUtils</p>
+ * <p>Title: DateUtil</p>
  * <p>Description: 日期工具类</p>
  *
  * @author wjc
  * @date 2017年4月6日
  */
-public class DateUtils {
+public class DateUtil {
 
     public static final String DATE_FORMAT_SIMPLE = "MM-dd HH:mm";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -32,7 +32,7 @@ public class DateUtils {
     public static final String DATE_MINUTE_FORMAT = "yyyy-MM-dd HH:mm";
     public static final String CN_DATE_FORMAT = "yyyy年MM月dd日";
 
-    private DateUtils() {
+    private DateUtil() {
     }
 
     /**
@@ -338,8 +338,7 @@ public class DateUtils {
      * @date 2017年1月10日
      */
     public static Date currentDate() {
-        DateTime now = new DateTime();
-        return now.toDate();
+        return DateTime.now().toDate();
     }
 
     public static int getYearOfDate(Date date) {
@@ -417,7 +416,7 @@ public class DateUtils {
      * @param date 日期对象
      * @param day  增加的天数，可以为负数
      * @return
-     * @author Wangjianchun
+     * @author wjc
      * @date 2017年8月18日
      */
     public static Date dateAddDay(Date date, Integer day) {
@@ -473,7 +472,7 @@ public class DateUtils {
      * @param dateFields 日期字段（DateFields枚举类的值）
      * @param value      需要增加的数值
      * @return 新的日期对象的副本
-     * @author Wangjianchun
+     * @author wjc
      * @date 2017年7月27日
      */
     public static Date plus(Date date, DateFields dateFields, int value) {
@@ -517,7 +516,7 @@ public class DateUtils {
      * <p>Title: DateFields</p>
      * <p>Description: 日期字段枚举类，包含常用的日期字段：年、月、日、周、时、分、秒</p>
      *
-     * @author Wangjianchun
+     * @author wjc
      * @date 2017年7月27日
      */
     public enum DateFields {
@@ -532,7 +531,7 @@ public class DateUtils {
      *
      * @param startDate
      * @param endDate
-     * @author Wangjianchun
+     * @author wjc
      * @date 2017年7月27日
      */
     public static List<Date> dateRange(Date startDate, Date endDate) {
@@ -553,7 +552,7 @@ public class DateUtils {
      *
      * @param startDate
      * @param endDate
-     * @author Wangjianchun
+     * @author wjc
      * @date 2017年7月27日
      */
     public static List<String> dateList(Date startDate, Date endDate) {

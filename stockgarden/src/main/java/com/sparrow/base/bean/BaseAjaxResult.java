@@ -1,11 +1,13 @@
 package com.sparrow.base.bean;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import java.io.Serializable;
 
 /**
- * @author wangjianchun
+ * <p>Title: BaseAjaxResult</p>
+ * <p>Description: </p>
+ *
+ * @author wjc
+ * @date 2018/12/5
  */
 public class BaseAjaxResult implements Serializable {
 
@@ -37,11 +39,6 @@ public class BaseAjaxResult implements Serializable {
 
     public boolean isSuccess() {
         return (getStatus() == 0);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
 }

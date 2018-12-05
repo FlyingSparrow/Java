@@ -3,8 +3,11 @@ package com.sparrow.base.vo;
 import java.io.File;
 
 /**
- * @author zhangtong
- *         Created by on 2017/11/28
+ * <p>Title: UploadFile</p>
+ * <p>Description: </p>
+ *
+ * @author wjc
+ * @date 2018/12/5
  */
 public class UploadFile {
     /**

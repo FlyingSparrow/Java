@@ -7,14 +7,15 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * 字符串工具类
+ * <p>Title: StringUtil</p>
+ * <p>Description: 字符串工具类</p>
  *
- * @author wangjianchun
- * @date 2018-7-4
+ * @author wjc
+ * @date 2018/12/5
  */
-public class StringUtils {
+public class StringUtil {
 
-    private StringUtils() {
+    private StringUtil() {
     }
 
     public static boolean isEmpty(String arg) {
@@ -100,8 +101,8 @@ public class StringUtils {
         if(birthDate == null){
             return 0;
         }
-        int currentYear = DateUtils.getYearOfDate(DateUtils.currentDate());
-        int yearOfBirthDate = DateUtils.getYearOfDate(birthDate);
+        int currentYear = DateUtil.getYearOfDate(DateUtil.currentDate());
+        int yearOfBirthDate = DateUtil.getYearOfDate(birthDate);
 
         return (currentYear - yearOfBirthDate);
     }

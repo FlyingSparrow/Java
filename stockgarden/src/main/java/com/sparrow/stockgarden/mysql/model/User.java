@@ -5,15 +5,20 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
+ * <p>Title: User</p>
+ * <p>Description: </p>
  *
+ * @author wjc
+ * @date 2018/12/5
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(name = "t_user")
-public class User extends Entitys {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,6 +83,10 @@ public class User extends Entitys {
      */
     @Column(nullable = false)
     private Date modifiedDate;
+    @Transient
+    private Set<Role> roles;
 
-
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }

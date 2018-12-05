@@ -1,9 +1,11 @@
 package com.sparrow.base.bean;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 /**
- * @author wangjianchun
+ * <p>Title: AjaxResult</p>
+ * <p>Description: </p>
+ *
+ * @author wjc
+ * @date 2018/12/5
  */
 public class AjaxResult extends BaseAjaxResult {
 
@@ -44,11 +46,6 @@ public class AjaxResult extends BaseAjaxResult {
         result.setStatus(status);
         result.setMessage(message);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
 }

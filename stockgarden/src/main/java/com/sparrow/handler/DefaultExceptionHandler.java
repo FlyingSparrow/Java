@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * <p>Description: 统一的异常处理器</p>
  *
  * @author wjc
- * @date 2017年6月20日
+ * @date 2018/12/5
  */
 @ControllerAdvice
 public class DefaultExceptionHandler {

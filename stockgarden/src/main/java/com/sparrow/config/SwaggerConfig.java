@@ -12,9 +12,11 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * SwaggerConfig
+ * <p>Title: SwaggerConfig</p>
+ * <p>Description: </p>
  *
- * @author wangjianchun
+ * @author wjc
+ * @date 2018/12/5
  */
 @Configuration
 @EnableSwagger2

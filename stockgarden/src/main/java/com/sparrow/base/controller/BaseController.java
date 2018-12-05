@@ -4,7 +4,7 @@ import com.sparrow.base.bean.AjaxResult;
 import com.sparrow.constants.SysConst;
 import com.sparrow.stockgarden.mysql.model.User;
 import com.sparrow.utils.Des3EncryptionUtil;
-import com.sparrow.utils.MD5Util;
+import com.sparrow.utils.Md5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  * <p>Description: 提供公共接口方法的基础控制器类</p>
  *
  * @author wjc
- * @date 2017年1月5日
+ * @date 2018/12/5
  */
 public abstract class BaseController {
 
@@ -46,11 +46,7 @@ public abstract class BaseController {
     }
 
     protected User getUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("Sparrow");
-        return user;
-//        return (User) getSession().getAttribute(SysConst.LOGIN_SESSION_KEY);
+        return (User) getSession().getAttribute(SysConst.LOGIN_SESSION_KEY);
     }
 
     protected long getUserId() {
@@ -82,7 +78,7 @@ public abstract class BaseController {
 
     protected String getPwd(String password) {
         try {
-            String pwd = MD5Util.encrypt(password + SysConst.PASSWORD_KEY);
+            String pwd = Md5Util.encrypt(password + SysConst.PASSWORD_KEY);
             return pwd;
         } catch (Exception e) {
             logger.error("密码加密异常：", e);

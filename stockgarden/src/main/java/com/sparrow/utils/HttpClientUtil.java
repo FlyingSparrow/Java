@@ -1,6 +1,7 @@
 package com.sparrow.utils;
 
 import com.sparrow.constants.SysConst;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
@@ -28,16 +29,17 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * HTTP 操作工具类
+ * <p>Title: HttpClientUtil</p>
+ * <p>Description: HTTP 操作工具类</p>
  *
- * @author wangjianchun
- * @date 2018-7-4
+ * @author wjc
+ * @date 2018/12/5
  */
-public class HttpClientUtils {
+public class HttpClientUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 
-    private static final HttpClientUtils INSTANCE = new HttpClientUtils();
+    private static final HttpClientUtil INSTANCE = new HttpClientUtil();
 
     /**
      * setConnectTimeout 设置连接超时时间
@@ -57,10 +59,10 @@ public class HttpClientUtils {
      */
     private static final int MAX_RETRY = 3;
 
-    private HttpClientUtils() {
+    private HttpClientUtil() {
     }
 
-    public static HttpClientUtils getInstance() {
+    public static HttpClientUtil getInstance() {
         return INSTANCE;
     }
 
@@ -145,9 +147,9 @@ public class HttpClientUtils {
             logger.error("执行 Http 请求出错", e);
             throw new RuntimeException(e);
         }finally {
-            FileUtils.close(out);
-            FileUtils.close(is);
-            FileUtils.close(br);
+            FileUtil.close(out);
+            FileUtil.close(is);
+            FileUtil.close(br);
             close(response);
             close(httpClient);
         }

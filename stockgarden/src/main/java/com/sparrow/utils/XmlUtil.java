@@ -1,6 +1,7 @@
 package com.sparrow.utils;
 
 import com.sparrow.constants.SysConst;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -16,24 +17,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * XML 操作工具类
+ * <p>Title: XmlUtil</p>
+ * <p>Description: XML 操作工具类</p>
  *
- * @author wangjianchun
- * @date 2018-7-4
+ * @author wjc
+ * @date 2018/12/5
  */
-public class XMLUtils {
+public class XmlUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(XMLUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(XmlUtil.class);
 
-    private static class XMLUtilHolder {
-        private static final XMLUtils INSTANCE = new XMLUtils();
+    private static class XmlUtilHolder {
+        private static final XmlUtil INSTANCE = new XmlUtil();
     }
 
-    public static XMLUtils getInstance() {
-        return XMLUtilHolder.INSTANCE;
+    public static XmlUtil getInstance() {
+        return XmlUtilHolder.INSTANCE;
     }
 
-    private XMLUtils() {
+    private XmlUtil() {
     }
 
     /**
@@ -107,7 +109,7 @@ public class XMLUtils {
     }
 
     public String elementText(Element element, String subElementName) {
-        return StringUtils.defaultValue(element.elementText(subElementName));
+        return StringUtil.defaultValue(element.elementText(subElementName));
     }
 
     /**

@@ -3,14 +3,15 @@ package com.sparrow.stockgarden.mysql.service;
 import com.sparrow.stockgarden.mysql.model.User;
 
 /**
- * Created with IntelliJ IDEA.
+ * <p>Title: UserService</p>
+ * <p>Description: </p>
  *
- * @author zhang tong
- * date: 2018/11/06 17:27
- * description:
+ * @author wjc
+ * @date 2018/12/5
  */
 public interface UserService {
 
     User findById(Long id);
 
+    User getByName(String username);
 }

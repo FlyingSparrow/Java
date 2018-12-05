@@ -18,7 +18,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(name = "t_briefing_customized_folder")
-public class BriefingCustomizedFolder extends Entitys {
+public class BriefingCustomizedFolder extends BaseEntity {
 
     /**
      *

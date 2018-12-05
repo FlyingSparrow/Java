@@ -5,7 +5,11 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 
 /**
- * @author wangjianchun
+ * <p>Title: ImprovedNamingStrategy</p>
+ * <p>Description: </p>
+ *
+ * @author wjc
+ * @date 2018/12/5
  */
 public class ImprovedNamingStrategy extends SpringPhysicalNamingStrategy {
 
