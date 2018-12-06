@@ -16,4 +16,10 @@ public interface UserService {
     User getByName(String username);
 
     User findByUsernameOrEmail(String username, String email);
+
+    User findByEmail(String email);
+
+    User findByUsername(String username);
+
+    boolean save(User entity);
 }

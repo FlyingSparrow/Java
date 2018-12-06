@@ -26,62 +26,62 @@ public class User extends BaseEntity {
     /**
      * 用户名
      */
-    @Column(nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
     /**
      * 密码
      */
-    @Column(nullable = false)
+    @Column(name = "c_password", nullable = false)
     private String password;
     /**
      * 电子邮箱
      */
-    @Column(nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
     /**
      * 个人头像
      */
-    @Column
+    @Column(name = "profile_picture")
     private String profilePicture;
     /**
      * 背景图片
      */
-    @Column
+    @Column(name = "background_picture")
     private String backgroundPicture;
     /**
      * 个人介绍
      */
-    @Column
+    @Column(name = "introduction")
     private String introduction;
     /**
      * 过期时间
      */
-    @Column
+    @Column(name = "out_date")
     private Date outDate;
     /**
      * 状态（1:正常,2:冻结,3:删除）
      */
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     private Integer status;
     /**
      * 密码盐
      */
-    @Column
+    @Column(name = "salt")
     private String salt;
     /**
      * 验证码
      */
-    @Column
-    private String validataCode;
+    @Column(name = "verification_code")
+    private String verificationCode;
     /**
      * 创建时间
      */
-    @Column(nullable = false)
+    @Column(name = "created_date", nullable = false)
     private Date createdDate;
     /**
      * 修改时间
      */
-    @Column(nullable = false)
+    @Column(name = "modified_date", nullable = false)
     private Date modifiedDate;
     @Transient
     private Set<Role> roles;

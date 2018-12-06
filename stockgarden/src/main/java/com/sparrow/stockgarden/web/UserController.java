@@ -6,6 +6,7 @@ import com.sparrow.base.controller.BaseController;
 import com.sparrow.constants.SysConst;
 import com.sparrow.stockgarden.mysql.model.User;
 import com.sparrow.stockgarden.mysql.service.UserService;
+import com.sparrow.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -77,37 +78,33 @@ public class UserController extends BaseController {
         return failure("login failed");
     }
 
-	/*@RequestMapping(value = "/regist", method = RequestMethod.POST)
-    @LoggerManage(description="注册")
-	public Response create(User user) {
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public AjaxResult create(User user) {
 		try {
-			User registUser = userRepository.findByEmail(user.getEmail());
-			if (null != registUser) {
-				return result(ExceptionMsg.EmailUsed);
+			User registerUser = userService.findByEmail(user.getEmail());
+			if (null != registerUser) {
+				return failure("该邮箱已被注册");
 			}
-			User userNameUser = userRepository.findByUserName(user.getUserName());
+			User userNameUser = userService.findByUsername(user.getUsername());
 			if (null != userNameUser) {
-				return result(ExceptionMsg.UserNameUsed);
+				return failure("该登录名称已存在");
 			}
-			user.setPassWord(getPwd(user.getPassWord()));
-			user.setCreateTime(DateUtils.getCurrentTime());
-			user.setLastModifyTime(DateUtils.getCurrentTime());
+			user.setPassword(getPwd(user.getPassword()));
+			user.setCreatedDate(DateUtil.currentDate());
+			user.setModifiedDate(DateUtil.currentDate());
 			user.setProfilePicture("img/favicon.png");
-			userRepository.save(user);
-			// 添加默认收藏夹
-			Favorites favorites = favoritesService.saveFavorites(user.getId(), "未读列表");
-			// 添加默认属性设置
-			configService.saveConfig(user.getId(),String.valueOf(favorites.getId()));	
+			user.setStatus(SysConst.UserStatus.NORMAL.getCode());
+            userService.save(user);
 			getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
+
+            return success();
 		} catch (Exception e) {
-			// TODO: handle exception
 			logger.error("create user failed, ", e);
-			return result(ExceptionMsg.FAILED);
 		}
-		return result();
+        return failure();
 	}
 
-	@RequestMapping(value = "/getFavorites", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/getFavorites", method = RequestMethod.POST)
 	@LoggerManage(description="获取收藏夹")
 	public List<Favorites> getFavorites() {
 		List<Favorites> favorites = null;
@@ -184,7 +181,7 @@ public class UserController extends BaseController {
 //            String basePath = this.getRequest().getScheme() + "://" + this.getRequest().getServerName() + ":" + this.getRequest().getServerPort() + this.getRequest().getContextPath() + "/newPassword";
             String resetPassHref = forgotpasswordUrl + "?sid="
                     + digitalSignature +"&email="+email;
-            String emailContent = MessageUtil.getMessage(mailContent, resetPassHref);					
+            String emailContent = MessageUtil.getMessage(mailContent, resetPassHref);
 	        MimeMessage mimeMessage = mailSender.createMimeMessage();	        
 	        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 	        helper.setFrom(mailFrom);

@@ -35,4 +35,20 @@ public class UserServiceImpl implements UserService {
     public User findByUsernameOrEmail(String username, String email) {
         return userRepository.findByUsernameOrEmail(username, email);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public boolean save(User entity) {
+        userRepository.save(entity);
+        return true;
+    }
 }

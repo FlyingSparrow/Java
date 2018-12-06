@@ -56,4 +56,30 @@ public class SysConst {
         }
     }
 
+    /**
+     * 用户状态枚举类
+     */
+    public enum UserStatus {
+
+        NORMAL(1, "正常"),
+        FROZEN(2, "冻结"),
+        DELETED(3, "删除");
+
+        private Integer code;
+        private String description;
+
+        UserStatus(Integer code, String description) {
+            this.code = code;
+            this.description = description;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
 }

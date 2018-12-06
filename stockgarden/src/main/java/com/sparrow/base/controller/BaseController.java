@@ -25,8 +25,16 @@ public abstract class BaseController {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+    protected AjaxResult success() {
+        return AjaxResult.success("success");
+    }
+
     protected AjaxResult success(Object data) {
         return AjaxResult.success(data);
+    }
+
+    protected AjaxResult failure() {
+        return AjaxResult.failure("failure");
     }
 
     protected AjaxResult failure(String message) {
