@@ -86,8 +86,7 @@ public class IndexController extends BaseController {
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
-//		IndexCollectorView indexCollectorView = collectorService.getCollectors();
-//		model.addAttribute("collector",indexCollectorView);
+
         return "index";
     }
 

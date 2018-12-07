@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:fragment="htmlhead">
     <meta charset="utf-8"></meta>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
@@ -9,7 +9,7 @@
     <meta name="author" content=""></meta>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
     <link rel="icon" href="/img/icon.ico" type="image/x-icon" />
-    <title >云收藏 | 让收藏更简单</title>
+    <title >Stock Garden</title>
     <link rel="stylesheet" th:href="@{/vendor/fontawesome/css/font-awesome.min.css}" />
     <link rel="stylesheet" th:href="@{/vendor/simple-line-icons/css/simple-line-icons.css}"/>
     <link rel="stylesheet" th:href="@{/vendor/animate.css/animate.min.css}"/>
@@ -27,9 +27,11 @@
     <div th:replace="fragments/footer :: footer">footer</div>
 </div>
 <div th:replace="fragments/alert :: alert">alert</div>
+
 <script type="text/javascript" src="/webjarslocator/jquery/jquery.min.js"></script>
+<script th:src="@{/vendor/jquery/dist/jquery.min.js}"></script>
 <script th:src="@{/vendor/jquery.from/jquery.from.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/3.3.6/dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/dist/js/bootstrap.min.js}"></script>
 <script th:src="@{/vendor/modernizr/modernizr.custom.js}" ></script>
 <script th:src="@{/vendor/jQuery-Storage-API/jquery.storageapi.js}" ></script>
 <script th:src="@{/media/js/app.js}" ></script>
@@ -48,7 +50,7 @@
 		  }else{
 			  locationUrl('/tool','tool');
 		  }
-	    var config = /*[[${config}]]*/;
+	    var config = /*[[${config}]]*/null;
 		if(null != config){
 			$("#layoutConfigId").val(config.id);
 		}

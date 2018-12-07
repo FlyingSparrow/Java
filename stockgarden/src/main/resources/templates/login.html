@@ -97,7 +97,9 @@
                     password: $('#password').val()
                 },
                 success: function (result) {
-                    if (!result.success) {
+                    if (result.success) {
+                        window.open(result.data, '_self');
+                    }else{
                         $("#errorMsg").html(result.message);
                         $("#errorMsg").show();
                     }
