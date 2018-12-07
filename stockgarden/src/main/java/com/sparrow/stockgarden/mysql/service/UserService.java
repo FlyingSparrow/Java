@@ -1,6 +1,7 @@
 package com.sparrow.stockgarden.mysql.service;
 
 import com.sparrow.stockgarden.mysql.model.User;
+import org.springframework.data.repository.query.Param;
 
 /**
  * <p>Title: UserService</p>
@@ -22,4 +23,6 @@ public interface UserService {
     User findByUsername(String username);
 
     boolean save(User entity);
+
+    boolean setNewPassword(@Param("password") String password, @Param("email") String email);
 }

@@ -51,4 +51,10 @@ public class UserServiceImpl implements UserService {
         userRepository.save(entity);
         return true;
     }
+
+    @Override
+    public boolean setNewPassword(String password, String email) {
+        userRepository.setNewPassword(password, email);
+        return true;
+    }
 }

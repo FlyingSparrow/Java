@@ -7,6 +7,7 @@ import com.sparrow.constants.SysConst;
 import com.sparrow.stockgarden.mysql.model.User;
 import com.sparrow.stockgarden.mysql.service.UserService;
 import com.sparrow.utils.DateUtil;
+import com.sparrow.utils.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,63 +46,53 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public AjaxResult login(User user, HttpServletResponse response) {
-        try {
-            User loginUser = userService.findByUsernameOrEmail(user.getUsername(), user.getUsername());
-            if (loginUser == null) {
-                return failure("该用户未注册");
-            } else if (!loginUser.getPassword().equals(getPwd(user.getPassword()))) {
-                return failure("用户名或者密码错误！");
-            }
-            Cookie cookie = new Cookie(SysConst.LOGIN_SESSION_KEY, cookieSign(loginUser.getId().toString()));
-            cookie.setMaxAge(SysConst.COOKIE_TIMEOUT);
-            cookie.setPath("/");
-            response.addCookie(cookie);
-            getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, loginUser);
-            String preUrl = "/";
-            if (null != getSession().getAttribute(SysConst.LAST_REFERER)) {
-                preUrl = String.valueOf(getSession().getAttribute(SysConst.LAST_REFERER));
-                if (preUrl.indexOf("/collect?") < 0 && preUrl.indexOf("/lookAround/standard/") < 0
-                        && preUrl.indexOf("/lookAround/simple/") < 0) {
-                    preUrl = "/";
-                }
-            }
-            if (preUrl.indexOf("/lookAround/standard/") >= 0) {
-                preUrl = "/lookAround/standard/ALL";
-            }
-            if (preUrl.indexOf("/lookAround/simple/") >= 0) {
-                preUrl = "/lookAround/simple/ALL";
-            }
-            return success(preUrl);
-        } catch (Exception e) {
-            logger.error("login failed, ", e);
+        User loginUser = userService.findByUsernameOrEmail(user.getUsername(), user.getUsername());
+        if (loginUser == null) {
+            return failure("该用户未注册");
+        } else if (!loginUser.getPassword().equals(getPwd(user.getPassword()))) {
+            return failure("用户名或者密码错误！");
         }
-        return failure("login failed");
+        Cookie cookie = new Cookie(SysConst.LOGIN_SESSION_KEY, cookieSign(loginUser.getId().toString()));
+        cookie.setMaxAge(SysConst.COOKIE_TIMEOUT);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, loginUser);
+        String preUrl = "/";
+        if (null != getSession().getAttribute(SysConst.LAST_REFERER)) {
+            preUrl = String.valueOf(getSession().getAttribute(SysConst.LAST_REFERER));
+            if (preUrl.indexOf("/collect?") < 0 && preUrl.indexOf("/lookAround/standard/") < 0
+                    && preUrl.indexOf("/lookAround/simple/") < 0) {
+                preUrl = "/";
+            }
+        }
+        if (preUrl.indexOf("/lookAround/standard/") >= 0) {
+            preUrl = "/lookAround/standard/ALL";
+        }
+        if (preUrl.indexOf("/lookAround/simple/") >= 0) {
+            preUrl = "/lookAround/simple/ALL";
+        }
+        return success(preUrl);
     }
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public AjaxResult create(User user) {
-		try {
-			User registerUser = userService.findByEmail(user.getEmail());
-			if (null != registerUser) {
-				return failure("该邮箱已被注册");
-			}
-			User userNameUser = userService.findByUsername(user.getUsername());
-			if (null != userNameUser) {
-				return failure("该登录名称已存在");
-			}
-			user.setPassword(getPwd(user.getPassword()));
-			user.setCreatedDate(DateUtil.currentDate());
-			user.setModifiedDate(DateUtil.currentDate());
-			user.setProfilePicture("img/favicon.png");
-			user.setStatus(SysConst.UserStatus.NORMAL.getCode());
-            userService.save(user);
-			getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
+        User registerUser = userService.findByEmail(user.getEmail());
+        if (null != registerUser) {
+            return failure("该邮箱已被注册");
+        }
+        User userNameUser = userService.findByUsername(user.getUsername());
+        if (null != userNameUser) {
+            return failure("该登录名称已存在");
+        }
+        user.setPassword(getPwd(user.getPassword()));
+        user.setCreatedDate(DateUtil.currentDate());
+        user.setModifiedDate(DateUtil.currentDate());
+        user.setProfilePicture("img/favicon.png");
+        user.setStatus(SysConst.UserStatus.NORMAL.getCode());
+        userService.save(user);
+        getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
 
-            return success();
-		} catch (Exception e) {
-			logger.error("create user failed, ", e);
-		}
-        return failure();
+        return success();
 	}
 
 	/*@RequestMapping(value = "/getFavorites", method = RequestMethod.POST)
@@ -203,59 +194,49 @@ public class UserController extends BaseController {
      * @param email
      * @param sid
      * @return
-     *//*
+     */
 	@RequestMapping(value = "/setNewPassword", method = RequestMethod.POST)
-	@LoggerManage(description="设置新密码")
-	public Response setNewPassword(String newpwd, String email, String sid) {
-		try {
-			User user = userRepository.findByEmail(email);
-			Timestamp outDate = Timestamp.valueOf(user.getOutDate());
-			if(outDate.getTime() <= System.currentTimeMillis()){ //表示已经过期
-				return result(ExceptionMsg.LinkOutdated);
-            }
-            String key = user.getEmail()+"$"+outDate.getTime()/1000*1000+"$"+user.getValidataCode();//数字签名
-            String digitalSignature = MD5Util.encrypt(key);
-            if(!digitalSignature.equals(sid)) {
-            	 return result(ExceptionMsg.LinkOutdated);
-            }
-            userRepository.setNewPassword(getPwd(newpwd), email);
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("setNewPassword failed, ", e);
-			return result(ExceptionMsg.FAILED);
-		}
-		return result();
+	public AjaxResult setNewPassword(String newpwd, String email, String sid) {
+        User user = userService.findByEmail(email);
+        long outDateMillis = user.getOutDate().getTime();
+        if(outDateMillis <= System.currentTimeMillis()){
+            //表示已经过期
+            return failure("该链接已过期，请重新请求");
+        }
+        //数字签名
+        String key = user.getEmail()+"$"+outDateMillis/1000*1000+"$"+user.getVerificationCode();
+        String digitalSignature = Md5Util.encrypt(key);
+        if(!digitalSignature.equals(sid)) {
+            return failure("该链接已过期，请重新请求");
+        }
+        userService.setNewPassword(getPwd(newpwd), email);
+
+        return success();
 	}
 	
-	*//**
+	/**
      * 修改密码
      * @param oldPassword
      * @param newPassword
      * @return
-     *//*
+     */
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-	@LoggerManage(description="修改密码")
-	public Response updatePassword(String oldPassword, String newPassword) {
-		try {
-			User user = getUser();
-			String password = user.getPassWord();
-			String newpwd = getPwd(newPassword);
-			if(password.equals(getPwd(oldPassword))){
-				userRepository.setNewPassword(newpwd, user.getEmail());
-				user.setPassWord(newpwd);
-				getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
-			}else{
-				return result(ExceptionMsg.PassWordError);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("updatePassword failed, ", e);
-			return result(ExceptionMsg.FAILED);
-		}
-		return result();
+	public AjaxResult updatePassword(String oldPassword, String newPassword) {
+        User user = getUser();
+        String password = user.getPassword();
+        String newpwd = getPwd(newPassword);
+        if(password.equals(getPwd(oldPassword))){
+            userService.setNewPassword(newpwd, user.getEmail());
+            user.setPassword(newpwd);
+            getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
+
+            return success();
+        }else{
+            return failure("密码输入错误");
+        }
 	}
 	
-	*//**
+	/**
      * 修改个人简介
      * @param introduction
      * @return
@@ -317,7 +298,7 @@ public class UserController extends BaseController {
 		logger.info("执行 上传头像 开始");
 		try { 
 			String filePath=staticUrl+fileProfilepicturesUrl;
-			String fileName=UUID.randomUUID().toString()+".png";
+			String fileName= UUID.randomUUID().toString()+".png";
 			String savePath = fileProfilepicturesUrl+fileName;
 	        String image = dataUrl;      
 	        String header ="data:image";

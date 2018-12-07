@@ -1,12 +1,11 @@
 package com.sparrow.handler;
 
+import com.sparrow.base.bean.BaseAjaxResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * <p>Title: DefaultExceptionHandler</p>
@@ -19,16 +18,16 @@ import javax.servlet.http.HttpServletRequest;
 public class DefaultExceptionHandler {
 
     private final static Logger logger = LoggerFactory.getLogger(DefaultExceptionHandler.class);
-    private static final String DEFAULT_ERROR_VIEW = "error";
 
     @ExceptionHandler(value = Exception.class)
-    public ModelAndView defaultErrorHandler(Exception e, HttpServletRequest request) throws Exception {
-        logger.info("请求地址：" + request.getRequestURL());
-        logger.error("异常信息：", e);
+    @ResponseBody
+    public BaseAjaxResult handle(Exception e){
+        logger.error(e.getMessage(), e);
 
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName(DEFAULT_ERROR_VIEW);
+        BaseAjaxResult result = new BaseAjaxResult();
+        result.setStatus(500);
+        result.setMessage("系统错误，请联系管理员解决");
 
-        return mav;
+        return result;
     }
 }

@@ -334,10 +334,8 @@ function updatePwd() {
 		data : 'oldPassword='+$("#oldPassword").val()+'&newPassword='+$("#newPassword").val(),
 		type : 'POST',
 		dataType : "json",
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
-		},
-		success : function(data, textStatus) {
-			if(data.rspCode == '000000'){
+		success : function(result) {
+			if(result.success){
 				$("#passwordError").hide();
 				$("#updatePwdBtn").attr("aria-hidden","true");
 				$("#updatePwdBtn").attr("data-dismiss","modal");
@@ -345,7 +343,7 @@ function updatePwd() {
 				toastr.success('密码修改成功！', '操作成功');
   	    	}else{
   	    		$("#passwordError").show();
-  	    		$("#passwordError").html(data.rspMsg);
+  	    		$("#passwordError").html(result.message);
   	    		$("#updatePwdBtn").removeAttr("aria-hidden");
 				$("#updatePwdBtn").removeAttr("data-dismiss");
   	    	}
