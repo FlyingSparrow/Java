@@ -32,9 +32,7 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Model model) {
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("Sparrow");
+        User user = getUser();
 
 //		long size= collectRepository.countByUserIdAndIsDelete(getUserId(),IsDelete.NO);
 //		Config config = configRepository.findByUserId(getUserId());

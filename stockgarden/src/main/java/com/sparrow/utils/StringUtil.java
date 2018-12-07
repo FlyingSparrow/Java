@@ -3,8 +3,7 @@ package com.sparrow.utils;
 import com.alibaba.fastjson.JSONArray;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * <p>Title: StringUtil</p>
@@ -113,7 +112,7 @@ public class StringUtil {
      * @author wangjc
      * @date 2014-07-16
      */
-    public static String decode(String content) {
+    public static String decodeHtml(String content) {
         if (content == null) {
             return "";
         } else {
@@ -196,6 +195,13 @@ public class StringUtil {
         }
 
         return result;
+    }
+
+    public static byte[] decode(String data){
+        java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
+        byte[] decodedBytes = decoder.decode(data);
+
+        return decodedBytes;
     }
 
 }

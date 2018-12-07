@@ -546,4 +546,36 @@ public class FileUtil {
         Files.copy(source.toPath(), dest.toPath());
     }
 
+    /**
+     * 上传文件
+     * @param fileBytes
+     * @param filePath
+     * @param fileName
+     */
+    public static void uploadFile(byte[] fileBytes, String filePath, String fileName) {
+        File targetFile = new File(filePath);
+        if(!targetFile.exists()){
+            targetFile.mkdirs();
+        }
+
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filePath+fileName);
+            out.write(fileBytes);
+            out.flush();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if(out != null){
+                    out.close();
+                }
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+
+    }
+
 }

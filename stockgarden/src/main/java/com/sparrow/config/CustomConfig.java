@@ -1,5 +1,6 @@
 package com.sparrow.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,5 +13,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomConfig {
 
+    @Value("${custom.static.url}")
+    private String staticUrl;
+    @Value("${custom.file.profile-pictures.url}")
+    private String profilePicturesUrl;
+    @Value("${custom.file.background-pictures.url}")
+    private String backgroundPicturesUrl;
 
+    public String getStaticUrl() {
+        return staticUrl;
+    }
+
+    public String getProfilePicturesUrl() {
+        return profilePicturesUrl;
+    }
+
+    public String getBackgroundPicturesUrl() {
+        return backgroundPicturesUrl;
+    }
 }

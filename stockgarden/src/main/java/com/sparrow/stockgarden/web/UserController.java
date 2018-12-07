@@ -3,11 +3,14 @@ package com.sparrow.stockgarden.web;
 
 import com.sparrow.base.bean.AjaxResult;
 import com.sparrow.base.controller.BaseController;
+import com.sparrow.config.CustomConfig;
 import com.sparrow.constants.SysConst;
 import com.sparrow.stockgarden.mysql.model.User;
 import com.sparrow.stockgarden.mysql.service.UserService;
 import com.sparrow.utils.DateUtil;
+import com.sparrow.utils.FileUtil;
 import com.sparrow.utils.Md5Util;
+import com.sparrow.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,20 +32,8 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
-    /*@Value("${spring.mail.username}")
-    private String mailFrom;
-    @Value("${mail.subject.forgotpassword}")
-    private String mailSubject;
-    @Value("${mail.content.forgotpassword}")
-    private String mailContent;
-    @Value("${forgotpassword.url}")
-    private String forgotpasswordUrl;
-    @Value("${static.url}")
-    private String staticUrl;
-    @Value("${file.profilepictures.url}")
-    private String fileProfilepicturesUrl;
-    @Value("${file.backgroundpictures.url}")
-    private String fileBackgroundpicturesUrl;*/
+    @Autowired
+    private CustomConfig customConfig;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public AjaxResult login(User user, HttpServletResponse response) {
@@ -74,8 +65,8 @@ public class UserController extends BaseController {
         return success(preUrl);
     }
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public AjaxResult create(User user) {
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public AjaxResult create(User user) {
         User registerUser = userService.findByEmail(user.getEmail());
         if (null != registerUser) {
             return failure("该邮箱已被注册");
@@ -93,10 +84,10 @@ public class UserController extends BaseController {
         getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
 
         return success();
-	}
+    }
 
 	/*@RequestMapping(value = "/getFavorites", method = RequestMethod.POST)
-	@LoggerManage(description="获取收藏夹")
+    @LoggerManage(description="获取收藏夹")
 	public List<Favorites> getFavorites() {
 		List<Favorites> favorites = null;
 		try {
@@ -188,55 +179,59 @@ public class UserController extends BaseController {
 		return result();
 	}
 	
-	*//**
+	*/
+
+    /**
      * 忘记密码-设置新密码
+     *
      * @param newpwd
      * @param email
      * @param sid
      * @return
      */
-	@RequestMapping(value = "/setNewPassword", method = RequestMethod.POST)
-	public AjaxResult setNewPassword(String newpwd, String email, String sid) {
+    @RequestMapping(value = "/setNewPassword", method = RequestMethod.POST)
+    public AjaxResult setNewPassword(String newpwd, String email, String sid) {
         User user = userService.findByEmail(email);
         long outDateMillis = user.getOutDate().getTime();
-        if(outDateMillis <= System.currentTimeMillis()){
+        if (outDateMillis <= System.currentTimeMillis()) {
             //表示已经过期
             return failure("该链接已过期，请重新请求");
         }
         //数字签名
-        String key = user.getEmail()+"$"+outDateMillis/1000*1000+"$"+user.getVerificationCode();
+        String key = user.getEmail() + "$" + outDateMillis / 1000 * 1000 + "$" + user.getVerificationCode();
         String digitalSignature = Md5Util.encrypt(key);
-        if(!digitalSignature.equals(sid)) {
+        if (!digitalSignature.equals(sid)) {
             return failure("该链接已过期，请重新请求");
         }
         userService.setNewPassword(getPwd(newpwd), email);
 
         return success();
-	}
-	
-	/**
+    }
+
+    /**
      * 修改密码
+     *
      * @param oldPassword
      * @param newPassword
      * @return
      */
-	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-	public AjaxResult updatePassword(String oldPassword, String newPassword) {
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    public AjaxResult updatePassword(String oldPassword, String newPassword) {
         User user = getUser();
         String password = user.getPassword();
         String newpwd = getPwd(newPassword);
-        if(password.equals(getPwd(oldPassword))){
+        if (password.equals(getPwd(oldPassword))) {
             userService.setNewPassword(newpwd, user.getEmail());
             user.setPassword(newpwd);
             getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
 
             return success();
-        }else{
+        } else {
             return failure("密码输入错误");
         }
-	}
-	
-	/**
+    }
+
+    /**
      * 修改个人简介
      * @param introduction
      * @return
@@ -288,41 +283,40 @@ public class UserController extends BaseController {
 		}
 	}
 	
-	*//**
+	*/
+
+    /**
      * 上传头像
+     *
      * @param dataUrl
      * @return
-     *//*
-	@RequestMapping(value = "/uploadHeadPortrait", method = RequestMethod.POST)
-	public ResponseData uploadHeadPortrait(String dataUrl){
-		logger.info("执行 上传头像 开始");
-		try { 
-			String filePath=staticUrl+fileProfilepicturesUrl;
-			String fileName= UUID.randomUUID().toString()+".png";
-			String savePath = fileProfilepicturesUrl+fileName;
-	        String image = dataUrl;      
-	        String header ="data:image";
-	        String[] imageArr=image.split(",");  
-	        if(imageArr[0].contains(header)){  
-		        image=imageArr[1];
-				Base64.Decoder decoder = Base64.getDecoder();
-                byte[] decodedBytes = decoder.decode(image);
-                FileUtil.uploadFile(decodedBytes, filePath, fileName);
-                User user = getUser();
-    			userRepository.setProfilePicture(savePath, user.getId());
-    			user.setProfilePicture(savePath);
-    			getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
-	        }
-	        logger.info("头像地址：" + savePath);
-	        logger.info("执行 上传头像 结束");
-	        return new ResponseData(ExceptionMsg.SUCCESS, savePath);	
-		} catch (Exception e) {
-			logger.error("upload head portrait failed, ", e);
-			return new ResponseData(ExceptionMsg.FAILED);
-		}
-	}
+     */
+    @RequestMapping(value = "/uploadHeadPortrait", method = RequestMethod.POST)
+    public AjaxResult uploadHeadPortrait(String dataUrl) {
+        logger.info("执行 上传头像 开始");
 
-	*//**
+        String filePath = customConfig.getStaticUrl() + customConfig.getProfilePicturesUrl();
+        String fileName = StringUtil.randomUUID() + ".png";
+        String savePath = customConfig.getProfilePicturesUrl() + fileName;
+        String image = dataUrl;
+        String header = "data:image";
+        String[] imageArray = image.split(",");
+        if (imageArray[0].contains(header)) {
+            image = imageArray[1];
+            byte[] decodedBytes = StringUtil.decode(image);
+            FileUtil.uploadFile(decodedBytes, filePath, fileName);
+            User user = getUser();
+            userService.setProfilePicture(savePath, user.getId());
+            user.setProfilePicture(savePath);
+            getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
+        }
+        logger.info("头像地址：" + savePath);
+        logger.info("执行 上传头像 结束");
+
+        return success(savePath);
+    }
+
+    /**
      * 上传背景
      * @param dataUrl
      * @return

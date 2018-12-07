@@ -57,4 +57,10 @@ public class UserServiceImpl implements UserService {
         userRepository.setNewPassword(password, email);
         return true;
     }
+
+    @Override
+    public boolean setProfilePicture(String profilePicture, Long id) {
+        userRepository.setProfilePicture(profilePicture, id);
+        return true;
+    }
 }

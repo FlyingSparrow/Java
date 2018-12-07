@@ -25,4 +25,6 @@ public interface UserService {
     boolean save(User entity);
 
     boolean setNewPassword(@Param("password") String password, @Param("email") String email);
+
+    boolean setProfilePicture(@Param("profilePicture") String profilePicture, @Param("id") Long id);
 }

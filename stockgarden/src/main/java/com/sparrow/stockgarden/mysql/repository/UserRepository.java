@@ -23,6 +23,10 @@ public interface UserRepository extends CrudRepository<User,Long> {
 
     @Modifying(clearAutomatically=true)
     @Query("update User set password=:password where email=:email")
-    int setNewPassword(@Param("password") String password, @Param("email") String email);
+    void setNewPassword(@Param("password") String password, @Param("email") String email);
+
+    @Modifying(clearAutomatically=true)
+    @Query("update User set profilePicture=:profilePicture where id=:id")
+    void setProfilePicture(@Param("profilePicture") String profilePicture, @Param("id") Long id);
 
 }
