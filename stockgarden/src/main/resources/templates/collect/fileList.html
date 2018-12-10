@@ -1,0 +1,221 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="layout :: htmlhead" th:with="title='favorites'"></head>
+<link rel="stylesheet" th:href="@{/vendor/fontawesome/css/font-awesome.min.css}"></link>
+<link rel="stylesheet" th:href="@{/vendor/simple-line-icons/css/simple-line-icons.css}"></link>
+<link rel="stylesheet" th:href="@{/vendor/bootstrap/dist/css/bootstrap.css}"></link>
+<!--<link rel="stylesheet" th:href="@{/vendor/bootstrap-dialog/dist/css/bootstrap-dialog.min.css}"></link>-->
+<link rel="stylesheet" th:href="@{/vendor/file-input/fileinput.css}"></link>
+<link rel="stylesheet" th:href="@{/media/css/bootstrap.css}" id="bscss"></link>
+<link rel="stylesheet" th:href="@{/media/css/app.css}" id="maincss"></link>
+<link rel="stylesheet" th:href="@{/media/css/theme-i.css}" id="maincss2"></link>
+<body>
+
+<section>
+    <div class="content-wrapper">
+        <div class="x_title">
+            <!--<br>
+            <div class="clearfix"></div>
+            <div class="crumb">
+                <span class="myone" style="cursor: pointer;">报告管理&nbsp;&nbsp;>&nbsp;&nbsp;</span>
+                <span class="mytwo" id="companyName" style="cursor: pointer;"></span>
+                <span class="my" id="folderName" style="font-weight: bold;color: blue; cursor: pointer;"></span>
+            </div>-->
+            <form class="form-horizontal form-label-left input_mask">
+                <div class="col-md-3 col-sm-3 col-xs-6 form-group">
+                    <label class="control-label col-md-4 col-sm-4 col-xs-12"
+                           for="fileName">文件名称</label>
+                    <div class="col-md-8 col-sm-8 col-xs-12" style="padding-left:0px">
+                        <input type="text" class="form-control" id="fileName" name="fileName"
+                               placeholder="请输入文件名称">
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-6 form-group">
+                    <label class="control-label col-md-4 col-sm-4 col-xs-8"
+                           for="uploadUserId">上传人</label>
+                    <div class="col-md-8 col-sm-8 col-xs-12" style="padding-left:0px">
+                        <select class="form-control" id="uploadUserId" name="uploadUserId">
+                            <option value="0">请选择上传人</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 form-group ">
+                    <label class="control-label col-md-4 col-sm-4 col-xs-12"
+                           for="uploadTime">上传时间</label>
+
+                    <div class="col-md-8 col-sm-8 col-xs-12">
+                        <input type="text" class="form-control" id="uploadTime" name="uploadTime"
+                               placeholder="请选择上传时间">
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 form-group ">
+                    <div class="pull-left">
+                        <button type="button" class="btn btn-primary" onclick="findFileList()">查询
+                        </button>
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-primary" id="btnAdd" data-target="#modal_addReport" data-toggle="modal">添加</button>
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-primary" id="btnExport">导出</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="x_content">
+            <div class="clearfix"></div>
+            <table id="table">
+            </table>
+        </div>
+        <input type="hidden" name="collectId" id="collectId"/>
+        <input type="hidden" name="forward" id="forward" th:value="'/standard/'+${type}+'/0'"/>
+        <input type="hidden" name="pageType" id="pageType" th:value="${type}"/>
+
+    </div>
+
+</section>
+<div id="modal_addReport" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 900px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">添加报告</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <form id="upLoadForm" action="/apis/reportManagement/uploadFile" method="post" enctype="multipart/form-data"
+                          onsubmit="return uploadFile()">
+                        <label class="control-label">选择文件（支持jpg、png、pdf、doc、docx、ppt、pptx、xls、xlsx、txt、wps）</label>
+                        <input id="fileUpload" type="file" name="fileUpload" class="file">
+                        <input id="folderId" hidden="hidden" name="folderId">
+                        <input name="kehuid" id="kehuid" hidden="hidden">
+                        <input type="hidden" id="userId" th:value="${userId}"/>
+                        <input type="hidden" id="company" name="company" value="${company}">
+                        <div class="input-group file-caption-main">
+                            <label class="control-label col-md-1 col-sm-2 col-xs-4" for="briefingDate" style="line-height: 34px;">报告时间</label>
+                            <div class="col-md-11 col-sm-10 col-xs-8">
+                                <input type="text" class="form-control" id="briefingDate" name="briefingDate" placeholder="请选择报告时间">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default antoclose" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="formDownload" method="post" action="/apis/reportManagement/downloadFile">
+    <input type="text" hidden="hidden" name="fileId" id="fileId">
+</form>
+</body>
+<script th:src="@{/vendor/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{/vendor/parsleyjs/dist/parsley.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-table/dist/js/bootstrap-table.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-table/dist/js/bootstrap-table-jumpto.js}"></script>
+<!--<script th:src="@{/vendor/bootstrap-dialog/dist/js/bootstrap-dialog.min.js}"></script>-->
+<script th:src="@{/vendor/file-input/fileinput.min.js}"></script>
+<script type='text/javascript' th:inline="javascript">
+    $(function () {
+        var favorites = /*[[${favorites}]]*/null;
+        if (null != favorites) {
+            $("#favoritesId").val(favorites.id);
+        }
+
+        findFileList();
+    });
+
+    function findFileList() {
+        var folderId = $('#folderId').val();
+
+        $("#table").bootstrapTable("destroy");
+        var uploadUserId = $("select[name='uploadUserId']").val();
+        var uploadTime = $("#uploadTime").val();
+        var fileName = $("#fileName").val();
+        $("#table").bootstrapTable({
+            url: "/fileManagement/getFileList",
+            method: "post",
+            contentType: "application/x-www-form-urlencoded",
+            ajax: undefined,
+            sidePagination: "server",
+            queryParams: function (params) {
+                var param = {
+                    folderId: folderId,
+                    uploadUserId: uploadUserId,
+                    uploadTime: uploadTime,
+                    fileName: fileName,
+                    limit: params.limit,
+                    offset: params.offset
+                };
+                return param;
+            },
+            toolbar: '#toolbar',
+            striped: false,
+            cache: false,
+            pagination: true,
+            sortable: false,
+            paginationShowPageGo: true,
+            sortOrder: "desc",
+            pageNumber: 1,
+            pageSize: 10,
+            pageList: [10, 20],
+            columns: [
+                {
+                    checkbox: true,
+                    title: '序号',
+                    align: 'center',
+                    width: 60,
+                    formatter: function (value, row, index, event) {
+                        return value;
+                    }
+                },
+                {
+                    field: 'originalFileName',
+                    title: '文件名称',
+                    formatter: function (value, row, index, event) {
+                        var briefingDate = new Date(row.briefingDate);
+                        var formattedBriefingDate = dateUtil.formatDate(briefingDate, 'yyyy.MM.dd');
+                        return formattedBriefingDate + '&nbsp;&nbsp;&nbsp;&nbsp;' + row.originalFileName;
+                    }
+                }, {
+                    field: 'creator',
+                    title: '上传人',
+                    width: 160
+                }, {
+                    field: 'createdTime',
+                    title: '上传时间',
+                    align: 'center',
+                    width: 200,
+                    formatter: function (value, row, index, event) {
+                        var createTime = new Date(value);
+                        var formattedCreateTime = dateUtil.formatDate(createTime, 'yyyy-MM-dd HH:mm:ss');
+                        return formattedCreateTime;
+                    }
+                }, {
+                    field: 'id',
+                    title: '操作',
+                    align: 'center',
+                    width: 80,
+                    formatter: function (value, row, index, event) {
+                        var id = row.id;
+                        var element = "<a href='#' onclick='downloadFile(" + id + ")' style='font-size: 13px; color:#337ab7'>下载</a>";
+                        if (isNotAdmin == 1) {
+                            //是管理员
+                            element += "&nbsp;&nbsp;<a href='#' onclick='deleteFile(" + id + ")' style='font-size: 13px; color:#337ab7'>删除</a>";
+                        }
+
+                        return element;
+                    }
+                }
+            ]
+        })
+    }
+</script>
+
+</html>
+

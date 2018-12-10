@@ -18,4 +18,6 @@ public interface BriefingCustomizedFileRepository extends CrudRepository<Briefin
 
     List<BriefingCustomizedFile> findByUserIdAndFolderId(Long userId, Long folderId);
 
+    List<BriefingCustomizedFile> findAllByCreatorIdOrderByCreatedDateDesc(Long creatorId);
+
 }

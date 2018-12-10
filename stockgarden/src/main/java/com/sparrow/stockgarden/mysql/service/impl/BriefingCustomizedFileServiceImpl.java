@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,5 +33,10 @@ public class BriefingCustomizedFileServiceImpl implements BriefingCustomizedFile
     @Override
     public BriefingCustomizedFile findById(Long id) {
         return briefingCustomizedFileRepository.findById(id).get();
+    }
+
+    @Override
+    public List<BriefingCustomizedFile> findAllByCreatorIdOrderByCreatedDateDesc(Long creatorId) {
+        return briefingCustomizedFileRepository.findAllByCreatorIdOrderByCreatedDateDesc(creatorId);
     }
 }

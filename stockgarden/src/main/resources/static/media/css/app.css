@@ -108,7 +108,8 @@ hr { border-top: 1px solid #e4eaec; }
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus { color: inherit; border-bottom-color: #fff; }
 .tab-content { padding: 10px 20px; border-width: 0 1px 1px 1px; border-style: solid; border-color: #dde6e9; }
 .nav-pills + .tab-content { padding: 0; border: 0; }
-.btn { font-size: 13px; -webkit-transition: all .1s; -o-transition: all .1s; transition: all .1s; border-color: transparent; border-radius: 3px; outline: none !important; -webkit-appearance: none; }
+.btn {
+    margin-right: 5px; font-size: 13px; -webkit-transition: all .1s; -o-transition: all .1s; transition: all .1s; border-color: transparent; border-radius: 3px; outline: none !important; -webkit-appearance: none; }
 .btn.btn-link { border: 0; box-shadow: none; }
 .btn.btn-default { border-color: #eaeaea; }
 .input-group .btn { font-size: 14px; border-color: #dde6e9; }
