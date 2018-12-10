@@ -63,4 +63,16 @@ public class UserServiceImpl implements UserService {
         userRepository.setProfilePicture(profilePicture, id);
         return true;
     }
+
+    @Override
+    public boolean setUsername(String username, String email) {
+        userRepository.setUsername(username, email);
+        return true;
+    }
+
+    @Override
+    public boolean setIntroduction(String introduction, String email) {
+        userRepository.setIntroduction(introduction, email);
+        return true;
+    }
 }

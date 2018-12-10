@@ -29,4 +29,12 @@ public interface UserRepository extends CrudRepository<User,Long> {
     @Query("update User set profilePicture=:profilePicture where id=:id")
     void setProfilePicture(@Param("profilePicture") String profilePicture, @Param("id") Long id);
 
+    @Modifying(clearAutomatically=true)
+    @Query("update User set username=:username where email=:email")
+    void setUsername(@Param("username") String username, @Param("email") String email);
+
+    @Modifying(clearAutomatically=true)
+    @Query("update User set introduction=:introduction where email=:email")
+    void setIntroduction(@Param("introduction") String introduction, @Param("email") String email);
+
 }

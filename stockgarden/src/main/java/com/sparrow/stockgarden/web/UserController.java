@@ -235,55 +235,39 @@ public class UserController extends BaseController {
      * 修改个人简介
      * @param introduction
      * @return
-     *//*
+     */
 	@RequestMapping(value = "/updateIntroduction", method = RequestMethod.POST)
-	@LoggerManage(description="修改个人简介")
-	public ResponseData updateIntroduction(String introduction) {
-		try {
-			User user = getUser();
-			userRepository.setIntroduction(introduction, user.getEmail());
-			user.setIntroduction(introduction);
-			getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
-			return new ResponseData(ExceptionMsg.SUCCESS, introduction);
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("updateIntroduction failed, ", e);
-			return new ResponseData(ExceptionMsg.FAILED);
-		}
+	public AjaxResult updateIntroduction(String introduction) {
+        User user = getUser();
+        userService.setIntroduction(introduction, user.getEmail());
+        user.setIntroduction(introduction);
+        getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, user);
+        return success(introduction);
 	}
 	
-	*//**
+	/**
      * 修改昵称
      * @param userName
      * @return
-     *//*
+     */
 	@RequestMapping(value = "/updateUserName", method = RequestMethod.POST)
-	@LoggerManage(description="修改昵称")
-	public ResponseData updateUserName(String userName) {
-		try {
-			User loginUser = getUser();
-			if(userName.equals(loginUser.getUserName())){
-				return new ResponseData(ExceptionMsg.UserNameSame);
-			}
-			User user = userRepository.findByUserName(userName);
-			if(null != user && user.getUserName().equals(userName)){
-				return new ResponseData(ExceptionMsg.UserNameUsed);
-			}
-			if(userName.length()>12){
-				return new ResponseData(ExceptionMsg.UserNameLengthLimit);
-			}
-			userRepository.setUserName(userName, loginUser.getEmail());
-			loginUser.setUserName(userName);
-			getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, loginUser);
-			return new ResponseData(ExceptionMsg.SUCCESS, userName);
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("updateUserName failed, ", e);
-			return new ResponseData(ExceptionMsg.FAILED);
-		}
+	public AjaxResult updateUserName(String userName) {
+        User loginUser = getUser();
+        if(userName.equals(loginUser.getUsername())){
+            return failure("新用户名与原用户名一致");
+        }
+        User user = userService.findByUsername(userName);
+        if(null != user && user.getUsername().equals(userName)){
+            return failure("该登录名称已存在");
+        }
+        if(userName.length()>12){
+            return failure("用户名长度超限");
+        }
+        userService.setUsername(userName, loginUser.getEmail());
+        loginUser.setUsername(userName);
+        getSession().setAttribute(SysConst.LOGIN_SESSION_KEY, loginUser);
+        return success(userName);
 	}
-	
-	*/
 
     /**
      * 上传头像

@@ -363,22 +363,21 @@ function updateIntroduction() {
 		data : {'introduction':$("#introduction").val()},
 		type : 'POST',
 		dataType : "json",
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
-		},
-		success : function(data, textStatus) {
-			if(data.rspCode == '000000'){
+		success : function(result) {
+			if(result.success){
+				var introduction = result.data;
 				$("#updateIntroductionBtn").attr("aria-hidden","true");
 				$("#updateIntroductionBtn").attr("data-dismiss","modal");
 				$("#updateIntroductionForm")[0].reset();
-				if(data.data.length>10){
-					$("#leftIntroduction").html(data.data.substring(0,10)+'...');
+				if(introduction.length>10){
+					$("#leftIntroduction").html(introduction.substring(0,10)+'...');
 				}else{
-					$("#leftIntroduction").html(data.data);
+					$("#leftIntroduction").html(introduction);
 				}
-				$("#userIntroduction").html(data.data);
+				$("#userIntroduction").html(introduction);
 				toastr.success('个人简介修改成功！', '操作成功');
   	    	}else{
-  	    		toastr.error(data.rspMsg, '操作失败');
+  	    		toastr.error(result.message, '操作失败');
   	    	}
 		}
 	});
@@ -396,24 +395,23 @@ function updateNickname() {
 		data : 'userName='+$("#newNickname").val(),
 		type : 'POST',
 		dataType : "json",
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
-		},
-		success : function(data, textStatus) {
-			if(data.rspCode == '000000'){
+		success : function(result) {
+			if(result.success){
+				var nickname = result.data;
 				$("#nicknameError").hide();
 				$("#updateNicknameBtn").attr("aria-hidden","true");
 				$("#updateNicknameBtn").attr("data-dismiss","modal");
 				$("#updateNicknameForm")[0].reset();
-				if(data.data.length>10){
-					$("#leftUserName").html("欢迎  "+data.data.substring(0,10)+'...');
+				if(nickname.length>10){
+					$("#leftUserName").html("欢迎  "+nickname.substring(0,10)+'...');
 				}else{
-					$("#leftUserName").html("欢迎  "+data.data);
+					$("#leftUserName").html("欢迎  "+nickname);
 				}
-				$("#userUserName").html(data.data);
+				$("#userUserName").html(nickname);
 				toastr.success('昵称修改成功！', '操作成功');
   	    	}else{
   	    		$("#nicknameError").show();
-  	    		$("#nicknameError").html(data.rspMsg);
+  	    		$("#nicknameError").html(result.message);
   	    		$("#updateNicknameBtn").removeAttr("aria-hidden");
 				$("#updateNicknameBtn").removeAttr("data-dismiss");
   	    	}
